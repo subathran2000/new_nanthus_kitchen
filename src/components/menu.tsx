@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { Box } from "@mui/material";
 import { Canvas } from '@react-three/fiber';
@@ -59,7 +59,6 @@ const LandingPage = () => {
 
 
 
-    // Responsive radius and spacing based on viewport
     const getResponsiveValues = () => {
         if (typeof window === "undefined") return { radius: 800, spacing: 250 };
         const width = window.innerWidth;
@@ -67,15 +66,6 @@ const LandingPage = () => {
         if (width < 768) return { radius: 400, spacing: 200 };
         if (width < 1024) return { radius: 600, spacing: 220 };
         return { radius: 800, spacing: 250 };
-    };
-
-    const shuffleArray = (arr: string[]) => {
-        const copy = [...arr];
-        for (let i = copy.length - 1; i > 0; i--) {
-            const j = Math.floor(Math.random() * (i + 1));
-            [copy[i], copy[j]] = [copy[j], copy[i]];
-        }
-        return copy;
     };
 
     useEffect(() => {
@@ -171,6 +161,17 @@ const LandingPage = () => {
                 backfaceVisibility: "hidden",
                 fontFamily: "'Courier New', Courier, monospace", // Tech font
                 color: "#aaccff", // Light blue text
+                '&::before': {
+                    content: '""',
+                    position: 'absolute',
+                    top: 0,
+                    left: 0,
+                    right: 0,
+                    bottom: 0,
+                    background: 'radial-gradient(circle at 50% 50%, rgba(0, 255, 255, 0.1) 0%, transparent 50%)',
+                    pointerEvents: 'none',
+                    zIndex: 1,
+                },
             }}
         >
             {/* 3D Background */}

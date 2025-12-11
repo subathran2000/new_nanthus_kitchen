@@ -1,0 +1,397 @@
+.page-background {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    z-index: 1000;
+    font-family: "Helvetica Neue", "Arial", sans-serif;
+}
+
+.clock-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: transform 0.3s ease;
+}
+
+.clock-container:hover {
+    transform: scale(1.05);
+}
+
+.clock-face {
+    width: 120px;
+    height: 120px;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border-radius: 50%;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow:
+        0 8px 32px rgba(31, 38, 135, 0.15),
+        inset 0 0 20px rgba(255, 255, 255, 0.05);
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.clock-face::before {
+    content: "";
+    position: absolute;
+    width: 92%;
+    height: 92%;
+    background-color: transparent;
+    border-radius: 50%;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    box-shadow: inset 0 0 15px rgba(255, 255, 255, 0.1);
+}
+
+.marker {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+}
+
+.marker-dot {
+    position: absolute;
+    top: 6px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 3px;
+    height: 3px;
+    border-radius: 50%;
+    background: rgba(217, 167, 86, 0.6);
+    box-shadow:
+        0 0 4px rgba(217, 167, 86, 0.8),
+        inset 0 0 2px rgba(255, 255, 255, 0.3);
+}
+
+.marker-1 {
+    transform: rotate(30deg);
+}
+
+.marker-2 {
+    transform: rotate(60deg);
+}
+
+.marker-3 {
+    transform: rotate(90deg);
+}
+
+.marker-3 .marker-dot {
+    width: 4px;
+    height: 4px;
+    background: rgba(217, 167, 86, 0.9);
+    box-shadow: 0 0 6px rgba(217, 167, 86, 1);
+}
+
+.marker-4 {
+    transform: rotate(120deg);
+}
+
+.marker-5 {
+    transform: rotate(150deg);
+}
+
+.marker-6 {
+    transform: rotate(180deg);
+}
+
+.marker-6 .marker-dot {
+    width: 4px;
+    height: 4px;
+    background: rgba(217, 167, 86, 0.9);
+    box-shadow: 0 0 6px rgba(217, 167, 86, 1);
+}
+
+.marker-7 {
+    transform: rotate(210deg);
+}
+
+.marker-8 {
+    transform: rotate(240deg);
+}
+
+.marker-9 {
+    transform: rotate(270deg);
+}
+
+.marker-9 .marker-dot {
+    width: 4px;
+    height: 4px;
+    background: rgba(217, 167, 86, 0.9);
+    box-shadow: 0 0 6px rgba(217, 167, 86, 1);
+}
+
+.marker-10 {
+    transform: rotate(300deg);
+}
+
+.marker-11 {
+    transform: rotate(330deg);
+}
+
+.marker-12 {
+    transform: rotate(360deg);
+}
+
+.marker-12 .marker-dot {
+    width: 4px;
+    height: 4px;
+    background: rgba(217, 167, 86, 0.9);
+    box-shadow: 0 0 6px rgba(217, 167, 86, 1);
+}
+
+.number {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    font-size: 10px;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.7);
+    text-shadow:
+        0 0 5px rgba(217, 167, 86, 0.5),
+        0 0 10px rgba(217, 167, 86, 0.3);
+    z-index: 2;
+}
+
+.number-1 {
+    transform: rotate(30deg);
+}
+
+.number-1-text {
+    display: inline-block;
+    transform: translateY(14px) rotate(-30deg);
+}
+
+.number-2 {
+    transform: rotate(60deg);
+}
+
+.number-2-text {
+    display: inline-block;
+    transform: translateY(14px) rotate(-60deg);
+}
+
+.number-3 {
+    transform: rotate(90deg);
+}
+
+.number-3-text {
+    display: inline-block;
+    transform: translateY(14px) rotate(-90deg);
+}
+
+.number-4 {
+    transform: rotate(120deg);
+}
+
+.number-4-text {
+    display: inline-block;
+    transform: translateY(14px) rotate(-120deg);
+}
+
+.number-5 {
+    transform: rotate(150deg);
+}
+
+.number-5-text {
+    display: inline-block;
+    transform: translateY(14px) rotate(-150deg);
+}
+
+.number-6 {
+    transform: rotate(180deg);
+}
+
+.number-6-text {
+    display: inline-block;
+    transform: translateY(14px) rotate(-180deg);
+}
+
+.number-7 {
+    transform: rotate(210deg);
+}
+
+.number-7-text {
+    display: inline-block;
+    transform: translateY(14px) rotate(-210deg);
+}
+
+.number-8 {
+    transform: rotate(240deg);
+}
+
+.number-8-text {
+    display: inline-block;
+    transform: translateY(14px) rotate(-240deg);
+}
+
+.number-9 {
+    transform: rotate(270deg);
+}
+
+.number-9-text {
+    display: inline-block;
+    transform: translateY(14px) rotate(-270deg);
+}
+
+.number-10 {
+    transform: rotate(300deg);
+}
+
+.number-10-text {
+    display: inline-block;
+    transform: translateY(14px) rotate(-300deg);
+}
+
+.number-11 {
+    transform: rotate(330deg);
+}
+
+.number-11-text {
+    display: inline-block;
+    transform: translateY(14px) rotate(-330deg);
+}
+
+.number-12 {
+    transform: rotate(360deg);
+}
+
+.number-12-text {
+    display: inline-block;
+    transform: translateY(14px) rotate(-360deg);
+}
+
+.hand {
+    position: absolute;
+    bottom: 50%;
+    left: 50%;
+    transform-origin: bottom center;
+    border-radius: 10px 10px 0 0;
+    box-shadow:
+        0 0 8px rgba(217, 167, 86, 0.4),
+        0 2px 4px rgba(0, 0, 0, 0.3);
+    transition: transform 0.3s cubic-bezier(0.4, 0.0, 0.2, 1);
+}
+
+.hour-hand {
+    width: 3px;
+    height: 20px;
+    background: linear-gradient(to top, #D9A756, rgba(217, 167, 86, 0.8));
+    z-index: 5;
+}
+
+.minute-hand {
+    width: 2.5px;
+    height: 32px;
+    background: linear-gradient(to top, rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.5));
+    z-index: 6;
+}
+
+.second-hand {
+    width: 1.5px;
+    height: 40px;
+    background: #D9A756;
+    box-shadow:
+        0 0 10px rgba(217, 167, 86, 0.8),
+        0 0 20px rgba(217, 167, 86, 0.4);
+    z-index: 7;
+}
+
+.center-pin {
+    width: 8px;
+    height: 8px;
+    background: rgba(217, 167, 86, 0.3);
+    border-radius: 50%;
+    position: absolute;
+    z-index: 10;
+    border: 1px solid rgba(217, 167, 86, 0.6);
+    box-shadow:
+        0 0 10px rgba(217, 167, 86, 0.6),
+        inset 0 0 5px rgba(217, 167, 86, 0.3);
+}
+
+.center-pin::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 3px;
+    height: 3px;
+    background: #D9A756;
+    border-radius: 50%;
+    box-shadow: 0 0 5px rgba(217, 167, 86, 1);
+}
+
+/* Responsive adjustments for mobile */
+@media (max-width: 768px) {
+    .page-background {
+        top: 10px;
+        left: 10px;
+    }
+
+    .clock-face {
+        width: 80px;
+        height: 80px;
+    }
+
+    .marker-dot {
+        top: 4px;
+        width: 2px;
+        height: 2px;
+    }
+
+    .marker-3 .marker-dot,
+    .marker-6 .marker-dot,
+    .marker-9 .marker-dot,
+    .marker-12 .marker-dot {
+        width: 3px;
+        height: 3px;
+    }
+
+    .number {
+        font-size: 7px;
+    }
+
+    .number-1-text,
+    .number-2-text,
+    .number-3-text,
+    .number-4-text,
+    .number-5-text,
+    .number-6-text,
+    .number-7-text,
+    .number-8-text,
+    .number-9-text,
+    .number-10-text,
+    .number-11-text,
+    .number-12-text {
+        transform: translateY(9px) rotate(calc(var(--rotation) * -1));
+    }
+
+    .hour-hand {
+        width: 2px;
+        height: 13px;
+    }
+
+    .minute-hand {
+        width: 1.5px;
+        height: 21px;
+    }
+
+    .second-hand {
+        width: 1px;
+        height: 27px;
+    }
+
+    .center-pin {
+        width: 6px;
+        height: 6px;
+    }
+
+    .center-pin::after {
+        width: 2px;
+        height: 2px;
+    }
+}

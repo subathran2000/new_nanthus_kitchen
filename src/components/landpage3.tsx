@@ -4,6 +4,7 @@ import { ScrollControls, Scroll, useScroll, Float, Sparkles, Caustics, Environme
 import { EffectComposer, Bloom, Noise, Vignette } from '@react-three/postprocessing'
 import { motion } from 'framer-motion'
 import * as THREE from 'three'
+import NeumorphicClock from './NeumorphicClock'
 
 // --- 3D Components ---
 
@@ -114,6 +115,9 @@ const Section = ({ children, style }: any) => {
 const Landpage = ({ children }: { children?: React.ReactNode }) => {
   return (
     <div style={{ width: '100%', height: '100vh', background: '#001e36', overflow: 'hidden' }}>
+      {/* Floating Clock */}
+      <NeumorphicClock />
+
       <Canvas camera={{ position: [0, 0, 5], fov: 50 }} shadows>
         <color attach="background" args={['#001e36']} />
         <fog attach="fog" args={['#001e36', 5, 25]} />

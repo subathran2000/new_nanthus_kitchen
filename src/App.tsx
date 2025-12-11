@@ -6,18 +6,19 @@ import Menu from './components/menu';
 import Nav from './components/Nav';
 import CallIcon from './components/callIcon';
 import Social from './components/social';
-
+import Event from './components/Coverflow3D';
+import Clock from './components/NeumorphicClock';
 function App() {
 
   return (
     <>
-      {/* <Landpage> */}
-      <Menu />
-      {/* </Landpage> */}
+      {/* <Landpage/> */}
+      {/* <Menu /> */}
 
       <Nav />
       <CallIcon />
-      <Social />
+      <Event />
+      <Clock />
     </>
   )
 }
