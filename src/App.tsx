@@ -12,12 +12,12 @@ function App() {
 
   return (
     <>
-      {/* <Landpage/> */}
+      <Landpage/>
       {/* <Menu /> */}
 
       <Nav />
       <CallIcon />
-      <Event />
+      {/* <Event /> */}
       <Clock />
     </>
   )

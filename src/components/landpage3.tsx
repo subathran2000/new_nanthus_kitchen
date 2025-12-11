@@ -22,7 +22,7 @@ const FloatingCrystal = ({ position, color, speed, rotationSpeed, scale }: any) 
   return (
     <Float speed={speed} rotationIntensity={rotationSpeed} floatIntensity={1}>
       <mesh ref={meshRef} position={position} scale={scale} castShadow receiveShadow>
-        <octahedronGeometry args={[1, 0]} />
+        <sphereGeometry args={[1, 32, 32]} />
         <meshPhysicalMaterial
           color={color}
           roughness={0.1}
