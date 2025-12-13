@@ -5,6 +5,9 @@ import { EffectComposer, Bloom, Noise, Vignette } from '@react-three/postprocess
 import { motion } from 'framer-motion'
 import * as THREE from 'three'
 import NeumorphicClock from './NeumorphicClock'
+import CharacterSection from './CharacterSection'
+import LuminousCard from './LuminousCard'
+import ProductCards from './ProductCards'
 
 // --- 3D Components ---
 
@@ -122,7 +125,7 @@ const Landpage = ({ children }: { children?: React.ReactNode }) => {
         <color attach="background" args={['#001e36']} />
         <fog attach="fog" args={['#001e36', 5, 25]} />
 
-        <ScrollControls pages={5} damping={0.2}>
+        <ScrollControls pages={8} damping={0.2}>
           <SceneContent />
 
           <Scroll html style={{ width: '100%' }}>
@@ -141,21 +144,21 @@ const Landpage = ({ children }: { children?: React.ReactNode }) => {
               </motion.div>
             </Section>
 
-            <Section style={{ alignItems: 'flex-start', paddingLeft: '10vw' }}>
-              <motion.div
-                initial={{ opacity: 0, x: -50 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                transition={{ duration: 1 }}
-              >
-                <h2 style={{ fontSize: '4rem', color: '#fff', textShadow: '0 0 10px rgba(0,255,255,0.3)' }}>
-                  FLUIDITY
-                </h2>
-                <p style={{ fontSize: '1.2rem', color: '#aaccff', maxWidth: '400px' }}>
-                  Like water, we adapt and flow.
-                  Seamless experiences that feel natural and alive.
-                </p>
-              </motion.div>
+            {/* Replaced FLUIDITY section with Character Design Template */}
+            <div style={{ width: '100%', minHeight: '100vh', position: 'relative', zIndex: 10 }}>
+              <CharacterSection />
+            </div>
+
+            {/* Product Cards Section */}
+            <Section style={{ height: 'auto', minHeight: '100vh', padding: '5rem 0' }}>
+              <ProductCards />
             </Section>
+
+            {/* Luminous Card Section */}
+            <Section style={{ height: 'auto', minHeight: '100vh', padding: '5rem 0' }}>
+              <LuminousCard />
+            </Section>
+
 
             <Section style={{ alignItems: 'flex-end', paddingRight: '10vw' }}>
               <motion.div
