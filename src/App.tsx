@@ -8,6 +8,7 @@ import CallIcon from './components/callIcon';
 import Social from './components/social';
 import Event from './components/Coverflow3D';
 import Clock from './components/NeumorphicClock';
+import Gallery from './components/gallery';
 function App() {
 
   return (
@@ -19,6 +20,7 @@ function App() {
       <CallIcon />
       {/* <Event /> */}
       <Clock />
+      {/* <Gallery /> */}
     </>
   )
 }

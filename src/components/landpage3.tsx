@@ -1,6 +1,10 @@
 import React, { useRef } from 'react'
 import { Canvas, useFrame } from '@react-three/fiber'
-import { ScrollControls, Scroll, useScroll, Float, Sparkles, Caustics, Environment, Cloud } from '@react-three/drei'
+import { ScrollControls, Scroll, useScroll, Float, Sparkles, Caustics, Environment, Cloud, useTexture } from '@react-three/drei'
+// ... (lines 4-44 unchanged, I will rely on context matching or just replace the import and the component body part separately if they are far apart)
+
+// Actually, I will do this in two chunks or one if close enough. They are somewhat far (imports at top, SceneContent at 45).
+// Let's do imports first.
 import { EffectComposer, Bloom, Noise, Vignette } from '@react-three/postprocessing'
 import { motion } from 'framer-motion'
 import * as THREE from 'three'
@@ -8,6 +12,8 @@ import NeumorphicClock from './NeumorphicClock'
 import CharacterSection from './CharacterSection'
 import LuminousCard from './LuminousCard'
 import ProductCards from './ProductCards'
+import MenuRedirectSection from './MenuRedirectSection'
+import logoReflect from '../assets/images/new_nanthus_kitchen_logo.png'
 
 // --- 3D Components ---
 
@@ -45,6 +51,10 @@ const FloatingCrystal = ({ position, color, speed, rotationSpeed, scale }: any) 
 const SceneContent = () => {
   const scroll = useScroll()
   const groupRef = useRef<THREE.Group>(null)
+
+  // Load the texture for the environment
+  const texture = useTexture(logoReflect)
+  texture.mapping = THREE.EquirectangularReflectionMapping
 
   useFrame((state, delta) => {
     if (groupRef.current) {
@@ -89,7 +99,7 @@ const SceneContent = () => {
       <pointLight position={[10, 10, 10]} intensity={1} color="#00ffff" />
 
       {/* Environment for reflections */}
-      <Environment preset="city" blur={1} />
+      <Environment map={texture} blur={1} />
     </group>
   )
 }
@@ -159,6 +169,10 @@ const Landpage = ({ children }: { children?: React.ReactNode }) => {
               <LuminousCard />
             </Section>
 
+            {/* Menu Redirect Section */}
+            <Section style={{ height: 'auto', minHeight: '100vh', padding: '5rem 0' }}>
+              <MenuRedirectSection />
+            </Section>
 
             <Section style={{ alignItems: 'flex-end', paddingRight: '10vw' }}>
               <motion.div
