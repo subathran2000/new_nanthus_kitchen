@@ -53,7 +53,7 @@ const portfolioItems = [
     { id: 6, title: 'Marine Species', category: 'Biology', img: 'https://images.unsplash.com/photo-1551244072-5d12893278ab?q=80&w=2066&auto=format&fit=crop' },
     { id: 7, title: 'Shipwrecks', category: 'History', img: 'https://images.unsplash.com/photo-1620641788421-7a1c342ea42e?q=80&w=1974&auto=format&fit=crop' },
     { id: 8, title: 'Blue World', category: 'Art', img: 'https://images.unsplash.com/photo-1580019542155-247062e19ce4?q=80&w=2127&auto=format&fit=crop' },
-        { id: 1, title: 'Underwater Life', category: 'Photography', img: 'https://images.unsplash.com/photo-1582967788606-a171f1080cae?q=80&w=2070&auto=format&fit=crop' },
+    { id: 1, title: 'Underwater Life', category: 'Photography', img: 'https://images.unsplash.com/photo-1582967788606-a171f1080cae?q=80&w=2070&auto=format&fit=crop' },
     { id: 2, title: 'Deep Ocean', category: 'Exploration', img: 'https://images.unsplash.com/photo-1682687220742-aba13b6e50ba?q=80&w=2070&auto=format&fit=crop' },
     { id: 3, title: 'Coral Reefs', category: 'Nature', img: 'https://images.unsplash.com/photo-1546026423-cc4642628d2b?q=80&w=1974&auto=format&fit=crop' },
     { id: 4, title: 'Bioluminescence', category: 'Science', img: 'https://images.unsplash.com/photo-1550684848-fac1c5b4e853?q=80&w=2070&auto=format&fit=crop' },

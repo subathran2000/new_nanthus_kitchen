@@ -8,11 +8,11 @@ import { ScrollControls, Scroll, useScroll, Float, Sparkles, Caustics, Environme
 import { EffectComposer, Bloom, Noise, Vignette } from '@react-three/postprocessing'
 import { motion } from 'framer-motion'
 import * as THREE from 'three'
-import NeumorphicClock from './NeumorphicClock'
 import CharacterSection from './CharacterSection'
 import LuminousCard from './LuminousCard'
 import ProductCards from './ProductCards'
 import MenuRedirectSection from './MenuRedirectSection'
+import CateringSection from './CateringSection'
 import logoReflect from '../assets/images/new_nanthus_kitchen_logo.png'
 
 // --- 3D Components ---
@@ -125,17 +125,22 @@ const Section = ({ children, style }: any) => {
   )
 }
 
+import { CustomScrollbarUI, ScrollSync } from './CustomScrollbar'
+
 const Landpage = ({ children }: { children?: React.ReactNode }) => {
+  const scrollbarRef = useRef<HTMLDivElement>(null)
+
   return (
-    <div style={{ width: '100%', height: '100vh', background: '#001e36', overflow: 'hidden' }}>
-      {/* Floating Clock */}
-      <NeumorphicClock />
+    <div style={{ width: '100%', height: '100vh', background: '#001e36', overflow: 'hidden', position: 'relative' }}>
 
       <Canvas camera={{ position: [0, 0, 5], fov: 50 }} shadows>
         <color attach="background" args={['#001e36']} />
         <fog attach="fog" args={['#001e36', 5, 25]} />
 
         <ScrollControls pages={8} damping={0.2}>
+          {/* Scroll Logic - Inside ScrollControls to access scroll data */}
+          <ScrollSync scrollbarRef={scrollbarRef} />
+
           <SceneContent />
 
           <Scroll html style={{ width: '100%' }}>
@@ -174,38 +179,11 @@ const Landpage = ({ children }: { children?: React.ReactNode }) => {
               <MenuRedirectSection />
             </Section>
 
-            <Section style={{ alignItems: 'flex-end', paddingRight: '10vw' }}>
-              <motion.div
-                initial={{ opacity: 0, x: 50 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                transition={{ duration: 1 }}
-              >
-                <h2 style={{ fontSize: '4rem', color: '#fff', textAlign: 'right', textShadow: '0 0 10px rgba(0,255,255,0.3)' }}>
-                  DEPTH
-                </h2>
-                <p style={{ fontSize: '1.2rem', color: '#aaccff', maxWidth: '400px', textAlign: 'right' }}>
-                  Dive deeper into immersive technologies.
-                  Discover what lies beneath the surface.
-                </p>
-                <button style={{
-                  marginTop: '2rem',
-                  padding: '1rem 2rem',
-                  fontSize: '1rem',
-                  background: 'rgba(0, 255, 255, 0.1)',
-                  border: '1px solid #00ffff',
-                  color: '#00ffff',
-                  cursor: 'pointer',
-                  borderRadius: '50px',
-                  transition: 'all 0.3s ease',
-                  backdropFilter: 'blur(5px)'
-                }}
-                  onMouseOver={(e) => { e.currentTarget.style.background = '#00ffff'; e.currentTarget.style.color = '#001e36' }}
-                  onMouseOut={(e) => { e.currentTarget.style.background = 'rgba(0, 255, 255, 0.1)'; e.currentTarget.style.color = '#00ffff' }}
-                >
-                  START JOURNEY
-                </button>
-              </motion.div>
+            {/* Catering Section */}
+            <Section style={{ height: 'auto', minHeight: '100vh', padding: '5rem 0' }}>
+              <CateringSection />
             </Section>
+
 
             {/* Render children (like Menu) here if nested, or just ignore if sibling */}
             {children}
@@ -218,6 +196,9 @@ const Landpage = ({ children }: { children?: React.ReactNode }) => {
           <Vignette eskil={false} offset={0.1} darkness={1.1} />
         </EffectComposer>
       </Canvas>
+
+      {/* Custom Scrollbar UI - Moved to bottom to sit on top of Canvas */}
+      <CustomScrollbarUI ref={scrollbarRef} />
     </div>
   )
 }

@@ -9,6 +9,7 @@ import Social from './components/social';
 import Event from './components/Coverflow3D';
 import Clock from './components/NeumorphicClock';
 import Gallery from './components/gallery';
+
 function App() {
 
   return (
@@ -16,10 +17,10 @@ function App() {
       <Landpage/>
       {/* <Menu /> */}
 
-      <Nav />
-      <CallIcon />
+      {/* <Nav /> */}
+      {/* <CallIcon /> */}
       {/* <Event /> */}
-      <Clock />
+      {/* <Clock /> */}
       {/* <Gallery /> */}
     </>
   )
