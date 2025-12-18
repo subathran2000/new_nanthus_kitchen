@@ -1,4 +1,5 @@
 import React, { useRef } from 'react'
+import { Box, Typography, Button } from '@mui/material'
 import { Canvas, useFrame } from '@react-three/fiber'
 import { ScrollControls, Scroll, useScroll, Float, Sparkles, Caustics, Environment, Cloud, useTexture } from '@react-three/drei'
 // ... (lines 4-44 unchanged, I will rely on context matching or just replace the import and the component body part separately if they are far apart)
@@ -117,6 +118,8 @@ const Section = ({ children, style }: any) => {
         alignItems: 'center',
         padding: '2rem',
         boxSizing: 'border-box',
+        position: 'relative',
+        overflow: 'visible', // Ensure no clipping for floating/absolute content
         ...style
       }}
     >
@@ -137,55 +140,268 @@ const Landpage = ({ children }: { children?: React.ReactNode }) => {
         <color attach="background" args={['#001e36']} />
         <fog attach="fog" args={['#001e36', 5, 25]} />
 
-        <ScrollControls pages={8} damping={0.2}>
+        <ScrollControls pages={12} damping={0.15}>
           {/* Scroll Logic - Inside ScrollControls to access scroll data */}
           <ScrollSync scrollbarRef={scrollbarRef} />
 
           <SceneContent />
 
           <Scroll html style={{ width: '100%' }}>
+            {/* Ultra Elegant Hero Section */}
             <Section>
               <motion.div
-                initial={{ opacity: 0, y: 50 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 1, delay: 0.2 }}
+                initial={{ opacity: 0, scale: 0.95 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                animate={{ y: [0, -15, 0] }} // Floating flair for Hero
+                transition={{
+                  y: { duration: 5, repeat: Infinity, ease: "easeInOut" },
+                  default: { duration: 2, ease: [0.22, 1, 0.36, 1] }
+                }}
+                style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}
               >
-                <h1 style={{ fontSize: '6rem', margin: 0, color: '#fff', textAlign: 'center', textShadow: '0 0 20px rgba(0,255,255,0.5)' }}>
-                  DEEP DIVE
-                </h1>
-                <p style={{ fontSize: '1.5rem', color: '#aaccff', textAlign: 'center', marginTop: '1rem' }}>
-                  EXPLORE THE UNKNOWN
-                </p>
+                <div style={{ position: 'relative' }}>
+                  <Typography
+                    variant="h1"
+                    sx={{
+                      fontSize: { xs: '4.5rem', md: '9rem' },
+                      fontWeight: 100, // Ultra thin for maximum elegance
+                      margin: 0,
+                      color: '#fff',
+                      textAlign: 'center',
+                      letterSpacing: '0.35em', // Even wider
+                      textShadow: '0 0 50px rgba(0,255,255,0.25)',
+                      fontFamily: '"Outfit", sans-serif',
+                      lineHeight: 1
+                    }}
+                  >
+                    ABYSSAL
+                  </Typography>
+                  <motion.div
+                    initial={{ width: 0, opacity: 0.2 }}
+                    whileInView={{ width: '120%', opacity: 1 }}
+                    transition={{ duration: 2, delay: 0.5 }}
+                    style={{
+                      height: '1px',
+                      background: 'radial-gradient(circle, #00ffff 0%, transparent 100%)',
+                      marginTop: '0.8rem',
+                      marginLeft: '-10%'
+                    }}
+                  />
+                </div>
+                <Typography
+                  variant="h6"
+                  sx={{
+                    fontSize: '1rem',
+                    color: '#D9A756', // Elegant Gold accent
+                    textAlign: 'center',
+                    marginTop: '2rem',
+                    letterSpacing: '0.8em', // Extreme tracking
+                    fontWeight: 300,
+                    textTransform: 'uppercase',
+                    opacity: 0.9
+                  }}
+                >
+                  Culinary Wonders
+                </Typography>
+
+                <Button
+                  variant="outlined"
+                  onClick={() => window.scrollTo({ top: window.innerHeight, behavior: 'smooth' })}
+                  sx={{
+                    mt: 6,
+                    borderColor: 'rgba(0, 255, 255, 0.3)',
+                    color: '#00ffff',
+                    borderRadius: 0,
+                    px: 6,
+                    py: 1.5,
+                    fontSize: '0.8rem',
+                    letterSpacing: '0.4em',
+                    fontWeight: 300,
+                    transition: 'all 0.4s ease',
+                    '&:hover': {
+                      borderColor: '#D9A756',
+                      color: '#001e36',
+                      bgcolor: '#D9A756',
+                      boxShadow: '0 0 30px rgba(217, 167, 86, 0.4)'
+                    }
+                  }}
+                >
+                  DIVE IN
+                </Button>
+
+                {/* Subtle Scroll Indicator */}
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 0.5 }}
+                  transition={{ delay: 3, duration: 1 }}
+                  style={{ marginTop: '6rem' }}
+                >
+                  <div style={{
+                    width: '1px',
+                    height: '80px',
+                    background: 'linear-gradient(to bottom, #00ffff, transparent)',
+                    position: 'relative'
+                  }}>
+                    <motion.div
+                      animate={{ y: [0, 80] }}
+                      transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
+                      style={{
+                        width: '3px',
+                        height: '3px',
+                        background: '#fff',
+                        borderRadius: '50%',
+                        position: 'absolute',
+                        left: '-1px',
+                        boxShadow: '0 0 10px #fff'
+                      }}
+                    />
+                  </div>
+                </motion.div>
               </motion.div>
             </Section>
 
-            {/* Replaced FLUIDITY section with Character Design Template */}
-            <div style={{ width: '100%', minHeight: '100vh', position: 'relative', zIndex: 10 }}>
+            {/* Character Design Section */}
+            <div style={{ width: '100%', position: 'relative', zIndex: 10 }}>
               <CharacterSection />
             </div>
 
-            {/* Product Cards Section */}
-            <Section style={{ height: 'auto', minHeight: '100vh', padding: '5rem 0' }}>
+            {/* Product Cards Section with Heading - Standardized Alignment */}
+            <Section style={{ height: 'auto', minHeight: '100vh', padding: '0rem 0 2rem 0', justifyContent: 'flex-start' }}>
+              <motion.div
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                animate={{ y: [0, -8, 0] }} // Floating flair
+                transition={{
+                  y: { duration: 4, repeat: Infinity, ease: "easeInOut" },
+                  opacity: { duration: 1.2 },
+                  default: { duration: 1.2, ease: "easeOut" }
+                }}
+                viewport={{ once: true }}
+                style={{ textAlign: 'center', marginBottom: '1rem' }}
+              >
+                <Typography variant="overline" sx={{ color: '#D9A756', letterSpacing: '0.5em', mb: 3, display: 'block', fontSize: '0.8rem', fontWeight: 300 }}>
+                  AESTHETIC GEAR
+                </Typography>
+                <Typography variant="h2" sx={{
+                  color: '#fff',
+                  fontWeight: 100,
+                  fontSize: { xs: '3rem', md: '5rem' },
+                  letterSpacing: '0.2em',
+                  fontFamily: '"Outfit", sans-serif',
+                  textTransform: 'uppercase'
+                }}>
+                  PRECISION
+                </Typography>
+                <div style={{ width: '40px', height: '1px', background: 'rgba(0, 255, 255, 0.3)', margin: '2rem auto' }} />
+              </motion.div>
               <ProductCards />
             </Section>
 
-            {/* Luminous Card Section */}
-            <Section style={{ height: 'auto', minHeight: '100vh', padding: '5rem 0' }}>
+            {/* Luminous Card Section with Heading - Standardized Alignment */}
+            <Section style={{ height: 'auto', minHeight: '100vh', padding: '0rem 0 2rem 0', justifyContent: 'flex-start', gap: '4rem' }}>
+              <motion.div
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                animate={{ y: [0, -8, 0] }} // Floating flair
+                transition={{
+                  y: { duration: 4, repeat: Infinity, ease: "easeInOut" },
+                  opacity: { duration: 1.2 },
+                  default: { duration: 1.2, ease: "easeOut" }
+                }}
+                viewport={{ once: true }}
+                style={{ textAlign: 'center', marginBottom: '1rem' }}
+              >
+                <Typography variant="overline" sx={{ color: '#D9A756', letterSpacing: '0.5em', mb: 3, display: 'block', fontSize: '0.8rem', fontWeight: 300 }}>
+                  VISUAL VOYAGE
+                </Typography>
+                <Typography variant="h2" sx={{
+                  color: '#fff',
+                  fontWeight: 100,
+                  fontSize: { xs: '3rem', md: '5rem' },
+                  letterSpacing: '0.2em',
+                  fontFamily: '"Outfit", sans-serif',
+                  textTransform: 'uppercase'
+                }}>
+                  LUMINANCE
+                </Typography>
+                <div style={{ width: '40px', height: '1px', background: 'rgba(0, 255, 255, 0.3)', margin: '2rem auto' }} />
+              </motion.div>
               <LuminousCard />
             </Section>
 
-            {/* Menu Redirect Section */}
-            <Section style={{ height: 'auto', minHeight: '100vh', padding: '5rem 0' }}>
+            {/* Menu Redirect Section - Fixed Centering to avoid top clipping */}
+            <Section style={{ height: 'auto', minHeight: '100vh', padding: '6rem 0 10rem 0', justifyContent: 'flex-start', zIndex: 20 }}>
+              <motion.div
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                animate={{ y: [0, -8, 0] }} // Floating flair
+                transition={{
+                  y: { duration: 4, repeat: Infinity, ease: "easeInOut" },
+                  opacity: { duration: 1.2 },
+                  default: { duration: 1.2, ease: "easeOut" }
+                }}
+                viewport={{ once: true }}
+                style={{ textAlign: 'center', marginBottom: '1rem' }}
+              >
+                <Typography variant="overline" sx={{ color: '#D9A756', letterSpacing: '0.5em', mb: 3, display: 'block', fontSize: '0.8rem', fontWeight: 300 }}>
+                  CULINARY ART
+                </Typography>
+                <Typography variant="h2" sx={{
+                  color: '#fff',
+                  fontWeight: 100,
+                  fontSize: { xs: '3rem', md: '5rem' },
+                  letterSpacing: '0.2em',
+                  fontFamily: '"Outfit", sans-serif',
+                  textTransform: 'uppercase'
+                }}>
+                  DISCOVERY
+                </Typography>
+                <div style={{ width: '40px', height: '1px', background: 'rgba(0, 255, 255, 0.3)', margin: '2rem auto' }} />
+              </motion.div>
               <MenuRedirectSection />
             </Section>
 
-            {/* Catering Section */}
-            <Section style={{ height: 'auto', minHeight: '100vh', padding: '5rem 0' }}>
+            {/* Catering Section - Fixed Centering to avoid top clipping */}
+            <Section style={{ height: 'auto', minHeight: '100vh', padding: '15rem 0 10rem 0', justifyContent: 'flex-start' }}>
               <CateringSection />
             </Section>
 
+            {/* Refined Footer */}
+            <Section style={{ height: 'auto', minHeight: '60vh', padding: '5rem 0 2rem 0', background: 'rgba(0, 15, 27, 0.5)', borderTop: '1px solid rgba(0, 255, 255, 0.1)' }}>
+              <Box sx={{ textAlign: 'center', width: '100%', maxWidth: '1200px' }}>
+                <Box component="img" src={logoReflect} sx={{ width: '80px', height: '80px', mb: 3, opacity: 0.8, filter: 'drop-shadow(0 0 10px rgba(0,255,255,0.3))' }} />
+                <Typography variant="h4" sx={{ color: '#fff', mb: 4, fontWeight: 300, letterSpacing: '0.1em' }}>NANTHU'S KITCHEN</Typography>
 
-            {/* Render children (like Menu) here if nested, or just ignore if sibling */}
+                <Box sx={{ display: 'flex', justifyContent: 'center', gap: 4, mb: 6, flexWrap: 'wrap' }}>
+                  {['MENU', 'RESERVATIONS', 'CATERING', 'LOCATIONS', 'ABOUT'].map((item) => (
+                    <Typography
+                      key={item}
+                      sx={{
+                        color: 'rgba(255,255,255,0.5)',
+                        cursor: 'pointer',
+                        fontSize: '0.8rem',
+                        letterSpacing: '0.2em',
+                        transition: '0.3s',
+                        '&:hover': { color: '#00ffff', textShadow: '0 0 10px rgba(0,255,255,0.5)' }
+                      }}
+                    >
+                      {item}
+                    </Typography>
+                  ))}
+                </Box>
+
+                <Box sx={{ mb: 6 }}>
+                  <Typography sx={{ color: 'rgba(255,255,255,0.4)', fontSize: '0.9rem', mb: 1 }}>123 Deep Ocean Drive, Atlantis City</Typography>
+                  <Typography sx={{ color: 'rgba(255,255,255,0.4)', fontSize: '0.9rem' }}>+1 (555) 012-3456 | hello@nanthuskitchen.com</Typography>
+                </Box>
+
+                <Typography sx={{ color: 'rgba(255,255,255,0.2)', fontSize: '0.7rem', letterSpacing: '0.1em' }}>
+                  © 2026 NANTHU'S KITCHEN. DESIGNED AT THE DEPTHS.
+                </Typography>
+              </Box>
+            </Section>
+
+            {/* Render children (like Menu) here if nested */}
             {children}
           </Scroll>
         </ScrollControls>

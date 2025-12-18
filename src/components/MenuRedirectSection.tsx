@@ -10,18 +10,15 @@ const MenuRedirectSection = () => {
     return (
         <Box sx={{
             position: 'relative',
-            width: '100%',
-            // We want this to span a good width
             width: '100vw',
             maxWidth: '100%',
             left: '50%',
             transform: 'translateX(-50%)',
-            minHeight: isMobile ? 'auto' : '100vh',
+            minHeight: isMobile ? 'auto' : '80vh', // Reduced from 100vh to fit better
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            overflow: 'hidden',
-            py: isMobile ? 10 : 0
+            py: isMobile ? 10 : 5 // Added some padding instead of hard 100vh
         }}>
             {/* Background is explicitly transparent as requested to show underlying 3D scene */}
 
@@ -29,7 +26,6 @@ const MenuRedirectSection = () => {
                 position: 'relative',
                 width: '100%',
                 maxWidth: '1200px',
-                height: '100%',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
@@ -68,33 +64,35 @@ const MenuRedirectSection = () => {
                 </Box>
 
                 {/* Smaller Accent Image (Top Center/Right) */}
-                {!isMobile && (
-                    <Box
-                        component={motion.div}
-                        initial={{ opacity: 0, y: -50 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
-                        viewport={{ once: true }}
-                        sx={{
-                            position: 'absolute',
-                            right: '35%',
-                            top: '10%',
-                            width: '25%',
-                            height: '40vh',
-                            zIndex: 2,
-                            borderRadius: '2px', // Sharper corners for elegance
-                            overflow: 'hidden',
-                            boxShadow: '0 20px 40px rgba(0,0,0,0.4)',
-                            border: '1px solid rgba(0, 255, 255, 0.3)'
-                        }}
-                    >
-                        <img
-                            src="https://images.unsplash.com/photo-1577106263724-2c8e03bfe9f4?q=80&w=1999&auto=format&fit=crop"
-                            alt="Chef Detail"
-                            style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
-                        />
-                    </Box>
-                )}
+                {
+                    !isMobile && (
+                        <Box
+                            component={motion.div}
+                            initial={{ opacity: 0, y: -50 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
+                            viewport={{ once: true }}
+                            sx={{
+                                    position: 'absolute',
+                                    right: '20%',
+                                    top: '-1100%',
+                                    width: '25%',
+                                    height: '40vh',
+                                    zIndex: 3,
+                                    borderRadius: '8px', // slightly rounded for nicer overlay
+                                    overflow: 'hidden',
+                                    boxShadow: '0 24px 48px rgba(0,0,0,0.5)',
+                                    border: '1px solid rgba(0, 255, 255, 0.3)'
+                                }}
+                        >
+                            <img
+                                src="https://images.unsplash.com/photo-1577106263724-2c8e03bfe9f4?q=80&w=1999&auto=format&fit=crop"
+                                alt="Chef Detail"
+                                style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
+                            />
+                        </Box>
+                    )
+                }
 
                 {/* Content Box (Bottom Right Overlap) */}
                 <Box
@@ -106,16 +104,17 @@ const MenuRedirectSection = () => {
                     sx={{
                         position: isMobile ? 'relative' : 'absolute',
                         right: isMobile ? 'auto' : '5%',
-                        bottom: isMobile ? 'auto' : '15%',
-                        width: isMobile ? '90%' : '35%',
-                        mt: isMobile ? -5 : 0, // Overlap on mobile
-                        bgcolor: 'rgba(23, 23, 23, 0.85)', // Dark
-                        backdropFilter: 'blur(20px)',
-                        p: isMobile ? 4 : 6,
+                        top: isMobile ? 'auto' : '10%', // Switched from bottom to top to guarantee top visibility
+                        width: isMobile ? '90%' : '38%',
+                        mt: isMobile ? -5 : 0,
+                        bgcolor: 'rgba(15, 15, 15, 0.95)', // Nearly opaque for elegance
+                        backdropFilter: 'blur(30px)',
+                        p: isMobile ? 4 : 8,
+                        pt: isMobile ? 7 : 12, // Significant top padding for floating text
                         zIndex: 3,
-                        borderRadius: '4px', // Slight radius but mostly sharp
-                        border: '1px solid rgba(0, 255, 255, 0.2)', // Cyan Border
-                        boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.6)'
+                        borderRadius: '4px',
+                        border: '1px solid rgba(0, 255, 255, 0.2)',
+                        boxShadow: '0 50px 100px -20px rgba(0, 0, 0, 0.8)'
                     }}
                 >
                     {/* Decorative Glow */}
@@ -132,33 +131,69 @@ const MenuRedirectSection = () => {
                     }} />
 
                     <Typography variant="overline" sx={{
-                        color: '#00ffff', // Cyan
-                        letterSpacing: '0.3em',
-                        fontWeight: 600,
-                        mb: 2,
+                        color: '#D9A756', // Gold
+                        letterSpacing: '0.5em', // Extreme tracking
+                        fontWeight: 300,
+                        mb: 3,
                         display: 'block',
-                        fontSize: '0.75rem'
+                        fontSize: '0.85rem',
+                        opacity: 0.9
                     }}>
-                        GASTRONOMY
+                        CONCEPT
                     </Typography>
 
-                    <Typography variant="h3" sx={{
-                        fontWeight: 400, // Lighter weight for elegance
-                        mb: 3,
-                        color: '#fff',
-                        fontFamily: "'Playfair Display', serif", // Assume font availability or fallback
-                        lineHeight:
-                            1.2
-                    }}>
-                        Design <span style={{ color: '#00ffff', fontStyle: 'italic' }}>&</span> Taste
-                    </Typography>
+                    <Box
+                        component={motion.div}
+                        animate={{
+                            y: [0, -10, 0],
+                        }}
+                        transition={{
+                            duration: 4,
+                            repeat: Infinity,
+                            ease: "easeInOut"
+                        }}
+                    >
+                        <Typography variant="h3" sx={{
+                            fontWeight: 100, // Ultra thin 
+                            mb: 4,
+                            color: '#fff',
+                            fontFamily: '"Outfit", sans-serif',
+                            lineHeight: 1,
+                            letterSpacing: '0.15em',
+                            fontSize: { xs: '2.5rem', md: '4rem' },
+                            textTransform: 'uppercase',
+                            position: 'relative',
+                            '&::after': {
+                                content: '""',
+                                position: 'absolute',
+                                top: 0,
+                                left: '-100%',
+                                width: '100%',
+                                height: '100%',
+                                background: 'linear-gradient(90deg, transparent, rgba(0, 255, 255, 0.1), transparent)',
+                                animation: 'shimmer 5s infinite linear',
+                            },
+                        }}>
+                            Design <span style={{ color: '#00ffff', fontWeight: 300 }}>&</span> Taste
+                        </Typography>
+                    </Box>
+                    <style>
+                        {`
+                            @keyframes shimmer {
+                                0% { left: -100%; }
+                                100% { left: 100%; }
+                            }
+                        `}
+                    </style>
+                    <div style={{ width: '50px', height: '1px', background: 'rgba(0, 255, 255, 0.4)', marginBottom: '3rem' }} />
 
                     <Typography variant="body1" sx={{
                         color: '#aaccff', // Light Blue/Cyan tint
                         mb: 5,
-                        lineHeight: 1.8,
+                        lineHeight: 2,
                         fontWeight: 300,
-                        fontSize: '1.05rem'
+                        fontSize: '1.05rem',
+                        opacity: 0.8
                     }}>
                         Experience the perfect fusion of culinary artistry and modern design.
                         Our menu is a curated collection of flavors, textures, and visual delights
@@ -173,12 +208,13 @@ const MenuRedirectSection = () => {
                             color: '#00ffff',
                             borderRadius: '0', // Sharp corners for elegance
                             px: 5,
-                            py: 1.5,
-                            fontWeight: 500,
+                            py: 1.8,
+                            fontWeight: 400,
                             textTransform: 'uppercase',
-                            letterSpacing: '0.1em',
-                            fontSize: '0.9rem',
+                            letterSpacing: '0.2em',
+                            fontSize: '0.85rem',
                             position: 'relative',
+                            zIndex: 10, // Ensure it's on top of all visual overlays
                             overflow: 'hidden',
                             '&:hover': {
                                 bgcolor: '#D9A756', // Yellow Hover

@@ -2,6 +2,7 @@ import React from 'react'
 import { Apps, EmojiEvents, Public, Terrain } from '@mui/icons-material'
 import { Box, Container, Typography, Button, useTheme, useMediaQuery } from '@mui/material'
 import Masonry from '@mui/lab/Masonry'
+import type { Variants } from 'framer-motion'
 import { motion } from 'framer-motion'
 
 const CharacterSection = () => {
@@ -22,7 +23,7 @@ const CharacterSection = () => {
         }
     }
 
-    const itemVariants = {
+    const itemVariants: Variants = {
         hidden: { opacity: 0, y: 100 },
         visible: {
             opacity: 1,
@@ -31,7 +32,7 @@ const CharacterSection = () => {
         }
     }
 
-    const floatVariants = {
+    const floatVariants: Variants = {
         float: {
             y: [0, -15, 0],
             rotate: [0, 1, -1, 0],
@@ -60,13 +61,38 @@ const CharacterSection = () => {
                                 display: 'flex',
                                 alignItems: 'center',
                                 p: 3,
-                                bgcolor: 'rgba(0, 255, 255, 0.1)',
-                                borderLeft: '4px solid #00ffff'
+                                bgcolor: 'rgba(0, 255, 255, 0.05)',
+                                border: '1px solid rgba(0, 255, 255, 0.2)',
+                                position: 'relative',
+                                overflow: 'hidden'
                             }}>
-                                <Apps sx={{ fontSize: '3rem', color: '#00ffff' }} />
-                                <Typography variant="h3" sx={{ ml: 2, fontSize: '2rem', color: '#fff', fontWeight: 300 }}>
-                                    EXPLORER
-                                </Typography>
+                                <motion.div
+                                    animate={{ x: [-100, 400] }}
+                                    transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
+                                    style={{
+                                        position: 'absolute',
+                                        top: 0,
+                                        left: 0,
+                                        width: '100px',
+                                        height: '100%',
+                                        background: 'linear-gradient(to right, transparent, rgba(0,255,255,0.1), transparent)',
+                                        transform: 'skewX(-20deg)'
+                                    }}
+                                />
+                                <Apps sx={{ fontSize: '3rem', color: '#00ffff', opacity: 0.8 }} />
+                                <Box
+                                    sx={{ ml: 2, display: 'flex', flexDirection: 'column' }}
+                                    component={motion.div}
+                                    animate={{ y: [0, -5, 0] }}
+                                    transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+                                >
+                                    <Typography variant="overline" sx={{ color: '#D9A756', display: 'block', mb: -0.5, letterSpacing: '0.4em', fontWeight: 300 }}>
+                                        DESIGN IDENTITY
+                                    </Typography>
+                                    <Typography variant="h3" sx={{ fontSize: '2rem', color: '#fff', fontWeight: 100, letterSpacing: '0.15em', fontFamily: '"Outfit", sans-serif' }}>
+                                        EXPLORER
+                                    </Typography>
+                                </Box>
                             </Box>
                         </Box>
                     </motion.div>
@@ -138,20 +164,50 @@ const CharacterSection = () => {
                     {/* Item 5: Text Block */}
                     <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.2 }} variants={itemVariants}>
                         <Box sx={{ ...cardStyle, p: 5 }}>
-                            <Typography variant="h4" sx={{
-                                textTransform: 'uppercase',
-                                fontSize: '1.5rem',
-                                fontWeight: 600,
-                                mb: 3,
-                                color: '#fff',
-                                letterSpacing: '2px'
-                            }}>
-                                Fluid Dynamics
+                            <Typography variant="overline" sx={{ color: '#D9A756', display: 'block', mb: 1.5, letterSpacing: '0.4em', fontWeight: 300 }}>
+                                CORE CONCEPT
                             </Typography>
+                            <Box
+                                component={motion.div}
+                                animate={{ y: [0, -5, 0] }}
+                                transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+                            >
+                                <Typography variant="h4" sx={{
+                                    textTransform: 'uppercase',
+                                    fontSize: '2rem',
+                                    fontWeight: 100,
+                                    mb: 3,
+                                    color: '#fff',
+                                    letterSpacing: '0.15em',
+                                    fontFamily: '"Outfit", sans-serif',
+                                    position: 'relative',
+                                    '&::after': {
+                                        content: '""',
+                                        position: 'absolute',
+                                        top: 0,
+                                        left: '-100%',
+                                        width: '100%',
+                                        height: '100%',
+                                        background: 'linear-gradient(90deg, transparent, rgba(0, 255, 255, 0.05), transparent)',
+                                        animation: 'shimmer 8s infinite linear',
+                                    },
+                                }}>
+                                    Fluid Dynamics
+                                </Typography>
+                            </Box>
+                            <div style={{ width: '30px', height: '1px', background: 'rgba(0, 255, 255, 0.2)', marginBottom: '2rem' }} />
                             <Typography sx={{ lineHeight: 1.8, mb: 2 }}>
                                 Our interfaces mimic the natural flow of water. Seamless transitions and organic
                                 movements create an experience that feels alive and responsive to your touch.
                             </Typography>
+                            <style>
+                                {`
+                                @keyframes shimmer {
+                                    0% { left: -100%; }
+                                    100% { left: 100%; }
+                                }
+                                `}
+                            </style>
                             <Box sx={{ mt: 3, display: 'flex', gap: 2 }}>
                                 <Public sx={{ color: '#00ffff' }} />
                                 <Terrain sx={{ color: '#00ffff' }} />

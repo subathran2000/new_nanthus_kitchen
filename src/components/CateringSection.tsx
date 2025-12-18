@@ -193,27 +193,68 @@ const CateringSection = () => {
             <motion.div
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8 }}
+                animate={{ y: [0, -8, 0] }} // Floating flair
+                transition={{
+                    y: { duration: 4, repeat: Infinity, ease: "easeInOut" },
+                    opacity: { duration: 0.8 },
+                    default: { duration: 0.8 }
+                }}
                 viewport={{ once: true }}
-                style={{ textAlign: 'center', marginBottom: '4rem' }}
+                style={{ textAlign: 'center', marginBottom: '5rem' }}
             >
+                <Typography variant="overline" sx={{ color: '#D9A756', letterSpacing: '0.6em', mb: 3, display: 'block', fontWeight: 300, fontSize: '0.9rem' }}>
+                    EXCLUSIVE EVENTS
+                </Typography>
                 <Typography variant="h2" sx={{
-                    fontWeight: 700,
-                    mb: 2,
+                    fontWeight: 100,
+                    mb: 4,
                     color: '#fff',
-                    textShadow: '0 0 20px rgba(0, 255, 255, 0.3)',
-                    fontFamily: '"Outfit", sans-serif'
+                    letterSpacing: '0.2em',
+                    fontSize: { xs: '2.5rem', md: '5rem' },
+                    textShadow: '0 0 40px rgba(0, 255, 255, 0.2)',
+                    fontFamily: '"Outfit", sans-serif',
+                    textTransform: 'uppercase'
                 }}>
                     ABYSSAL CATERING
                 </Typography>
+                <div style={{ width: '60px', height: '1px', background: 'rgba(0, 255, 255, 0.4)', margin: '0 auto 3rem auto' }} />
                 <Typography variant="body1" sx={{
                     color: '#aaccff',
-                    maxWidth: '500px',
+                    maxWidth: '650px',
                     mx: 'auto',
-                    fontSize: '1.1rem'
+                    fontSize: '1.2rem',
+                    fontWeight: 300,
+                    lineHeight: 2,
+                    opacity: 0.7,
+                    letterSpacing: '0.02em',
+                    mb: 4
                 }}>
-                    Elevate your events with culinary artistry inspired by the depths.
+                    Elevate your special occasions with culinary artistry inspired by the depths
+                    of the ocean and the pinnacle of modern design.
                 </Typography>
+                <Button
+                    variant="outlined"
+                    onClick={() => window.location.href = '/catering'}
+                    sx={{
+                        borderColor: 'rgba(0, 255, 255, 0.3)',
+                        color: '#00ffff',
+                        borderRadius: 0,
+                        px: 4,
+                        py: 1.2,
+                        fontSize: '0.75rem',
+                        letterSpacing: '0.3em',
+                        fontWeight: 400,
+                        transition: 'all 0.4s ease',
+                        '&:hover': {
+                            borderColor: '#D9A756',
+                            color: '#001e36',
+                            bgcolor: '#D9A756',
+                            boxShadow: '0 0 20px rgba(217, 167, 86, 0.3)'
+                        }
+                    }}
+                >
+                    BOOK AN EVENT
+                </Button>
             </motion.div>
 
             <Box sx={{
