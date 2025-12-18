@@ -366,41 +366,6 @@ const Landpage = ({ children }: { children?: React.ReactNode }) => {
               <CateringSection />
             </Section>
 
-            {/* Refined Footer */}
-            <Section style={{ height: 'auto', minHeight: '60vh', padding: '5rem 0 2rem 0', background: 'rgba(0, 15, 27, 0.5)', borderTop: '1px solid rgba(0, 255, 255, 0.1)' }}>
-              <Box sx={{ textAlign: 'center', width: '100%', maxWidth: '1200px' }}>
-                <Box component="img" src={logoReflect} sx={{ width: '80px', height: '80px', mb: 3, opacity: 0.8, filter: 'drop-shadow(0 0 10px rgba(0,255,255,0.3))' }} />
-                <Typography variant="h4" sx={{ color: '#fff', mb: 4, fontWeight: 300, letterSpacing: '0.1em' }}>NANTHU'S KITCHEN</Typography>
-
-                <Box sx={{ display: 'flex', justifyContent: 'center', gap: 4, mb: 6, flexWrap: 'wrap' }}>
-                  {['MENU', 'RESERVATIONS', 'CATERING', 'LOCATIONS', 'ABOUT'].map((item) => (
-                    <Typography
-                      key={item}
-                      sx={{
-                        color: 'rgba(255,255,255,0.5)',
-                        cursor: 'pointer',
-                        fontSize: '0.8rem',
-                        letterSpacing: '0.2em',
-                        transition: '0.3s',
-                        '&:hover': { color: '#00ffff', textShadow: '0 0 10px rgba(0,255,255,0.5)' }
-                      }}
-                    >
-                      {item}
-                    </Typography>
-                  ))}
-                </Box>
-
-                <Box sx={{ mb: 6 }}>
-                  <Typography sx={{ color: 'rgba(255,255,255,0.4)', fontSize: '0.9rem', mb: 1 }}>123 Deep Ocean Drive, Atlantis City</Typography>
-                  <Typography sx={{ color: 'rgba(255,255,255,0.4)', fontSize: '0.9rem' }}>+1 (555) 012-3456 | hello@nanthuskitchen.com</Typography>
-                </Box>
-
-                <Typography sx={{ color: 'rgba(255,255,255,0.2)', fontSize: '0.7rem', letterSpacing: '0.1em' }}>
-                  © 2026 NANTHU'S KITCHEN. DESIGNED AT THE DEPTHS.
-                </Typography>
-              </Box>
-            </Section>
-
             {/* Render children (like Menu) here if nested */}
             {children}
           </Scroll>
