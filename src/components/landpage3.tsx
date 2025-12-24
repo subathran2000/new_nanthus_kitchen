@@ -2,10 +2,6 @@ import React, { useRef } from 'react'
 import { Box, Typography, Button } from '@mui/material'
 import { Canvas, useFrame } from '@react-three/fiber'
 import { ScrollControls, Scroll, useScroll, Float, Sparkles, Caustics, Environment, Cloud, useTexture } from '@react-three/drei'
-// ... (lines 4-44 unchanged, I will rely on context matching or just replace the import and the component body part separately if they are far apart)
-
-// Actually, I will do this in two chunks or one if close enough. They are somewhat far (imports at top, SceneContent at 45).
-// Let's do imports first.
 import { EffectComposer, Bloom, Noise, Vignette } from '@react-three/postprocessing'
 import { motion } from 'framer-motion'
 import * as THREE from 'three'
@@ -107,9 +103,10 @@ const SceneContent = () => {
 
 // --- HTML Content ---
 
-const Section = ({ children, style }: any) => {
+const Section = ({ children, style, ...props }: any) => {
   return (
     <section
+      {...props}
       style={{
         height: '100vh',
         display: 'flex',
@@ -135,6 +132,39 @@ const Landpage = ({ children }: { children?: React.ReactNode }) => {
 
   return (
     <div style={{ width: '100%', height: '100vh', background: '#001e36', overflow: 'hidden', position: 'relative' }}>
+
+      {/* Top Left Logo */}
+      <Box
+        component="img"
+        src={logoReflect}
+        alt="Nanthus Kitchen Logo"
+        onClick={() => {
+          const scrollContainer = document.querySelector('.lucide-scroll-container'); // Check if CustomScrollbar uses a specific class
+          if (scrollContainer) {
+            scrollContainer.scrollTo({ top: 0, behavior: 'smooth' });
+          } else {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          }
+        }}
+        sx={{
+          position: 'fixed',
+          top: { xs: 20, md: 35 },
+          right: { xs: 20, md: 40 },
+          width: { xs: '55px', md: '85px' },
+          height: 'auto',
+          zIndex: 2000,
+          cursor: 'pointer',
+          filter: 'drop-shadow(0 0 15px rgba(0, 255, 255, 0.3))',
+          transition: 'all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)',
+          '&:hover': {
+            transform: 'scale(1.1) rotate(-5deg)',
+            filter: 'drop-shadow(0 0 25px rgba(217, 167, 86, 0.6))',
+          },
+          '&:active': {
+            transform: 'scale(0.95)',
+          }
+        }}
+      />
 
       <Canvas camera={{ position: [0, 0, 5], fov: 50 }} shadows>
         <color attach="background" args={['#001e36']} />
@@ -206,7 +236,14 @@ const Landpage = ({ children }: { children?: React.ReactNode }) => {
 
                 <Button
                   variant="outlined"
-                  onClick={() => window.scrollTo({ top: window.innerHeight, behavior: 'smooth' })}
+                  onClick={() => {
+                    const el = document.getElementById('discovery')
+                    if (el) {
+                      el.scrollIntoView({ behavior: 'smooth', block: 'start' })
+                      return
+                    }
+                    window.scrollTo({ top: window.innerHeight, behavior: 'smooth' })
+                  }}
                   sx={{
                     mt: 6,
                     borderColor: 'rgba(0, 255, 255, 0.3)',
@@ -330,7 +367,7 @@ const Landpage = ({ children }: { children?: React.ReactNode }) => {
             </Section>
 
             {/* Menu Redirect Section - Fixed Centering to avoid top clipping */}
-            <Section style={{ height: 'auto', minHeight: '100vh', padding: '6rem 0 10rem 0', justifyContent: 'flex-start', zIndex: 20 }}>
+            <Section id="discovery" style={{ height: 'auto', minHeight: '100vh', padding: '6rem 0 10rem 0', justifyContent: 'flex-start', zIndex: 20 }}>
               <motion.div
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}

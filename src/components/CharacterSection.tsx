@@ -136,8 +136,10 @@ const CharacterSection = () => {
                                         color: '#001e36',
                                         bgcolor: '#00ffff'
                                     }
-                                }}>
-                                    Explore Awards
+                                }}
+                                 onClick={() => window.location.href = '/gallery'}
+                                >
+                                    Explore Events
                                 </Button>
                             </Box>
                         </Box>
