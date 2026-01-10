@@ -52,8 +52,8 @@ const MenuRedirectSection = ({ id }: { id?: string }) => {
                     }}
                 >
                     <img
-                        src="https://images.unsplash.com/photo-1559339352-11d035aa65de?q=80&w=1974&auto=format&fit=crop"
-                        alt="Culinary Art"
+                        src="https://images.unsplash.com/photo-1556910103-1c02745aae4d?q=80&w=2070&auto=format&fit=crop"
+                        alt="Kitchen Art"
                         style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
                     />
                     {/* Overlay gradient for text readability if needed, or aesthetic */}
@@ -86,7 +86,7 @@ const MenuRedirectSection = ({ id }: { id?: string }) => {
                             }}
                         >
                             <img
-                                src="https://images.unsplash.com/photo-1577106263724-2c8e03bfe9f4?q=80&w=1999&auto=format&fit=crop"
+                                src="https://images.unsplash.com/photo-1547928576-a4a33237eb35?q=80&w=2070&auto=format&fit=crop"
                                 alt="Chef Detail"
                                 style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
                             />
@@ -174,7 +174,7 @@ const MenuRedirectSection = ({ id }: { id?: string }) => {
                                 animation: 'shimmer 5s infinite linear',
                             },
                         }}>
-                            Design <span style={{ color: '#00ffff', fontWeight: 300 }}>&</span> Taste
+                            Flavors <span style={{ color: '#00ffff', fontWeight: 300 }}>&</span> Traditions
                         </Typography>
                     </Box>
                     <style>
@@ -195,9 +195,9 @@ const MenuRedirectSection = ({ id }: { id?: string }) => {
                         fontSize: '1.05rem',
                         opacity: 0.8
                     }}>
-                        Experience the perfect fusion of culinary artistry and modern design.
-                        Our menu is a curated collection of flavors, textures, and visual delights
-                        crafted to elevate your dining journey.
+                        Step into a world where aromatic spices meet modern culinary techniques.
+                        Nanthu's Kitchen is a celebration of authentic flavors and
+                        contemporary presentation, crafted to delight every palate.
                     </Typography>
 
                     <Button

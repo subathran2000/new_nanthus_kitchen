@@ -1,5 +1,5 @@
 import React, { useRef } from 'react'
-import { Box, Typography, Button, useTheme, useMediaQuery } from '@mui/material'
+import { Box, Typography, Button } from '@mui/material'
 import { Canvas, useFrame } from '@react-three/fiber'
 import { ScrollControls, Scroll, useScroll, Float, Sparkles, Caustics, Environment, Cloud, useTexture } from '@react-three/drei'
 import { EffectComposer, Bloom, Noise, Vignette } from '@react-three/postprocessing'
@@ -10,7 +10,7 @@ import LuminousCard from './LuminousCard'
 import ProductCards from './ProductCards'
 import MenuRedirectSection from './MenuRedirectSection'
 import CateringSection from './CateringSection'
-import CreativeFooter from './Footer'
+import CreativeFooter from './CreativeFooter'
 import logoReflect from '../assets/images/new_nanthus_kitchen_logo.png'
 
 // --- 3D Components ---
@@ -106,25 +106,23 @@ const SceneContent = () => {
 
 const Section = ({ children, style, ...props }: any) => {
   return (
-    <Box
-      component="section"
+    <section
       {...props}
-      sx={{
+      style={{
         height: '100vh',
-        width: '100%',
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center',
-        padding: { xs: '0.8rem', sm: '2rem' },
+        padding: '2rem',
         boxSizing: 'border-box',
         position: 'relative',
-        overflow: 'hidden', // Add hidden overflow to every section as a safety net
+        overflow: 'visible', // Ensure no clipping for floating/absolute content
         ...style
       }}
     >
       {children}
-    </Box>
+    </section>
   )
 }
 
@@ -132,9 +130,6 @@ import { CustomScrollbarUI, ScrollSync } from './CustomScrollbar'
 
 const Landpage = ({ children }: { children?: React.ReactNode }) => {
   const scrollbarRef = useRef<HTMLDivElement>(null)
-  const theme = useTheme()
-  const isMobile = useMediaQuery(theme.breakpoints.down('sm'))
-  const isTablet = useMediaQuery(theme.breakpoints.down('md'))
 
   return (
     <div style={{ width: '100%', height: '100vh', background: '#001e36', overflow: 'hidden', position: 'relative' }}>
@@ -170,17 +165,17 @@ const Landpage = ({ children }: { children?: React.ReactNode }) => {
         }}
       />
 
-      <Canvas camera={{ position: [0, 0, 5], fov: isMobile ? 75 : isTablet ? 60 : 50 }} shadows>
+      <Canvas camera={{ position: [0, 0, 5], fov: 50 }} shadows>
         <color attach="background" args={['#001e36']} />
         <fog attach="fog" args={['#001e36', 5, 25]} />
 
-        <ScrollControls pages={isMobile ? 20 : 12} damping={0.15}>
+        <ScrollControls pages={12} damping={0.15}>
           {/* Scroll Logic - Inside ScrollControls to access scroll data */}
-          {!isMobile && <ScrollSync scrollbarRef={scrollbarRef} />}
+          <ScrollSync scrollbarRef={scrollbarRef} />
 
           <SceneContent />
 
-          <Scroll html style={{ width: '100vw', overflowX: 'hidden' }}>
+          <Scroll html style={{ width: '100%' }}>
             {/* Ultra Elegant Hero Section */}
             <Section>
               <motion.div
@@ -197,12 +192,12 @@ const Landpage = ({ children }: { children?: React.ReactNode }) => {
                   <Typography
                     variant="h1"
                     sx={{
-                      fontSize: { xs: '2.2rem', sm: '4rem', md: '7rem', lg: '9rem' },
+                      fontSize: { xs: '4.5rem', md: '9rem' },
                       fontWeight: 100, // Ultra thin for maximum elegance
                       margin: 0,
                       color: '#fff',
                       textAlign: 'center',
-                      letterSpacing: { xs: '0.05em', sm: '0.2em', md: '0.35em' }, // Tightened for xs
+                      letterSpacing: '0.35em', // Even wider
                       textShadow: '0 0 50px rgba(0,255,255,0.25)',
                       fontFamily: '"Outfit", sans-serif',
                       lineHeight: 1
@@ -212,24 +207,24 @@ const Landpage = ({ children }: { children?: React.ReactNode }) => {
                   </Typography>
                   <motion.div
                     initial={{ width: 0, opacity: 0.2 }}
-                    whileInView={{ width: '100%', opacity: 1 }} // Force 100% width on all to avoid push
+                    whileInView={{ width: '120%', opacity: 1 }}
                     transition={{ duration: 2, delay: 0.5 }}
                     style={{
                       height: '1px',
                       background: 'radial-gradient(circle, #00ffff 0%, transparent 100%)',
                       marginTop: '0.8rem',
-                      marginLeft: '0'
+                      marginLeft: '-10%'
                     }}
                   />
                 </div>
                 <Typography
                   variant="h6"
                   sx={{
-                    fontSize: { xs: '0.7rem', sm: '1rem' },
+                    fontSize: '1rem',
                     color: '#D9A756', // Elegant Gold accent
                     textAlign: 'center',
                     marginTop: '2rem',
-                    letterSpacing: { xs: '0.4em', sm: '0.8em' }, // Extreme tracking
+                    letterSpacing: '0.8em', // Extreme tracking
                     fontWeight: 300,
                     textTransform: 'uppercase',
                     opacity: 0.9
@@ -313,13 +308,13 @@ const Landpage = ({ children }: { children?: React.ReactNode }) => {
               </motion.div>
             </Section>
 
-            {/* Character Design Section - Standardized Alignment */}
-            <Section style={{ height: 'auto', minHeight: '100vh', padding: { xs: '4rem 0 2rem 0', md: '6rem 0 4rem 0' }, justifyContent: 'flex-start', zIndex: 10 }}>
+            {/* Character Design Section */}
+            <div style={{ width: '100%', position: 'relative', zIndex: 10 }}>
               <CharacterSection />
-            </Section>
+            </div>
 
             {/* Product Cards Section with Heading - Standardized Alignment */}
-            <Section style={{ height: 'auto', minHeight: '100vh', padding: { xs: '4rem 0 2rem 0', md: '0rem 0 2rem 0' }, justifyContent: 'flex-start' }}>
+            <Section style={{ height: 'auto', minHeight: '100vh', padding: '0rem 0 2rem 0', justifyContent: 'flex-start' }}>
               <motion.div
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
@@ -338,8 +333,8 @@ const Landpage = ({ children }: { children?: React.ReactNode }) => {
                 <Typography variant="h2" sx={{
                   color: '#fff',
                   fontWeight: 100,
-                  fontSize: { xs: '2rem', sm: '3rem', md: '5rem' },
-                  letterSpacing: { xs: '0.1em', md: '0.2em' },
+                  fontSize: { xs: '3rem', md: '5rem' },
+                  letterSpacing: '0.2em',
                   fontFamily: '"Outfit", sans-serif',
                   textTransform: 'uppercase'
                 }}>
@@ -351,7 +346,7 @@ const Landpage = ({ children }: { children?: React.ReactNode }) => {
             </Section>
 
             {/* Luminous Card Section with Heading - Standardized Alignment */}
-            <Section style={{ height: 'auto', minHeight: '100vh', padding: { xs: '4rem 0 2rem 0', md: '0rem 0 2rem 0' }, justifyContent: 'flex-start', gap: '4rem' }}>
+            <Section style={{ height: 'auto', minHeight: '100vh', padding: '0rem 0 2rem 0', justifyContent: 'flex-start', gap: '4rem' }}>
               <motion.div
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
@@ -370,8 +365,8 @@ const Landpage = ({ children }: { children?: React.ReactNode }) => {
                 <Typography variant="h2" sx={{
                   color: '#fff',
                   fontWeight: 100,
-                  fontSize: { xs: '2rem', sm: '3rem', md: '5rem' },
-                  letterSpacing: { xs: '0.1em', md: '0.2em' },
+                  fontSize: { xs: '3rem', md: '5rem' },
+                  letterSpacing: '0.2em',
                   fontFamily: '"Outfit", sans-serif',
                   textTransform: 'uppercase'
                 }}>
@@ -383,7 +378,7 @@ const Landpage = ({ children }: { children?: React.ReactNode }) => {
             </Section>
 
             {/* Menu Redirect Section - Fixed Centering to avoid top clipping */}
-           <Section style={{ height: '1292px', padding: '6rem 0 10rem 0', justifyContent: 'flex-start', zIndex: 20 }}>
+            <Section style={{ height: 'auto', minHeight: '100vh', padding: '6rem 0 10rem 0', justifyContent: 'flex-start', zIndex: 20 }}>
               <motion.div
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
@@ -407,38 +402,22 @@ const Landpage = ({ children }: { children?: React.ReactNode }) => {
                   fontFamily: '"Outfit", sans-serif',
                   textTransform: 'uppercase'
                 }}>
-                  OUR MENU
+                  EXPERIENCE
                 </Typography>
                 <div style={{ width: '40px', height: '1px', background: 'rgba(0, 255, 255, 0.3)', margin: '2rem auto' }} />
               </motion.div>
               <MenuRedirectSection id="menuButton" />
-
             </Section>
 
-            {/* Catering Section - Fixed Centering to avoid top clipping */}
-            <Section style={{ height: 'auto', minHeight: '100vh', padding: { xs: '6rem 0 4rem 0', md: '15rem 0 10rem 0' }, justifyContent: 'flex-start' }}>
-              <CateringSection />
-            </Section>
+            <CateringSection />
 
-            {/* Creative Footer & Newsletter */}
-            <Section style={{ height: 'auto', minHeight: '60vh', padding: '5rem 0 0 0', justifyContent: 'flex-start' }}>
-              <CreativeFooter />
-            </Section>
-
-            {/* Render children (like Menu) here if nested */}
-            {children}
+            <CreativeFooter />
           </Scroll>
         </ScrollControls>
-
-        <EffectComposer>
-          <Bloom luminanceThreshold={0.5} luminanceSmoothing={0.9} height={300} intensity={0.5} />
-          <Noise opacity={0.05} />
-          <Vignette eskil={false} offset={0.1} darkness={1.1} />
-        </EffectComposer>
       </Canvas>
 
-      {/* Custom Scrollbar UI - Moved to bottom to sit on top of Canvas */}
-      {!isMobile && <CustomScrollbarUI ref={scrollbarRef} />}
+      {/* Custom scrollbar UI */}
+      <CustomScrollbarUI ref={scrollbarRef} />
     </div>
   )
 }

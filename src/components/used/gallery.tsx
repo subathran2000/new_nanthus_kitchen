@@ -1,8 +1,6 @@
 
 import React, { useState } from 'react'
-import { Box, Container, Typography, Modal, IconButton, useTheme, useMediaQuery, Tooltip } from '@mui/material'
-import { useNavigate } from 'react-router-dom'
-import HomeIcon from '@mui/icons-material/Home'
+import { Box, Container, Typography, Modal, IconButton, useTheme, useMediaQuery } from '@mui/material'
 import Masonry from '@mui/lab/Masonry'
 import { motion, AnimatePresence } from 'framer-motion'
 import CloseIcon from '@mui/icons-material/Close'
@@ -64,9 +62,7 @@ const Gallery = () => {
 
     const [selectedId, setSelectedId] = useState<number | null>(null)
 
-    const navigate = useNavigate()
-
-    const columns = isMobile ? 1 : (isTablet ? 2 : 3);
+    const columns = isMobile ? 1 : isTablet ? 2 : 3
 
     return (
         <Box sx={{
@@ -75,7 +71,7 @@ const Gallery = () => {
             minHeight: '100vh',
             color: '#fff',
             position: 'relative',
-            overflow: 'visible',
+            overflow: 'hidden',
             '&::before': {
                 content: '""',
                 position: 'absolute',
@@ -89,8 +85,8 @@ const Gallery = () => {
             },
         }}>
             {/* 3D Background */}
-            <Box sx={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', zIndex: 0, pointerEvents: 'none' }}>
-                <Canvas camera={{ position: [0, 0, 5], fov: 50 }} style={{ pointerEvents: 'none' }}>
+            <Box sx={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', zIndex: 0 }}>
+                <Canvas camera={{ position: [0, 0, 5], fov: 50 }}>
                     <color attach="background" args={['#001e36']} />
                     <fog attach="fog" args={['#001e36', 5, 25]} />
                     <BackgroundScene />
@@ -102,35 +98,7 @@ const Gallery = () => {
                 </Canvas>
             </Box>
 
-            {/* Top-right home icon (match menu page) */}
-            <Tooltip title="Back to Home" placement="left">
-                <IconButton
-                    onClick={() => navigate('/')}
-                    sx={{
-                        position: 'fixed',
-                        top: 16,
-                        right: 24,
-                        zIndex: 1400,
-                        background: 'rgba(0, 255, 255, 0.05)',
-                        backdropFilter: 'blur(10px)',
-                        border: '1px solid rgba(0, 255, 255, 0.2)',
-                        color: '#00ffff',
-                        padding: 1.5,
-                        transition: 'all 0.3s ease',
-                        '&:hover': {
-                            background: 'rgba(217, 167, 86, 0.2)',
-                            borderColor: '#D9A756',
-                            color: '#D9A756',
-                            transform: 'scale(1.1) rotate(-10deg)',
-                            boxShadow: '0 0 20px rgba(217, 167, 86, 0.3)'
-                        }
-                    }}
-                >
-                    <HomeIcon sx={{ fontSize: 28 }} />
-                </IconButton>
-            </Tooltip>
-
-            <Container maxWidth="xl" sx={{ position: 'relative', zIndex: 2, pointerEvents: 'auto' }}>
+            <Container maxWidth="xl" sx={{ position: 'relative', zIndex: 2 }}>
                 <Box sx={{ mb: 8, textAlign: 'center' }}>
                     <motion.div
                         initial={{ opacity: 0, y: 30 }}
@@ -147,7 +115,7 @@ const Gallery = () => {
                     </motion.div>
                 </Box>
 
-                <Masonry columns={columns} spacing={1}>
+                <Masonry columns={columns} spacing={3}>
                     {portfolioItems.map((item, index) => (
                         <motion.div
                             key={item.id}
@@ -162,7 +130,7 @@ const Gallery = () => {
                                     position: 'relative',
                                     overflow: 'hidden',
                                     cursor: 'pointer',
-                                    borderRadius: '0px',
+                                    borderRadius: '12px',
                                     '&:hover .overlay': {
                                         opacity: 1,
                                     },

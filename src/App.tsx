@@ -8,7 +8,7 @@ import ContactPage from './pages/ContactPage'
 import AwardsPage from './pages/EventsPage'
 import Event from './components/event'
 import EventsPage from './pages/EventsPage'
-import Gallery from './components/Coverflow3D'
+import Gallery from './components/gallery'
 
 function App() {
   return (

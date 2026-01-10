@@ -1,4 +1,4 @@
-
+import React from 'react';
 import { Box, Typography } from '@mui/material';
 import { styled } from '@mui/material/styles';
 
@@ -12,27 +12,18 @@ const Container = styled(Box)(({ theme }) => ({
     alignItems: 'center',
     justifyContent: 'space-evenly',
     gap: '3rem',
-    padding: '2rem 1.5rem', // Added horizontal padding as well
+    padding: '2rem 0', // Add padding for spacing
     [theme.breakpoints.down('md')]: {
         flexDirection: 'column',
         height: 'auto',
-        gap: '2rem', // Reduced gap on mobile
-        padding: '2rem 1rem',
     },
 }));
 
 const Card = styled(Box)<{ cardColor: string }>(({ theme, cardColor }) => ({
     position: 'relative',
     padding: '1.5rem',
-    width: '100%',
-    maxWidth: '350px',
-    minHeight: '400px', // Use minHeight for content flexibility
-    overflow: 'hidden', // Contain hover effects
-    [theme.breakpoints.down('sm')]: {
-        maxWidth: '100%', // Allow full width on very small screens
-        minHeight: 'auto',
-        padding: '2rem 1rem',
-    },
+    width: '350px',
+    height: '400px', // Reduced height since buttons are gone
 
     // Glassmorphism & Theme Styles - DEEP OCEAN THEME
     background: 'rgba(0, 30, 54, 0.6)', // Deep blue transparent (Theme color #001e36)
@@ -55,10 +46,7 @@ const Card = styled(Box)<{ cardColor: string }>(({ theme, cardColor }) => ({
     },
 
     '&:hover .product-image': {
-        transform: {
-            xs: 'translate(-0.5rem, -2rem) rotate(-10deg) scale(1.05)',
-            sm: 'translate(-1.5rem, -5rem) rotate(-20deg) scale(1.1)'
-        },
+        transform: 'translate(-1.5rem, -5rem) rotate(-20deg) scale(1.1)',
         filter: `drop-shadow(0 20px 30px ${cardColor}60)`, // Keep shoe shadow colored? User said "border hover... no other colors". I'll keep shoe shadow as context.
     },
 
@@ -101,17 +89,14 @@ const ProductInfo = styled(Box)({
     marginTop: '1rem',
 });
 
-const ProductTitle = styled(Typography)(({ theme }) => ({
+const ProductTitle = styled(Typography)({
     fontSize: '1.5rem',
-    [theme.breakpoints.down('sm')]: {
-        fontSize: '1.2rem',
-    },
     fontWeight: 700,
     fontFamily: '"Poppins", sans-serif',
     letterSpacing: '0.5px',
     color: '#ffffff',
     textShadow: '0 0 10px rgba(0, 255, 255, 0.3)', // Subtle cyan glow
-}));
+});
 
 const ProductDesc = styled(Typography)({
     margin: '0.5rem 0',
@@ -121,7 +106,14 @@ const ProductDesc = styled(Typography)({
     color: '#aaccff', // Theme Light Blue
 });
 
-
+const ProductPrice = styled(Typography)<{ priceColor: string }>(({ priceColor }) => ({
+    fontSize: '1.4rem',
+    fontWeight: 600,
+    fontFamily: '"Poppins", sans-serif',
+    color: priceColor, // Keep product specific color for price to match shoe
+    textShadow: `0 0 10px ${priceColor}80`,
+    marginTop: '0.5rem',
+}));
 
 export default function ProductCards() {
     return (
@@ -158,4 +150,3 @@ export default function ProductCards() {
         </Container>
     );
 }
-

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Box, Stack, Tooltip, Zoom } from '@mui/material';
+import { Box, Stack, Tooltip, Zoom, useTheme, useMediaQuery } from '@mui/material';
 import HomeRoundedIcon from '@mui/icons-material/HomeRounded';
 import RestaurantMenuRoundedIcon from '@mui/icons-material/RestaurantMenuRounded';
 import InfoRoundedIcon from '@mui/icons-material/InfoRounded';
@@ -10,6 +10,8 @@ import logo from '../assets/images/new_nanthus_kitchen_logo.png';
 const Nav = () => {
     const [activeNav, setActiveNav] = useState('#home');
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+    const theme = useTheme();
+    const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
     const navItems = [
         { id: '#home', label: 'Home', icon: <HomeRoundedIcon /> },
@@ -197,9 +199,6 @@ const Nav = () => {
                     right: 0,
                     zIndex: 1000,
                     padding: '15px 20px',
-                    background: 'transparent', // Made transparent to let content show, or keep it if needed. User asked for desktop look for navlinks. Keeping top bar minimal or matching? Let's match desktop glassmorphism if it's a bar, or just clean.
-                    // Actually, for "Instagram" style top bar is usually solid/blur. But user said "background has to look like desktop".
-                    // Let's apply the glassmorphism to the top bar too if it's a bar.
                     background: 'rgba(255, 255, 255, 0.1)',
                     backdropFilter: 'blur(10px)',
                     borderBottom: '1px solid rgba(255, 255, 255, 0.2)',
@@ -212,11 +211,11 @@ const Nav = () => {
                     src={logo}
                     alt="Nanthus Kitchen Logo"
                     sx={{
-                        width: '40px',
+                        width: '32px',
                         height: 'auto',
                         cursor: 'pointer',
-                        transform: 'scale(2)', // Made logo big
-                        marginLeft: '10px', // Adjust for scale
+                        transform: { xs: 'scale(1.2)', sm: 'scale(1.8)' }, // Further reduced scale for xs
+                        marginLeft: { xs: '0', sm: '10px' }, // Removed margin on xs
                         transition: 'transform 0.3s ease',
                     }}
                     onClick={() => window.location.href = '#home'}
@@ -225,9 +224,10 @@ const Nav = () => {
                     sx={{
                         color: '#D9A756',
                         cursor: 'pointer',
+                        paddingRight: { xs: '5px', sm: '0' }
                     }}
                 >
-                    <ShoppingBagRoundedIcon sx={{ fontSize: '28px' }} />
+                    <ShoppingBagRoundedIcon sx={{ fontSize: '24px' }} />
                 </Box>
             </Stack>
 
@@ -251,7 +251,7 @@ const Nav = () => {
                     component="ul"
                     sx={{
                         position: 'absolute',
-                        bottom: '30px', // Anchored at bottom
+                        bottom: { xs: '20px', sm: '30px' }, // Anchored at bottom
                         left: '50%',
                         width: 0,
                         height: 0,
@@ -263,59 +263,60 @@ const Nav = () => {
                         transition: 'opacity 0.3s ease',
                     }}
                 >
-                    {navItems.map((item, index) => {
                         // Distribute items in an arc upwards
-                        // 4 items. Let's span from -60deg to +60deg for better visibility.
-                        // Step: 40deg. (-60, -20, 20, 60)
-                        const angle = -60 + (index * 40);
+                    // Narrowing arc for small screens to prevent clipping
+                    const baseAngle = isMobile ? -50 : -60;
+                    const angleStep = isMobile ? 33 : 40;
+                    const angle = baseAngle + (index * angleStep);
+                    const radius = isMobile ? 110 : 160; // Slightly reduced radius
 
-                        return (
-                            <Box
-                                component="li"
-                                key={item.id}
-                                sx={{
+                    return (
+                    <Box
+                        component="li"
+                        key={item.id}
+                        sx={{
+                            position: 'absolute',
+                            left: '-25px', // Centered (half of 50px width)
+                            transformOrigin: `25px ${radius}px`,
+                            opacity: 0,
+                            animation: isMobileMenuOpen ? `appear 0.5s forwards ${index * 0.1}s` : 'none',
+                            transform: `rotate(${angle}deg)`,
+                            top: `-${radius}px`,
+                        }}
+                    >
+                        <Box
+                            component="a"
+                            onClick={() => {
+                                setActiveNav(item.id);
+                                setIsMobileMenuOpen(false);
+                            }}
+                            sx={{
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                width: '50px',
+                                height: '50px',
+                                textDecoration: 'none',
+                                color: '#fff',
+                                position: 'relative',
+                                transform: `rotate(${-angle}deg)`, // Counter-rotate
+                                '&::before': {
+                                    content: '""',
                                     position: 'absolute',
-                                    left: '-25px', // Centered (half of 50px width)
-                                    top: 0,
-                                    transformOrigin: '25px 0',
-                                    opacity: 0,
-                                    animation: isMobileMenuOpen ? `appear 0.5s forwards ${index * 0.1}s` : 'none',
-                                    transform: `rotate(${angle}deg)`,
-                                }}
-                            >
-                                <Box
-                                    component="a"
-                                    onClick={() => {
-                                        setActiveNav(item.id);
-                                        setIsMobileMenuOpen(false);
-                                    }}
-                                    sx={{
-                                        display: 'flex',
-                                        alignItems: 'center',
-                                        justifyContent: 'center',
-                                        width: '50px',
-                                        height: '50px',
-                                        textDecoration: 'none',
-                                        color: '#fff',
-                                        position: 'relative',
-                                        transform: `rotate(${-angle}deg)`, // Counter-rotate
-                                        '&::before': {
-                                            content: '""',
-                                            position: 'absolute',
-                                            inset: 0,
-                                            borderRadius: '50%',
-                                            background: '#D9A756',
-                                            animation: 'scaling 3s linear infinite',
-                                            boxShadow: '0 0 15px rgba(217, 167, 86, 0.4)',
-                                        }
-                                    }}
-                                >
-                                    <Box sx={{ position: 'relative', zIndex: 1, display: 'flex' }}>
-                                        {React.cloneElement(item.icon as React.ReactElement, { sx: { fontSize: '24px', color: '#fff' } })}
-                                    </Box>
-                                </Box>
+                                    inset: 0,
+                                    borderRadius: '50%',
+                                    background: '#D9A756',
+                                    animation: 'scaling 3s linear infinite',
+                                    boxShadow: '0 0 15px rgba(217, 167, 86, 0.4)',
+                                }
+                            }}
+                        >
+                            <Box sx={{ position: 'relative', zIndex: 1, display: 'flex' }}>
+                                {React.cloneElement(item.icon as React.ReactElement, { sx: { fontSize: '24px', color: '#fff' } } as any)}
                             </Box>
-                        );
+                        </Box>
+                    </Box>
+                    );
                     })}
                 </Box>
 

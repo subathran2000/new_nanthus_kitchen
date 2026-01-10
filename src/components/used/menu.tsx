@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
-import { Box, useTheme, useMediaQuery } from "@mui/material";
+import { Box } from "@mui/material";
 import { Canvas, useFrame } from '@react-three/fiber';
 import { Sparkles, Caustics, Environment, Cloud, useTexture } from '@react-three/drei';
 import { EffectComposer, Bloom, Noise, Vignette } from '@react-three/postprocessing';
@@ -26,7 +26,7 @@ const BackgroundScene = () => {
     const bubbleRef = useRef<any>(null)
     const logoTex = useTexture(Image1)
 
-    useFrame((_, delta) => {
+    useFrame((state, delta) => {
         if (bubbleRef.current) {
             // Rotate only horizontally around Y axis; remove X rotation and vertical bobbing
             bubbleRef.current.rotation.y += delta * 0.35
@@ -82,8 +82,6 @@ const LandingPage = () => {
     const cardsRef = useRef<(HTMLDivElement | null)[]>([]);
     const [open, setOpen] = useState(false)
     const [selected, setSelected] = useState<number | null>(null)
-    const theme = useTheme();
-    const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
     const openRef = useRef(open)
     openRef.current = open
 
@@ -151,10 +149,9 @@ const LandingPage = () => {
     const getResponsiveValues = () => {
         if (typeof window === "undefined") return { radius: 800, spacing: 250 };
         const width = window.innerWidth;
-        if (width < 375) return { radius: 250, spacing: 140 }; // Narrow for tiny screens
-        if (width < 480) return { radius: 320, spacing: 180 };
-        if (width < 768) return { radius: 450, spacing: 200 };
-        if (width < 1024) return { radius: 650, spacing: 220 };
+        if (width < 480) return { radius: 300, spacing: 180 };
+        if (width < 768) return { radius: 400, spacing: 200 };
+        if (width < 1024) return { radius: 600, spacing: 220 };
         return { radius: 800, spacing: 250 };
     };
 
@@ -395,8 +392,7 @@ const LandingPage = () => {
                             <ListItem
                                 key={idx}
                                 sx={{
-                                    flexDirection: isMobile ? 'column' : 'row',
-                                    alignItems: isMobile ? 'flex-start' : 'center',
+                                    alignItems: 'center',
                                     pt: 2.5,
                                     pb: 2.5,
                                     mb: 2,
@@ -409,7 +405,7 @@ const LandingPage = () => {
                                     overflow: 'hidden',
                                     '&:hover': {
                                         background: 'rgba(0, 255, 255, 0.08)',
-                                        transform: isMobile ? 'none' : 'translateX(10px)',
+                                        transform: 'translateX(10px)',
                                         borderColor: 'rgba(0, 255, 255, 0.2)',
                                         borderLeftColor: '#D9A756', // Gold accent on hover
                                         '& .item-image': {
@@ -437,7 +433,6 @@ const LandingPage = () => {
                                         borderRadius: '14px',
                                         background: `url(${it.image}) center/cover no-repeat`,
                                         mr: 2.5,
-                                        mb: isMobile ? 2 : 0,
                                         border: '1px solid rgba(0, 255, 255, 0.2)',
                                         flexShrink: 0,
                                         transition: 'all 0.4s ease'
@@ -520,7 +515,6 @@ const LandingPage = () => {
                 @media (max-width: 1024px) { .spiral-card { max-width: 350px; } }
                 @media (max-width: 768px) { .spiral-card { max-width: 300px; } }
                 @media (max-width: 480px) { .spiral-card { max-width: 250px; } }
-                @media (max-width: 375px) { .spiral-card { max-width: 200px; } }
             `}</style>
         </Box>
     );

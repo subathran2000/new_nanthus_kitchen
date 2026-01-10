@@ -4,7 +4,6 @@ import { motion } from 'framer-motion'
 import CelebrationIcon from '@mui/icons-material/Celebration'
 import BusinessCenterIcon from '@mui/icons-material/BusinessCenter'
 import RestaurantMenuIcon from '@mui/icons-material/RestaurantMenu'
-import CateringForm from './CateringForm'
 
 const services = [
     {
@@ -65,14 +64,14 @@ const SpotlightCard = ({ title, description, icon, index }: { title: string, des
             viewport={{ once: true }}
             style={{ height: '100%' }}
         >
-            <Box
+            <div
                 ref={divRef}
                 onMouseMove={handleMouseMove}
                 onFocus={handleFocus}
                 onBlur={handleBlur}
                 onMouseEnter={handleMouseEnter}
                 onMouseLeave={handleMouseLeave}
-                sx={{
+                style={{
                     position: 'relative',
                     height: '100%',
                     overflow: 'hidden',
@@ -80,10 +79,10 @@ const SpotlightCard = ({ title, description, icon, index }: { title: string, des
                     border: '1px solid rgba(255, 255, 255, 0.1)',
                     backgroundColor: 'rgba(255, 255, 255, 0.05)',
                     backdropFilter: 'blur(10px)',
-                    p: { xs: 2.5, sm: 4 }, // Responsive padding
+                    padding: '2rem',
                     boxSizing: 'border-box',
-                    display: 'flex',
-                    flexDirection: 'column',
+                    display: 'flex', // Make it flex container
+                    flexDirection: 'column', // Stack children vertically
                 }}
             >
                 <div
@@ -116,8 +115,8 @@ const SpotlightCard = ({ title, description, icon, index }: { title: string, des
                         padding: '1px', // The border width
                         borderRadius: '16px',
                         zIndex: 1,
-                        mask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',
-                        WebkitMask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',
+                        mask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0) ',
+                        WebkitMask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0) ',
                         maskComposite: 'exclude',
                         WebkitMaskComposite: 'xor',
                     }}
@@ -156,8 +155,24 @@ const SpotlightCard = ({ title, description, icon, index }: { title: string, des
                         {description}
                     </Typography>
 
+                    <Button variant="text" sx={{
+                        color: '#00ffff',
+                        padding: 0,
+                        minWidth: 0,
+                        textTransform: 'uppercase',
+                        letterSpacing: '1px',
+                        fontSize: '0.85rem',
+                        alignSelf: 'flex-start',
+                        '&:hover': {
+                            background: 'transparent',
+                            color: '#fff',
+                            textShadow: '0 0 8px rgba(0, 255, 255, 0.8)'
+                        }
+                    }}>
+                        Learn More →
+                    </Button>
                 </Box>
-            </Box>
+            </div>
         </motion.div>
     );
 };
@@ -175,8 +190,7 @@ const CateringSection = () => {
             position: 'relative',
             zIndex: 10
         }}>
-            <Box
-                component={motion.div}
+            <motion.div
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 animate={{ y: [0, -8, 0] }} // Floating flair
@@ -186,24 +200,17 @@ const CateringSection = () => {
                     default: { duration: 0.8 }
                 }}
                 viewport={{ once: true }}
-                sx={{ textAlign: 'center', marginBottom: { xs: '3rem', md: '5rem' }, width: '100%' }}
+                style={{ textAlign: 'center', marginBottom: '5rem' }}
             >
-                <Typography variant="overline" sx={{
-                    color: '#D9A756',
-                    letterSpacing: { xs: '0.2em', sm: '0.6em' },
-                    mb: 3,
-                    display: 'block',
-                    fontWeight: 300,
-                    fontSize: { xs: '0.65rem', sm: '0.9rem' }
-                }}>
+                <Typography variant="overline" sx={{ color: '#D9A756', letterSpacing: '0.6em', mb: 3, display: 'block', fontWeight: 300, fontSize: '0.9rem' }}>
                     EXCLUSIVE EVENTS
                 </Typography>
                 <Typography variant="h2" sx={{
                     fontWeight: 100,
                     mb: 4,
                     color: '#fff',
-                    letterSpacing: { xs: '0.05em', sm: '0.2em' },
-                    fontSize: { xs: '1.5rem', sm: '3rem', md: '5rem' },
+                    letterSpacing: '0.2em',
+                    fontSize: { xs: '2.5rem', md: '5rem' },
                     textShadow: '0 0 40px rgba(0, 255, 255, 0.2)',
                     fontFamily: '"Outfit", sans-serif',
                     textTransform: 'uppercase'
@@ -215,9 +222,9 @@ const CateringSection = () => {
                     color: '#aaccff',
                     maxWidth: '650px',
                     mx: 'auto',
-                    fontSize: { xs: '1rem', sm: '1.2rem' },
+                    fontSize: '1.2rem',
                     fontWeight: 300,
-                    lineHeight: { xs: 1.6, sm: 2 },
+                    lineHeight: 2,
                     opacity: 0.7,
                     letterSpacing: '0.02em',
                     mb: 4
@@ -225,8 +232,30 @@ const CateringSection = () => {
                     Elevate your special occasions with culinary artistry inspired by
                     centuries of tradition and the pinnacle of modern design.
                 </Typography>
-                <CateringForm />
-            </Box>
+                <Button
+                    variant="outlined"
+                    onClick={() => window.location.href = '/catering'}
+                    sx={{
+                        borderColor: 'rgba(0, 255, 255, 0.3)',
+                        color: '#00ffff',
+                        borderRadius: 0,
+                        px: 4,
+                        py: 1.2,
+                        fontSize: '0.75rem',
+                        letterSpacing: '0.3em',
+                        fontWeight: 400,
+                        transition: 'all 0.4s ease',
+                        '&:hover': {
+                            borderColor: '#D9A756',
+                            color: '#001e36',
+                            bgcolor: '#D9A756',
+                            boxShadow: '0 0 20px rgba(217, 167, 86, 0.3)'
+                        }
+                    }}
+                >
+                    BOOK AN EVENT
+                </Button>
+            </motion.div>
 
             <Box sx={{
                 display: 'grid',

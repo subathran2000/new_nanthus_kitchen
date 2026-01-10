@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Box, Typography, IconButton } from '@mui/material';
+import { Box, Typography, IconButton, useTheme } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
@@ -53,7 +53,7 @@ function rand(max: number, min: number) {
 const angles = entries.map(() => rand(m, -1 * m));
 
 // Styled components to encapsulate the complex CSS logic
-const LuminousSection = styled(Box)({
+const LuminousSection = styled(Box)(({ theme }) => ({
     '--t': '.8s',
     display: 'grid',
     minHeight: '80vh', // increased height
@@ -64,7 +64,7 @@ const LuminousSection = styled(Box)({
     overflow: 'visible',
     position: 'relative',
     perspective: '1000px',
-});
+}));
 
 const LuminousContainer = styled(Box)(({ theme }) => ({
     display: 'grid',
@@ -73,13 +73,8 @@ const LuminousContainer = styled(Box)(({ theme }) => ({
     counterReset: 'k calc(1 + var(--k)) n var(--n)',
     transition: '--p 0s var(--t), --v var(--t)',
     width: '100%',
-    maxWidth: '80vw', // Default for desktop
+    maxWidth: '80vw', // Use viewport width for maximum impact
     position: 'relative',
-    [theme.breakpoints.down('md')]: {
-        maxWidth: '100%',
-        gridGap: '1em 2em',
-        gridTemplate: 'repeat(2, max-content) 1fr max-content/ 1fr',
-    },
 
     '&::before': {
         gridArea: '1/ 2',
@@ -94,33 +89,29 @@ const LuminousContainer = styled(Box)(({ theme }) => ({
     },
 }));
 
-const CardArticle = styled(Box)({
+const CardArticle = styled(Box)(({ theme }) => ({
     display: 'grid',
     gridArea: '1/ 1/ -1/ -1',
     gridTemplate: 'subgrid/ subgrid',
     position: 'relative',
     transition: 'z-index var(--t) cubic-bezier(1, -.9, 0, 1.9)',
+
     '--abs-top': 'max(var(--k) - var(--i), var(--i) - var(--k))',
     '--not-top': 'min(1, var(--abs-top))',
     '--top': 'calc(1 - var(--not-top))',
+
     '--val-mov': '((1 - var(--fwd))*var(--p) + var(--fwd)*var(--k) - var(--i))',
     '--abs-mov': 'max(var(--val-mov), -1*var(--val-mov))',
     '--not-mov': 'min(1, var(--abs-mov))',
     '--mov': 'calc(1 - var(--not-mov))',
-});
+}));
 
-const CardImage = styled('img')(({ theme }) => ({
+const CardImage = styled('img')({
     '--sin': 'sin(var(--prg)*.5turn)',
     gridArea: '1/ 1/ -1',
     border: '1px solid rgba(0, 255, 255, 0.3)',
     boxShadow: '0 0 30px rgba(0, 255, 255, 0.1)',
-    height: '40em', // Desktop height
-    [theme.breakpoints.down('md')]: {
-        height: '32em',
-    },
-    [theme.breakpoints.down('sm')]: {
-        height: '25em',
-    },
+    height: '40em', // Significantly increased height
     aspectRatio: '0.75', // Slightly tall portrait
     objectFit: 'cover',
     borderRadius: '1em',
@@ -128,9 +119,9 @@ const CardImage = styled('img')(({ theme }) => ({
     rotate: 'calc((1 - var(--sin))*var(--a))',
     width: '100%',
     maxWidth: '600px', // Allow it to be quite wide
-}));
+});
 
-const CardTitle = styled(Typography)(({ theme }) => ({
+const CardTitle = styled(Typography)({
     gridArea: '2/ 2',
     margin: 0,
     translate: '0 calc(var(--not-top)*1lh)',
@@ -140,37 +131,24 @@ const CardTitle = styled(Typography)(({ theme }) => ({
 
     // Aesthetic updates
     fontSize: '3.5rem !important',
-    [theme.breakpoints.down('md')]: {
-        fontSize: '2.5rem !important',
-    },
-    [theme.breakpoints.down('sm')]: {
-        fontSize: '1.8rem !important',
-    },
     fontWeight: '700 !important',
     color: '#fff',
     textShadow: '0 0 20px rgba(0, 255, 255, 0.6)',
     lineHeight: '1.1',
     marginBottom: '0.5rem !important',
-}));
+});
 
-const CardDesc = styled(Typography)(({ theme }) => ({
+const CardDesc = styled(Typography)({
     gridArea: '3/ 2',
     color: '#aaccff', // Light blue
     fontStyle: 'normal',
     fontSize: '1.2rem',
-    [theme.breakpoints.down('sm')]: {
-        fontSize: '1rem',
-    },
     translate: '0 calc(var(--not-top)*1lh)',
     opacity: 'var(--top)',
     transition: '.5*var(--t) calc(var(--top)*.5*var(--t))',
     transitionProperty: 'translate, opacity',
     maxWidth: '400px',
-}));
-
-// We need to inject the @property definitions globally or locally.
-// Since we can't do that easily in styled-components without global styles, 
-// we will add a style tag.
+});
 
 export default function LuminousCard() {
     const [k, setK] = useState(0);
@@ -250,10 +228,10 @@ export default function LuminousCard() {
                                     zIndex: zIndex
                                 } as React.CSSProperties}
                             >
-                                <CardTitle variant="h4">
+                                <CardTitle variant="h4" component="h2">
                                     {key}
                                 </CardTitle>
-                                <CardDesc variant="body1">
+                                <CardDesc variant="body1" component="em">
                                     {val.name}
                                 </CardDesc>
                                 <CardImage
@@ -277,8 +255,8 @@ export default function LuminousCard() {
                             onClick={handlePrev}
                             aria-label="previous"
                             sx={{
-                                width: { xs: '50px', sm: '70px' },
-                                height: { xs: '50px', sm: '70px' },
+                                width: '70px',
+                                height: '70px',
                                 border: '1px solid rgba(0, 255, 255, 0.3)',
                                 backgroundColor: 'rgba(0, 30, 54, 0.6)', // Dark blue transparent
                                 color: '#00ffff', // Cyan icon
@@ -297,8 +275,8 @@ export default function LuminousCard() {
                             onClick={handleNext}
                             aria-label="next"
                             sx={{
-                                width: { xs: '50px', sm: '70px' },
-                                height: { xs: '50px', sm: '70px' },
+                                width: '70px',
+                                height: '70px',
                                 border: '1px solid rgba(0, 255, 255, 0.3)',
                                 backgroundColor: 'rgba(0, 30, 54, 0.6)',
                                 color: '#00ffff',

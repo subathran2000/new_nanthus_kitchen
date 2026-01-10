@@ -53,8 +53,8 @@ const CharacterSection = () => {
                     <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.2 }} variants={itemVariants}>
                         <Box sx={{ ...cardStyle, p: 4, height: '100%' }}>
                             <Typography variant="body1" sx={{ fontSize: '1.1rem', fontStyle: 'italic', lineHeight: 1.8, mb: 4, color: '#aaccff' }}>
-                                &ldquo;In the depths of the unknown, we find the true essence of discovery.
-                                Immerse yourself in a world where technology meets fluid design.&rdquo;
+                                &ldquo;In every spice, we find a story of tradition.
+                                Join us on a journey where heritage meets the art of fine dining.&rdquo;
                             </Typography>
 
                             <Box sx={{
@@ -87,10 +87,10 @@ const CharacterSection = () => {
                                     transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
                                 >
                                     <Typography variant="overline" sx={{ color: '#D9A756', display: 'block', mb: -0.5, letterSpacing: '0.4em', fontWeight: 300 }}>
-                                        DESIGN IDENTITY
+                                        CULINARY ETHOS
                                     </Typography>
                                     <Typography variant="h3" sx={{ fontSize: '2rem', color: '#fff', fontWeight: 100, letterSpacing: '0.15em', fontFamily: '"Outfit", sans-serif' }}>
-                                        EXPLORER
+                                        SPICE MASTER
                                     </Typography>
                                 </Box>
                             </Box>
@@ -107,8 +107,8 @@ const CharacterSection = () => {
                         <motion.div variants={floatVariants} animate="float">
                             <Box sx={{ overflow: 'hidden', ...cardStyle, p: 0, border: 'none' }}>
                                 <img
-                                    src="https://images.unsplash.com/photo-1580019542155-247062e19ce4?q=80&w=2127&auto=format&fit=crop"
-                                    alt="Abstract Liquid"
+                                    src="https://images.unsplash.com/photo-1596797038558-b6118b76c886?q=80&w=2127&auto=format&fit=crop"
+                                    alt="Spices"
                                     style={{ width: '100%', display: 'block', transition: 'transform 0.5s ease' }}
                                 />
                             </Box>
@@ -122,8 +122,8 @@ const CharacterSection = () => {
                                 <EmojiEvents sx={{ fontSize: '4rem', color: '#00ffff' }} />
                             </Box>
                             <Typography sx={{ lineHeight: 1.8, mb: 3, textAlign: 'center' }}>
-                                Award-winning immersive experiences that push the boundaries of web GL.
-                                Recognized for excellence in interaction design and visual fluidity.
+                                Award-winning menus that blend traditional recipes with modern flair.
+                                Recognized for excellence in flavor profile and culinary presentation.
                             </Typography>
                             <Box sx={{ textAlign: 'center' }}>
                                 <Button variant="outlined" sx={{
@@ -137,7 +137,7 @@ const CharacterSection = () => {
                                         bgcolor: '#00ffff'
                                     }
                                 }}
-                                 onClick={() => window.location.href = '/gallery'}
+                                    onClick={() => window.location.href = '/gallery'}
                                 >
                                     Explore Events
                                 </Button>
@@ -155,8 +155,8 @@ const CharacterSection = () => {
                         <motion.div variants={floatVariants} animate="float" transition={{ delay: 1 }}>
                             <Box sx={{ overflow: 'hidden', ...cardStyle, p: 0, border: 'none' }}>
                                 <img
-                                    src="https://images.unsplash.com/photo-1620641788421-7a1c342ea42e?q=80&w=1974&auto=format&fit=crop"
-                                    alt="Digital Art"
+                                    src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?q=80&w=1974&auto=format&fit=crop"
+                                    alt="Plated Dish"
                                     style={{ width: '100%', display: 'block' }}
                                 />
                             </Box>
@@ -167,7 +167,7 @@ const CharacterSection = () => {
                     <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.2 }} variants={itemVariants}>
                         <Box sx={{ ...cardStyle, p: 5 }}>
                             <Typography variant="overline" sx={{ color: '#D9A756', display: 'block', mb: 1.5, letterSpacing: '0.4em', fontWeight: 300 }}>
-                                CORE CONCEPT
+                                AROMATIC ARTISTRY
                             </Typography>
                             <Box
                                 component={motion.div}
@@ -194,13 +194,14 @@ const CharacterSection = () => {
                                         animation: 'shimmer 8s infinite linear',
                                     },
                                 }}>
-                                    Fluid Dynamics
+                                    Spice Alchemy
                                 </Typography>
                             </Box>
                             <div style={{ width: '30px', height: '1px', background: 'rgba(0, 255, 255, 0.2)', marginBottom: '2rem' }} />
                             <Typography sx={{ lineHeight: 1.8, mb: 2 }}>
-                                Our interfaces mimic the natural flow of water. Seamless transitions and organic
-                                movements create an experience that feels alive and responsive to your touch.
+                                Our kitchen works like a symphony of spices. Carefully balanced
+                                flavors and fresh ingredients create a dining experience that
+                                resonates with every bite.
                             </Typography>
                             <style>
                                 {`
@@ -227,8 +228,8 @@ const CharacterSection = () => {
                         <motion.div variants={floatVariants} animate="float" transition={{ delay: 2 }}>
                             <Box sx={{ overflow: 'hidden', ...cardStyle, p: 0, border: 'none' }}>
                                 <img
-                                    src="https://images.unsplash.com/photo-1550684848-fac1c5b4e853?q=80&w=2070&auto=format&fit=crop"
-                                    alt="Neon Waves"
+                                    src="https://images.unsplash.com/photo-1514327605112-b887c0e61c0a?q=80&w=2070&auto=format&fit=crop"
+                                    alt="Fresh Ingredients"
                                     style={{ width: '100%', display: 'block' }}
                                 />
                             </Box>
