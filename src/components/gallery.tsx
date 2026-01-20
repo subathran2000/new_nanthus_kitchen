@@ -142,7 +142,7 @@ const Gallery = () => {
                             Kitchen Moments
                         </Typography>
                         <Typography variant="body1" sx={{ color: '#aaccff', maxWidth: '600px', mx: 'auto' }}>
-                            A visual journey through the flavors and artistry of Nanthu's Kitchen.
+                            A visual journey through the flavors and artistry of New Nanthu's Kitchen.
                         </Typography>
                     </motion.div>
                 </Box>

@@ -1,10 +1,20 @@
-
 import React, { useState } from 'react';
-import { Box, Typography, TextField, Button, MenuItem, Grid, useTheme, useMediaQuery, InputAdornment, Dialog, DialogContent, IconButton, Stack } from '@mui/material';
+import {
+    Box,
+    Typography,
+    TextField,
+    Button,
+    MenuItem,
+    Grid,
+    InputAdornment,
+    Dialog,
+    DialogContent,
+} from '@mui/material';
 import { motion, AnimatePresence } from 'framer-motion';
-import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import dayjs, { Dayjs } from 'dayjs';
+import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { Dayjs } from 'dayjs';
+
 import PersonIcon from '@mui/icons-material/Person';
 import EmailIcon from '@mui/icons-material/Email';
 import RestaurantIcon from '@mui/icons-material/Restaurant';
@@ -12,8 +22,7 @@ import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import GroupsIcon from '@mui/icons-material/Groups';
 import NoteIcon from '@mui/icons-material/Note';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
-import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
-import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+
 import MapPicker from './MapPicker';
 
 const eventTypes = [
@@ -21,25 +30,23 @@ const eventTypes = [
     'Corporate Dinner',
     'Private Celebration',
     'Cultural Event',
-    'Other'
+    'Other',
 ];
 
-const CateringForm = () => {
+const CateringForm = ({ isPopup = false }: { isPopup?: boolean }) => {
     const [formData, setFormData] = useState({
         name: '',
         email: '',
         eventType: '',
         location: '',
-        coordinates: null as { lat: number, lng: number } | null,
+        coordinates: null as { lat: number; lng: number } | null,
         guests: '',
-        message: ''
+        message: '',
     });
+
     const [date, setDate] = useState<Dayjs | null>(null);
     const [submitted, setSubmitted] = useState(false);
     const [isMapOpen, setIsMapOpen] = useState(false);
-
-    const theme = useTheme();
-    const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -51,131 +58,130 @@ const CateringForm = () => {
         setTimeout(() => setSubmitted(false), 5000);
     };
 
+    /* 🌿 Elegant Input Style */
     const inputStyle = {
         '& .MuiOutlinedInput-root': {
-            borderRadius: '4px',
-            color: '#fff',
-            backgroundColor: 'rgba(255, 255, 255, 0.02)',
-            transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
+            height: isPopup ? '40px' : '54px', // Reduced height for popup
+            borderRadius: '14px',
+            background:
+                'linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.015))',
+            backdropFilter: 'blur(20px)',
+            transition: 'all 0.35s ease',
+            fontSize: isPopup ? '0.85rem' : '0.95rem',
+            letterSpacing: '0.04em',
+
             '& fieldset': {
-                borderColor: 'rgba(0, 255, 255, 0.1)',
-                borderWidth: '1px',
+                borderColor: 'rgba(255,255,255,0.12)',
             },
+
             '&:hover fieldset': {
-                borderColor: 'rgba(0, 255, 255, 0.4)',
-                backgroundColor: 'rgba(0, 255, 255, 0.02)',
+                borderColor: 'rgba(0,255,255,0.35)',
             },
+
             '&.Mui-focused fieldset': {
                 borderColor: '#00ffff',
-                borderWidth: '1px',
-                boxShadow: '0 0 20px rgba(0, 255, 255, 0.15)',
+                boxShadow: '0 0 0 1px rgba(0,255,255,0.25)',
+            },
+
+            '& input': {
+                padding: isPopup ? '8px 14px' : '14px 16px', // Reduced padding
+                color: '#fff',
             },
         },
+
         '& .MuiInputLabel-root': {
-            color: 'rgba(170, 204, 255, 0.4)',
-            fontSize: '0.85rem',
-            letterSpacing: '0.1em',
+            color: 'rgba(200,220,255,0.45)',
+            letterSpacing: '0.22em',
+            fontSize: isPopup ? '0.65rem' : '0.7rem',
+            transform: isPopup ? 'translate(14px, 10px) scale(1)' : 'translate(14px, 16px) scale(1)',
+            '&.MuiInputLabel-shrink': {
+                transform: 'translate(14px, -9px) scale(0.75)',
+            },
             '&.Mui-focused': {
                 color: '#00ffff',
             },
         },
-        '& .MuiInputAdornment-root .MuiSvgIcon-root': {
-            color: 'rgba(0, 255, 255, 0.4)',
-            fontSize: '1.2rem',
+
+        '& .MuiInputAdornment-root svg': {
+            fontSize: isPopup ? '1rem' : '1.15rem',
+            color: 'rgba(0,255,255,0.45)',
         },
-        '& .Mui-focused .MuiInputAdornment-root .MuiSvgIcon-root': {
+
+        '& .Mui-focused .MuiInputAdornment-root svg': {
             color: '#00ffff',
-        },
-        '& input[type=number]': {
-            MozAppearance: 'textfield',
-            '&::-webkit-outer-spin-button': {
-                WebkitAppearance: 'none',
-                margin: 0,
-            },
-            '&::-webkit-inner-spin-button': {
-                WebkitAppearance: 'none',
-                margin: 0,
-            },
         },
     };
 
     return (
         <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <Box sx={{
-                width: '100%',
-                maxWidth: '1000px',
-                mx: 'auto',
-                mt: 12,
-                position: 'relative',
-                zIndex: 10
-            }}>
-                {/* Master Container with Dynamic Border */}
-                <Box sx={{
-                    position: 'relative',
-                    p: '2px', // Space for animated border
-                    background: 'rgba(0, 255, 255, 0.05)',
-                    borderRadius: '12px',
-                    overflow: 'hidden',
-                    '&::before': {
-                        content: '""',
-                        position: 'absolute',
-                        inset: '-50%', // Use inset instead of top/left for cleaner containment
-                        width: '200%',
-                        height: '200%',
-                        background: 'conic-gradient(transparent, transparent, transparent, #00ffff)',
-                        animation: 'rotateBorder 6s linear infinite',
-                        zIndex: 0
-                    }
-                }}>
-                    <Box sx={{
-                        background: 'rgba(0, 30, 54, 0.95)',
-                        backdropFilter: 'blur(40px)',
-                        borderRadius: '11px',
-                        p: { xs: 2, sm: 4, md: 8 },
-                        position: 'relative',
-                        zIndex: 1
-                    }}>
+            <Box sx={{ maxWidth: 920, mx: 'auto', mt: isPopup ? 0 : 14, px: 2 }}>
+                <motion.div
+                    initial={{ opacity: 0, y: 50 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.9 }}
+                >
+                    <Box
+                        sx={{
+                            background: 'rgba(0,30,54,0.88)',
+                            backdropFilter: 'blur(30px)',
+                            borderRadius: '36px',
+                            border: '1px solid rgba(0,255,255,0.18)',
+                            p: isPopup ? 3 : { xs: 4, md: 7 }, // Reduced padding in popup
+                            boxShadow: 'none',
+                        }}
+                    >
                         <AnimatePresence mode="wait">
                             {!submitted ? (
                                 <motion.form
-                                    key="form"
                                     initial={{ opacity: 0 }}
                                     animate={{ opacity: 1 }}
-                                    exit={{ opacity: 0, scale: 0.98 }}
                                     onSubmit={handleSubmit}
                                 >
-                                    <Box sx={{ textAlign: 'center', mb: { xs: 4, md: 8 } }}>
-                                        <Typography variant="overline" sx={{ 
-                                            color: '#D9A756', 
-                                            letterSpacing: { xs: '0.2em', md: '0.6em' }, 
-                                            mb: 1, 
-                                            display: 'block', 
-                                            fontSize: { xs: '0.65rem', md: '0.8rem' } 
-                                        }}>
-                                            CURATED EVENTS
+                                    <Box textAlign="center" mb={isPopup ? 3 : 7}>
+                                        {!isPopup && (
+                                            <Typography
+                                                variant="overline"
+                                                sx={{
+                                                    color: '#D9A756',
+                                                    letterSpacing: '0.55em',
+                                                    fontSize: '0.7rem',
+                                                }}
+                                            >
+                                                CURATED EVENTS
+                                            </Typography>
+                                        )}
+
+                                        <Typography
+                                            sx={{
+                                                mt: isPopup ? 0 : 2,
+                                                color: '#fff',
+                                                fontWeight: 200,
+                                                letterSpacing: '0.08em',
+                                                fontSize: isPopup ? { xs: '1.5rem', md: '2rem' } : { xs: '1.8rem', md: '3.2rem' },
+                                                textTransform: 'uppercase',
+                                                mb: isPopup ? 1 : 0
+                                            }}
+                                        >
+                                            {isPopup ? (
+                                                <>
+                                                    <span style={{ color: '#00ffff' }}>Manuscript</span> of Celebration
+                                                </>
+                                            ) : (
+                                                <>
+                                                    The{' '}
+                                                    <span style={{ color: '#00ffff' }}>Manuscript</span> of
+                                                    Celebration
+                                                </>
+                                            )}
                                         </Typography>
-                                        <Typography variant="h3" sx={{
-                                            color: '#fff',
-                                            fontWeight: 100,
-                                            letterSpacing: { xs: '0.02em', md: '0.05em' },
-                                            fontFamily: '"Outfit", sans-serif',
-                                            textTransform: 'uppercase',
-                                            fontSize: { xs: '1.2rem', sm: '2.5rem', md: '3.5rem' },
-                                            lineHeight: 1.2
-                                        }}>
-                                            The <span style={{ color: '#00ffff' }}>Manuscript</span> of Celebration
-                                        </Typography>
-                                        <Box sx={{ width: '40px', height: '1px', background: '#D9A756', mx: 'auto', mt: { xs: 2, md: 3 } }} />
                                     </Box>
 
-                                    <Grid container spacing={{ xs: 2, md: 4 }}>
-                                        <Grid item xs={12} md={6}>
+                                    <Grid container spacing={isPopup ? 1.5 : 3}>
+                                        <Grid xs={12} md={6}>
                                             <TextField
                                                 fullWidth
                                                 label="HOST NAME"
                                                 name="name"
-                                                variant="outlined"
-                                                required
                                                 sx={inputStyle}
                                                 value={formData.name}
                                                 onChange={handleChange}
@@ -188,14 +194,12 @@ const CateringForm = () => {
                                                 }}
                                             />
                                         </Grid>
-                                        <Grid item xs={12} md={6}>
+
+                                        <Grid xs={12} md={6}>
                                             <TextField
                                                 fullWidth
                                                 label="EMAIL CONTACT"
                                                 name="email"
-                                                type="email"
-                                                variant="outlined"
-                                                required
                                                 sx={inputStyle}
                                                 value={formData.email}
                                                 onChange={handleChange}
@@ -208,15 +212,18 @@ const CateringForm = () => {
                                                 }}
                                             />
                                         </Grid>
-                                        <Grid item xs={12}>
+
+                                        {/* Compact Row for Popup: Occasion, Date, Guests */}
+                                        <Grid xs={12} md={isPopup ? 4 : 12}>
                                             <TextField
                                                 select
                                                 fullWidth
                                                 label="OCCASION TYPE"
                                                 name="eventType"
-                                                variant="outlined"
-                                                required
-                                                sx={inputStyle}
+                                                sx={{
+                                                    ...inputStyle,
+                                                    width: '260px',
+                                                }}
                                                 value={formData.eventType}
                                                 onChange={handleChange}
                                                 SelectProps={{
@@ -228,12 +235,10 @@ const CateringForm = () => {
                                                                 border: '1px solid rgba(217, 167, 86, 0.3)',
                                                                 borderRadius: 0,
                                                                 mt: 0.5,
-                                                                '& .MuiList-root': {
-                                                                    p: 0,
-                                                                }
-                                                            }
-                                                        }
-                                                    }
+
+                                                            },
+                                                        },
+                                                    },
                                                 }}
                                                 InputProps={{
                                                     startAdornment: (
@@ -244,37 +249,75 @@ const CateringForm = () => {
                                                 }}
                                             >
                                                 {eventTypes.map((option) => (
-                                                    <MenuItem key={option} value={option} sx={{
-                                                        color: '#fff',
-                                                        fontFamily: '"Outfit", sans-serif',
-                                                        textTransform: 'uppercase',
-                                                        letterSpacing: '0.2em',
-                                                        fontSize: '0.8rem',
-                                                        py: 2,
-                                                        transition: 'all 0.3s ease',
-                                                        '&:hover': {
-                                                            bgcolor: '#D9A756',
-                                                            color: '#001e36',
-                                                            '& .MuiTypography-root': { color: '#001e36' }
-                                                        },
-                                                        '&.Mui-selected': {
-                                                            bgcolor: 'rgba(0, 255, 255, 0.1)',
-                                                            '&:hover': { bgcolor: '#D9A756' }
-                                                        }
-                                                    }}>
+                                                    <MenuItem
+                                                        key={option}
+                                                        value={option}
+                                                        sx={{
+                                                            color: '#fff',
+                                                            textTransform: 'uppercase',
+                                                            letterSpacing: '0.2em',
+                                                            fontSize: '0.8rem',
+                                                            py: 2,
+                                                            '&:hover': {
+                                                                bgcolor: '#D9A756',
+                                                                color: '#001e36',
+                                                            },
+                                                            '&.Mui-selected': {
+                                                                bgcolor: 'rgba(0,255,255,0.1)',
+                                                                '&:hover': { bgcolor: '#D9A756' },
+                                                            },
+                                                        }}
+                                                    >
                                                         {option}
                                                     </MenuItem>
                                                 ))}
                                             </TextField>
                                         </Grid>
 
-                                        <Grid item xs={12}>
+                                        <Grid xs={12} md={isPopup ? 4 : 6}>
+                                            <DatePicker
+                                                label="EVENT DATE"
+                                                value={date}
+                                                onChange={setDate}
+                                                slotProps={{
+                                                    textField: {
+                                                        fullWidth: true,
+                                                        sx: inputStyle,
+                                                        InputProps: {
+                                                            startAdornment: (
+                                                                <InputAdornment position="start">
+                                                                    <CalendarMonthIcon />
+                                                                </InputAdornment>
+                                                            ),
+                                                        },
+                                                    },
+                                                }}
+                                            />
+                                        </Grid>
+
+                                        <Grid xs={12} md={isPopup ? 4 : 6}>
+                                            <TextField
+                                                fullWidth
+                                                label="GUEST COUNT"
+                                                name="guests"
+                                                type="number"
+                                                sx={inputStyle}
+                                                value={formData.guests}
+                                                onChange={handleChange}
+                                                InputProps={{
+                                                    startAdornment: (
+                                                        <InputAdornment position="start">
+                                                            <GroupsIcon />
+                                                        </InputAdornment>
+                                                    ),
+                                                }}
+                                            />
+                                        </Grid>
+
+                                        <Grid xs={12}>
                                             <TextField
                                                 fullWidth
                                                 label="EVENT LOCATION"
-                                                name="location"
-                                                variant="outlined"
-                                                required
                                                 sx={inputStyle}
                                                 value={formData.location}
                                                 onClick={() => setIsMapOpen(true)}
@@ -289,114 +332,38 @@ const CateringForm = () => {
                                                 }}
                                             />
                                         </Grid>
-                                        <Grid item xs={12} md={6}>
-                                            <DatePicker
-                                                label="EVENT DATE"
-                                                value={date}
-                                                onChange={(newValue) => setDate(newValue)}
-                                                slotProps={{
-                                                    textField: {
-                                                        fullWidth: true,
-                                                        variant: "outlined",
-                                                        required: true,
-                                                        sx: inputStyle,
-                                                        InputProps: {
-                                                            startAdornment: (
-                                                                <InputAdornment position="start">
-                                                                    <CalendarMonthIcon />
-                                                                </InputAdornment>
-                                                            ),
-                                                        } as any,
-                                                    },
-                                                    openPickerButton: {
-                                                        sx: {
-                                                            color: 'rgba(0, 255, 255, 0.4)',
-                                                            '&:hover': {
-                                                                color: '#D9A756',
-                                                            }
-                                                        }
-                                                    }
-                                                }}
-                                            />
-                                        </Grid>
 
-                                        <Grid item xs={12} md={6}>
+
+                                        <Grid xs={12}>
                                             <TextField
                                                 fullWidth
-                                                label="GUESTS COUNT"
-                                                name="guests"
-                                                type="number"
-                                                variant="outlined"
-                                                required
-                                                sx={inputStyle}
-                                                value={formData.guests}
-                                                onChange={handleChange}
-                                                InputProps={{
-                                                    startAdornment: (
-                                                        <InputAdornment position="start">
-                                                            <GroupsIcon />
-                                                        </InputAdornment>
-                                                    ),
-                                                    endAdornment: (
-                                                        <InputAdornment position="end">
-                                                            <Stack spacing={-0.5} sx={{ mr: -1 }}>
-                                                                <IconButton
-                                                                    size="small"
-                                                                    onClick={() => {
-                                                                        const val = parseInt(formData.guests) || 0;
-                                                                        setFormData({ ...formData, guests: (val + 1).toString() });
-                                                                    }}
-                                                                    sx={{
-                                                                        color: 'rgba(0, 255, 255, 0.4)',
-                                                                        padding: '2px',
-                                                                        '&:hover': { color: '#00ffff', backgroundColor: 'transparent' }
-                                                                    }}
-                                                                >
-                                                                    <KeyboardArrowUpIcon sx={{ fontSize: '1.2rem' }} />
-                                                                </IconButton>
-                                                                <IconButton
-                                                                    size="small"
-                                                                    onClick={() => {
-                                                                        const val = parseInt(formData.guests) || 0;
-                                                                        if (val > 0) {
-                                                                            setFormData({ ...formData, guests: (val - 1).toString() });
-                                                                        }
-                                                                    }}
-                                                                    sx={{
-                                                                        color: 'rgba(0, 255, 255, 0.4)',
-                                                                        padding: '2px',
-                                                                        '&:hover': { color: '#D9A756', backgroundColor: 'transparent' }
-                                                                    }}
-                                                                >
-                                                                    <KeyboardArrowDownIcon sx={{ fontSize: '1.2rem' }} />
-                                                                </IconButton>
-                                                            </Stack>
-                                                        </InputAdornment>
-                                                    )
-                                                }}
-                                            />
-                                        </Grid>
-                                        <Grid item xs={12}>
-                                            <TextField
-                                                fullWidth
-                                                label="CULINARY PREFERENCES & SPECIAL REQUESTS"
-                                                name="message"
                                                 multiline
-                                                rows={4}
-                                                variant="outlined"
-                                                sx={inputStyle}
+                                                rows={isPopup ? 2 : 4}
+                                                label="CULINARY PREFERENCES & NOTES"
+                                                name="message"
+                                                sx={{
+                                                    ...inputStyle,
+                                                    '& .MuiOutlinedInput-root': {
+                                                        height: 'auto',
+                                                        alignItems: 'flex-start',
+                                                    },
+                                                }}
                                                 value={formData.message}
                                                 onChange={handleChange}
                                                 InputProps={{
                                                     startAdornment: (
-                                                        <InputAdornment position="start" sx={{ alignSelf: 'flex-start', mt: 1.5 }}>
+                                                        <InputAdornment
+                                                            position="start"
+                                                            sx={{ alignSelf: 'flex-start', mt: 1.5 }}
+                                                        >
                                                             <NoteIcon />
                                                         </InputAdornment>
                                                     ),
                                                 }}
                                             />
                                         </Grid>
-                                        <Grid item xs={12} sx={{ textAlign: 'center', mt: 4 }}>
+
+                                        <Grid xs={12} textAlign="center" mt={isPopup ? 3 : 5}>
                                             <Button
                                                 type="submit"
                                                 variant="outlined"
@@ -410,14 +377,16 @@ const CateringForm = () => {
                                                     textTransform: 'uppercase',
                                                     fontSize: { xs: '0.75rem', md: '0.85rem' },
                                                     letterSpacing: { xs: '0.2em', md: '0.5em' },
-                                                    transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
+                                                    transition:
+                                                        'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
                                                     backgroundColor: 'transparent',
                                                     '&:hover': {
                                                         borderColor: '#D9A756',
                                                         bgcolor: '#D9A756',
                                                         color: '#001e36',
-                                                        boxShadow: '0 0 40px rgba(217, 167, 86, 0.5)',
-                                                    }
+                                                        boxShadow:
+                                                            '0 0 40px rgba(217, 167, 86, 0.5)',
+                                                    },
                                                 }}
                                             >
                                                 INITIATE REQUEST
@@ -426,102 +395,40 @@ const CateringForm = () => {
                                     </Grid>
                                 </motion.form>
                             ) : (
-                                <motion.div
-                                    key="success"
-                                    initial={{ opacity: 0, scale: 0.95 }}
-                                    animate={{ opacity: 1, scale: 1 }}
-                                    style={{ textAlign: 'center', padding: '60px 0' }}
-                                >
-                                    <Typography variant="h2" sx={{
-                                        color: '#00ffff',
-                                        mb: 3,
-                                        fontWeight: 100,
-                                        letterSpacing: { xs: '0.1em', sm: '0.2em' },
-                                        fontSize: { xs: '2rem', sm: '3rem', md: '4rem' }
-                                    }}>
+                                <Box textAlign="center" py={10}>
+                                    <Typography
+                                        sx={{
+                                            color: '#00ffff',
+                                            fontSize: '3rem',
+                                            letterSpacing: '0.3em',
+                                        }}
+                                    >
                                         RECEIVED
                                     </Typography>
-                                    <Typography sx={{
-                                        color: '#aaccff',
-                                        opacity: 0.7,
-                                        fontSize: { xs: '1rem', sm: '1.2rem' },
-                                        letterSpacing: '0.1em',
-                                        px: 2
-                                    }}>
-                                        Your culinary vision has been shared with our masters.
+                                    <Typography sx={{ color: '#aaccff', mt: 2 }}>
+                                        Your culinary vision has been delivered.
                                     </Typography>
-                                    <Box sx={{ width: '40px', height: '1px', background: '#D9A756', mx: 'auto', mt: 4 }} />
-                                </motion.div>
+                                </Box>
                             )}
                         </AnimatePresence>
                     </Box>
-                </Box>
-
-                {/* Background "Spice Dust" Particles */}
-                <Box sx={{
-                    position: 'absolute',
-                    top: 0, left: 0, width: '100%', height: '100%',
-                    pointerEvents: 'none',
-                    zIndex: -1,
-                    opacity: 0.3
-                }}>
-                    {[...Array(20)].map((_, i) => (
-                        <Box
-                            key={i}
-                            component={motion.div}
-                            animate={{
-                                y: [0, -100, 0],
-                                x: [0, Math.random() * 50 - 25, 0],
-                                opacity: [0, 0.5, 0]
-                            }}
-                            transition={{
-                                duration: 5 + Math.random() * 5,
-                                repeat: Infinity,
-                                delay: Math.random() * 5
-                            }}
-                            sx={{
-                                position: 'absolute',
-                                left: `${Math.random() * 100}%`,
-                                bottom: -20,
-                                width: '2px',
-                                height: '2px',
-                                background: Math.random() > 0.5 ? '#00ffff' : '#D9A756',
-                                borderRadius: '50%'
-                            }}
-                        />
-                    ))}
-                </Box>
+                </motion.div>
             </Box>
-
-            <style>{`
-                @keyframes rotateBorder {
-                    100% { transform: rotate(360deg); }
-                }
-            `}</style>
 
             <Dialog
                 open={isMapOpen}
                 onClose={() => setIsMapOpen(false)}
                 maxWidth="md"
                 fullWidth
-                PaperProps={{
-                    sx: {
-                        bgcolor: '#001e36',
-                        backgroundImage: 'none',
-                        border: '1px solid rgba(0, 255, 255, 0.2)',
-                        borderRadius: '12px',
-                        overflow: 'hidden'
-                    }
-                }}
             >
-                <DialogContent sx={{ p: 0, height: { xs: '80vh', md: '600px' } }}>
+                <DialogContent sx={{ p: 0, height: '600px' }}>
                     <MapPicker
                         onClose={() => setIsMapOpen(false)}
                         onLocationSelect={(loc) => {
-                            setFormData(prev => ({
+                            setFormData((prev) => ({
                                 ...prev,
+                                location: loc.address,
                                 coordinates: { lat: loc.lat, lng: loc.lng },
-                                location: loc.address || `Lat: ${loc.lat.toFixed(4)}, Lng: ${loc.lng.toFixed(4)}`
                             }));
                             setIsMapOpen(false);
                         }}

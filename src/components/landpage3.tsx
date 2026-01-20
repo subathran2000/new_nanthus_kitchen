@@ -11,7 +11,9 @@ import ProductCards from './ProductCards'
 import MenuRedirectSection from './MenuRedirectSection'
 import CateringSection from './CateringSection'
 import CreativeFooter from './Footer'
-import logoReflect from '../assets/images/new_nanthus_kitchen_logo.png'
+import logoReflect from '../assets/images/restaurent.jpg'
+import logo from '../assets/images/new_nanthus_kitchen_logo.png'
+import ContactSection from './ContactSection'
 
 // --- 3D Components ---
 
@@ -28,17 +30,17 @@ const FloatingCrystal = ({ position, color, speed, rotationSpeed, scale }: any) 
 
   return (
     <Float speed={speed} rotationIntensity={rotationSpeed} floatIntensity={1}>
-      <mesh ref={meshRef} position={position} scale={scale} castShadow receiveShadow>
+      <mesh ref={meshRef} position={position} scale={scale}>
         <sphereGeometry args={[1, 32, 32]} />
         <meshPhysicalMaterial
           color={color}
-          roughness={0.1}
+          roughness={0.2}
           metalness={0.1}
-          transmission={0.9}
-          thickness={2}
-          ior={1.5}
-          clearcoat={1}
-          attenuationDistance={0.5}
+          transmission={0.6}
+          thickness={0.5}
+          ior={1.2}
+          clearcoat={0.8}
+          attenuationDistance={1}
           attenuationColor="#ffffff"
         />
       </mesh>
@@ -63,42 +65,45 @@ const SceneContent = () => {
   })
 
   return (
-    <group ref={groupRef}>
-      {/* Caustics Effect */}
-      <Caustics
-        color="#00ffff"
-        position={[0, -5, 0]}
-        lightSource={[5, 5, -10]}
-        worldRadius={10}
-        ior={1.1}
-        intensity={0.2}
-      >
-      </Caustics>
-
-      {/* Bubbles */}
+    <>
+      {/* Bubbles - Locked in place, not rotating with the group */}
       <Sparkles count={300} scale={15} size={4} speed={0.6} opacity={0.6} color="#aaccff" />
       <Sparkles count={150} scale={10} size={10} speed={0.2} opacity={0.2} color="#ffffff" />
 
-      {/* Subtle Cloud/Fog for depth */}
-      <Cloud opacity={0.1} speed={0.1} width={20} depth={5} segments={10} position={[0, -5, -10]} color="#aaccff" />
+      <group ref={groupRef}>
+        {/* Caustics Effect */}
+        {/* Caustics Effect - Disabled to remove dark shadows */
+        /* <Caustics
+          color="#00ffff"
+          position={[0, -5, 0]}
+          lightSource={[5, 5, -10]}
+          worldRadius={10}
+          ior={1.1}
+          intensity={0.2}
+        >
+        </Caustics> */}
 
-      {/* Main Hero Crystal */}
-      <FloatingCrystal position={[0, 0, 0]} color="#00aaff" speed={2} rotationSpeed={0.5} scale={1.5} />
+        {/* Subtle Cloud/Fog for depth */}
+        <Cloud opacity={0.1} speed={0.1} width={20} depth={5} segments={10} position={[0, -5, -10]} color="#aaccff" />
 
-      {/* Background Crystals */}
-      <FloatingCrystal position={[-3, 2, -5]} color="#00ffff" speed={1.5} rotationSpeed={0.3} scale={0.8} />
-      <FloatingCrystal position={[3, -2, -4]} color="#0088ff" speed={1.8} rotationSpeed={0.4} scale={0.7} />
-      <FloatingCrystal position={[-2, -3, -2]} color="#4400ff" speed={1.2} rotationSpeed={0.2} scale={0.5} />
-      <FloatingCrystal position={[2, 3, -3]} color="#00ffaa" speed={1.6} rotationSpeed={0.6} scale={0.6} />
+        {/* Main Hero Crystal */}
+        <FloatingCrystal position={[0, 0, 0]} color="#00aaff" speed={2} rotationSpeed={0.5} scale={1.5} />
 
-      {/* Lighting */}
-      <ambientLight intensity={0.5} color="#001e36" />
-      <spotLight position={[0, 20, 0]} intensity={2} angle={0.5} penumbra={1} color="#ccffff" castShadow />
-      <pointLight position={[10, 10, 10]} intensity={1} color="#00ffff" />
+        {/* Background Crystals */}
+        <FloatingCrystal position={[-3, 2, -5]} color="#00ffff" speed={1.5} rotationSpeed={0.3} scale={0.8} />
+        <FloatingCrystal position={[3, -2, -4]} color="#0088ff" speed={1.8} rotationSpeed={0.4} scale={0.7} />
+        <FloatingCrystal position={[-2, -3, -2]} color="#4400ff" speed={1.2} rotationSpeed={0.2} scale={0.5} />
+        <FloatingCrystal position={[2, 3, -3]} color="#00ffaa" speed={1.6} rotationSpeed={0.6} scale={0.6} />
 
-      {/* Environment for reflections */}
-      <Environment map={texture} blur={1} />
-    </group>
+        {/* Lighting */}
+        <ambientLight intensity={0.5} color="#001e36" />
+        <spotLight position={[0, 20, 0]} intensity={2} angle={0.5} penumbra={1} color="#ccffff" />
+        <pointLight position={[10, 10, 10]} intensity={1} color="#00ffff" />
+
+        {/* Environment for reflections */}
+        <Environment map={texture} blur={1} />
+      </group>
+    </>
   )
 }
 
@@ -142,8 +147,8 @@ const Landpage = ({ children }: { children?: React.ReactNode }) => {
       {/* Top Left Logo */}
       <Box
         component="img"
-        src={logoReflect}
-        alt="Nanthus Kitchen Logo"
+        src={logo}
+        alt="New Nanthu's Kitchen Logo"
         onClick={() => {
           const scrollContainer = document.querySelector('.lucide-scroll-container');
           if (scrollContainer) {
@@ -153,7 +158,7 @@ const Landpage = ({ children }: { children?: React.ReactNode }) => {
         sx={{
           position: 'fixed',
           top: { xs: 20, md: 35 },
-          right: { xs: 20, md: 40 },
+          left: { xs: 20, md: 40 },
           width: { xs: '55px', md: '85px' },
           height: 'auto',
           zIndex: 2000,
@@ -193,11 +198,31 @@ const Landpage = ({ children }: { children?: React.ReactNode }) => {
                 }}
                 style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}
               >
-                <div style={{ position: 'relative' }}>
+                <div style={{ position: 'relative', display: 'inline-block' }}>
+                  <Typography
+                    variant="h3"
+                    sx={{
+                      position: 'absolute',
+                      top: { xs: '-1.5rem', md: '-2.5rem' },
+                      left: { xs: '-1rem', md: '-3rem' },
+                      marginTop: { xs: '0.5rem', sm: '1rem', md: '13rem' },
+
+                      fontFamily: 'cursive',
+                      color: '#D9A756',
+                      transform: 'rotate(-15deg)',
+                      zIndex: 2,
+                      textShadow: '0 0 10px rgba(217, 167, 86, 0.5)',
+                      fontWeight: 400,
+                      pointerEvents: 'none'
+                    }}
+                  >
+                    New
+                  </Typography>
                   <Typography
                     variant="h1"
                     sx={{
                       fontSize: { xs: '2.2rem', sm: '4rem', md: '7rem', lg: '9rem' },
+                      marginTop: { xs: '0.5rem', sm: '1rem', md: '13rem' },
                       fontWeight: 100, // Ultra thin for maximum elegance
                       margin: 0,
                       color: '#fff',
@@ -383,7 +408,7 @@ const Landpage = ({ children }: { children?: React.ReactNode }) => {
             </Section>
 
             {/* Menu Redirect Section - Fixed Centering to avoid top clipping */}
-           <Section style={{ height: '1292px', padding: '6rem 0 10rem 0', justifyContent: 'flex-start', zIndex: 20 }}>
+            <Section style={{ height: '1292px', padding: '6rem 0 10rem 0', justifyContent: 'flex-start', zIndex: 20 }}>
               <motion.div
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
@@ -418,6 +443,11 @@ const Landpage = ({ children }: { children?: React.ReactNode }) => {
             {/* Catering Section - Fixed Centering to avoid top clipping */}
             <Section style={{ height: 'auto', minHeight: '100vh', padding: { xs: '6rem 0 4rem 0', md: '15rem 0 10rem 0' }, justifyContent: 'flex-start' }}>
               <CateringSection />
+            </Section>
+
+            {/* Contact Section */}
+            <Section style={{ height: 'auto', minHeight: '50vh', padding: '4rem 0', justifyContent: 'center' }}>
+              <ContactSection />
             </Section>
 
             {/* Creative Footer & Newsletter */}

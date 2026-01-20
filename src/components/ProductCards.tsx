@@ -131,7 +131,7 @@ export default function ProductCards() {
                     <img src="https://images.unsplash.com/photo-1589302168068-964664d93dc0?q=80&w=400" alt="Special Biryani" draggable="false" />
                 </ProductImageWrapper>
                 <ProductInfo className="product-info">
-                    <ProductTitle variant="h5">Nanthu's Biryani</ProductTitle>
+                    <ProductTitle variant="h5">New Nanthu's Biryani</ProductTitle>
                     <ProductDesc>Authentic Malabar style Dum Biryani with secret spices.</ProductDesc>
                 </ProductInfo>
             </Card>

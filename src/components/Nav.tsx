@@ -50,7 +50,7 @@ const Nav = () => {
                     }}
                 >
                     <Tooltip
-                        title="Nanthus Kitchen"
+                        title="New Nanthu's Kitchen"
                         placement="left"
                         TransitionComponent={Zoom}
                         arrow
@@ -71,7 +71,7 @@ const Nav = () => {
                         <Box
                             component="img"
                             src={logo}
-                            alt="Nanthus Kitchen Logo"
+                            alt="New Nanthu's Kitchen Logo"
                             sx={{
                                 width: '40px',
                                 height: 'auto',
@@ -209,7 +209,7 @@ const Nav = () => {
                 <Box
                     component="img"
                     src={logo}
-                    alt="Nanthus Kitchen Logo"
+                    alt="New Nanthu's Kitchen Logo"
                     sx={{
                         width: '32px',
                         height: 'auto',
@@ -263,60 +263,61 @@ const Nav = () => {
                         transition: 'opacity 0.3s ease',
                     }}
                 >
+                    {navItems.map((item, index) => {
                         // Distribute items in an arc upwards
-                    // Narrowing arc for small screens to prevent clipping
-                    const baseAngle = isMobile ? -50 : -60;
-                    const angleStep = isMobile ? 33 : 40;
-                    const angle = baseAngle + (index * angleStep);
-                    const radius = isMobile ? 110 : 160; // Slightly reduced radius
+                        // Narrowing arc for small screens to prevent clipping
+                        const baseAngle = isMobile ? -50 : -60;
+                        const angleStep = isMobile ? 33 : 40;
+                        const angle = baseAngle + (index * angleStep);
+                        const radius = isMobile ? 110 : 160; // Slightly reduced radius
 
-                    return (
-                    <Box
-                        component="li"
-                        key={item.id}
-                        sx={{
-                            position: 'absolute',
-                            left: '-25px', // Centered (half of 50px width)
-                            transformOrigin: `25px ${radius}px`,
-                            opacity: 0,
-                            animation: isMobileMenuOpen ? `appear 0.5s forwards ${index * 0.1}s` : 'none',
-                            transform: `rotate(${angle}deg)`,
-                            top: `-${radius}px`,
-                        }}
-                    >
-                        <Box
-                            component="a"
-                            onClick={() => {
-                                setActiveNav(item.id);
-                                setIsMobileMenuOpen(false);
-                            }}
-                            sx={{
-                                display: 'flex',
-                                alignItems: 'center',
-                                justifyContent: 'center',
-                                width: '50px',
-                                height: '50px',
-                                textDecoration: 'none',
-                                color: '#fff',
-                                position: 'relative',
-                                transform: `rotate(${-angle}deg)`, // Counter-rotate
-                                '&::before': {
-                                    content: '""',
+                        return (
+                            <Box
+                                component="li"
+                                key={item.id}
+                                sx={{
                                     position: 'absolute',
-                                    inset: 0,
-                                    borderRadius: '50%',
-                                    background: '#D9A756',
-                                    animation: 'scaling 3s linear infinite',
-                                    boxShadow: '0 0 15px rgba(217, 167, 86, 0.4)',
-                                }
-                            }}
-                        >
-                            <Box sx={{ position: 'relative', zIndex: 1, display: 'flex' }}>
-                                {React.cloneElement(item.icon as React.ReactElement, { sx: { fontSize: '24px', color: '#fff' } } as any)}
+                                    left: '-25px', // Centered (half of 50px width)
+                                    transformOrigin: `25px ${radius}px`,
+                                    opacity: 0,
+                                    animation: isMobileMenuOpen ? `appear 0.5s forwards ${index * 0.1}s` : 'none',
+                                    transform: `rotate(${angle}deg)`,
+                                    top: `-${radius}px`,
+                                }}
+                            >
+                                <Box
+                                    component="a"
+                                    onClick={() => {
+                                        setActiveNav(item.id);
+                                        setIsMobileMenuOpen(false);
+                                    }}
+                                    sx={{
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        justifyContent: 'center',
+                                        width: '50px',
+                                        height: '50px',
+                                        textDecoration: 'none',
+                                        color: '#fff',
+                                        position: 'relative',
+                                        transform: `rotate(${-angle}deg)`, // Counter-rotate
+                                        '&::before': {
+                                            content: '""',
+                                            position: 'absolute',
+                                            inset: 0,
+                                            borderRadius: '50%',
+                                            background: '#D9A756',
+                                            animation: 'scaling 3s linear infinite',
+                                            boxShadow: '0 0 15px rgba(217, 167, 86, 0.4)',
+                                        }
+                                    }}
+                                >
+                                    <Box sx={{ position: 'relative', zIndex: 1, display: 'flex' }}>
+                                        {React.cloneElement(item.icon as React.ReactElement, { sx: { fontSize: '24px', color: '#fff' } } as any)}
+                                    </Box>
+                                </Box>
                             </Box>
-                        </Box>
-                    </Box>
-                    );
+                        );
                     })}
                 </Box>
 

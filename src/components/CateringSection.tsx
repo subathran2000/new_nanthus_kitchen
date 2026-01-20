@@ -1,9 +1,10 @@
 import React, { useRef, useState } from 'react'
-import { Box, Typography, Button } from '@mui/material'
+import { Box, Typography, Button, Dialog, IconButton, DialogContent } from '@mui/material'
 import { motion } from 'framer-motion'
 import CelebrationIcon from '@mui/icons-material/Celebration'
 import BusinessCenterIcon from '@mui/icons-material/BusinessCenter'
 import RestaurantMenuIcon from '@mui/icons-material/RestaurantMenu'
+import CloseIcon from '@mui/icons-material/Close'
 import CateringForm from './CateringForm'
 
 const services = [
@@ -163,6 +164,8 @@ const SpotlightCard = ({ title, description, icon, index }: { title: string, des
 };
 
 const CateringSection = () => {
+    const [isFormOpen, setIsFormOpen] = useState(false);
+
     return (
         <Box sx={{
             width: '100%',
@@ -208,7 +211,7 @@ const CateringSection = () => {
                     fontFamily: '"Outfit", sans-serif',
                     textTransform: 'uppercase'
                 }}>
-                    NANTHU'S CATERING
+                    NEW NANTHU'S CATERING
                 </Typography>
                 <div style={{ width: '60px', height: '1px', background: 'rgba(0, 255, 255, 0.4)', margin: '0 auto 3rem auto' }} />
                 <Typography variant="body1" sx={{
@@ -225,7 +228,98 @@ const CateringSection = () => {
                     Elevate your special occasions with culinary artistry inspired by
                     centuries of tradition and the pinnacle of modern design.
                 </Typography>
-                <CateringForm />
+                <Button
+                    variant="outlined"
+                    onClick={() => setIsFormOpen(true)}
+                    component={motion.button}
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    sx={{
+                        borderColor: 'rgba(0, 255, 255, 0.4)',
+                        color: '#00ffff',
+                        borderRadius: 0,
+                        px: { xs: 5, sm: 8 },
+                        py: 2,
+                        fontWeight: 400,
+                        textTransform: 'uppercase',
+                        fontSize: { xs: '0.8rem', md: '1rem' },
+                        letterSpacing: { xs: '0.2em', md: '0.3em' },
+                        transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
+                        backgroundColor: 'rgba(0, 30, 54, 0.6)',
+                        backdropFilter: 'blur(10px)',
+                        '&:hover': {
+                            borderColor: '#D9A756',
+                            bgcolor: '#D9A756',
+                            color: '#001e36',
+                            boxShadow: '0 0 30px rgba(217, 167, 86, 0.4)',
+                        },
+                    }}
+                >
+                    INQUIRE NOW
+                </Button>
+
+                <Dialog
+                    open={isFormOpen}
+                    onClose={() => setIsFormOpen(false)}
+                    maxWidth="md"
+                    fullWidth
+                    PaperProps={{
+                        sx: {
+                            borderRadius: '24px',
+                            background: 'transparent',
+                            boxShadow: 'none',
+                            maxHeight: '90vh',
+                            m: 2
+                        }
+                    }}
+                    BackdropProps={{
+                        sx: {
+                            backdropFilter: 'blur(5px)',
+                            backgroundColor: 'transparent'
+                        }
+                    }}
+                >
+                    <DialogContent sx={{
+                        p: 0,
+                        overflow: 'hidden',
+                        position: 'relative',
+                        background: 'transparent'
+                    }}>
+                        <IconButton
+                            onClick={() => setIsFormOpen(false)}
+                            sx={{
+                                position: 'absolute',
+                                right: 20,
+                                top: 20,
+                                color: 'rgba(255, 255, 255, 0.5)',
+                                zIndex: 10,
+                                '&:hover': {
+                                    color: '#fff',
+                                    background: 'rgba(255, 255, 255, 0.1)'
+                                }
+                            }}
+                        >
+                            <CloseIcon />
+                        </IconButton>
+
+                        <Box sx={{
+                            maxHeight: '85vh',
+                            overflowY: 'auto',
+                            '&::-webkit-scrollbar': {
+                                width: '4px',
+                            },
+                            '&::-webkit-scrollbar-track': {
+                                background: 'rgba(255, 255, 255, 0.05)',
+                            },
+                            '&::-webkit-scrollbar-thumb': {
+                                background: 'rgba(0, 255, 255, 0.2)',
+                                borderRadius: '4px',
+                            }
+                        }}>
+                            <CateringForm isPopup={true} />
+                        </Box>
+                    </DialogContent>
+                </Dialog>
             </Box>
 
             <Box sx={{
