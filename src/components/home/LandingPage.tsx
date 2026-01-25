@@ -1,68 +1,77 @@
 import React, { useEffect, useRef } from 'react'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
-import CreativeFooter from '../Footer/Footer'
-import bg1 from "../../assets/images/blue-paint-brush-stroke-effect.jpg"
-import bg2 from "../../assets/images/bg2.jpg"
-import bg3 from "../../assets/images/brushstroke-texture-modern-design.jpg"
-import bg4 from "../../assets/images/bg4.jpg"
-import navyBg from "../../assets/images/background.jpg"
-import logo from "../../assets/images/new_nanthus_kitchen_logo.png"
-import TypewriterText from '../common/TypewriterText'
-import OrderButton from '../common/OrderButton'
+import CreativeFooter from "../Footer/Footer";
+import logo from "../../assets/images/new_nanthus_kitchen_logo.png";
+import TypewriterText from "../common/TypewriterText";
+import OrderButton from "../common/OrderButton";
+import "./LandingPage.css";
 
 const LandingPage: React.FC = () => {
-  const rootRef = useRef<HTMLDivElement | null>(null)
+  const rootRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
-    if (!rootRef.current) return
-    gsap.registerPlugin(ScrollTrigger)
+    if (!rootRef.current) return;
+    gsap.registerPlugin(ScrollTrigger);
 
-    const container = rootRef.current
-    const sections = Array.from(container.querySelectorAll<HTMLElement>('section.landing-section'))
-    const images = Array.from(container.querySelectorAll<HTMLElement>('.bg'))
-    const headings = Array.from(container.querySelectorAll<HTMLElement>('.section-heading'))
-    const outerWrappers = Array.from(container.querySelectorAll<HTMLElement>('.outer'))
-    const innerWrappers = Array.from(container.querySelectorAll<HTMLElement>('.inner'))
+    const container = rootRef.current;
+    const sections = Array.from(
+      container.querySelectorAll<HTMLElement>("section.landing-section"),
+    );
+    const images = Array.from(container.querySelectorAll<HTMLElement>(".bg"));
+    const headings = Array.from(
+      container.querySelectorAll<HTMLElement>(".section-heading"),
+    );
+    const outerWrappers = Array.from(
+      container.querySelectorAll<HTMLElement>(".outer"),
+    );
+    const innerWrappers = Array.from(
+      container.querySelectorAll<HTMLElement>(".inner"),
+    );
 
     // Wrap chars in spans for animation
-    const splitChars = headings.map(h => {
-      const text = h.textContent || ''
-      h.innerHTML = ''
-      const frag = document.createDocumentFragment()
-      for (const ch of text.split('')) {
-        const span = document.createElement('span')
-        span.className = 'char'
-        span.textContent = ch
-        frag.appendChild(span)
+    const splitChars = headings.map((h) => {
+      const text = h.textContent || "";
+      h.innerHTML = "";
+      const frag = document.createDocumentFragment();
+      for (const ch of text.split("")) {
+        const span = document.createElement("span");
+        span.className = "char";
+        span.textContent = ch;
+        frag.appendChild(span);
       }
-      h.appendChild(frag)
-      return Array.from(h.querySelectorAll<HTMLElement>('.char'))
-    })
+      h.appendChild(frag);
+      return Array.from(h.querySelectorAll<HTMLElement>(".char"));
+    });
 
     // Initial state
-    gsap.set(outerWrappers, { yPercent: 100 })
-    gsap.set(innerWrappers, { yPercent: -100 })
-    gsap.set(sections, { autoAlpha: 0, zIndex: 0 })
+    gsap.set(outerWrappers, { yPercent: 100 });
+    gsap.set(innerWrappers, { yPercent: -100 });
+    gsap.set(sections, { autoAlpha: 0, zIndex: 0 });
 
     // First section is active by default
-    gsap.set(sections[0], { autoAlpha: 1, zIndex: 1 })
-    gsap.set([outerWrappers[0], innerWrappers[0]], { yPercent: 0 })
+    gsap.set(sections[0], { autoAlpha: 1, zIndex: 1 });
+    gsap.set([outerWrappers[0], innerWrappers[0]], { yPercent: 0 });
 
     // Cinematic Entrance Animation
-    const entranceTl = gsap.timeline({ defaults: { ease: 'power3.out' } })
+    const entranceTl = gsap.timeline({ defaults: { ease: "power3.out" } });
 
     entranceTl
-      .fromTo('.hero-title-wrapper', { perspective: 400 }, { perspective: 400, duration: 0 })
+      .fromTo(
+        ".hero-title-wrapper",
+        { perspective: 400 },
+        { perspective: 400, duration: 0 },
+      )
 
       // Removed GSAP animations for title elements to use Framer Motion Typewriter
       // .fromTo('.accent-label', ...)
       // .fromTo(splitChars[0], ...) (Note: splitChars[0] was the first .section-heading, which we will remove class from)
-      .fromTo('.title-divider',
-        { width: '0%', autoAlpha: 0 },
-        { width: '100%', autoAlpha: 0.8, duration: 1.5, ease: 'expo.inOut' },
-        1.2
-      )
+      .fromTo(
+        ".title-divider",
+        { width: "0%", autoAlpha: 0 },
+        { width: "100%", autoAlpha: 0.8, duration: 1.5, ease: "expo.inOut" },
+        1.2,
+      );
     // .fromTo('.subtitle-tagline', ...)
 
     const tl = gsap.timeline({
@@ -74,49 +83,71 @@ const LandingPage: React.FC = () => {
         scrub: 2, // Increased for "smooth" weight
         snap: 1 / (sections.length - 1),
         anticipatePin: 1,
-      }
-    })
+      },
+    });
 
     // Build the timeline for section transitions
     sections.forEach((_, i) => {
-      if (i === sections.length - 1) return
+      if (i === sections.length - 1) return;
 
-      const next = i + 1
-      const label = `step${i}`
-      tl.add(label)
+      const next = i + 1;
+      const label = `step${i}`;
+      tl.add(label);
 
       // Animate current section OUT
-      tl.to(images[i], { yPercent: -15, duration: 1 }, label)
-        .to(sections[i], { autoAlpha: 0, duration: 0.1 }, label + "+=0.9")
+      tl.to(images[i], { yPercent: -15, duration: 1 }, label).to(
+        sections[i],
+        { autoAlpha: 0, duration: 0.1 },
+        label + "+=0.9",
+      );
 
       // Animate next section IN
       tl.set(sections[next], { autoAlpha: 1, zIndex: 1 }, label)
-        .fromTo([outerWrappers[next], innerWrappers[next]],
+        .fromTo(
+          [outerWrappers[next], innerWrappers[next]],
           { yPercent: (idx: number) => (idx ? -100 : 100) },
-          { yPercent: 0, duration: 1, ease: "power1.inOut" }, label)
-        .fromTo(images[next], { yPercent: 15 }, { yPercent: 0, duration: 1, ease: "power1.inOut" }, label)
-        .fromTo(splitChars[next],
+          { yPercent: 0, duration: 1, ease: "power1.inOut" },
+          label,
+        )
+        .fromTo(
+          images[next],
+          { yPercent: 15 },
+          { yPercent: 0, duration: 1, ease: "power1.inOut" },
+          label,
+        )
+        .fromTo(
+          splitChars[next],
           { autoAlpha: 0, yPercent: 150 },
-          { autoAlpha: 1, yPercent: 0, duration: 0.8, ease: 'power2', stagger: { each: 0.02, from: 'random' } }, label + "+=0.2")
-    })
+          {
+            autoAlpha: 1,
+            yPercent: 0,
+            duration: 0.8,
+            ease: "power2",
+            stagger: { each: 0.02, from: "random" },
+          },
+          label + "+=0.2",
+        );
+    });
 
     return () => {
-      ScrollTrigger.getAll().forEach(st => st.kill())
-      gsap.killTweensOf('*')
-    }
-  }, [])
+      ScrollTrigger.getAll().forEach((st) => st.kill());
+      gsap.killTweensOf("*");
+    };
+  }, []);
 
   const handleOrderClick = () => {
     // Navigate to menu or order page
-    window.location.href = '/menu';
+    window.location.href = "/menu";
   };
 
   const handleDiveClick = () => {
-    const nextSection = rootRef.current?.querySelector<HTMLElement>('.landing-section.second');
+    const nextSection = rootRef.current?.querySelector<HTMLElement>(
+      ".landing-section.second",
+    );
     if (nextSection) {
-      nextSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      nextSection.scrollIntoView({ behavior: "smooth", block: "start" });
     } else {
-      window.scrollTo({ top: window.innerHeight, behavior: 'smooth' });
+      window.scrollTo({ top: window.innerHeight, behavior: "smooth" });
     }
   };
 
@@ -126,8 +157,8 @@ const LandingPage: React.FC = () => {
         <img
           src={logo}
           alt="New Nanthu's Kitchen Logo"
-          style={{ maxHeight: '7rem', objectFit: 'contain', cursor: 'pointer', marginTop: '5rem' }}
-          onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+          className="lp-header-logo"
+          onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
         />
         <OrderButton onClick={handleOrderClick} />
       </header>
@@ -138,7 +169,7 @@ const LandingPage: React.FC = () => {
             <div className="inner">
               <div className="bg one">
                 <div className="hero-title-wrapper">
-                  <div className="title-stack" style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
+                  <div className="title-stack">
                     <TypewriterText
                       text="New"
                       as="span"
@@ -163,7 +194,13 @@ const LandingPage: React.FC = () => {
                     delay={2.5}
                     stagger={0.05}
                   />
-                  <button className="dive-button" onClick={handleDiveClick} aria-label="Dive in">DIVE IN</button>
+                  <button
+                    className="dive-button"
+                    onClick={handleDiveClick}
+                    aria-label="Dive in"
+                  >
+                    DIVE IN
+                  </button>
                 </div>
               </div>
             </div>
@@ -450,8 +487,8 @@ const LandingPage: React.FC = () => {
           }
         }
       `}</style>
-    </div >
-  )
-}
+    </div>
+  );
+};
 
 export default LandingPage

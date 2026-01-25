@@ -1,0 +1,19 @@
+/* Footer CSS - replaces inline styles */
+
+.footer-secret-text {
+  color: #00ffff;
+}
+
+.footer-kitchen-text {
+  color: #00ffff;
+}
+
+.footer-creator-link {
+  color: inherit;
+  text-decoration: none;
+  border-bottom: 1px solid rgba(170, 204, 255, 0.3);
+}
+
+.footer-creator-link:hover {
+  color: #00ffff;
+}
