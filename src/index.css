@@ -8,6 +8,8 @@ html {
     height: 100%;
     overflow-x: hidden;
     overflow-y: auto;
+    background-color: #001e36;
+    color: #ffffff;
 }
 
 #root {
