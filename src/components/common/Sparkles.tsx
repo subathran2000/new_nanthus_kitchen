@@ -49,13 +49,13 @@ const Sparkles: React.FC = () => {
     return (
         <div
             style={{
-                position: 'fixed',
+                position: 'absolute',
                 top: 0,
                 left: 0,
                 width: '100%',
                 height: '100%',
                 pointerEvents: 'none',
-                zIndex: 9999,
+                zIndex: 0,
                 overflow: 'hidden',
             }}
         >
@@ -86,7 +86,7 @@ const Sparkles: React.FC = () => {
                         height: star.size,
                         borderRadius: '50%',
                         backgroundColor: 'white',
-                        boxShadow: '0 0 8px 2px rgba(255, 255, 255, 1)',
+                        boxShadow: '0 0 8px 2px rgba(255, 255, 255, 0.8)',
                     }}
                 />
             ))}
@@ -94,7 +94,7 @@ const Sparkles: React.FC = () => {
             {/* Single Mouse Follower (No Stretch) */}
             <motion.div
                 style={{
-                    position: 'fixed',
+                    position: 'absolute',
                     top: 0,
                     left: 0,
                     x: followerX,
@@ -106,7 +106,7 @@ const Sparkles: React.FC = () => {
                     borderRadius: '50%',
                     background: 'radial-gradient(circle, rgba(255,255,255,0.8) 0%, rgba(255,255,255,0) 70%)',
                     pointerEvents: 'none',
-                    zIndex: 10000,
+                    zIndex: 1,
                 }}
             />
         </div>

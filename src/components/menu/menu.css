@@ -23,10 +23,22 @@
     justify-content: center;
     min-height: 100vh;
     width: 100%;
+    max-width: 100vw;
     background-color: var(--color-navy-bg);
+    overflow-x: hidden;
     overflow-y: auto;
     padding: 4rem 1rem;
     position: relative;
+    box-sizing: border-box;
+    scrollbar-width: none;
+    /* Hide for Firefox */
+    -ms-overflow-style: none;
+    /* Hide for IE/Edge */
+}
+
+.menu-wrapper::-webkit-scrollbar {
+    display: none;
+    /* Hide for Chrome/Safari */
 }
 
 .container {
@@ -38,6 +50,9 @@
     align-items: center;
     justify-content: flex-start;
     margin: 0 auto;
+    box-sizing: border-box;
+    /* Removed overflow: hidden to allow circular icons to float above cards */
+    overflow: visible;
 }
 
 .menu-header {
@@ -86,31 +101,187 @@
 
 .box-container {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     width: 100%;
-    min-height: 400px;
-    gap: 30px;
+    max-width: 1100px;
+    flex: 1;
+    overflow: hidden;
+    padding: 100px 20px 40px;
+    /* Increased top padding for overhead icons */
+    gap: 40px 30px;
     position: relative;
     justify-items: center;
+    align-content: start;
 }
 
-.item-card {
+/* New Card Design Styles */
+.listar-feature-item-wrapper {
+    width: 100%;
+    min-width: 0;
+}
+
+.listar-feature-item {
+    height: 100%;
+    position: relative;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.listar-feature-item-inner {
+    padding: 60px 30px;
+    border-radius: 6px;
+    z-index: 5;
+    position: relative;
+    height: 100%;
+    background: transparent;
+    /* Resetting to let the border and content handle it */
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 15px;
+}
+
+.listar-feature-item-inner:before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
     width: 100%;
-    max-width: 320px;
+    height: 100%;
+    box-shadow: 120px 0px 150px rgba(80, 80, 80, 0.15), 10px 0px 10px rgba(80, 80, 80, 0.02);
+    border-radius: 1000px;
+    background: linear-gradient(to right, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0) 40%, rgba(255, 255, 255, 1) 100%);
+    z-index: -1;
+}
+
+.listar-feature-right-border {
+    position: absolute;
+    width: calc(100% + 24px);
+    height: calc(100% + 24px);
+    top: -12px;
+    left: 50%;
+    overflow: hidden;
+}
+
+.listar-feature-right-border:before {
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: -50%;
+    border: 11px solid #258bd5;
+    border-radius: 800px;
+}
+
+.listar-feature-icon-wrapper {
+    width: 148px;
+    height: 148px;
+    border-radius: 50%;
+    position: absolute;
+    background-color: #fff;
+    box-shadow: 8px 8px 30px rgba(0, 0, 0, 0.06);
+    left: 50%;
+    margin-left: -74px;
+    top: -74px;
+    z-index: 6;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: transform 0.6s cubic-bezier(0.33, 1, 0.68, 1);
+}
+
+.listar-feature-item:hover .listar-feature-icon-wrapper {
+    transform: scale(1.1) rotate(5deg);
+}
+
+.listar-feature-icon-inner {
+    width: 120px;
+    height: 120px;
+    border-radius: 500px;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 10px 10px 20px rgba(0, 0, 0, 0.14);
+    background: #fff;
+    overflow: hidden;
+}
+
+.listar-image-icon {
+    width: auto;
+    height: 55px;
+    object-fit: contain;
+}
+
+.listar-feature-content-wrapper {
+    padding-top: 60px;
+    text-align: center;
+    width: 100%;
+    position: relative;
+    z-index: 10;
+}
+
+.listar-feature-item-title {
+    margin: 0 0 30px;
+    text-align: center;
+    line-height: 1.5;
+}
+
+.listar-feature-item-title>span {
+    display: inline-block;
+    position: relative;
+    padding: 10px 20px 10px 45px;
+    background-color: #fff;
+    border-radius: 50px;
+    color: #252525;
+    font-size: 18px;
+    font-weight: 700;
+    box-shadow: 15px 20px 30px rgba(80, 80, 80, 0.12), 5px 0px 40px rgba(80, 80, 80, 0.1);
+}
+
+.listar-feature-item-title>span span {
+    position: absolute;
+    left: -40px;
+    top: -3px;
+    width: 50px;
+    height: 50px;
+    line-height: 30px;
+    background: #fff;
+    color: #252525;
+    border-radius: 50px;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 15px 15px 30px rgba(80, 80, 80, 0.2), 5px 0px 80px rgba(80, 80, 0, 0.15);
+}
+
+.listar-feature-item-excerpt {
+    color: #252525;
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    line-height: 1.8;
+    padding: 0 20px;
+}
+
+.item-card {
+    width: 100%;
+    min-width: 0;
+    /* Critical for grid shrinking */
     cursor: pointer;
+    /* allow icons to overflow vertically above the card */
+    overflow: visible;
 }
 
 .item {
-    display: inline-flex;
+    display: flex;
     justify-content: center;
     align-items: center;
     color: var(--color-just-black);
     width: 100%;
-    height: 220px;
+    aspect-ratio: 4/3;
+    /* Maintain proportions instead of fixed height */
+    max-height: 220px;
     border-radius: 12px;
     overflow: hidden;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
@@ -135,23 +306,34 @@
 }
 
 .item-name {
-    font-family: 'Playfair Display', serif;
-    font-weight: 700;
-    font-style: italic;
-    color: var(--color-yellow);
-    font-size: 1.6rem;
-    text-align: center;
-    margin: 0;
-    letter-spacing: 0.02em;
-    text-shadow: 0 0 10px rgba(255, 215, 0, 0.8), 0 0 20px rgba(255, 215, 0, 0.5), 0 0 30px rgba(255, 215, 0, 0.3);
-    transition: all 0.3s ease;
-    opacity: 0;
+    display: none;
+    /* Fully replaced by the new pill design */
 }
 
-.item-card:hover .item-name {
-    color: var(--color-surface-white);
-    text-shadow: 0 0 20px rgba(255, 215, 0, 1), 0 0 40px rgba(255, 215, 0, 0.6);
-    transform: scale(1.05);
+/* Ripples and extra decorations */
+.listar-feature-item.listar-feature-has-link:after {
+    content: "";
+    position: absolute;
+    bottom: -7px;
+    left: 50%;
+    margin-left: -25px;
+    width: 50px;
+    height: 50px;
+    border-radius: 1000px;
+    z-index: 10;
+    animation: ripple 0.7s linear infinite;
+    box-shadow: 5px 5px 10px rgba(163, 177, 198, 0.6), -5px -5px 10px rgba(255, 255, 255, 0.5);
+    background-color: #fff;
+}
+
+@keyframes ripple {
+    0% {
+        box-shadow: 0 0 0 0 rgba(163, 177, 198, 0.3), 0 0 0 1em rgba(163, 177, 198, 0.3), 0 0 0 3em rgba(163, 177, 198, 0.03), 0 0 0 5em rgba(163, 177, 198, 0.01);
+    }
+
+    100% {
+        box-shadow: 0 0 0 1em rgba(163, 177, 198, 0.3), 0 0 0 3em rgba(163, 177, 198, 0.03), 0 0 0 5em rgba(163, 177, 198, 0.03), 0 0 0 8em rgba(163, 177, 198, 0.01);
+    }
 }
 
 /* Themed Modal Styles */
@@ -185,6 +367,11 @@
     padding: 3rem;
     border: 1px solid rgba(255, 215, 0, 0.2);
     animation: slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    scrollbar-width: none;
+}
+
+.modal-content::-webkit-scrollbar {
+    display: none;
 }
 
 .modal-close {
@@ -366,39 +553,6 @@
     }
 }
 
-/* Responsive Breakpoints */
-@media screen and (max-width: 850px) {
-    .box-container {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 20px;
-    }
-
-    .modal-items-grid {
-        grid-template-columns: 1fr;
-    }
-
-    .modal-category-title {
-        font-size: 2.5rem;
-    }
-}
-
-@media screen and (max-width: 550px) {
-    .box-container {
-        grid-template-columns: 1fr;
-    }
-
-    .item {
-        height: 250px;
-    }
-
-    .modal-content {
-        padding: 2rem 1.5rem;
-    }
-
-    .modal-category-title {
-        font-size: 2rem;
-    }
-}
 
 .tag-button {
     align-items: center;
