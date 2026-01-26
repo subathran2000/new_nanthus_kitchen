@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Box, IconButton, Typography, useTheme, useMediaQuery } from '@mui/material';
 import { ChevronLeft, ChevronRight, Home } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
+import Sparkles from '../common/Sparkles';
 
 
 interface ImageData {
@@ -68,6 +69,48 @@ const Coverflow3D: React.FC = () => {
             alt: 'Waterfall',
             title: 'Waterfall',
             description: 'Cascading water through lush green forest'
+        },
+        {
+            src: 'https://i.pinimg.com/736x/29/af/f8/29aff8a83317d3eb09ecfbeb347688e2.jpg',
+            alt: 'Mountain Landscape',
+            title: 'Mountain Landscape',
+            description: 'Majestic peaks covered in snow during golden hour'
+        },
+        {
+            src: 'https://i.pinimg.com/736x/29/af/f8/29aff8a83317d3eb09ecfbeb347688e2.jpg',
+            alt: 'Forest Path',
+            title: 'Forest Path',
+            description: 'A winding trail through ancient woodland'
+        },
+        {
+            src: 'https://i.pinimg.com/736x/29/af/f8/29aff8a83317d3eb09ecfbeb347688e2.jpg',
+            alt: 'Lake Reflection',
+            title: 'Lake Reflection',
+            description: 'Serene waters mirroring the surrounding landscape'
+        },
+        {
+            src: 'https://i.pinimg.com/736x/29/af/f8/29aff8a83317d3eb09ecfbeb347688e2.jpg',
+            alt: 'Ocean Sunset',
+            title: 'Ocean Sunset',
+            description: 'Golden hour over endless ocean waves'
+        },
+        {
+            src: 'https://i.pinimg.com/736x/29/af/f8/29aff8a83317d3eb09ecfbeb347688e2.jpg',
+            alt: 'Desert Dunes',
+            title: 'Desert Dunes',
+            description: 'Rolling sand dunes under vast blue skies'
+        },
+        {
+            src: 'https://i.pinimg.com/736x/29/af/f8/29aff8a83317d3eb09ecfbeb347688e2.jpg',
+            alt: 'Starry Night',
+            title: 'Starry Night',
+            description: 'Countless stars illuminating the dark sky'
+        },
+        {
+            src: 'https://i.pinimg.com/736x/29/af/f8/29aff8a83317d3eb09ecfbeb347688e2.jpg',
+            alt: 'Waterfall',
+            title: 'Waterfall',
+            description: 'Cascading water through lush green forest'
         }
     ];
 
@@ -87,7 +130,7 @@ const Coverflow3D: React.FC = () => {
 
         setTimeout(() => {
             setIsAnimating(false);
-        }, 600);
+        }, 400);
     };
 
     const goToIndex = (index: number) => {
@@ -97,7 +140,7 @@ const Coverflow3D: React.FC = () => {
 
         setTimeout(() => {
             setIsAnimating(false);
-        }, 600);
+        }, 400);
     };
 
     const startAutoplay = () => {
@@ -214,9 +257,9 @@ const Coverflow3D: React.FC = () => {
         const absOffset = Math.abs(offset);
         const sign = Math.sign(offset);
 
-        const spacing = isSmall ? 150 : isMobile ? 180 : 220;
+        const spacing = isSmall ? 250 : isMobile ? 300 : 400;
         let translateX = offset * spacing;
-        let translateZ = -absOffset * (isSmall ? 150 : 200);
+        let translateZ = -absOffset * (isSmall ? 200 : 300);
         let rotateY = -sign * Math.min(absOffset * 60, 60);
         let opacity = 1 - absOffset * 0.2;
         let scale = 1 - absOffset * 0.1;
@@ -233,7 +276,7 @@ const Coverflow3D: React.FC = () => {
         };
     };
 
-    const cardSize = isSmall ? 180 : isMobile ? 200 : 300;
+    const cardSize = isSmall ? 280 : isMobile ? 350 : 450;
 
     return (
         <Box
@@ -243,8 +286,10 @@ const Coverflow3D: React.FC = () => {
                 minHeight: '100vh',
                 position: 'relative',
                 overflow: 'hidden',
+                bgcolor: '#001e36',
             }}
         >
+            <Sparkles />
 
             <Box
                 sx={{
@@ -286,7 +331,7 @@ const Coverflow3D: React.FC = () => {
                 <Box
                     sx={{
                         position: 'absolute',
-                        top: { xs: '20px', md: '40px' },
+                        top: { xs: '160px', md: '70px' }, // Moved further down
                         left: '50%',
                         transform: 'translateX(-50%)',
                         color: 'white',
@@ -319,16 +364,6 @@ const Coverflow3D: React.FC = () => {
                     >
                         {imageData[currentIndex].title}
                     </Typography>
-                    <Typography
-                        variant="body1"
-                        sx={{
-                            fontSize: { xs: '14px', sm: '16px', md: '18px' },
-                            color: '#aaccff',
-                            opacity: 0.9,
-                        }}
-                    >
-                        {imageData[currentIndex].description}
-                    </Typography>
                 </Box>
 
                 {/* Coverflow Container */}
@@ -355,7 +390,7 @@ const Coverflow3D: React.FC = () => {
                             transformStyle: 'preserve-3d',
                             position: 'relative',
                             width: '100%',
-                            height: '400px',
+                            height: '600px',
                         }}
                     >
                         {imageData.map((item, index) => (
@@ -369,7 +404,7 @@ const Coverflow3D: React.FC = () => {
                                     position: 'absolute',
                                     width: `${cardSize}px`,
                                     height: `${cardSize}px`,
-                                    transition: 'all 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55)',
+                                    transition: 'all 0.4s cubic-bezier(0.25, 0.1, 0.25, 1)',
                                     cursor: 'pointer',
                                     userSelect: 'none',
                                     ...getItemStyle(index),
@@ -399,7 +434,7 @@ const Coverflow3D: React.FC = () => {
                                         sx={{
                                             width: '100%',
                                             height: '100%',
-                                            objectFit: 'cover',
+                                            objectFit: 'contain',
                                             borderRadius: '10px',
                                             display: 'block',
                                         }}
@@ -419,7 +454,8 @@ const Coverflow3D: React.FC = () => {
                                         opacity: 0.4,
                                         filter: 'blur(2px)',
                                         backgroundImage: `url(${item.src})`,
-                                        backgroundSize: 'cover',
+                                        backgroundSize: 'contain', // Match the main card fit
+                                        backgroundRepeat: 'no-repeat',
                                         backgroundPosition: 'center',
                                         overflow: 'hidden',
                                         pointerEvents: 'none',
@@ -446,20 +482,24 @@ const Coverflow3D: React.FC = () => {
                         }}
                         sx={{
                             position: 'absolute',
-                            top: '50%',
-                            left: { xs: '10px', sm: '20px', md: '120px' },
-                            transform: 'translateY(-50%)',
+                            top: { xs: 'auto', md: '50%' },
+                            bottom: { xs: '190px', md: 'auto' }, // Moved up
+                            left: { xs: '20%', sm: '20px', md: '120px' },
+                            transform: { xs: 'translateX(-50%)', md: 'translateY(-50%)' },
                             bgcolor: 'rgba(0, 255, 255, 0.1)',
                             border: '2px solid rgba(0, 255, 255, 0.3)',
                             color: '#00ffff',
-                            width: { xs: '40px', sm: '40px', md: '40px' },
-                            height: { xs: '40px', sm: '40px', md: '40px' },
+                            width: { xs: '50px', sm: '40px', md: '40px' }, // Slightly larger for touch
+                            height: { xs: '50px', sm: '40px', md: '40px' },
                             backdropFilter: 'blur(10px)',
                             boxShadow: '0 8px 32px rgba(0, 255, 255, 0.3), 0 0 20px rgba(0, 255, 255, 0.2)',
                             zIndex: 1001,
                             '&:hover': {
                                 bgcolor: 'rgba(0, 255, 255, 0.2)',
-                                transform: 'translateY(-50%) scale(1.1)',
+                                transform: {
+                                    xs: 'translateX(-50%) scale(1.1)',
+                                    md: 'translateY(-50%) scale(1.1)'
+                                },
                                 boxShadow: '0 0 30px rgba(0, 255, 255, 0.6), 0 0 60px rgba(0, 255, 255, 0.4)',
                             },
                         }}
@@ -474,20 +514,24 @@ const Coverflow3D: React.FC = () => {
                         }}
                         sx={{
                             position: 'absolute',
-                            top: '50%',
-                            right: { xs: '10px', sm: '20px', md: '120px' },
-                            transform: 'translateY(-50%)',
+                            top: { xs: 'auto', md: '50%' },
+                            bottom: { xs: '190px', md: 'auto' }, // Moved up
+                            right: { xs: '20%', sm: '20px', md: '120px' },
+                            transform: { xs: 'translateX(50%)', md: 'translateY(-50%)' },
                             bgcolor: 'rgba(0, 255, 255, 0.1)',
                             border: '2px solid rgba(0, 255, 255, 0.3)',
                             color: '#00ffff',
-                            width: { xs: '40px', sm: '40px', md: '40px' },
-                            height: { xs: '40px', sm: '40px', md: '40px' },
+                            width: { xs: '50px', sm: '40px', md: '40px' }, // Slightly larger for touch
+                            height: { xs: '50px', sm: '40px', md: '40px' },
                             backdropFilter: 'blur(10px)',
                             boxShadow: '0 8px 32px rgba(0, 255, 255, 0.3), 0 0 20px rgba(0, 255, 255, 0.2)',
                             zIndex: 1001,
                             '&:hover': {
                                 bgcolor: 'rgba(0, 255, 255, 0.2)',
-                                transform: 'translateY(-50%) scale(1.1)',
+                                transform: {
+                                    xs: 'translateX(50%) scale(1.1)',
+                                    md: 'translateY(-50%) scale(1.1)'
+                                },
                                 boxShadow: '0 0 30px rgba(0, 255, 255, 0.6), 0 0 60px rgba(0, 255, 255, 0.4)',
                             },
                         }}
@@ -495,63 +539,91 @@ const Coverflow3D: React.FC = () => {
                         <ChevronRight sx={{ fontSize: { xs: '24px', md: '32px' } }} />
                     </IconButton>
 
-                    {/* Dots Indicator */}
+                    {/* Bottom Info Section (Dots + Description) */}
                     <Box
                         sx={{
                             position: 'absolute',
-                            bottom: { xs: '60px', md: '80px' },
+                            bottom: { xs: '40px', md: '60px' }, // Moved up
                             left: '50%',
                             transform: 'translateX(-50%)',
                             display: 'flex',
-                            gap: '12px',
+                            flexDirection: 'column',
+                            alignItems: 'center',
+                            gap: '20px',
                             zIndex: 200,
-                            padding: '10px 20px',
+                            width: '90%',
+                            maxWidth: '800px',
                         }}
                     >
-                        {[-2, -1, 0, 1, 2].map((offset) => {
-                            const index = (currentIndex + offset + imageData.length) % imageData.length;
-                            // Determine scale based on offset (0 is center/current)
-                            let scale = 1;
-                            let opacity = 1;
+                        {/* Dots Indicator */}
+                        <Box
+                            sx={{
+                                display: 'flex',
+                                gap: '12px',
+                                padding: '10px 20px',
+                            }}
+                        >
+                            {[-2, -1, 0, 1, 2].map((offset) => {
+                                const index = (currentIndex + offset + imageData.length) % imageData.length;
+                                let scale = 1;
+                                let opacity = 1;
 
-                            if (offset === 0) {
-                                scale = 1.5; // Center (Big)
-                                opacity = 1;
-                            } else if (Math.abs(offset) === 1) {
-                                scale = 1; // Neighbors (Medium)
-                                opacity = 0.7;
-                            } else {
-                                scale = 0.6; // Outer (Small)
-                                opacity = 0.4;
-                            }
+                                if (offset === 0) {
+                                    scale = 1.5;
+                                    opacity = 1;
+                                } else if (Math.abs(offset) === 1) {
+                                    scale = 1;
+                                    opacity = 0.7;
+                                } else {
+                                    scale = 0.6;
+                                    opacity = 0.4;
+                                }
 
-                            return (
-                                <Box
-                                    key={`${index}-${offset}`} // Unique key for the window position
-                                    onClick={() => {
-                                        handleUserInteraction();
-                                        goToIndex(index);
-                                    }}
-                                    sx={{
-                                        width: '10px',
-                                        height: '10px',
-                                        borderRadius: '50%',
-                                        bgcolor: offset === 0
-                                            ? '#00ffff'
-                                            : 'rgba(0, 255, 255, 0.8)',
-                                        cursor: 'pointer',
-                                        transition: 'all 0.3s ease',
-                                        transform: `scale(${scale})`,
-                                        opacity: opacity,
-                                        boxShadow: offset === 0 ? '0 0 10px rgba(0, 255, 255, 0.8)' : 'none',
-                                        '&:hover': {
-                                            opacity: 1,
-                                            transform: `scale(${scale * 1.2})`,
-                                        },
-                                    }}
-                                />
-                            );
-                        })}
+                                return (
+                                    <Box
+                                        key={`${index}-${offset}`}
+                                        onClick={() => {
+                                            handleUserInteraction();
+                                            goToIndex(index);
+                                        }}
+                                        sx={{
+                                            width: '10px',
+                                            height: '10px',
+                                            borderRadius: '50%',
+                                            bgcolor: offset === 0 ? '#00ffff' : 'rgba(0, 255, 255, 0.8)',
+                                            cursor: 'pointer',
+                                            transition: 'all 0.3s ease',
+                                            transform: `scale(${scale})`,
+                                            opacity: opacity,
+                                            boxShadow: offset === 0 ? '0 0 10px rgba(0, 255, 255, 0.8)' : 'none',
+                                            '&:hover': {
+                                                opacity: 1,
+                                                transform: `scale(${scale * 1.2})`,
+                                            },
+                                        }}
+                                    />
+                                );
+                            })}
+                        </Box>
+
+                        {/* Description Section - Perfectly Centered */}
+                        <Box sx={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
+                            <Typography
+                                variant="body1"
+                                sx={{
+                                    fontSize: { xs: '14px', sm: '16px', md: '18px' },
+                                    color: '#aaccff',
+                                    opacity: 0.9,
+                                    textAlign: 'center',
+                                    lineHeight: 1.6,
+                                    textShadow: '0 2px 4px rgba(0,0,0,0.5)',
+                                    maxWidth: '600px',
+                                    width: '100%',
+                                }}
+                            >
+                                {imageData[currentIndex].description}
+                            </Typography>
+                        </Box>
                     </Box>
                 </Box>
             </Box>
