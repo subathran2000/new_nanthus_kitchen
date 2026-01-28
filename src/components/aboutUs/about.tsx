@@ -1,148 +1,164 @@
 import React, { useMemo } from 'react'
 import { motion, useMotionValue, useTransform, useSpring, AnimatePresence } from 'framer-motion'
-import {
-    Restaurant,
-    MenuBook,
-    LocalDining,
-    Info,
-    Phone,
-    LocationOn,
-    Star,
-    EmojiEvents,
-    Groups,
-    OutdoorGrill,
-    Coffee,
-    Liquor,
-    Close,
-    Home
-} from '@mui/icons-material'
-import { IconButton } from '@mui/material'
-import { useNavigate } from 'react-router-dom'
-import Sparkles from '../common/Sparkles'
+import { Restaurant, Star, Coffee, Close, Home } from "@mui/icons-material";
+import { IconButton } from "@mui/material";
+import { useNavigate } from "react-router-dom";
+import Sparkles from "../common/Sparkles";
 
 // Import existing assets
-import restaurantImg from "../../assets/images/restaurent.jpg"
-import bg2 from "../../assets/images/bg2.jpg"
-import bg4 from "../../assets/images/bg4.jpg"
-import logo from "../../assets/images/new_nanthus_kitchen_logo.png"
+import restaurantImg from "../../assets/images/restaurent.jpg";
+import bg2 from "../../assets/images/bg2.jpg";
+import bg4 from "../../assets/images/bg4.jpg";
+import logo from "../../assets/images/new_nanthus_kitchen_logo.png";
 
-const ICON_SIZE = 160
-const GAP = 30
-const ROWS = 16
-const COLS = 16
+const ICON_SIZE = 160;
+const GAP = 30;
+const ROWS = 16;
+const COLS = 16;
 
-type ContentType = 'image' | 'video' | 'text' | 'icon'
+type ContentType = "image" | "video" | "text" | "icon";
 
 interface AboutItem {
-    id: string
-    type: ContentType
-    content: any
-    color: string
-    label?: string
+  id: string;
+  type: ContentType;
+  content: any;
+  color: string;
+  label?: string;
 }
 
 interface AppIconProps extends AboutItem {
-    x: number
-    y: number
-    dragX: any
-    dragY: any
-    onSelect: (item: AboutItem) => void
+  x: number;
+  y: number;
+  dragX: any;
+  dragY: any;
+  onSelect: (item: AboutItem) => void;
 }
 
-const AppIcon = React.memo<AppIconProps>(({ type, content, color, label, x, y, dragX, dragY, onSelect }) => {
-    const hoverScale = useMotionValue(1)
-    const smoothHoverScale = useSpring(hoverScale, { stiffness: 300, damping: 30 })
+const AppIcon = React.memo<AppIconProps>(
+  ({ type, content, color, label, x, y, dragX, dragY, onSelect }) => {
+    const hoverScale = useMotionValue(1);
+    const smoothHoverScale = useSpring(hoverScale, {
+      stiffness: 300,
+      damping: 30,
+    });
 
-    const currentX = useTransform(dragX, (v: number) => v + x + ICON_SIZE / 2)
-    const currentY = useTransform(dragY, (v: number) => v + y + ICON_SIZE / 2)
+    const currentX = useTransform(dragX, (v: number) => v + x + ICON_SIZE / 2);
+    const currentY = useTransform(dragY, (v: number) => v + y + ICON_SIZE / 2);
 
-    const distance = useTransform([currentX, currentY], ([cx, cy]) => {
-        const dx = cx - (typeof window !== 'undefined' ? window.innerWidth : 1000) / 2
-        const dy = cy - (typeof window !== 'undefined' ? window.innerHeight : 1000) / 2
-        return Math.sqrt(dx * dx + dy * dy)
-    })
+    const distance = useTransform(
+      [currentX, currentY],
+      ([cx, cy]) => {
+        const dx =
+          Number(cx) -
+          (typeof window !== "undefined" ? window.innerWidth : 1000) / 2;
+        const dy =
+          Number(cy) -
+          (typeof window !== "undefined" ? window.innerHeight : 1000) / 2;
+        return Math.sqrt(dx * dx + dy * dy);
+      },
+    );
 
     // Base bulge effect - slightly increased minimums for better visibility
-    const baseScale = useTransform(distance, [0, 150, 300, 600, 1000], [1.2, 1.05, 0.8, 0.45, 0.2])
-    const opacity = useTransform(distance, [0, 500, 850], [1, 0.9, 0.1])
+    const baseScale = useTransform(
+      distance,
+      [0, 150, 300, 600, 1000],
+      [1.2, 1.05, 0.8, 0.45, 0.2],
+    );
+    const opacity = useTransform(distance, [0, 500, 850], [1, 0.9, 0.1]);
 
     // Professional additive scaling: Total Scale = Dynamic Bulge * Hover State
     const combinedScale = useTransform(
-        [baseScale, smoothHoverScale],
-        ([bs, hs]) => (bs as number) * (hs as number)
-    )
+      [baseScale, smoothHoverScale],
+      ([bs, hs]) => (bs as number) * (hs as number),
+    );
 
     const renderContent = () => {
-        switch (type) {
-            case 'image':
-                return <img src={content} alt={label} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-            case 'video':
-                return (
-                    <video
-                        autoPlay
-                        muted
-                        loop
-                        playsInline
-                        style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                    >
-                        <source src={content} type="video/mp4" />
-                    </video>
-                )
-            case 'text':
-                return (
-                    <span style={{
-                        color: '#fff',
-                        fontWeight: 900,
-                        fontSize: '1.2rem',
-                        textAlign: 'center',
-                        padding: '10px',
-                        textTransform: 'uppercase'
-                    }}>
-                        {content}
-                    </span>
-                )
-            case 'icon':
-            default:
-                const Icon = content
-                return <Icon style={{ color: color === '#ffffff' ? '#001e36' : '#fff', fontSize: ICON_SIZE * 0.4 }} />
-        }
-    }
+      switch (type) {
+        case "image":
+          return (
+            <img
+              src={content}
+              alt={label}
+              style={{ width: "100%", height: "100%", objectFit: "cover" }}
+            />
+          );
+        case "video":
+          return (
+            <video
+              autoPlay
+              muted
+              loop
+              playsInline
+              style={{ width: "100%", height: "100%", objectFit: "cover" }}
+            >
+              <source src={content} type="video/mp4" />
+            </video>
+          );
+        case "text":
+          return (
+            <span
+              style={{
+                color: "#fff",
+                fontWeight: 900,
+                fontSize: "1.2rem",
+                textAlign: "center",
+                padding: "10px",
+                textTransform: "uppercase",
+              }}
+            >
+              {content}
+            </span>
+          );
+        case "icon":
+        default:
+          const Icon = content;
+          return (
+            <Icon
+              style={{
+                color: color === "#ffffff" ? "#001e36" : "#fff",
+                fontSize: ICON_SIZE * 0.4,
+              }}
+            />
+          );
+      }
+    };
 
     return (
-        <motion.div
-            style={{
-                position: 'absolute',
-                top: y,
-                left: x,
-                width: ICON_SIZE,
-                height: ICON_SIZE,
-                borderRadius: '50%',
-                backgroundColor: color,
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                scale: combinedScale,
-                opacity,
-                boxShadow: '0 10px 40px rgba(0,0,0,0.5)',
-                border: '1px solid rgba(255,255,255,0.1)',
-                backdropFilter: 'blur(8px)',
-                cursor: 'pointer',
-                overflow: 'hidden',
-                zIndex: 1
-            }}
-            onHoverStart={() => {
-                hoverScale.set(1.4)
-            }}
-            onHoverEnd={() => {
-                hoverScale.set(1)
-            }}
-            whileTap={{ scale: 0.9 }}
-            onClick={() => onSelect({ id: '', type, content, color, label })}
-        >
-            {renderContent()}
-        </motion.div>
-    )
-})
+      <motion.div
+        style={{
+          position: "absolute",
+          top: y,
+          left: x,
+          width: ICON_SIZE,
+          height: ICON_SIZE,
+          borderRadius: "50%",
+          backgroundColor: color,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          scale: combinedScale,
+          opacity,
+          boxShadow: "0 10px 40px rgba(0,0,0,0.5)",
+          border: "1px solid rgba(255,255,255,0.1)",
+          backdropFilter: "blur(8px)",
+          cursor: "pointer",
+          overflow: "hidden",
+          zIndex: 1,
+        }}
+        onHoverStart={() => {
+          hoverScale.set(1.4);
+        }}
+        onHoverEnd={() => {
+          hoverScale.set(1);
+        }}
+        whileTap={{ scale: 0.9 }}
+        onClick={() => onSelect({ id: "", type, content, color, label })}
+      >
+        {renderContent()}
+      </motion.div>
+    );
+  },
+);
 
 const About: React.FC = () => {
     const [selectedItem, setSelectedItem] = React.useState<AboutItem | null>(null)

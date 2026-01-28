@@ -1,35 +1,54 @@
 import React, { useRef, useState } from 'react'
 import { Box, Typography, Button, useTheme, useMediaQuery } from '@mui/material'
 import { Canvas, useFrame } from '@react-three/fiber'
-import { ScrollControls, Scroll, useScroll, Float, Environment, Cloud, useTexture } from '@react-three/drei'
-import { EffectComposer, Bloom, Noise, Vignette } from '@react-three/postprocessing'
-import { motion } from 'framer-motion'
-import * as THREE from 'three'
-import CreativeFooter from '../Footer/Footer'
-import logoReflect from '../../assets/images/restaurent.jpg'
-import logo from '../../assets/images/new_nanthus_kitchen_logo.png'
-import TypewriterText from '../common/TypewriterText'
-import Sparkles from '../common/Sparkles'
-import OrderButton from '../common/OrderButton'
-import AboutUs from './AboutUs'
-import LocationSelector from '../common/LocationSelector'
-import { menuData } from '../menu/spiral'
-import RestaurantMenuIcon from '@mui/icons-material/RestaurantMenu'
+import {
+  ScrollControls,
+  Scroll,
+  useScroll,
+  Float,
+  Environment,
+  useTexture,
+} from "@react-three/drei";
+import {
+  EffectComposer,
+  Bloom,
+  Noise,
+  Vignette,
+} from "@react-three/postprocessing";
+import { motion } from "framer-motion";
+import * as THREE from "three";
+import CreativeFooter from "../Footer/Footer";
+import logoReflect from "../../assets/images/restaurent.jpg";
+import logo from "../../assets/images/new_nanthus_kitchen_logo.png";
+import TypewriterText from "../common/TypewriterText";
+import Sparkles from "../common/Sparkles";
+import OrderButton from "../common/OrderButton";
+import AboutUs from "./AboutUs";
+import LocationSelector from "../common/LocationSelector";
+import { menuData } from "../menu/spiral";
+import RestaurantMenuIcon from "@mui/icons-material/RestaurantMenu";
 
 // --- 3D Components ---
 
-const FloatingCrystal = ({ position, color, speed, rotationSpeed, scale }: any) => {
-  const meshRef = useRef<THREE.Mesh>(null)
-  const baseY = position[1]
+const FloatingCrystal = ({
+  position,
+  color,
+  speed,
+  rotationSpeed,
+  scale,
+}: any) => {
+  const meshRef = useRef<THREE.Mesh>(null);
+  const baseY = position[1];
 
   useFrame((state, delta) => {
     if (meshRef.current) {
-      meshRef.current.rotation.x += delta * rotationSpeed
-      meshRef.current.rotation.y += delta * rotationSpeed * 0.5
+      meshRef.current.rotation.x += delta * rotationSpeed;
+      meshRef.current.rotation.y += delta * rotationSpeed * 0.5;
       // Reduced movement range for a much smoother "float" instead of "jump"
-      meshRef.current.position.y = baseY + Math.sin(state.clock.getElapsedTime() * (speed * 0.5)) * 0.15
+      meshRef.current.position.y =
+        baseY + Math.sin(state.clock.getElapsedTime() * (speed * 0.5)) * 0.15;
     }
-  })
+  });
 
   return (
     <Float speed={speed} rotationIntensity={rotationSpeed} floatIntensity={1}>
@@ -48,24 +67,34 @@ const FloatingCrystal = ({ position, color, speed, rotationSpeed, scale }: any) 
         />
       </mesh>
     </Float>
-  )
-}
+  );
+};
 
 const SceneContent = () => {
-  const scroll = useScroll()
-  const groupRef = useRef<THREE.Group>(null)
+  const scroll = useScroll();
+  const groupRef = useRef<THREE.Group>(null);
 
   // Load the texture for the environment
-  const texture = useTexture(logoReflect)
-  texture.mapping = THREE.EquirectangularReflectionMapping
+  const texture = useTexture(logoReflect);
+  texture.mapping = THREE.EquirectangularReflectionMapping;
 
   useFrame((_, delta) => {
     if (groupRef.current) {
       // Rotate the entire group based on scroll
-      groupRef.current.rotation.y = THREE.MathUtils.damp(groupRef.current.rotation.y, -scroll.offset * Math.PI * 2, 4, delta)
-      groupRef.current.position.z = THREE.MathUtils.damp(groupRef.current.position.z, scroll.offset * 5, 4, delta)
+      groupRef.current.rotation.y = THREE.MathUtils.damp(
+        groupRef.current.rotation.y,
+        -scroll.offset * Math.PI * 2,
+        4,
+        delta,
+      );
+      groupRef.current.position.z = THREE.MathUtils.damp(
+        groupRef.current.position.z,
+        scroll.offset * 5,
+        4,
+        delta,
+      );
     }
-  })
+  });
 
   return (
     <>
@@ -84,29 +113,72 @@ const SceneContent = () => {
         >
         </Caustics> */}
 
-        {/* Subtle Cloud/Fog for depth */}
-        <Cloud opacity={0.1} speed={0.1} width={20} depth={5} segments={10} position={[0, -5, -10]} color="#aaccff" />
+        {/* Subtle Cloud/Fog for depth - Commented out due to prop compatibility issues */}
+        {/* <Cloud
+          opacity={0.1}
+          speed={0.1}
+          depth={5}
+          segments={10}
+          position={[0, -5, -10]}
+          color="#aaccff"
+        /> */}
 
         {/* Main Hero Crystal */}
-        <FloatingCrystal position={[0, 0, 0]} color="#00aaff" speed={2} rotationSpeed={0.5} scale={1.5} />
+        <FloatingCrystal
+          position={[0, 0, 0]}
+          color="#00aaff"
+          speed={2}
+          rotationSpeed={0.5}
+          scale={1.5}
+        />
 
         {/* Background Crystals */}
-        <FloatingCrystal position={[-3, 2, -5]} color="#00ffff" speed={1.5} rotationSpeed={0.3} scale={0.8} />
-        <FloatingCrystal position={[3, -2, -4]} color="#0088ff" speed={1.8} rotationSpeed={0.4} scale={0.7} />
-        <FloatingCrystal position={[-2, -3, -2]} color="#4400ff" speed={1.2} rotationSpeed={0.2} scale={0.5} />
-        <FloatingCrystal position={[2, 3, -3]} color="#00ffaa" speed={1.6} rotationSpeed={0.6} scale={0.6} />
+        <FloatingCrystal
+          position={[-3, 2, -5]}
+          color="#00ffff"
+          speed={1.5}
+          rotationSpeed={0.3}
+          scale={0.8}
+        />
+        <FloatingCrystal
+          position={[3, -2, -4]}
+          color="#0088ff"
+          speed={1.8}
+          rotationSpeed={0.4}
+          scale={0.7}
+        />
+        <FloatingCrystal
+          position={[-2, -3, -2]}
+          color="#4400ff"
+          speed={1.2}
+          rotationSpeed={0.2}
+          scale={0.5}
+        />
+        <FloatingCrystal
+          position={[2, 3, -3]}
+          color="#00ffaa"
+          speed={1.6}
+          rotationSpeed={0.6}
+          scale={0.6}
+        />
 
         {/* Lighting */}
         <ambientLight intensity={0.5} color="#001e36" />
-        <spotLight position={[0, 20, 0]} intensity={2} angle={0.5} penumbra={1} color="#ccffff" />
+        <spotLight
+          position={[0, 20, 0]}
+          intensity={2}
+          angle={0.5}
+          penumbra={1}
+          color="#ccffff"
+        />
         <pointLight position={[10, 10, 10]} intensity={1} color="#00ffff" />
 
         {/* Environment for reflections */}
         <Environment map={texture} blur={1} />
       </group>
     </>
-  )
-}
+  );
+};
 
 // --- HTML Content ---
 

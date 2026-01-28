@@ -1,6 +1,5 @@
 import './App.css'
-import { BrowserRouter, Routes, Route } from 'react-router-dom'
-import LandingPage from './components/home/LandingPage'
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Special from './components/special/Special'
 import About from './components/aboutUs/AboutUs'
 import Landing2 from '../src/components/home/landingPage-n'

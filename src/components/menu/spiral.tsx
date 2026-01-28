@@ -2,9 +2,9 @@ import { useEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
 import { Box, useTheme, useMediaQuery, IconButton, Typography, List, ListItem, ListItemText } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
-import { Canvas } from '@react-three/fiber';
+// import { Canvas } from '@react-three/fiber';
 // import { Sparkles as Sparkles3D, Caustics, Environment, Cloud } from '@react-three/drei';
-import { EffectComposer, Bloom, Noise, Vignette } from '@react-three/postprocessing';
+// import { EffectComposer, Bloom, Noise, Vignette } from '@react-three/postprocessing';
 
 import Sparkles from "../common/Sparkles";
 
@@ -201,9 +201,8 @@ interface SpiralBackgroundProps {
     images?: string[];
 }
 
-const SpiralBackground: React.FC<SpiralBackgroundProps> = ({ activeCategory = "Starters", images }) => {
-    // If we have images passed as prop, we might use them, but the prompt logic relies on menuData
-    // I will prioritize menuData filtering but keeping the structure
+const SpiralBackground: React.FC<SpiralBackgroundProps> = ({ activeCategory = "Starters" }) => {
+    // The prompt logic relies on menuData filtering based on activeCategory
 
     // Note: The prompt used 'filteredItems' from 'menuData' based on 'activeCategory'.
     // If 'activeCategory' is just a string, we filter.

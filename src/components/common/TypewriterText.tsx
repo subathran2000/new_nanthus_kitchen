@@ -39,21 +39,26 @@ const TypewriterText: React.FC<TypewriterTextProps> = ({
         visible: { opacity: 1 }
     };
 
-    return (
-        <Component className={className} style={{ ...style, display: 'inline-block' }}>
-            <motion.span
-                variants={containerVariants}
-                initial="hidden"
-                animate="visible"
-                style={{ display: 'inline-block' }}
-            >
-                {characters.map((char, index) => (
-                    <motion.span key={index} variants={stableCharVariants}>
-                        {char === ' ' ? '\u00A0' : char}
-                    </motion.span>
-                ))}
-            </motion.span>
-        </Component>
+    const componentProps = {
+      className,
+      style: { ...style, display: "inline-block" as const },
+    };
+
+    return React.createElement(
+      Component,
+      componentProps,
+      <motion.span
+        variants={containerVariants}
+        initial="hidden"
+        animate="visible"
+        style={{ display: "inline-block" }}
+      >
+        {characters.map((char, index) => (
+          <motion.span key={index} variants={stableCharVariants}>
+            {char === " " ? "\u00A0" : char}
+          </motion.span>
+        ))}
+      </motion.span>,
     );
 };
 
