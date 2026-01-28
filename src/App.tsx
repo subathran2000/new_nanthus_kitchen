@@ -2,18 +2,22 @@ import './App.css'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import LandingPage from './components/home/LandingPage'
 import Special from './components/special/Special'
-import Menu from './components/menu/menu'
-import About from './components/aboutUs/about'
+import About from './components/aboutUs/AboutUs'
+import Landing2 from '../src/components/home/landingPage-n'
+import MenuNew from './components/menu/menuNew'
+import Sdmfnd from './components/menu/spiral'
 
 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<LandingPage />} />
+        <Route path="/" element={<Landing2 />} />
         <Route path="/special" element={<Special />} />
-        <Route path="/menu" element={<Menu />} />
         <Route path="/about" element={<About />} />
+        <Route path="/menu-new" element={<MenuNew />} />
+        <Route path="/sdmfnd" element={<Sdmfnd />} />
+
       </Routes>
     </BrowserRouter>
   )

@@ -106,35 +106,6 @@ const OrderButton: React.FC<OrderButtonProps> = ({ onClick }) => {
                 />
             </motion.button>
 
-            {/* Floating badge */}
-            <motion.div
-                animate={{
-                    y: [0, -10, 0],
-                }}
-                transition={{
-                    duration: 2,
-                    repeat: Infinity,
-                    ease: 'easeInOut',
-                }}
-                style={{
-                    position: 'absolute',
-                    top: '-10px',
-                    right: '-10px',
-                    background: '#FF4444',
-                    color: '#FFF',
-                    borderRadius: '50%',
-                    width: '30px',
-                    height: '30px',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    fontSize: '0.75rem',
-                    fontWeight: 'bold',
-                    boxShadow: '0 4px 15px rgba(255, 68, 68, 0.5)',
-                }}
-            >
-                🔥
-            </motion.div>
         </motion.div>
     );
 };

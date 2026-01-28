@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { useTheme, useMediaQuery } from '@mui/material'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
@@ -11,10 +11,11 @@ import bg2 from "../../assets/images/bg2.jpg"
 import Antigravity from '../common/Antigravity'
 import DynamicTypewriter from '../common/DynamicTypewriter'
 import { motion, useTransform, useScroll, useMotionValue, useSpring } from 'framer-motion'
+import LocationSelector from '../common/LocationSelector'
 
 const RedirectionSection: React.FC = () => {
   const navigate = () => {
-    window.location.href = '/menu'
+    window.location.href = '/menu-new'
   }
 
   // Mouse tilt effect
@@ -106,6 +107,7 @@ const LandingPage: React.FC = () => {
   const theme = useTheme()
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'))
   const isTablet = useMediaQuery(theme.breakpoints.down('md'))
+  const [locationSelectorOpen, setLocationSelectorOpen] = useState(false)
 
   const rootRef = useRef<HTMLDivElement | null>(null)
   const revealRef = useRef<HTMLDivElement | null>(null)
@@ -229,8 +231,8 @@ const LandingPage: React.FC = () => {
   }, [])
 
   const handleOrderClick = () => {
-    // Navigate to menu or order page
-    window.location.href = "/menu";
+    // Open location selector modal instead of navigating directly
+    setLocationSelectorOpen(true);
   };
 
   const handleDiveClick = () => {
@@ -403,6 +405,18 @@ const LandingPage: React.FC = () => {
       <div className="footer-container">
         <CreativeFooter />
       </div>
+
+      {/* Location Selector Modal */}
+      <LocationSelector
+        open={locationSelectorOpen}
+        onClose={() => setLocationSelectorOpen(false)}
+        onSelectLocation={(locationName) => {
+          console.log(`Order placed from ${locationName}`);
+          setLocationSelectorOpen(false);
+          // Navigate to menu after location selection
+          window.location.href = '/menu-new';
+        }}
+      />
 
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;700&family=Pinyon+Script&family=Inter:wght@400;700;900&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap');
