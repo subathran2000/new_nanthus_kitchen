@@ -5,6 +5,7 @@ import About from './components/aboutUs/AboutUs'
 import Landing2 from '../src/components/home/landingPage-n'
 import MenuNew from './components/menu/menuNew'
 import Sdmfnd from './components/menu/spiral'
+import Landing3D from './components/home/LandingPage3D'
 
 
 function App() {
@@ -16,6 +17,7 @@ function App() {
         <Route path="/about" element={<About />} />
         <Route path="/menu-new" element={<MenuNew />} />
         <Route path="/sdmfnd" element={<Sdmfnd />} />
+        <Route path="/cyber" element={<Landing3D />} />
 
       </Routes>
     </BrowserRouter>

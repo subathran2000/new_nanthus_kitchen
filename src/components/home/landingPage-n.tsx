@@ -1,5 +1,5 @@
-import React, { useRef, useState } from 'react'
-import { Box, Typography, Button, useTheme, useMediaQuery } from '@mui/material'
+import React, { useRef, useState, useEffect } from 'react'
+import { Box, Button, useTheme, useMediaQuery } from '@mui/material'
 import { Canvas, useFrame } from '@react-three/fiber'
 import {
   ScrollControls,
@@ -8,6 +8,7 @@ import {
   Float,
   Environment,
   useTexture,
+  Stars,
 } from "@react-three/drei";
 import {
   EffectComposer,
@@ -18,7 +19,6 @@ import {
 import { motion } from "framer-motion";
 import * as THREE from "three";
 import CreativeFooter from "../Footer/Footer";
-import logoReflect from "../../assets/images/restaurent.jpg";
 import logo from "../../assets/images/new_nanthus_kitchen_logo.png";
 import TypewriterText from "../common/TypewriterText";
 import Sparkles from "../common/Sparkles";
@@ -26,47 +26,108 @@ import OrderButton from "../common/OrderButton";
 import AboutUs from "./AboutUs";
 import LocationSelector from "../common/LocationSelector";
 import { menuData } from "../menu/spiral";
-import RestaurantMenuIcon from "@mui/icons-material/RestaurantMenu";
+import MenuPreview from "./MenuPreview";
+import CateringSection from "./CateringSection";
+import ContactSection from "./ContactSection";
 
 // --- 3D Components ---
 
-const FloatingCrystal = ({
-  position,
-  color,
-  speed,
-  rotationSpeed,
-  scale,
-}: any) => {
-  const meshRef = useRef<THREE.Mesh>(null);
-  const baseY = position[1];
+const EarthCenter = () => {
+  const earthRef = useRef<THREE.Mesh>(null);
+  const glowRef = useRef<THREE.Mesh>(null);
 
-  useFrame((state, delta) => {
+  // Still use textures, but only for stylized masks
+  const [earthTexture] = useTexture([
+    "https://raw.githubusercontent.com/mrdoob/three.js/master/examples/textures/planets/earth_atmos_2048.jpg"
+  ]);
+
+  useFrame((state) => {
+    const t = state.clock.getElapsedTime();
+    if (earthRef.current) earthRef.current.rotation.y += 0.0015;
+    if (glowRef.current) glowRef.current.scale.setScalar(1 + Math.sin(t * 0.5) * 0.02);
+  });
+
+  return (
+    <group>
+      {/* Stylized Glassmorphic Earth Body */}
+      <mesh ref={earthRef}>
+        <sphereGeometry args={[1.5, 64, 64]} />
+        <meshStandardMaterial
+          color="#001e36" // Brand Navy
+          emissive="#D9A756" // Brand Gold for continents
+          emissiveMap={earthTexture}
+          emissiveIntensity={4} // Strong glow for the stylized map
+          roughness={1}
+          metalness={0}
+        />
+      </mesh>
+
+      {/* Soft Cyan Inner Core Glow */}
+      <mesh ref={glowRef}>
+        <sphereGeometry args={[1.4, 32, 32]} />
+        <meshBasicMaterial
+          color="#00ffff" // Brand Cyan
+          transparent
+          opacity={0.4}
+        />
+      </mesh>
+
+
+      {/* Premium Studio Lighting for Stylized Look */}
+      <pointLight position={[10, 10, 10]} intensity={4} color="#00ffff" />
+      <pointLight position={[-10, -5, 5]} intensity={3} color="#D9A756" />
+    </group>
+  );
+};
+
+const Planet = ({
+  orbitRadius,
+  orbitSpeed,
+  orbitOffset = 0,
+  size,
+  color,
+  hasRings = false,
+  rotationSpeed = 1,
+}: any) => {
+  const meshRef = useRef<THREE.Group>(null);
+  const planetMeshRef = useRef<THREE.Mesh>(null);
+
+  useFrame((state) => {
     if (meshRef.current) {
-      meshRef.current.rotation.x += delta * rotationSpeed;
-      meshRef.current.rotation.y += delta * rotationSpeed * 0.5;
-      // Reduced movement range for a much smoother "float" instead of "jump"
-      meshRef.current.position.y =
-        baseY + Math.sin(state.clock.getElapsedTime() * (speed * 0.5)) * 0.15;
+      const t = state.clock.getElapsedTime() * orbitSpeed + orbitOffset;
+      meshRef.current.position.x = Math.cos(t) * orbitRadius;
+      meshRef.current.position.z = Math.sin(t) * orbitRadius;
+      meshRef.current.position.y = Math.sin(t * 0.5) * (orbitRadius * 0.2); // Slight vertical oscillation
+    }
+    if (planetMeshRef.current) {
+      planetMeshRef.current.rotation.y += 0.01 * rotationSpeed;
     }
   });
 
   return (
-    <Float speed={speed} rotationIntensity={rotationSpeed} floatIntensity={1}>
-      <mesh ref={meshRef} position={position} scale={scale}>
-        <sphereGeometry args={[1, 32, 32]} />
-        <meshPhysicalMaterial
-          color={color}
-          roughness={0.2}
-          metalness={0.1}
-          transmission={0.6}
-          thickness={0.5}
-          ior={1.2}
-          clearcoat={0.8}
-          attenuationDistance={1}
-          attenuationColor="#ffffff"
-        />
-      </mesh>
-    </Float>
+    <group ref={meshRef}>
+      <Float speed={2} rotationIntensity={0.5} floatIntensity={0.5}>
+        <mesh ref={planetMeshRef} scale={size}>
+          <sphereGeometry args={[1, 32, 32]} />
+          <meshStandardMaterial
+            color={color}
+            roughness={0.7}
+            metalness={0.3}
+          />
+          {hasRings && (
+            <mesh rotation={[Math.PI / 2.5, 0, 0]}>
+              <ringGeometry args={[1.5, 2.2, 64]} />
+              <meshStandardMaterial
+                color={color}
+                transparent
+                opacity={0.5}
+                side={THREE.DoubleSide}
+              />
+            </mesh>
+          )}
+        </mesh>
+      </Float>
+    </group>
   );
 };
 
@@ -74,9 +135,6 @@ const SceneContent = () => {
   const scroll = useScroll();
   const groupRef = useRef<THREE.Group>(null);
 
-  // Load the texture for the environment
-  const texture = useTexture(logoReflect);
-  texture.mapping = THREE.EquirectangularReflectionMapping;
 
   useFrame((_, delta) => {
     if (groupRef.current) {
@@ -98,83 +156,57 @@ const SceneContent = () => {
 
   return (
     <>
-      {/* 3D Sparkles removed to use common/Sparkles component */}
-
+      <Stars radius={100} depth={50} count={5000} factor={4} saturation={0} fade speed={1} />
       <group ref={groupRef}>
-        {/* Caustics Effect */}
-        {/* Caustics Effect - Disabled to remove dark shadows */
-        /* <Caustics
+        <EarthCenter />
+
+        {/* Stylized Planets orbiting the Glass Earth */}
+        {/* Mercury-like */}
+        <Planet
+          orbitRadius={5}
+          orbitSpeed={0.8}
+          size={0.4}
+          color="#00ffff" // Brand Cyan
+        />
+
+        {/* Venus-like */}
+        <Planet
+          orbitRadius={8}
+          orbitSpeed={0.5}
+          orbitOffset={Math.PI}
+          size={0.6}
+          color="#D9A756" // Brand Gold
+        />
+
+        {/* Mars-like */}
+        <Planet
+          orbitRadius={16}
+          orbitSpeed={0.25}
+          orbitOffset={Math.PI * 1.5}
+          size={0.5}
           color="#00ffff"
-          position={[0, -5, 0]}
-          lightSource={[5, 5, -10]}
-          worldRadius={10}
-          ior={1.1}
-          intensity={0.2}
-        >
-        </Caustics> */}
-
-        {/* Subtle Cloud/Fog for depth - Commented out due to prop compatibility issues */}
-        {/* <Cloud
-          opacity={0.1}
-          speed={0.1}
-          depth={5}
-          segments={10}
-          position={[0, -5, -10]}
-          color="#aaccff"
-        /> */}
-
-        {/* Main Hero Crystal */}
-        <FloatingCrystal
-          position={[0, 0, 0]}
-          color="#00aaff"
-          speed={2}
-          rotationSpeed={0.5}
-          scale={1.5}
         />
 
-        {/* Background Crystals */}
-        <FloatingCrystal
-          position={[-3, 2, -5]}
+        {/* Jupiter-like */}
+        <Planet
+          orbitRadius={22}
+          orbitSpeed={0.15}
+          size={1.2}
+          color="#D9A756"
+        />
+
+        {/* Saturn-like with Rings */}
+        <Planet
+          orbitRadius={28}
+          orbitSpeed={0.1}
+          orbitOffset={1}
+          size={1.0}
           color="#00ffff"
-          speed={1.5}
-          rotationSpeed={0.3}
-          scale={0.8}
-        />
-        <FloatingCrystal
-          position={[3, -2, -4]}
-          color="#0088ff"
-          speed={1.8}
-          rotationSpeed={0.4}
-          scale={0.7}
-        />
-        <FloatingCrystal
-          position={[-2, -3, -2]}
-          color="#4400ff"
-          speed={1.2}
-          rotationSpeed={0.2}
-          scale={0.5}
-        />
-        <FloatingCrystal
-          position={[2, 3, -3]}
-          color="#00ffaa"
-          speed={1.6}
-          rotationSpeed={0.6}
-          scale={0.6}
+          hasRings={true}
         />
 
-        {/* Lighting */}
-        <ambientLight intensity={0.5} color="#001e36" />
-        <spotLight
-          position={[0, 20, 0]}
-          intensity={2}
-          angle={0.5}
-          penumbra={1}
-          color="#ccffff"
-        />
-        <pointLight position={[10, 10, 10]} intensity={1} color="#00ffff" />
-
-        {/* Environment for reflections */}
-        <Environment map={texture} blur={1} />
+        {/* Subdued General Lighting to let Stylized Earth pop */}
+        <ambientLight intensity={0.5} color="#ffffff" />
       </group>
     </>
   );
@@ -208,25 +240,32 @@ const Section = ({ children, style, ...props }: any) => {
 
 import { CustomScrollbarUI, ScrollSync } from '../common/CustomScrollbar'
 
+import SpecialsPopup from './SpecialsPopup';
+
 const Landpage = ({ children }: { children?: React.ReactNode }) => {
   const scrollbarRef = useRef<HTMLDivElement>(null)
   const theme = useTheme()
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'))
   const isTablet = useMediaQuery(theme.breakpoints.down('md'))
   const [locationSelectorOpen, setLocationSelectorOpen] = useState(false)
+  const [specialsPopupOpen, setSpecialsPopupOpen] = useState(false);
 
-  const hasSpecials = menuData.some(cat =>
-    cat.title === 'Specials' &&
-    cat.subCategories.some(sub => sub.items.length > 0)
-  )
+  useEffect(() => {
+    // Show specials popup on mount after a short delay
+    const timer = setTimeout(() => {
+      setSpecialsPopupOpen(true);
+    }, 1000); // 1 second delay for better UX
+    return () => clearTimeout(timer);
+  }, []);
 
   return (
     <div style={{ width: '100%', height: '100vh', background: '#001e36', overflow: 'hidden', position: 'relative' }}>
+      <SpecialsPopup open={specialsPopupOpen} onClose={() => setSpecialsPopupOpen(false)} />
       <Sparkles />
 
 
 
-      {/* Top Left Logo */}
+      {/* Top Left Logo Restored */}
       <Box
         component="img"
         src={logo}
@@ -256,7 +295,6 @@ const Landpage = ({ children }: { children?: React.ReactNode }) => {
           }
         }}
       />
-
       <Box
         sx={{
           position: 'fixed',
@@ -271,82 +309,6 @@ const Landpage = ({ children }: { children?: React.ReactNode }) => {
       >
         <OrderButton onClick={() => setLocationSelectorOpen(true)} />
 
-        {hasSpecials && (
-          <motion.div
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 1.5, duration: 0.8 }}
-            style={{ position: 'relative' }}
-          >
-            <Button
-              onClick={() => window.location.href = '/special'}
-              startIcon={<RestaurantMenuIcon />}
-              sx={{
-                background: 'linear-gradient(135deg, #FFD700 0%, #FFA500 100%)',
-                border: 'none',
-                borderRadius: '50px',
-                padding: { xs: '0.8rem', md: '1rem 2rem' },
-                fontSize: 'clamp(0.9rem, 1.5vw, 1.1rem)',
-                fontWeight: 700,
-                color: '#000',
-                cursor: 'pointer',
-                boxShadow: '0 10px 30px rgba(255, 215, 0, 0.3)',
-                position: 'relative',
-                overflow: 'hidden',
-                fontFamily: "'Inter', sans-serif",
-                letterSpacing: '0.05em',
-                textTransform: 'uppercase',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                minWidth: { xs: '45px', md: 'auto' },
-                minHeight: { xs: '45px', md: 'auto' },
-                transition: 'all 0.3s ease',
-                '&:hover': {
-                  transform: 'scale(1.05)',
-                  boxShadow: '0 0 30px rgba(255, 215, 0, 0.6)',
-                },
-                '&:active': {
-                  transform: 'scale(0.95)'
-                }
-              }}
-            >
-              Specials
-            </Button>
-
-            {/* Fire badge */}
-            <motion.div
-              animate={{
-                y: [0, -10, 0],
-              }}
-              transition={{
-                duration: 2,
-                repeat: Infinity,
-                ease: 'easeInOut',
-              }}
-              style={{
-                position: 'absolute',
-                top: '-10px',
-                right: '-10px',
-                background: '#FF4444',
-                color: '#FFF',
-                borderRadius: '50%',
-                width: '30px',
-                height: '30px',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                fontSize: '0.75rem',
-                fontWeight: 'bold',
-                boxShadow: '0 4px 15px rgba(255, 68, 68, 0.5)',
-                zIndex: 2,
-                pointerEvents: 'none'
-              }}
-            >
-              🔥
-            </motion.div>
-          </motion.div>
-        )}
       </Box>
 
       <Canvas camera={{ position: [0, 0, 5], fov: isMobile ? 75 : isTablet ? 60 : 50 }} shadows>
@@ -436,281 +398,19 @@ const Landpage = ({ children }: { children?: React.ReactNode }) => {
             {/* About Us Section - Staggered Cards based on Reference Image */}
             <AboutUs />
 
-            {/* Menu Redirection Section */}
-            <Section style={{ height: 'auto', minHeight: '100vh', padding: { xs: '4rem 2rem', md: '8rem 2rem' }, justifyContent: 'center', zIndex: 10 }}>
-              <motion.div
-                initial={{ opacity: 0, y: 50 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-100px" }}
-                transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
-                style={{
-                  width: '100%',
-                  maxWidth: '900px',
-                  margin: '0 auto',
-                  textAlign: 'center'
-                }}
-              >
-                <Box
-                  sx={{
-                    position: 'relative',
-                    background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.02) 100%)',
-                    backdropFilter: 'blur(20px) saturate(180%)',
-                    borderRadius: '32px',
-                    padding: { xs: '4rem 2rem', md: '6rem 4rem' },
-                    border: '1px solid rgba(255, 255, 255, 0.15)',
-                    boxShadow: '0 30px 80px rgba(0, 0, 0, 0.4)',
-                    overflow: 'hidden',
-                    transition: 'all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275)',
-                    '&:hover': {
-                      transform: 'translateY(-15px)',
-                      border: '1px solid rgba(0, 255, 255, 0.5)',
-                      boxShadow: '0 40px 100px rgba(0, 255, 255, 0.15)',
-                    },
-                    '&::before': {
-                      content: '""',
-                      position: 'absolute',
-                      inset: 0,
-                      borderRadius: '32px',
-                      padding: '2px',
-                      background: 'linear-gradient(135deg, rgba(0, 255, 255, 0.5), rgba(255, 215, 0, 0.5))',
-                      mask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',
-                      maskComposite: 'exclude',
-                      WebkitMaskComposite: 'destination-out',
-                      pointerEvents: 'none',
-                      opacity: 0,
-                      transition: 'opacity 0.5s ease',
-                    },
-                    '&:hover::before': {
-                      opacity: 1,
-                    }
-                  }}
-                >
-                  {/* Decorative Glow */}
-                  <Box
-                    sx={{
-                      position: 'absolute',
-                      top: '-50%',
-                      left: '50%',
-                      transform: 'translateX(-50%)',
-                      width: '150%',
-                      height: '150%',
-                      background: 'radial-gradient(circle, rgba(0, 255, 255, 0.15), transparent 60%)',
-                      pointerEvents: 'none',
-                      transition: 'opacity 0.5s ease',
-                      opacity: 0,
-                    }}
-                    className="menu-glow"
-                  />
-
-                  <Typography
-                    variant="overline"
-                    sx={{
-                      color: '#FFD700',
-                      letterSpacing: '0.6em',
-                      mb: 3,
-                      display: 'block',
-                      fontSize: '0.9rem',
-                      fontWeight: 400
-                    }}
-                  >
-                    EXPLORE OUR FLAVORS
-                  </Typography>
-
-                  <Typography
-                    variant="h2"
-                    sx={{
-                      fontFamily: '"Outfit", sans-serif',
-                      fontWeight: 300,
-                      textTransform: 'uppercase',
-                      letterSpacing: { xs: '0.3em', md: '0.5em' },
-                      color: '#fff',
-                      fontSize: { xs: '2rem', md: '4rem' },
-                      textShadow: '0 0 30px rgba(255, 255, 255, 0.2)',
-                      lineHeight: 1.3,
-                      mb: 2,
-                    }}
-                  >
-                    Discover Our <span style={{ color: '#00ffff', fontWeight: 400 }}>Menu</span>
-                  </Typography>
-
-                  <Box
-                    sx={{
-                      width: '80px',
-                      height: '3px',
-                      background: 'linear-gradient(90deg, #FFD700, #00ffff)',
-                      margin: '2rem auto 3rem',
-                      borderRadius: '2px'
-                    }}
-                  />
-
-                  <Typography
-                    variant="body1"
-                    sx={{
-                      color: 'rgba(255, 255, 255, 0.85)',
-                      lineHeight: 1.8,
-                      fontSize: { xs: '1rem', md: '1.15rem' },
-                      fontFamily: '"Inter", sans-serif',
-                      fontWeight: 300,
-                      maxWidth: '600px',
-                      margin: '0 auto 3rem',
-                      letterSpacing: '0.02em',
-                    }}
-                  >
-                    Embark on a culinary journey through our carefully curated selection of authentic dishes,
-                    crafted with passion and served with perfection.
-                  </Typography>
-
-                  <motion.div
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                  >
-                    <Button
-                      onClick={() => window.location.href = '/menu-new'}
-                      sx={{
-                        color: '#00ffff',
-                        border: '2px solid rgba(0, 255, 255, 0.5)',
-                        padding: { xs: '1rem 3rem', md: '1.2rem 4rem' },
-                        borderRadius: '4px',
-                        fontFamily: '"Outfit", sans-serif',
-                        fontSize: { xs: '1rem', md: '1.1rem' },
-                        letterSpacing: '0.4em',
-                        background: 'transparent',
-                        position: 'relative',
-                        overflow: 'hidden',
-                        transition: 'all 0.4s ease',
-                        '&::before': {
-                          content: '""',
-                          position: 'absolute',
-                          top: '50%',
-                          left: '50%',
-                          width: '0',
-                          height: '0',
-                          borderRadius: '50%',
-                          background: 'radial-gradient(circle, rgba(0,255,255,0.2), transparent)',
-                          transform: 'translate(-50%, -50%)',
-                          transition: 'width 0.6s ease, height 0.6s ease',
-                        },
-                        '&:hover': {
-                          background: 'rgba(0, 255, 255, 0.05)',
-                          border: '2px solid #00ffff',
-                          letterSpacing: '0.5em',
-                          boxShadow: '0 0 30px rgba(0, 255, 255, 0.3)',
-                          transform: 'translateY(-2px)',
-                        },
-                        '&:hover::before': {
-                          width: '300px',
-                          height: '300px',
-                        }
-                      }}
-                    >
-                      VIEW MENU
-                    </Button>
-                  </motion.div>
-                </Box>
-              </motion.div>
+            <Section style={{ height: 'auto', minHeight: '100vh', padding: { xs: '4rem 0', md: '8rem 0' }, justifyContent: 'center', zIndex: 10 }}>
+              <MenuPreview />
             </Section>
 
-            {/* Character Design Section - Standardized Alignment */}
-            <Section style={{ height: 'auto', minHeight: '100vh', padding: { xs: '4rem 0 2rem 0', md: '6rem 0 4rem 0' }, justifyContent: 'flex-start', zIndex: 10 }}>
+            {/* Catering Services Section */}
+            <Section style={{ height: 'auto', minHeight: '100vh', padding: { xs: '4rem 0', md: '8rem 0' }, justifyContent: 'center', zIndex: 10 }}>
+              <CateringSection />
             </Section>
 
-            {/* Product Cards Section with Heading - Standardized Alignment */}
-            <Section style={{ height: 'auto', minHeight: '100vh', padding: { xs: '4rem 0 2rem 0', md: '0rem 0 2rem 0' }, justifyContent: 'flex-start' }}>
-              <motion.div
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                animate={{ y: [0, -8, 0] }} // Floating flair
-                transition={{
-                  y: { duration: 4, repeat: Infinity, ease: "easeInOut" },
-                  opacity: { duration: 1.2 },
-                  default: { duration: 1.2, ease: "easeOut" }
-                }}
-                viewport={{ once: true }}
-                style={{ textAlign: 'center', marginBottom: '1rem' }}
-              >
-                <Typography variant="overline" sx={{ color: '#FFD700', letterSpacing: '0.6em', mb: 3, display: 'block', fontSize: '0.8rem', fontWeight: 400 }}>
-                  SIGNATURE FLAVORS
-                </Typography>
-                <Typography variant="h2" sx={{
-                  color: '#fff',
-                  fontWeight: 300,
-                  fontSize: { xs: '1.8rem', md: '3.5rem' },
-                  letterSpacing: { xs: '0.3em', md: '0.5em' },
-                  fontFamily: '"Outfit", sans-serif',
-                  textTransform: 'uppercase',
-                  textShadow: '0 0 20px rgba(255, 255, 255, 0.1)',
-                }}>
-                  PERFECTION
-                </Typography>
-                <div style={{ width: '40px', height: '1px', background: 'rgba(0, 255, 255, 0.3)', margin: '2rem auto' }} />
-              </motion.div>
+            {/* Contact Section */}
+            <Section style={{ height: 'auto', minHeight: '100vh', padding: { xs: '4rem 0', md: '8rem 0' }, justifyContent: 'center', zIndex: 10 }}>
+              <ContactSection />
             </Section>
-
-            {/* Luminous Card Section with Heading - Standardized Alignment */}
-            <Section style={{ height: 'auto', minHeight: '100vh', padding: { xs: '4rem 0 2rem 0', md: '0rem 0 2rem 0' }, justifyContent: 'flex-start', gap: '4rem' }}>
-              <motion.div
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                animate={{ y: [0, -8, 0] }} // Floating flair
-                transition={{
-                  y: { duration: 4, repeat: Infinity, ease: "easeInOut" },
-                  opacity: { duration: 1.2 },
-                  default: { duration: 1.2, ease: "easeOut" }
-                }}
-                viewport={{ once: true }}
-                style={{ textAlign: 'center', marginBottom: '1rem' }}
-              >
-                <Typography variant="overline" sx={{ color: '#FFD700', letterSpacing: '0.6em', mb: 3, display: 'block', fontSize: '0.8rem', fontWeight: 400 }}>
-                  CULINARY JOURNEY
-                </Typography>
-                <Typography variant="h2" sx={{
-                  color: '#fff',
-                  fontWeight: 300,
-                  fontSize: { xs: '1.8rem', md: '3.5rem' },
-                  letterSpacing: { xs: '0.3em', md: '0.5em' },
-                  fontFamily: '"Outfit", sans-serif',
-                  textTransform: 'uppercase',
-                  textShadow: '0 0 20px rgba(255, 255, 255, 0.1)',
-                }}>
-                  SIGNATURES
-                </Typography>
-                <div style={{ width: '40px', height: '1px', background: 'rgba(0, 255, 255, 0.3)', margin: '2rem auto' }} />
-              </motion.div>
-            </Section>
-
-            {/* Menu Redirect Section - Fixed Centering to avoid top clipping */}
-            <Section style={{ height: '1292px', padding: '6rem 0 10rem 0', justifyContent: 'flex-start', zIndex: 20 }}>
-              <motion.div
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                animate={{ y: [0, -8, 0] }} // Floating flair
-                transition={{
-                  y: { duration: 4, repeat: Infinity, ease: "easeInOut" },
-                  opacity: { duration: 1.2 },
-                  default: { duration: 1.2, ease: "easeOut" }
-                }}
-                viewport={{ once: true }}
-                style={{ textAlign: 'center', marginBottom: '1rem' }}
-              >
-                <Typography variant="overline" sx={{ color: '#FFD700', letterSpacing: '0.6em', mb: 3, display: 'block', fontSize: '0.8rem', fontWeight: 400 }}>
-                  KITCHEN MAGIC
-                </Typography>
-                <Typography variant="h2" sx={{
-                  color: '#fff',
-                  fontWeight: 300,
-                  fontSize: { xs: '1.8rem', md: '3.5rem' },
-                  letterSpacing: { xs: '0.3em', md: '0.5em' },
-                  fontFamily: '"Outfit", sans-serif',
-                  textTransform: 'uppercase',
-                  textShadow: '0 0 20px rgba(255, 255, 255, 0.1)',
-                }}>
-                  OUR MENU
-                </Typography>
-                <div style={{ width: '40px', height: '1px', background: 'rgba(0, 255, 255, 0.3)', margin: '2rem auto' }} />
-              </motion.div>
-
-            </Section>
-
 
             {/* Creative Footer & Newsletter */}
             <Section style={{ height: 'auto', minHeight: '60vh', padding: '5rem 0 0 0', justifyContent: 'flex-start' }}>
