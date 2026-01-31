@@ -1,10 +1,10 @@
 :root {
     --body-color: #001e36;
     --text-color: #726f77;
-    --primary-color: #FFD700;
-    /* Neon Yellow/Gold from LandingPage */
-    --secondary-color: #D9A756;
-    /* Gold from LandingPage */
+    --primary-color: #FF8C00;
+    /* Neon Orange from LandingPage */
+    --secondary-color: #FF8C00;
+    /* Darker Orange from LandingPage */
 
     color-scheme: dark;
 }
@@ -43,7 +43,7 @@
     animation: spin-out var(--duration) linear infinite;
     background: radial-gradient(circle,
             transparent 40%,
-            rgba(255, 215, 0, 0.05) 100%);
+            rgba(255, 140, 0, 0.05) 100%);
 }
 
 /* ---------------- Items ---------------- */
@@ -86,7 +86,7 @@
         border-color 0.3s ease,
         opacity 0.3s ease,
         filter 0.3s ease;
-    box-shadow: 0 0 15px rgba(255, 215, 0, 0.3);
+    box-shadow: 0 0 15px rgba(255, 140, 0, 0.3);
 }
 
 /* Expanded hit area */

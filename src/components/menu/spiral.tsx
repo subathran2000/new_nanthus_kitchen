@@ -239,13 +239,13 @@ const SpiralBackground: React.FC<SpiralBackgroundProps> = ({ activeCategory = "S
     }, [activeCategory]);
 
     const getResponsiveValues = () => {
-        if (typeof window === "undefined") return { radius: 800, spacing: 250 };
+        if (typeof window === "undefined") return { radius: 800, spacing: 180 };
         const width = window.innerWidth;
-        if (width < 375) return { radius: 250, spacing: 140 };
-        if (width < 480) return { radius: 320, spacing: 180 };
-        if (width < 768) return { radius: 450, spacing: 200 };
-        if (width < 1024) return { radius: 650, spacing: 220 };
-        return { radius: 800, spacing: 250 };
+        if (width < 375) return { radius: 250, spacing: 100 };
+        if (width < 480) return { radius: 320, spacing: 130 };
+        if (width < 768) return { radius: 450, spacing: 150 };
+        if (width < 1024) return { radius: 650, spacing: 160 };
+        return { radius: 800, spacing: 180 };
     };
 
     useEffect(() => {
@@ -329,7 +329,36 @@ const SpiralBackground: React.FC<SpiralBackgroundProps> = ({ activeCategory = "S
             targetScrollYRef.current = Math.max(minScroll, Math.min(maxScroll, newTargetScroll));
         };
 
+        // Touch support for mobile
+        let touchStartY = 0;
+        let touchLastY = 0;
+
+        const handleTouchStart = (e: TouchEvent) => {
+            if (openRef.current) return;
+            touchStartY = e.touches[0].clientY;
+            touchLastY = touchStartY;
+        };
+
+        const handleTouchMove = (e: TouchEvent) => {
+            if (openRef.current) return;
+            e.preventDefault(); // Prevent page scrolling
+            const touchY = e.touches[0].clientY;
+            const deltaY = touchLastY - touchY;
+            touchLastY = touchY;
+
+            const newTargetScroll = targetScrollYRef.current - deltaY * 2; // Adjust sensitivity
+            targetScrollYRef.current = Math.max(minScroll, Math.min(maxScroll, newTargetScroll));
+        };
+
+        const handleTouchEnd = () => {
+            touchStartY = 0;
+            touchLastY = 0;
+        };
+
         window.addEventListener("wheel", handleWheel);
+        window.addEventListener("touchstart", handleTouchStart, { passive: true });
+        window.addEventListener("touchmove", handleTouchMove, { passive: false });
+        window.addEventListener("touchend", handleTouchEnd);
 
         const ticker = gsap.ticker.add(() => {
             // Only scroll calculation if not fully open (or you can let it run but it won't affect vertical y)
@@ -341,6 +370,9 @@ const SpiralBackground: React.FC<SpiralBackgroundProps> = ({ activeCategory = "S
 
         return () => {
             window.removeEventListener("wheel", handleWheel);
+            window.removeEventListener("touchstart", handleTouchStart);
+            window.removeEventListener("touchmove", handleTouchMove);
+            window.removeEventListener("touchend", handleTouchEnd);
             gsap.ticker.remove(ticker);
             document.documentElement.style.overflowX = prevOverflowX;
         };
@@ -455,7 +487,7 @@ const SpiralBackground: React.FC<SpiralBackgroundProps> = ({ activeCategory = "S
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    gap: isMobile ? 2 : 4,
+                    gap: isMobile ? 1.5 : 3,
                     flexDirection: isMobile ? 'column' : 'row',
                     px: 2
                 }}>
@@ -496,7 +528,7 @@ const SpiralBackground: React.FC<SpiralBackgroundProps> = ({ activeCategory = "S
                 </Box>
             )}
 
-            {/* Inline Details Panel (Replaces Modal) */}
+            {/* Side-panel Detail View (Premium Orange Theme - No Images) */}
             <Box
                 sx={{
                     position: 'fixed',
@@ -504,192 +536,176 @@ const SpiralBackground: React.FC<SpiralBackgroundProps> = ({ activeCategory = "S
                     right: 0,
                     bottom: 0,
                     width: { xs: '100%', md: '60%', lg: '65%' },
-                    background: "rgba(0, 30, 54, 0.85)",
+                    background: "rgba(0, 15, 27, 0.95)",
                     backdropFilter: "blur(24px) saturate(180%)",
-                    borderLeft: "1px solid rgba(0, 255, 255, 0.2)",
+                    borderLeft: "2px solid rgba(255, 140, 0, 0.3)",
                     boxShadow: "-10px 0 50px rgba(0,0,0,0.5)",
-                    zIndex: 100, // Below nav buttons (2000)
+                    zIndex: 1000,
                     transform: open ? 'translateX(0)' : 'translateX(100%)',
                     transition: 'transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1)',
                     display: 'flex',
                     flexDirection: 'column',
-                    p: { xs: 3, md: 6 },
-                    pt: { xs: 10, md: 12 }, // Space for nav buttons
-                    overflowY: 'auto'
+                    p: 0,
+                    overflow: 'hidden'
                 }}
             >
-                {/* Close Button & Title Header */}
-                <Box sx={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'space-between',
-                    mb: 4,
-                    borderBottom: '1px solid rgba(0, 255, 255, 0.1)',
-                    pb: 2
-                }}>
-                    <Typography
-                        variant="h3"
-                        sx={{
-                            fontWeight: 700,
-                            letterSpacing: '0.05em',
-                            textTransform: 'uppercase',
-                            color: '#00ffff',
-                            fontFamily: "'Courier New', Courier, monospace",
-                            textShadow: '0 0 10px rgba(0, 255, 255, 0.5)',
-                            fontSize: { xs: '1.5rem', md: '2.5rem' }
-                        }}
-                    >
-                        {selectedCategory?.title || 'Menu'}
-                    </Typography>
+                {/* Close Button */}
+                <IconButton
+                    onClick={() => setOpen(false)}
+                    sx={{
+                        position: 'absolute',
+                        top: 100,
+                        right: 25,
+                        zIndex: 1100,
+                        color: '#FF8C00',
+                        bgcolor: 'rgba(255,140,0,0.1)',
+                        '&:hover': {
+                            bgcolor: 'rgba(255,140,0,0.2)',
+                            transform: 'rotate(90deg)'
+                        },
+                        transition: 'all 0.3s ease'
+                    }}
+                >
+                    <CloseIcon />
+                </IconButton>
 
-                    <IconButton
-                        onClick={() => setOpen(false)}
-                        sx={{
-                            color: '#00ffff',
-                            border: '1px solid rgba(0, 255, 255, 0.3)',
-                            '&:hover': {
-                                background: 'rgba(0, 255, 255, 0.1)',
-                                transform: 'rotate(90deg)',
-                                transition: 'all 0.3s ease'
-                            }
-                        }}
-                    >
-                        <CloseIcon />
-                    </IconButton>
-                </Box>
+                {/* Content Container */}
+                <Box
+                    sx={{
+                        flex: 1,
+                        overflowY: 'auto',
+                        p: { xs: 4, md: 8 },
+                        pt: { xs: 12, md: 10 },
+                        '&::-webkit-scrollbar': { width: '4px' },
+                        '&::-webkit-scrollbar-track': { background: 'transparent' },
+                        '&::-webkit-scrollbar-thumb': { background: '#FF8C00', borderRadius: '4px' }
+                    }}
+                >
 
-                {/* Content */}
-                <Box sx={{ flex: 1 }}>
-                    {selectedCategory?.subCategories.map((sub, idx) => (
-                        <Box key={idx} sx={{ mb: 6 }}>
-                            <Typography variant="h4" sx={{
-                                color: '#D9A756',
+
+                    {/* Title Header */}
+                    <Box sx={{
+                        p: { xs: 4, md: 5 },
+                        pb: 0,
+                        textAlign: 'center'
+                    }}>
+                        <Typography
+                            variant="h3"
+                            sx={{
+                                color: '#fff',
+                                fontFamily: "'Playfair Display', serif",
                                 fontWeight: 700,
-                                mb: 3,
-                                fontFamily: "'Courier New', Courier, monospace",
-                                borderBottom: '1px solid rgba(217, 167, 86, 0.3)',
-                                pb: 1,
-                                display: 'inline-block',
-                                fontSize: { xs: '1.2rem', md: '1.8rem' }
-                            }}>
-                                {sub.title}
-                            </Typography>
-                            <List sx={{ pt: 1 }}>
-                                {sub.items.map((item, i) => (
-                                    <ListItem
-                                        key={item.id}
-                                        sx={{
-                                            flexDirection: isMobile ? 'column' : 'row',
-                                            alignItems: isMobile ? 'flex-start' : 'center',
-                                            p: 3,
-                                            mb: 2,
-                                            borderRadius: '20px',
-                                            background: 'rgba(0, 255, 255, 0.03)',
-                                            border: '1px solid rgba(0, 255, 255, 0.05)',
-                                            borderLeft: '4px solid transparent',
-                                            transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
-                                            position: 'relative',
-                                            overflow: 'hidden',
-                                            '&:hover': {
-                                                background: 'rgba(0, 255, 255, 0.08)',
-                                                transform: 'translateX(10px)',
-                                                borderColor: 'rgba(0, 255, 255, 0.2)',
-                                                borderLeftColor: '#D9A756',
-                                                '& .item-image': {
-                                                    transform: 'scale(1.1)',
-                                                    boxShadow: '0 0 15px rgba(0, 255, 255, 0.4)',
-                                                    borderColor: 'rgba(0, 255, 255, 0.5)'
-                                                },
-                                                '& .price-tag': {
-                                                    background: '#D9A756',
-                                                    color: '#000',
-                                                    transform: 'scale(1.05)',
-                                                    boxShadow: '0 0 15px rgba(217, 167, 86, 0.5)'
-                                                }
-                                            },
-                                            animation: open ? `fadeInRight 0.5s ease forwards ${i * 0.05 + 0.3}s` : 'none',
-                                            opacity: 0,
-                                            transform: 'translateX(20px)'
-                                        }}
-                                    >
-                                        <Box
-                                            className="item-image"
+                                textShadow: '0 0 20px rgba(255, 140, 0, 0.3)',
+                                fontSize: { xs: '2rem', md: '3rem' }
+                            }}
+                        >
+                            {selectedCategory?.title}
+                        </Typography>
+                        <Box sx={{ width: '40px', height: '3px', bgcolor: '#FF8C00', borderRadius: '2px', mx: 'auto', mt: 2 }} />
+                    </Box>
+
+                    {/* Menu Content */}
+                    <Box
+                        sx={{
+                            p: { xs: 3, md: 5 },
+                            pt: 2,
+                            overflowY: 'auto',
+                            '&::-webkit-scrollbar': { width: '4px' },
+                            '&::-webkit-scrollbar-track': { background: 'transparent' },
+                            '&::-webkit-scrollbar-thumb': { background: '#FF8C00', borderRadius: '4px' }
+                        }}
+                    >
+                        {selectedCategory?.subCategories.map((sub, idx) => (
+                            <Box key={idx} sx={{ mb: 6 }}>
+                                <Typography variant="h5" sx={{
+                                    color: '#FF8C00',
+                                    fontWeight: 700,
+                                    mb: 3,
+                                    fontFamily: "'Playfair Display', serif",
+                                    borderBottom: '1px solid rgba(255, 140, 0, 0.2)',
+                                    pb: 1.5,
+                                    fontSize: { xs: '1.3rem', md: '1.8rem' }
+                                }}>
+                                    {sub.title}
+                                </Typography>
+                                <List sx={{ p: 0 }}>
+                                    {sub.items.map((item) => (
+                                        <ListItem
+                                            key={item.id}
                                             sx={{
-                                                width: '100px',
-                                                height: '100px',
-                                                borderRadius: '16px',
-                                                background: `url(${item.imageUrl}) center/cover no-repeat`,
-                                                mr: 3,
-                                                mb: isMobile ? 2 : 0,
-                                                border: '1px solid rgba(0, 255, 255, 0.2)',
-                                                flexShrink: 0,
-                                                transition: 'all 0.4s ease'
+                                                p: { xs: 2.5, md: 3 },
+                                                mb: 2.5,
+                                                borderRadius: '24px',
+                                                background: 'rgba(255, 255, 255, 0.03)',
+                                                border: '1px solid rgba(255, 140, 0, 0.12)',
+                                                transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
+                                                display: 'flex',
+                                                flexDirection: 'column',
+                                                alignItems: 'flex-start',
+                                                '&:hover': {
+                                                    background: 'rgba(255, 140, 0, 0.08)',
+                                                    transform: 'translateY(-3px)',
+                                                    borderColor: 'rgba(255, 140, 0, 0.4)',
+                                                    boxShadow: '0 15px 35px rgba(0,0,0,0.4)',
+                                                }
                                             }}
-                                        />
-                                        <ListItemText
-                                            primary={
-                                                <Typography sx={{ color: '#fff', fontWeight: 700, fontSize: '1.4rem', fontFamily: "'Courier New', Courier, monospace", letterSpacing: '0.02em', textShadow: '0 2px 4px rgba(0,0,0,0.3)' }}>
+                                        >
+                                            <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', width: '100%', mb: 1.5 }}>
+                                                <Typography sx={{
+                                                    color: '#fff',
+                                                    fontWeight: 800,
+                                                    fontSize: { xs: '1.2rem', md: '1.5rem' },
+                                                    fontFamily: "'Playfair Display', serif",
+                                                    letterSpacing: '0.5px'
+                                                }}>
                                                     {item.name}
                                                 </Typography>
-                                            }
-                                            secondary={
-                                                <Box>
-                                                    <Typography sx={{ color: 'rgba(170, 204, 255, 0.85)', fontSize: '1rem', mt: 1, fontFamily: "'Courier New', Courier, monospace", lineHeight: 1.5 }}>
-                                                        {item.description}
-                                                    </Typography>
-                                                    {item.options && (
-                                                        <Box sx={{ display: 'flex', gap: 1, mt: 1.5, flexWrap: 'wrap' }}>
-                                                            {item.options.map((opt, oIdx) => (
-                                                                <Typography key={oIdx} variant="caption" sx={{
-                                                                    color: '#00ffff',
-                                                                    border: '1px solid rgba(0, 255, 255, 0.3)',
-                                                                    px: 1.5,
-                                                                    py: 0.5,
-                                                                    borderRadius: '6px',
-                                                                    fontSize: '0.8rem',
-                                                                    cursor: 'default',
-                                                                    '&:hover': {
-                                                                        background: 'rgba(0, 255, 255, 0.1)'
-                                                                    }
-                                                                }}>
-                                                                    {opt.label}: {opt.price}
-                                                                </Typography>
-                                                            ))}
-                                                        </Box>
-                                                    )}
-                                                </Box>
-                                            }
-                                        />
-                                        <Box sx={{ textAlign: 'right', ml: 2, minWidth: '80px' }}>
-                                            <Box
-                                                className="price-tag"
-                                                sx={{
-                                                    background: 'rgba(217, 167, 86, 0.15)',
-                                                    border: '1px solid #D9A756',
-                                                    color: '#D9A756',
-                                                    px: 2,
-                                                    py: 1,
-                                                    borderRadius: '12px',
-                                                    fontWeight: 800,
-                                                    fontSize: '1.2rem',
-                                                    fontFamily: "'Courier New', Courier, monospace",
-                                                    transition: 'all 0.3s ease',
-                                                    whiteSpace: 'nowrap',
-                                                    textAlign: 'center'
-                                                }}
-                                            >
-                                                {item.price}
+                                                <Typography sx={{
+                                                    color: '#FF8C00',
+                                                    fontWeight: 900,
+                                                    fontSize: '1.4rem'
+                                                }}>
+                                                    {item.price}
+                                                </Typography>
                                             </Box>
-                                        </Box>
-                                    </ListItem>
-                                ))}
-                            </List>
-                        </Box>
-                    ))}
-                </Box>
-            </Box>
 
-            <style>{`
+                                            <Typography sx={{
+                                                color: 'rgba(170, 204, 255, 0.75)',
+                                                fontSize: '1rem',
+                                                lineHeight: 1.6,
+                                                mb: 2,
+                                                fontWeight: 300
+                                            }}>
+                                                {item.description}
+                                            </Typography>
+
+                                            {item.options && (
+                                                <Box sx={{ display: 'flex', gap: 1.5, flexWrap: 'wrap' }}>
+                                                    {item.options.map((opt, oIdx) => (
+                                                        <Box key={oIdx} sx={{
+                                                            color: '#fff',
+                                                            border: '1px solid rgba(255, 140, 0, 0.3)',
+                                                            px: 2,
+                                                            py: 0.5,
+                                                            borderRadius: '50px',
+                                                            fontSize: '0.85rem',
+                                                            bgcolor: 'rgba(255, 140, 0, 0.05)',
+                                                            fontWeight: 500
+                                                        }}>
+                                                            {opt.label}: {opt.price}
+                                                        </Box>
+                                                    ))}
+                                                </Box>
+                                            )}
+                                        </ListItem>
+                                    ))}
+                                </List>
+                            </Box>
+                        ))}
+                    </Box>
+                </Box>
+
+                <style>{`
                 @keyframes fadeInRight {
                     from {
                         opacity: 0;
@@ -709,11 +725,11 @@ const SpiralBackground: React.FC<SpiralBackgroundProps> = ({ activeCategory = "S
                     background: rgba(0, 30, 54, 0.5); 
                 }
                 ::-webkit-scrollbar-thumb {
-                    background: rgba(0, 255, 255, 0.3); 
+                    background: rgba(255, 140, 0, 0.4); 
                     border-radius: 4px;
                 }
                 ::-webkit-scrollbar-thumb:hover {
-                    background: rgba(0, 255, 255, 0.5); 
+                    background: rgba(255, 140, 0, 0.6); 
                 }
 
                 @media (max-width: 1024px) { .spiral-card { max-width: 350px; } }
@@ -721,6 +737,7 @@ const SpiralBackground: React.FC<SpiralBackgroundProps> = ({ activeCategory = "S
                 @media (max-width: 480px) { .spiral-card { max-width: 250px; } }
                 @media (max-width: 375px) { .spiral-card { max-width: 200px; } }
             `}</style>
+            </Box>
         </Box>
     );
 };

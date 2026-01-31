@@ -1,6 +1,7 @@
 
 import React, { useState } from 'react';
 import { Box, Typography, TextField, Button, IconButton } from "@mui/material";
+import { commonButtonStyle } from "../common/ButtonStyles";
 import { motion, AnimatePresence } from "framer-motion";
 import InstagramIcon from "@mui/icons-material/Instagram";
 import FacebookIcon from "@mui/icons-material/Facebook";
@@ -32,7 +33,7 @@ const CreativeFooter = () => {
       sx={{
         width: "100%",
         position: "relative",
-        mt: 20,
+        mt: 4,
         pb: 8,
         overflow: "visible",
         color: "#fff",
@@ -182,29 +183,7 @@ const CreativeFooter = () => {
                           type="submit"
                           variant="outlined"
                           disabled={!email}
-                          sx={{
-                            borderColor: "rgba(0, 255, 255, 0.4)",
-                            color: "#00ffff",
-                            borderRadius: 0,
-                            px: 6,
-                            py: 2,
-                            fontWeight: 300,
-                            textTransform: "uppercase",
-                            fontSize: "0.9rem",
-                            letterSpacing: "0.3em",
-                            width: "100%",
-                            transition: "all 0.4s ease",
-                            "&:hover": {
-                              borderColor: "#D9A756",
-                              bgcolor: "#D9A756",
-                              color: "#001e36",
-                              boxShadow: "0 0 30px rgba(217, 167, 86, 0.4)",
-                            },
-                            "&.Mui-disabled": {
-                              borderColor: "rgba(0, 255, 255, 0.1)",
-                              color: "rgba(0, 255, 255, 0.2)",
-                            },
-                          }}
+                          sx={commonButtonStyle}
                         >
                           Subscribe for Aromas
                         </Button>

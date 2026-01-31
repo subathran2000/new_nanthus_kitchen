@@ -220,18 +220,18 @@ const Coverflow3D: React.FC = () => {
                         position: 'absolute',
                         top: { xs: '20px', md: '40px' },
                         right: { xs: '20px', md: '40px' },
-                        bgcolor: 'rgba(0, 255, 255, 0.1)',
-                        border: '2px solid rgba(0, 255, 255, 0.3)',
-                        color: '#00ffff',
+                        bgcolor: 'rgba(255, 140, 0, 0.1)',
+                        border: '2px solid rgba(255, 140, 0, 0.3)',
+                        color: '#FF8C00',
                         width: { xs: '40px', sm: '40px', md: '40px' },
                         height: { xs: '40px', sm: '40px', md: '40px' },
                         backdropFilter: 'blur(10px)',
-                        boxShadow: '0 8px 32px rgba(0, 255, 255, 0.3), 0 0 20px rgba(0, 255, 255, 0.2)',
+                        boxShadow: '0 8px 32px rgba(255, 140, 0, 0.3), 0 0 20px rgba(255, 140, 0, 0.2)',
                         zIndex: 1001,
                         '&:hover': {
-                            bgcolor: 'rgba(0, 255, 255, 0.2)',
+                            bgcolor: 'rgba(255, 140, 0, 0.2)',
                             transform: 'scale(1.1)',
-                            boxShadow: '0 0 30px rgba(0, 255, 255, 0.6), 0 0 60px rgba(0, 255, 255, 0.4)',
+                            boxShadow: '0 0 30px rgba(255, 140, 0, 0.6), 0 0 60px rgba(255, 140, 0, 0.4)',
                         },
                     }}
                 >
@@ -259,7 +259,7 @@ const Coverflow3D: React.FC = () => {
                             fontWeight: 700,
                             mb: 1,
                             color: '#fff',
-                            textShadow: '0 0 20px rgba(0,255,255,0.5)',
+                            textShadow: '0 0 20px rgba(255, 140, 0, 0.5)',
                             animation: 'fadeIn 0.6s forwards',
                             '@keyframes fadeIn': {
                                 from: {
@@ -328,13 +328,13 @@ const Coverflow3D: React.FC = () => {
                                         height: '100%',
                                         borderRadius: '10px',
                                         boxShadow: index === currentIndex
-                                            ? '0 40px 80px rgba(0, 255, 255, 0.5), 0 0 60px rgba(0, 255, 255, 0.4), 0 0 100px rgba(0, 255, 255, 0.2)'
+                                            ? '0 40px 80px rgba(255, 140, 0, 0.5), 0 0 60px rgba(255, 140, 0, 0.4), 0 0 100px rgba(255, 140, 0, 0.2)'
                                             : '0 30px 60px rgba(0, 0, 0, 0.9), 0 10px 30px rgba(0, 0, 0, 0.7)',
                                         position: 'relative',
                                         overflow: 'hidden',
                                         transformStyle: 'preserve-3d',
                                         bgcolor: '#001e36',
-                                        border: index === currentIndex ? '2px solid rgba(0, 255, 255, 0.5)' : '2px solid rgba(255, 255, 255, 0.1)',
+                                        border: index === currentIndex ? '2px solid rgba(255, 140, 0, 0.5)' : '2px solid rgba(255, 255, 255, 0.1)',
                                     }}
                                 >
                                     <Box
@@ -393,25 +393,21 @@ const Coverflow3D: React.FC = () => {
                         }}
                         sx={{
                             position: 'absolute',
-                            top: { xs: 'auto', md: '50%' },
-                            bottom: { xs: '190px', md: 'auto' }, // Moved up
-                            left: { xs: '20%', sm: '20px', md: '120px' },
-                            transform: { xs: 'translateX(-50%)', md: 'translateY(-50%)' },
-                            bgcolor: 'rgba(0, 255, 255, 0.1)',
-                            border: '2px solid rgba(0, 255, 255, 0.3)',
-                            color: '#00ffff',
-                            width: { xs: '50px', sm: '40px', md: '40px' }, // Slightly larger for touch
-                            height: { xs: '50px', sm: '40px', md: '40px' },
+                            top: '50%',
+                            left: { xs: '20px', md: '120px' },
+                            transform: 'translateY(-50%)',
+                            bgcolor: 'rgba(255, 140, 0, 0.1)',
+                            border: '2px solid rgba(255, 140, 0, 0.3)',
+                            color: '#FF8C00',
+                            width: { xs: '45px', md: '40px' },
+                            height: { xs: '45px', md: '40px' },
                             backdropFilter: 'blur(10px)',
-                            boxShadow: '0 8px 32px rgba(0, 255, 255, 0.3), 0 0 20px rgba(0, 255, 255, 0.2)',
+                            boxShadow: '0 8px 32px rgba(255, 140, 0, 0.3), 0 0 20px rgba(255, 140, 0, 0.2)',
                             zIndex: 1001,
                             '&:hover': {
-                                bgcolor: 'rgba(0, 255, 255, 0.2)',
-                                transform: {
-                                    xs: 'translateX(-50%) scale(1.1)',
-                                    md: 'translateY(-50%) scale(1.1)'
-                                },
-                                boxShadow: '0 0 30px rgba(0, 255, 255, 0.6), 0 0 60px rgba(0, 255, 255, 0.4)',
+                                bgcolor: 'rgba(255, 140, 0, 0.2)',
+                                transform: 'translateY(-50%) scale(1.1)',
+                                boxShadow: '0 0 30px rgba(255, 140, 0, 0.6), 0 0 60px rgba(255, 140, 0, 0.4)',
                             },
                         }}
                     >
@@ -425,25 +421,21 @@ const Coverflow3D: React.FC = () => {
                         }}
                         sx={{
                             position: 'absolute',
-                            top: { xs: 'auto', md: '50%' },
-                            bottom: { xs: '190px', md: 'auto' }, // Moved up
-                            right: { xs: '20%', sm: '20px', md: '120px' },
-                            transform: { xs: 'translateX(50%)', md: 'translateY(-50%)' },
-                            bgcolor: 'rgba(0, 255, 255, 0.1)',
-                            border: '2px solid rgba(0, 255, 255, 0.3)',
-                            color: '#00ffff',
-                            width: { xs: '50px', sm: '40px', md: '40px' }, // Slightly larger for touch
-                            height: { xs: '50px', sm: '40px', md: '40px' },
+                            top: '50%',
+                            right: { xs: '20px', md: '120px' },
+                            transform: 'translateY(-50%)',
+                            bgcolor: 'rgba(255, 140, 0, 0.1)',
+                            border: '2px solid rgba(255, 140, 0, 0.3)',
+                            color: '#FF8C00',
+                            width: { xs: '45px', md: '40px' },
+                            height: { xs: '45px', md: '40px' },
                             backdropFilter: 'blur(10px)',
-                            boxShadow: '0 8px 32px rgba(0, 255, 255, 0.3), 0 0 20px rgba(0, 255, 255, 0.2)',
+                            boxShadow: '0 8px 32px rgba(255, 140, 0, 0.3), 0 0 20px rgba(255, 140, 0, 0.2)',
                             zIndex: 1001,
                             '&:hover': {
-                                bgcolor: 'rgba(0, 255, 255, 0.2)',
-                                transform: {
-                                    xs: 'translateX(50%) scale(1.1)',
-                                    md: 'translateY(-50%) scale(1.1)'
-                                },
-                                boxShadow: '0 0 30px rgba(0, 255, 255, 0.6), 0 0 60px rgba(0, 255, 255, 0.4)',
+                                bgcolor: 'rgba(255, 140, 0, 0.2)',
+                                transform: 'translateY(-50%) scale(1.1)',
+                                boxShadow: '0 0 30px rgba(255, 140, 0, 0.6), 0 0 60px rgba(255, 140, 0, 0.4)',
                             },
                         }}
                     >
@@ -501,12 +493,12 @@ const Coverflow3D: React.FC = () => {
                                             width: '10px',
                                             height: '10px',
                                             borderRadius: '50%',
-                                            bgcolor: offset === 0 ? '#00ffff' : 'rgba(0, 255, 255, 0.8)',
+                                            bgcolor: offset === 0 ? '#FF8C00' : 'rgba(255, 140, 0, 0.8)',
                                             cursor: 'pointer',
                                             transition: 'all 0.3s ease',
                                             transform: `scale(${scale})`,
                                             opacity: opacity,
-                                            boxShadow: offset === 0 ? '0 0 10px rgba(0, 255, 255, 0.8)' : 'none',
+                                            boxShadow: offset === 0 ? '0 0 10px rgba(255, 140, 0, 0.8)' : 'none',
                                             '&:hover': {
                                                 opacity: 1,
                                                 transform: `scale(${scale * 1.2})`,

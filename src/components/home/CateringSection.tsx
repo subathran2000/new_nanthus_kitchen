@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Box, Typography, Button, Dialog, IconButton, DialogContent } from '@mui/material';
+import { commonButtonStyle } from '../common/ButtonStyles';
 import { motion } from 'framer-motion';
 import CloseIcon from '@mui/icons-material/Close';
 import CateringForm from './CateringForm';
@@ -15,9 +16,9 @@ const CateringSection: React.FC = () => {
             sx={{
                 width: '100%',
                 maxWidth: '1400px',
-                margin: '5rem auto 10rem',
+                margin: '1rem auto 2rem',
                 position: 'relative',
-                minHeight: '100vh',
+                minHeight: '80vh',
                 display: 'flex',
                 flexDirection: 'column',
                 justifyContent: 'center',
@@ -37,7 +38,7 @@ const CateringSection: React.FC = () => {
                 <Typography
                     variant="overline"
                     sx={{
-                        color: '#FFD700',
+                        color: '#FF8C00',
                         letterSpacing: '0.6em',
                         fontSize: '0.8rem',
                         display: 'block',
@@ -95,21 +96,9 @@ const CateringSection: React.FC = () => {
                     </Typography>
 
                     <Button
-                        variant="contained"
+                        variant="outlined"
                         onClick={() => setIsFormOpen(true)}
-                        sx={{
-                            background: '#D9A756',
-                            color: '#000',
-                            padding: '1rem 2.5rem',
-                            borderRadius: '0',
-                            fontSize: '0.9rem',
-                            letterSpacing: '0.2em',
-                            fontWeight: 700,
-                            textTransform: 'uppercase',
-                            '&:hover': {
-                                background: '#fff',
-                            }
-                        }}
+                        sx={commonButtonStyle}
                     >
                         Inquire Now
                     </Button>
@@ -134,7 +123,7 @@ const CateringSection: React.FC = () => {
                             left: '20px', // Adjusted for relative positioning
                             width: '100%',
                             height: '100%',
-                            border: '2px solid #D9A756', // Thinner, elegant border or keep thick? Reference said "frame size". Keeping thick based on prev instructions but user said "frame also seems like the saem as a image frame size"
+                            border: '2px solid #FF8C00', // Thinner, elegant border or keep thick? Reference said "frame size". Keeping thick based on prev instructions but user said "frame also seems like the saem as a image frame size"
                             // User previously asked for frame size same as image.
                             // I will keep the 15px solid border but align it perfectly or offset slightly?
                             // "make the yellow frame also seems like the saem as a image frame size"
@@ -174,45 +163,43 @@ const CateringSection: React.FC = () => {
                 fullWidth
                 PaperProps={{
                     sx: {
-                        borderRadius: '36px',
-                        background: 'transparent',
-                        boxShadow: 'none',
-                        overflow: 'visible',
+                        borderRadius: '20px',
+                        background: 'rgba(0, 15, 27, 0.8)',
+                        border: '1px solid rgba(255, 140, 0, 0.3)',
+                        boxShadow: '0 0 50px rgba(255, 140, 0, 0.2)',
+                        overflow: 'hidden',
+                        outline: 'none',
                     }
                 }}
                 BackdropProps={{
                     sx: {
-                        backdropFilter: 'blur(5px)',
-                        backgroundColor: 'transparent',
+                        backdropFilter: 'blur(8px)',
+                        backgroundColor: 'rgba(0, 30, 54, 0.8)',
                     }
                 }}
             >
-                <Box sx={{ position: 'relative' }}>
+                <Box sx={{ position: 'relative', height: '100%', display: 'flex' }}>
                     <IconButton
                         onClick={() => setIsFormOpen(false)}
                         sx={{
                             position: 'absolute',
-                            right: -10,
-                            top: -10,
-                            color: 'rgba(255,255,255,0.5)',
-                            bgcolor: 'rgba(0,0,0,0.5)',
-                            backdropFilter: 'blur(10px)',
-                            border: '1px solid rgba(255,255,255,0.1)',
-                            transition: 'all 0.3s ease',
-                            zIndex: 10,
+                            right: 15,
+                            top: 15,
+                            color: '#FF8C00',
+                            bgcolor: 'rgba(255,140,0,0.1)',
+                            zIndex: 100,
                             '&:hover': {
-                                color: '#00ffff',
-                                bgcolor: 'rgba(0,0,0,0.8)',
+                                bgcolor: 'rgba(255,140,0,0.2)',
                                 transform: 'rotate(90deg)',
-                                borderColor: '#00ffff'
-                            }
+                            },
+                            transition: 'all 0.3s ease',
                         }}
                     >
                         <CloseIcon />
                     </IconButton>
 
-                    <DialogContent sx={{ p: 0, overflowY: 'auto', '&::-webkit-scrollbar': { width: '4px' }, '&::-webkit-scrollbar-track': { background: 'transparent' }, '&::-webkit-scrollbar-thumb': { background: '#00ffff', borderRadius: '4px' } }}>
-                        <CateringForm isPopup={true} />
+                    <DialogContent sx={{ p: 0, overflowY: 'auto', '&::-webkit-scrollbar': { width: '4px' }, '&::-webkit-scrollbar-track': { background: 'transparent' }, '&::-webkit-scrollbar-thumb': { background: '#FF8C00', borderRadius: '4px' } }}>
+                        <CateringForm />
                     </DialogContent>
                 </Box>
             </Dialog>

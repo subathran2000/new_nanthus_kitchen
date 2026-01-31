@@ -30,18 +30,18 @@ const MenuNew = () => {
   const buttonStyle = {
     position: 'fixed' as const, // fixed for this page to stay on top
     top: { xs: '20px', md: '40px' },
-    bgcolor: 'rgba(0, 255, 255, 0.1)',
-    border: '2px solid rgba(0, 255, 255, 0.3)',
-    color: '#00ffff',
-    width: { xs: '40px', sm: '40px', md: '40px' },
-    height: { xs: '40px', sm: '40px', md: '40px' },
+    bgcolor: 'rgba(255, 140, 0, 0.1)',
+    border: '2px solid rgba(255, 140, 0, 0.3)',
+    color: '#FF8C00',
+    width: { xs: '45px', sm: '45px', md: '50px' },
+    height: { xs: '45px', sm: '45px', md: '50px' },
     backdropFilter: 'blur(10px)',
-    boxShadow: '0 8px 32px rgba(0, 255, 255, 0.3), 0 0 20px rgba(0, 255, 255, 0.2)',
+    boxShadow: '0 8px 32px rgba(255, 140, 0, 0.3), 0 0 20px rgba(255, 140, 0, 0.2)',
     zIndex: 2000,
     '&:hover': {
-      bgcolor: 'rgba(0, 255, 255, 0.2)',
+      bgcolor: 'rgba(255, 140, 0, 0.2)',
       transform: 'scale(1.1)',
-      boxShadow: '0 0 30px rgba(0, 255, 255, 0.6), 0 0 60px rgba(0, 255, 255, 0.4)',
+      boxShadow: '0 0 30px rgba(255, 140, 0, 0.6), 0 0 60px rgba(255, 140, 0, 0.4)',
     },
   };
 

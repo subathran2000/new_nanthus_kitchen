@@ -1,5 +1,6 @@
 import React from 'react';
 import { Box, Typography, Button, useTheme, useMediaQuery } from '@mui/material';
+import { commonButtonStyle } from '../common/ButtonStyles';
 import { motion } from 'framer-motion';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 
@@ -20,18 +21,10 @@ const MenuPreview: React.FC = () => {
                 display: 'flex',
                 flexDirection: 'column',
                 alignItems: 'center',
-                gap: { xs: '3rem', md: '5rem' },
-                padding: { xs: '2rem 1rem', md: '4rem 2rem' },
+                gap: { xs: '1.5rem', md: '2rem' },
+                padding: { xs: '4rem 1rem', md: '0rem 2rem' },
                 position: 'relative',
-                '&::before': {
-                    content: '""',
-                    position: 'absolute',
-                    inset: 0,
-                    backgroundImage: 'url("https://grainy-gradients.vercel.app/noise.svg")',
-                    opacity: 0.03,
-                    pointerEvents: 'none',
-                    zIndex: 0,
-                }
+
             }}
         >
             {/* Heading Above All */}
@@ -45,7 +38,7 @@ const MenuPreview: React.FC = () => {
                 <Typography
                     variant="overline"
                     sx={{
-                        color: '#FFD700',
+                        color: '#FF8C00',
                         letterSpacing: '0.6em',
                         mb: 2,
                         display: 'block',
@@ -73,7 +66,7 @@ const MenuPreview: React.FC = () => {
                     sx={{
                         width: '60px',
                         height: '2px',
-                        background: 'linear-gradient(90deg, #FFD700, transparent)',
+                        background: 'linear-gradient(90deg, #FF8C00, transparent)',
                         margin: '1.5rem auto 0',
                         borderRadius: '2px'
                     }}
@@ -88,8 +81,10 @@ const MenuPreview: React.FC = () => {
                     maxWidth: '1000px',
                     margin: '0 auto',
                     display: 'flex',
-                    flexDirection: 'column',
+                    flexDirection: { xs: 'column', md: 'row' },
                     alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: { xs: 4, md: 8 },
                 }}
             >
                 {/* Large Main Image */}
@@ -134,30 +129,28 @@ const MenuPreview: React.FC = () => {
                     viewport={{ once: true }}
                     style={{
                         zIndex: 2,
-                        width: isMobile ? '92%' : '500px',
-                        marginTop: isMobile ? '-80px' : 0,
-                        position: isMobile ? 'relative' : 'absolute',
-                        bottom: isMobile ? 'auto' : '-100px',
-                        right: isMobile ? 'auto' : '-80px',
+                        width: isMobile ? '100%' : '500px',
                     }}
                 >
                     <Box
                         sx={{
-                            background: 'rgba(12, 12, 12, 0.95)',
-                            backdropFilter: 'blur(20px)',
-                            padding: { xs: '2.5rem', md: '4rem' },
-                            borderRadius: '16px',
-                            border: '1px solid rgba(255, 255, 255, 0.05)',
-                            boxShadow: '0 40px 100px rgba(0, 0, 0, 0.8)',
+                            background: 'transparent',
+                            backdropFilter: 'none',
+                            padding: { xs: '1rem', md: '2rem' },
+                            borderRadius: '0',
+                            border: 'none',
+                            boxShadow: 'none',
                             display: 'flex',
                             flexDirection: 'column',
                             gap: 2,
+                            textAlign: { xs: 'center', md: 'left' },
+                            alignItems: { xs: 'center', md: 'flex-start' },
                         }}
                     >
                         <Typography
                             variant="overline"
                             sx={{
-                                color: '#D9A756',
+                                color: '#FF8C00',
                                 letterSpacing: '0.4em',
                                 fontSize: '0.75rem',
                                 fontWeight: 600
@@ -207,25 +200,7 @@ const MenuPreview: React.FC = () => {
                             variant="outlined"
                             onClick={() => window.location.href = '/menu-new'}
                             endIcon={<ArrowForwardIcon />}
-                            sx={{
-                                alignSelf: 'flex-start',
-                                borderColor: 'rgba(0, 255, 255, 0.5)',
-                                color: '#00ffff',
-                                padding: '0.8rem 2rem',
-                                borderRadius: '4px',
-                                fontSize: '0.8rem',
-                                letterSpacing: '0.2em',
-                                fontWeight: 600,
-                                mt: 1,
-                                textTransform: 'uppercase',
-                                transition: 'all 0.3s ease',
-                                '&:hover': {
-                                    borderColor: '#00ffff',
-                                    background: 'rgba(0, 255, 255, 0.05)',
-                                    boxShadow: '0 0 20px rgba(0, 255, 255, 0.2)',
-                                    paddingRight: '2.5rem'
-                                }
-                            }}
+                            sx={commonButtonStyle}
                         >
                             EXPLORE MENU
                         </Button>

@@ -6,18 +6,10 @@ interface OrderButtonProps {
     onClick?: () => void;
 }
 
+import { Button } from '@mui/material';
+
+
 const OrderButton: React.FC<OrderButtonProps> = ({ onClick }) => {
-    const [isMobile, setIsMobile] = useState(false);
-
-    useEffect(() => {
-        const checkMobile = () => {
-            setIsMobile(window.innerWidth <= 768);
-        };
-        checkMobile();
-        window.addEventListener('resize', checkMobile);
-        return () => window.removeEventListener('resize', checkMobile);
-    }, []);
-
     return (
         <motion.div
             initial={{ opacity: 0, x: -100 }}
@@ -27,85 +19,32 @@ const OrderButton: React.FC<OrderButtonProps> = ({ onClick }) => {
                 zIndex: 1000,
             }}
         >
-            <motion.button
+            <Button
+                variant="contained"
                 onClick={onClick}
-                whileHover={{ scale: 1.05, boxShadow: '0 0 30px rgba(255, 215, 0, 0.6)' }}
-                whileTap={{ scale: 0.95 }}
-                style={{
-                    background: 'linear-gradient(135deg, #FFD700 0%, #FFA500 100%)',
-                    border: 'none',
+                startIcon={<ShoppingCartIcon />}
+                sx={{
+                    bgcolor: '#FF8C00',
+                    color: '#001e36',
                     borderRadius: '50px',
-                    padding: isMobile ? '0.8rem' : '1rem 2rem',
-                    fontSize: 'clamp(0.9rem, 1.5vw, 1.1rem)',
+                    px: { xs: 3, sm: 5 },
+                    py: 1.5,
                     fontWeight: 700,
-                    color: '#000',
-                    cursor: 'pointer',
-                    boxShadow: '0 10px 30px rgba(255, 215, 0, 0.3)',
-                    position: 'relative',
-                    overflow: 'hidden',
-                    fontFamily: "'Inter', sans-serif",
-                    letterSpacing: '0.05em',
                     textTransform: 'uppercase',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    minWidth: isMobile ? '45px' : 'auto',
-                    minHeight: isMobile ? '45px' : 'auto',
+                    fontSize: { xs: '0.75rem', md: '0.9rem' },
+                    letterSpacing: '0.1em',
+                    boxShadow: '0 8px 20px rgba(255, 140, 0, 0.3)',
+                    '&:hover': {
+                        bgcolor: '#e67e00',
+                        boxShadow: '0 12px 25px rgba(255, 140, 0, 0.4)',
+                        transform: 'translateY(-2px)',
+                    },
+                    transition: 'all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275)',
+                    fontFamily: '"Outfit", sans-serif',
                 }}
             >
-                {/* Animated background glow */}
-                <motion.div
-                    animate={{
-                        scale: [1, 1.2, 1],
-                        opacity: [0.5, 0.8, 0.5],
-                    }}
-                    transition={{
-                        duration: 2,
-                        repeat: Infinity,
-                        ease: 'easeInOut',
-                    }}
-                    style={{
-                        position: 'absolute',
-                        top: '50%',
-                        left: '50%',
-                        transform: 'translate(-50%, -50%)',
-                        width: '100%',
-                        height: '100%',
-                        background: 'radial-gradient(circle, rgba(255,255,255,0.3) 0%, transparent 70%)',
-                        borderRadius: '50px',
-                        pointerEvents: 'none',
-                    }}
-                />
-
-                {/* Button content */}
-                <span style={{ position: 'relative', zIndex: 1, display: 'flex', alignItems: 'center' }}>
-                    {isMobile ? <ShoppingCartIcon sx={{ fontSize: '1.5rem' }} /> : 'Order Now'}
-                </span>
-
-                {/* Sparkle effect */}
-                <motion.div
-                    animate={{
-                        rotate: [0, 360],
-                    }}
-                    transition={{
-                        duration: 3,
-                        repeat: Infinity,
-                        ease: 'linear',
-                    }}
-                    style={{
-                        position: 'absolute',
-                        top: '10%',
-                        right: '10%',
-                        width: '8px',
-                        height: '8px',
-                        background: '#FFF',
-                        borderRadius: '50%',
-                        boxShadow: '0 0 10px #FFF',
-                        pointerEvents: 'none',
-                    }}
-                />
-            </motion.button>
-
+                Order Now
+            </Button>
         </motion.div>
     );
 };

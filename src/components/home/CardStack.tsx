@@ -70,11 +70,11 @@ const CardStack: React.FC<CardStackProps> = ({ items, onCenterCardChange }) => {
                     position: 'absolute',
                     left: { xs: '10px', md: '-60px' },
                     zIndex: 10,
-                    color: '#00ffff',
+                    color: '#FF8C00',
                     bgcolor: 'rgba(0, 30, 54, 0.6)',
-                    border: '1px solid rgba(0, 255, 255, 0.2)',
+                    border: '1px solid rgba(255, 140, 0, 0.2)',
                     backdropFilter: 'blur(4px)',
-                    '&:hover': { bgcolor: 'rgba(0,255,255,0.1)' }
+                    '&:hover': { bgcolor: 'rgba(255, 140, 0, 0.1)' }
                 }}
             >
                 <ChevronLeft />
@@ -88,11 +88,11 @@ const CardStack: React.FC<CardStackProps> = ({ items, onCenterCardChange }) => {
                     position: 'absolute',
                     right: { xs: '10px', md: '-60px' },
                     zIndex: 10,
-                    color: '#00ffff',
+                    color: '#FF8C00',
                     bgcolor: 'rgba(0, 30, 54, 0.6)',
-                    border: '1px solid rgba(0, 255, 255, 0.2)',
+                    border: '1px solid rgba(255, 140, 0, 0.2)',
                     backdropFilter: 'blur(4px)',
-                    '&:hover': { bgcolor: 'rgba(0,255,255,0.1)' }
+                    '&:hover': { bgcolor: 'rgba(255, 140, 0, 0.1)' }
                 }}
             >
                 <ChevronRight />

@@ -1,5 +1,6 @@
 import { useState } from 'react'
-import { Box, Typography, Button, Dialog, IconButton, DialogContent, Grid } from '@mui/material'
+import { Box, Typography, Button, Dialog, IconButton, DialogContent } from '@mui/material'
+import { commonButtonStyle } from '../common/ButtonStyles'
 import { motion } from 'framer-motion'
 import BusinessCenterIcon from '@mui/icons-material/BusinessCenter'
 import LocationOnIcon from '@mui/icons-material/LocationOn';
@@ -14,13 +15,13 @@ const ContactSection = () => {
     return (
         <Box sx={{ width: '100%', position: 'relative', overflow: 'hidden' }}>
             {/* Section Heading */}
-            <Box textAlign="center" mb={6}>
+            <Box textAlign="center" mb={2}>
                 <motion.div
                     initial={{ opacity: 0, y: 30 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     transition={{ duration: 1 }}
                 >
-                    <Typography variant="overline" sx={{ color: '#D9A756', letterSpacing: '0.4em', fontSize: '0.9rem' }}>
+                    <Typography variant="overline" sx={{ color: '#FF8C00', letterSpacing: '0.4em', fontSize: '0.9rem' }}>
                         HAVE QUESTIONS?
                     </Typography>
                     <Typography
@@ -60,8 +61,8 @@ const ContactSection = () => {
                 <Box sx={{ display: 'flex', flexDirection: 'column', gap: 6, alignItems: 'center' }}>
                     {/* Markham */}
                     <Box sx={{ textAlign: 'center' }}>
-                        <LocationOnIcon sx={{ color: '#D9A756', fontSize: '2rem', mb: 1 }} />
-                        <Typography variant="h6" sx={{ color: '#D9A756', letterSpacing: '0.1em', mb: 2, fontFamily: '"Outfit", sans-serif' }}>
+                        <LocationOnIcon sx={{ color: '#FF8C00', fontSize: '2rem', mb: 1 }} />
+                        <Typography variant="h6" sx={{ color: '#FF8C00', letterSpacing: '0.1em', mb: 2, fontFamily: '"Outfit", sans-serif' }}>
                             MARKHAM
                         </Typography>
                         <Typography variant="body1" sx={{ color: '#fff', opacity: 0.8, mb: 0.5 }}>
@@ -71,7 +72,7 @@ const ContactSection = () => {
                             Markham ON L3S 0B6
                         </Typography>
                         <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 1 }}>
-                            <PhoneIcon sx={{ color: '#D9A756', fontSize: '1.2rem' }} />
+                            <PhoneIcon sx={{ color: '#FF8C00', fontSize: '1.2rem' }} />
                             <Typography variant="body1" sx={{ color: '#fff' }}>
                                 289-554-5999
                             </Typography>
@@ -80,8 +81,8 @@ const ContactSection = () => {
 
                     {/* Scarborough */}
                     <Box sx={{ textAlign: 'center' }}>
-                        <LocationOnIcon sx={{ color: '#D9A756', fontSize: '2rem', mb: 1 }} />
-                        <Typography variant="h6" sx={{ color: '#D9A756', letterSpacing: '0.1em', mb: 2, fontFamily: '"Outfit", sans-serif' }}>
+                        <LocationOnIcon sx={{ color: '#FF8C00', fontSize: '2rem', mb: 1 }} />
+                        <Typography variant="h6" sx={{ color: '#FF8C00', letterSpacing: '0.1em', mb: 2, fontFamily: '"Outfit", sans-serif' }}>
                             SCARBOROUGH
                         </Typography>
                         <Typography variant="body1" sx={{ color: '#fff', opacity: 0.8, mb: 0.5 }}>
@@ -92,7 +93,7 @@ const ContactSection = () => {
                         </Typography>
                         <Box sx={{ display: 'flex', flexDirection: 'column', gap: 0.5, alignItems: 'center' }}>
                             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                                <PhoneIcon sx={{ color: '#D9A756', fontSize: '1.2rem' }} />
+                                <PhoneIcon sx={{ color: '#FF8C00', fontSize: '1.2rem' }} />
                                 <Typography variant="body1" sx={{ color: '#fff' }}>
                                     416-299-1999
                                 </Typography>
@@ -109,7 +110,7 @@ const ContactSection = () => {
                     {/* Email - Full Width */}
                     <Box sx={{ textAlign: 'center' }}>
                         <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 1.5 }}>
-                            <EmailIcon sx={{ color: '#D9A756', fontSize: '1.5rem' }} />
+                            <EmailIcon sx={{ color: '#FF8C00', fontSize: '1.5rem' }} />
                             <Typography variant="body1" sx={{ color: '#fff', fontSize: '1.1rem' }}>
                                 newnanthuskitchen@gmail.com
                             </Typography>
@@ -123,27 +124,7 @@ const ContactSection = () => {
                     variant="outlined"
                     onClick={() => setIsFormOpen(true)}
                     startIcon={<BusinessCenterIcon sx={{ fontSize: '1.2rem !important' }} />}
-                    sx={{
-                        borderColor: 'rgba(0, 255, 255, 0.4)',
-                        color: '#00ffff',
-                        borderRadius: 0,
-                        px: { xs: 4, sm: 8 },
-                        py: 2,
-                        fontWeight: 300,
-                        textTransform: 'uppercase',
-                        fontSize: { xs: '0.8rem', md: '1rem' },
-                        letterSpacing: { xs: '0.2em', md: '0.4em' },
-                        transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
-                        backgroundColor: 'rgba(0,30,54,0.3)',
-                        backdropFilter: 'blur(10px)',
-                        '&:hover': {
-                            borderColor: '#D9A756',
-                            bgcolor: '#D9A756',
-                            color: '#001e36',
-                            boxShadow: '0 0 40px rgba(217, 167, 86, 0.5)',
-                            transform: 'translateY(-2px)',
-                        },
-                    }}
+                    sx={commonButtonStyle}
                 >
                     GET IN TOUCH
                 </Button>
@@ -157,45 +138,49 @@ const ContactSection = () => {
                 fullWidth
                 PaperProps={{
                     sx: {
-                        borderRadius: '36px',
-                        background: 'transparent', // Form has its own background
-                        boxShadow: 'none',
-                        overflow: 'visible', // Allow glows to bleed out
+                        borderRadius: '20px',
+                        background: 'rgba(0, 15, 27, 0.8)',
+                        border: '1px solid rgba(255, 140, 0, 0.3)',
+                        boxShadow: '0 0 50px rgba(255, 140, 0, 0.2)',
+                        overflow: 'hidden',
+                        outline: 'none',
                     }
                 }}
                 BackdropProps={{
                     sx: {
-                        backdropFilter: 'blur(5px)',
-                        backgroundColor: 'transparent',
+                        backdropFilter: 'blur(8px)',
+                        backgroundColor: 'rgba(0, 30, 54, 0.8)',
                     }
                 }}
             >
-                <Box sx={{ position: 'relative' }}>
+                <Box sx={{ position: 'relative', height: '100%', display: 'flex' }}>
                     <IconButton
                         onClick={() => setIsFormOpen(false)}
                         sx={{
                             position: 'absolute',
-                            right: -10, // Push slightly outside
-                            top: -10,
-                            color: 'rgba(255,255,255,0.5)',
-                            bgcolor: 'rgba(0,0,0,0.5)',
-                            backdropFilter: 'blur(10px)',
-                            border: '1px solid rgba(255,255,255,0.1)',
-                            transition: 'all 0.3s ease',
-                            zIndex: 10,
+                            right: 15,
+                            top: 15,
+                            color: '#FF8C00',
+                            bgcolor: 'rgba(255,140,0,0.1)',
+                            zIndex: 100,
                             '&:hover': {
-                                color: '#00ffff',
-                                bgcolor: 'rgba(0,0,0,0.8)',
+                                bgcolor: 'rgba(255,140,0,0.2)',
                                 transform: 'rotate(90deg)',
-                                borderColor: '#00ffff'
-                            }
+                            },
+                            transition: 'all 0.3s ease',
                         }}
                     >
                         <CloseIcon />
                     </IconButton>
 
-                    <DialogContent sx={{ p: 0, overflowY: 'auto', '&::-webkit-scrollbar': { width: '4px' }, '&::-webkit-scrollbar-track': { background: 'transparent' }, '&::-webkit-scrollbar-thumb': { background: '#00ffff', borderRadius: '4px' } }}>
-                        <ContactForm isPopup={true} />
+                    <DialogContent sx={{
+                        p: 0,
+                        overflowY: 'auto',
+                        '&::-webkit-scrollbar': { width: '4px' },
+                        '&::-webkit-scrollbar-track': { background: 'transparent' },
+                        '&::-webkit-scrollbar-thumb': { background: '#FF8C00', borderRadius: '4px' }
+                    }}>
+                        <ContactForm />
                     </DialogContent>
                 </Box>
             </Dialog>

@@ -1,5 +1,5 @@
 import React, { useRef, useState, useEffect } from 'react'
-import { Box, Button, useTheme, useMediaQuery } from '@mui/material'
+import { Box, Button, Typography, useTheme, useMediaQuery } from '@mui/material'
 import { Canvas, useFrame } from '@react-three/fiber'
 import {
   ScrollControls,
@@ -9,6 +9,9 @@ import {
   Environment,
   useTexture,
   Stars,
+  Sparkles,
+  Caustics,
+  Cloud,
 } from "@react-three/drei";
 import {
   EffectComposer,
@@ -19,198 +22,97 @@ import {
 import { motion } from "framer-motion";
 import * as THREE from "three";
 import CreativeFooter from "../Footer/Footer";
+import logoReflect from "../../assets/images/restaurent.jpg";
 import logo from "../../assets/images/new_nanthus_kitchen_logo.png";
 import TypewriterText from "../common/TypewriterText";
-import Sparkles from "../common/Sparkles";
 import OrderButton from "../common/OrderButton";
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import AboutUs from "./AboutUs";
 import LocationSelector from "../common/LocationSelector";
 import { menuData } from "../menu/spiral";
-import MenuPreview from "./MenuPreview";
+import { commonButtonStyle } from '../common/ButtonStyles';
 import CateringSection from "./CateringSection";
 import ContactSection from "./ContactSection";
 
 // --- 3D Components ---
 
-const EarthCenter = () => {
-  const earthRef = useRef<THREE.Mesh>(null);
-  const glowRef = useRef<THREE.Mesh>(null);
+const FloatingCrystal = ({ position, color, speed, rotationSpeed, scale }: any) => {
+  const meshRef = useRef<THREE.Mesh>(null)
 
-  // Still use textures, but only for stylized masks
-  const [earthTexture] = useTexture([
-    "https://raw.githubusercontent.com/mrdoob/three.js/master/examples/textures/planets/earth_atmos_2048.jpg"
-  ]);
-
-  useFrame((state) => {
-    const t = state.clock.getElapsedTime();
-    if (earthRef.current) earthRef.current.rotation.y += 0.0015;
-    if (glowRef.current) glowRef.current.scale.setScalar(1 + Math.sin(t * 0.5) * 0.02);
-  });
-
-  return (
-    <group>
-      {/* Stylized Glassmorphic Earth Body */}
-      <mesh ref={earthRef}>
-        <sphereGeometry args={[1.5, 64, 64]} />
-        <meshStandardMaterial
-          color="#001e36" // Brand Navy
-          emissive="#D9A756" // Brand Gold for continents
-          emissiveMap={earthTexture}
-          emissiveIntensity={4} // Strong glow for the stylized map
-          roughness={1}
-          metalness={0}
-        />
-      </mesh>
-
-      {/* Soft Cyan Inner Core Glow */}
-      <mesh ref={glowRef}>
-        <sphereGeometry args={[1.4, 32, 32]} />
-        <meshBasicMaterial
-          color="#00ffff" // Brand Cyan
-          transparent
-          opacity={0.4}
-        />
-      </mesh>
-
-
-      {/* Premium Studio Lighting for Stylized Look */}
-      <pointLight position={[10, 10, 10]} intensity={4} color="#00ffff" />
-      <pointLight position={[-10, -5, 5]} intensity={3} color="#D9A756" />
-    </group>
-  );
-};
-
-const Planet = ({
-  orbitRadius,
-  orbitSpeed,
-  orbitOffset = 0,
-  size,
-  color,
-  hasRings = false,
-  rotationSpeed = 1,
-}: any) => {
-  const meshRef = useRef<THREE.Group>(null);
-  const planetMeshRef = useRef<THREE.Mesh>(null);
-
-  useFrame((state) => {
+  useFrame((state, delta) => {
     if (meshRef.current) {
-      const t = state.clock.getElapsedTime() * orbitSpeed + orbitOffset;
-      meshRef.current.position.x = Math.cos(t) * orbitRadius;
-      meshRef.current.position.z = Math.sin(t) * orbitRadius;
-      meshRef.current.position.y = Math.sin(t * 0.5) * (orbitRadius * 0.2); // Slight vertical oscillation
+      meshRef.current.rotation.x += delta * rotationSpeed
+      meshRef.current.rotation.y += delta * rotationSpeed * 0.5
+      meshRef.current.position.y += Math.sin(state.clock.elapsedTime * speed) * 0.002
     }
-    if (planetMeshRef.current) {
-      planetMeshRef.current.rotation.y += 0.01 * rotationSpeed;
-    }
-  });
+  })
 
   return (
-    <group ref={meshRef}>
-      <Float speed={2} rotationIntensity={0.5} floatIntensity={0.5}>
-        <mesh ref={planetMeshRef} scale={size}>
-          <sphereGeometry args={[1, 32, 32]} />
-          <meshStandardMaterial
-            color={color}
-            roughness={0.7}
-            metalness={0.3}
-          />
-          {hasRings && (
-            <mesh rotation={[Math.PI / 2.5, 0, 0]}>
-              <ringGeometry args={[1.5, 2.2, 64]} />
-              <meshStandardMaterial
-                color={color}
-                transparent
-                opacity={0.5}
-                side={THREE.DoubleSide}
-              />
-            </mesh>
-          )}
-        </mesh>
-      </Float>
-    </group>
-  );
-};
+    <Float speed={speed} rotationIntensity={rotationSpeed} floatIntensity={1}>
+      <mesh ref={meshRef} position={position} scale={scale}>
+        <sphereGeometry args={[1, 32, 32]} />
+        <meshPhysicalMaterial
+          color={color}
+          roughness={0.2}
+          metalness={0.1}
+          transmission={0.6}
+          thickness={0.5}
+          ior={1.2}
+          clearcoat={0.8}
+          attenuationDistance={1}
+          attenuationColor="#ffffff"
+        />
+      </mesh>
+    </Float>
+  )
+}
 
 const SceneContent = () => {
-  const scroll = useScroll();
-  const groupRef = useRef<THREE.Group>(null);
+  const scroll = useScroll()
+  const groupRef = useRef<THREE.Group>(null)
 
+  // Load the texture for the environment
+  const texture = useTexture(logoReflect)
+  texture.mapping = THREE.EquirectangularReflectionMapping
 
-  useFrame((_, delta) => {
+  useFrame((state, delta) => {
     if (groupRef.current) {
       // Rotate the entire group based on scroll
-      groupRef.current.rotation.y = THREE.MathUtils.damp(
-        groupRef.current.rotation.y,
-        -scroll.offset * Math.PI * 2,
-        4,
-        delta,
-      );
-      groupRef.current.position.z = THREE.MathUtils.damp(
-        groupRef.current.position.z,
-        scroll.offset * 5,
-        4,
-        delta,
-      );
+      groupRef.current.rotation.y = THREE.MathUtils.damp(groupRef.current.rotation.y, -scroll.offset * Math.PI * 2, 4, delta)
+      groupRef.current.position.z = THREE.MathUtils.damp(groupRef.current.position.z, scroll.offset * 5, 4, delta)
     }
-  });
+  })
 
   return (
     <>
-      <Stars radius={100} depth={50} count={5000} factor={4} saturation={0} fade speed={1} />
+      {/* Bubbles - Locked in place, not rotating with the group */}
+      <Sparkles count={300} scale={15} size={4} speed={0.6} opacity={0.6} color="#aaccff" />
+      <Sparkles count={150} scale={10} size={10} speed={0.2} opacity={0.2} color="#ffffff" />
+
       <group ref={groupRef}>
-        <EarthCenter />
+        {/* Subtle Cloud/Fog for depth */}
+        <Cloud opacity={0.1} speed={0.1} width={20} depth={5} segments={10} position={[0, -5, -10]} color="#aaccff" />
 
-        {/* Stylized Planets orbiting the Glass Earth */}
-        {/* Mercury-like */}
-        <Planet
-          orbitRadius={5}
-          orbitSpeed={0.8}
-          size={0.4}
-          color="#00ffff" // Brand Cyan
-        />
+        {/* Main Hero Crystal */}
+        <FloatingCrystal position={[0, 0, 0]} color="#00aaff" speed={2} rotationSpeed={0.5} scale={1.5} />
 
-        {/* Venus-like */}
-        <Planet
-          orbitRadius={8}
-          orbitSpeed={0.5}
-          orbitOffset={Math.PI}
-          size={0.6}
-          color="#D9A756" // Brand Gold
-        />
+        {/* Background Crystals */}
+        <FloatingCrystal position={[-3, 2, -5]} color="#00ffff" speed={1.5} rotationSpeed={0.3} scale={0.8} />
+        <FloatingCrystal position={[3, -2, -4]} color="#0088ff" speed={1.8} rotationSpeed={0.4} scale={0.7} />
+        <FloatingCrystal position={[-2, -3, -2]} color="#4400ff" speed={1.2} rotationSpeed={0.2} scale={0.5} />
+        <FloatingCrystal position={[2, 3, -3]} color="#00ffaa" speed={1.6} rotationSpeed={0.6} scale={0.6} />
 
-        {/* Mars-like */}
-        <Planet
-          orbitRadius={16}
-          orbitSpeed={0.25}
-          orbitOffset={Math.PI * 1.5}
-          size={0.5}
-          color="#00ffff"
-        />
+        {/* Lighting */}
+        <ambientLight intensity={0.5} color="#001e36" />
+        <spotLight position={[0, 20, 0]} intensity={2} angle={0.5} penumbra={1} color="#ccffff" />
+        <pointLight position={[10, 10, 10]} intensity={1} color="#00ffff" />
 
-        {/* Jupiter-like */}
-        <Planet
-          orbitRadius={22}
-          orbitSpeed={0.15}
-          size={1.2}
-          color="#D9A756"
-        />
-
-        {/* Saturn-like with Rings */}
-        <Planet
-          orbitRadius={28}
-          orbitSpeed={0.1}
-          orbitOffset={1}
-          size={1.0}
-          color="#00ffff"
-          hasRings={true}
-        />
-
-        {/* Subdued General Lighting to let Stylized Earth pop */}
-        <ambientLight intensity={0.5} color="#ffffff" />
+        {/* Environment for reflections */}
+        <Environment map={texture} blur={1} />
       </group>
     </>
-  );
-};
+  )
+}
 
 // --- HTML Content ---
 
@@ -261,7 +163,6 @@ const Landpage = ({ children }: { children?: React.ReactNode }) => {
   return (
     <div style={{ width: '100%', height: '100vh', background: '#001e36', overflow: 'hidden', position: 'relative' }}>
       <SpecialsPopup open={specialsPopupOpen} onClose={() => setSpecialsPopupOpen(false)} />
-      <Sparkles />
 
 
 
@@ -312,11 +213,12 @@ const Landpage = ({ children }: { children?: React.ReactNode }) => {
       </Box>
 
       <Canvas camera={{ position: [0, 0, 5], fov: isMobile ? 75 : isTablet ? 60 : 50 }} shadows>
+        <color attach="background" args={['#001e36']} />
         <fog attach="fog" args={['#001e36', 5, 25]} />
 
         <ScrollControls pages={isMobile ? 20 : 12} damping={0.15}>
           {/* Scroll Logic - Inside ScrollControls to access scroll data */}
-          {!isMobile && <ScrollSync scrollbarRef={scrollbarRef} />}
+          <ScrollSync scrollbarRef={scrollbarRef} />
 
           <SceneContent />
 
@@ -351,12 +253,15 @@ const Landpage = ({ children }: { children?: React.ReactNode }) => {
                 <Button
                   className="dive-button"
                   onClick={() => {
-                    const scrollContainer = document.querySelector('.lucide-scroll-container')
-                    if (scrollContainer) {
+                    const scrollContainer = document.querySelector('.lucide-scroll-container');
+                    const menuSection = document.getElementById('menu-preview-section');
+                    if (scrollContainer && menuSection) {
                       scrollContainer.scrollTo({
-                        top: window.innerHeight,
+                        top: menuSection.offsetTop,
                         behavior: 'smooth'
-                      })
+                      });
+                    } else if (menuSection) {
+                      menuSection.scrollIntoView({ behavior: 'smooth' });
                     }
                   }}
                   sx={{ mt: 4 }}
@@ -398,22 +303,214 @@ const Landpage = ({ children }: { children?: React.ReactNode }) => {
             {/* About Us Section - Staggered Cards based on Reference Image */}
             <AboutUs />
 
-            <Section style={{ height: 'auto', minHeight: '100vh', padding: { xs: '4rem 0', md: '8rem 0' }, justifyContent: 'center', zIndex: 10 }}>
-              <MenuPreview />
+            <Section id="menu-preview-section" style={{ height: 'auto', minHeight: isMobile ? 'auto' : '100vh', justifyContent: 'center', zIndex: 10 }}>
+              <Box
+                sx={{
+                  width: '100%',
+                  maxWidth: '1200px',
+                  margin: '0 auto',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                  gap: { xs: '1.5rem', md: '2rem' },
+                  padding: { xs: '3rem 1rem', md: '0rem 2rem' },
+                  position: 'relative',
+                }}
+              >
+                {/* Heading Above All */}
+                <motion.div
+                  initial={{ opacity: 0, y: -20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.8 }}
+                  viewport={{ once: true }}
+                  style={{ textAlign: 'center', marginBottom: isMobile ? '2.5rem' : '4rem' }}
+                >
+                  <Typography
+                    variant="overline"
+                    sx={{
+                      color: '#FF8C00',
+                      letterSpacing: '0.6em',
+                      mb: 2,
+                      display: 'block',
+                      fontSize: '0.9rem',
+                      fontWeight: 400
+                    }}
+                  >
+                    KITCHEN MAGIC
+                  </Typography>
+                  <Typography
+                    variant="h2"
+                    sx={{
+                      fontFamily: "'Outfit', sans-serif",
+                      fontWeight: 300,
+                      textTransform: 'uppercase',
+                      letterSpacing: { xs: '0.3em', md: '0.5em' },
+                      color: '#fff',
+                      fontSize: { xs: '1.8rem', md: '3.5rem' },
+                      textShadow: '0 0 20px rgba(255, 255, 255, 0.1)',
+                    }}
+                  >
+                    OUR MENU
+                  </Typography>
+                  <Box
+                    sx={{
+                      width: '60px',
+                      height: '2px',
+                      background: 'linear-gradient(90deg, #FF8C00, transparent)',
+                      margin: '1.5rem auto 0',
+                      borderRadius: '2px'
+                    }}
+                  />
+                </motion.div>
+
+                {/* Main Content Area: Image + Overlapping Card */}
+                <Box
+                  sx={{
+                    position: 'relative',
+                    width: '100%',
+                    maxWidth: '1100px',
+                    margin: '0 auto',
+                    display: 'flex',
+                    flexDirection: { xs: 'column', md: 'row' },
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}
+                >
+                  {/* Large Main Image */}
+                  <motion.div
+                    initial={{ opacity: 0, scale: 0.95 }}
+                    whileInView={{ opacity: 1, scale: 1 }}
+                    animate={{
+                      y: [0, -10, 0],
+                      transition: { duration: 6, repeat: Infinity, ease: "easeInOut" }
+                    }}
+                    transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
+                    viewport={{ once: true }}
+                    style={{ width: isMobile ? '100%' : '75%', zIndex: 1 }}
+                  >
+                    <Box
+                      sx={{
+                        width: '100%',
+                        height: { xs: '300px', sm: '450px', md: '550px' },
+                        background: `url(${logoReflect}) center/cover no-repeat`,
+                        borderRadius: { xs: '24px', md: '40px' },
+                        boxShadow: '0 30px 60px rgba(0, 0, 0, 0.5)',
+                        position: 'relative',
+                        overflow: 'hidden',
+                      }}
+                    >
+                      <Box
+                        sx={{
+                          position: 'absolute',
+                          inset: 0,
+                          background: 'linear-gradient(135deg, rgba(0, 30, 54, 0.2), transparent)',
+                        }}
+                      />
+                    </Box>
+                  </motion.div>
+
+                  {/* Glassmorphic Overlapping Card */}
+                  <motion.div
+                    initial={{ opacity: 0, x: isMobile ? 0 : 80, y: isMobile ? -40 : 0 }}
+                    whileInView={{ opacity: 1, x: 0, y: 0 }}
+                    transition={{ duration: 1, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
+                    viewport={{ once: true }}
+                    style={{
+                      zIndex: 2,
+                      width: isMobile ? '90%' : '480px',
+                      marginLeft: isMobile ? '0' : '-150px',
+                      marginTop: isMobile ? '-60px' : '0',
+                    }}
+                  >
+                    <Box
+                      sx={{
+                        background: 'rgba(0, 30, 54, 0.4)',
+                        backdropFilter: 'blur(30px)',
+                        padding: { xs: '2rem', md: '3.5rem 3rem' },
+                        borderRadius: '24px',
+                        border: '1px solid rgba(255, 255, 255, 0.1)',
+                        boxShadow: '0 20px 50px rgba(0,0,0,0.3)',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        gap: 2.5,
+                        textAlign: 'left',
+                      }}
+                    >
+                      <Typography
+                        variant="overline"
+                        sx={{
+                          color: 'rgba(255, 255, 255, 0.5)',
+                          letterSpacing: '0.5em',
+                          fontSize: '0.8rem',
+                          fontWeight: 500,
+                          fontFamily: "'Inter', sans-serif",
+                        }}
+                      >
+                        CONCEPT
+                      </Typography>
+
+                      <Typography
+                        variant="h3"
+                        sx={{
+                          fontFamily: "'Inter', sans-serif",
+                          fontWeight: 800,
+                          fontSize: { xs: '2rem', md: '3.2rem' },
+                          color: '#fff',
+                          lineHeight: 1.1,
+                          textShadow: '0 5px 15px rgba(0,0,0,0.5)',
+                          '& span': {
+                            color: '#00ffff',
+                            textShadow: '0 0 20px rgba(0, 255, 255, 0.4)',
+                          }
+                        }}
+                      >
+                        DESIGN <span style={{ marginRight: '8px' }}>&</span><br />TASTE
+                      </Typography>
+
+                      <Box sx={{ width: '50px', height: '1.5px', background: 'rgba(255, 255, 255, 0.2)', my: 1 }} />
+
+                      <Typography
+                        variant="body1"
+                        sx={{
+                          color: 'rgba(255, 255, 255, 0.7)',
+                          fontSize: '1.05rem',
+                          lineHeight: 1.7,
+                          mb: 3,
+                          fontFamily: "'Inter', sans-serif",
+                          fontWeight: 300,
+                        }}
+                      >
+                        Experience the perfect fusion of culinary artistry and modern design.
+                        Our menu is a curated collection of flavors, textures, and visual
+                        delights crafted to elevate your dining journey.
+                      </Typography>
+
+                      <Button
+                        variant="outlined"
+                        onClick={() => window.location.href = '/menu-new'}
+                        endIcon={<ArrowForwardIcon />}
+                        sx={commonButtonStyle}
+                      >
+                        EXPLORE MENU
+                      </Button>
+                    </Box>
+                  </motion.div>
+                </Box>
+              </Box>
             </Section>
 
             {/* Catering Services Section */}
-            <Section style={{ height: 'auto', minHeight: '100vh', padding: { xs: '4rem 0', md: '8rem 0' }, justifyContent: 'center', zIndex: 10 }}>
+            <Section style={{ height: 'auto', minHeight: isMobile ? 'auto' : '80vh', padding: { xs: '1.5rem 0', md: '0rem 0' }, justifyContent: 'center', zIndex: 10 }}>
               <CateringSection />
             </Section>
 
             {/* Contact Section */}
-            <Section style={{ height: 'auto', minHeight: '100vh', padding: { xs: '4rem 0', md: '8rem 0' }, justifyContent: 'center', zIndex: 10 }}>
+            <Section style={{ height: 'auto', minHeight: isMobile ? 'auto' : '80vh', padding: { xs: '1.5rem 0', md: '3rem 0' }, justifyContent: 'center', zIndex: 10 }}>
               <ContactSection />
             </Section>
 
             {/* Creative Footer & Newsletter */}
-            <Section style={{ height: 'auto', minHeight: '60vh', padding: '5rem 0 0 0', justifyContent: 'flex-start' }}>
+            <Section style={{ height: 'auto', minHeight: '40vh', padding: '1rem 0 0 0', justifyContent: 'flex-start' }}>
               <CreativeFooter />
             </Section>
 
@@ -453,7 +550,7 @@ const styles = `
   @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;700&family=Pinyon+Script&family=Inter:wght@400;700;900&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap');
 
   :root {
-    --gold: #D9A756;
+    --gold: #FF8C00;
     --cyan: #00ffff;
     --navy: #001e36;
   }
@@ -474,11 +571,11 @@ const styles = `
     font-family: 'Playfair Display', serif;
     font-weight: 700;
     font-style: italic;
-    color: #FFD700;
+    color: rgba(255, 140, 0, 1);
     font-size: clamp(1.8rem, 5vw, 5rem);
     z-index: 11;
     pointer-events: none;
-    text-shadow: 0 0 10px rgba(255, 215, 0, 0.8), 0 0 20px rgba(255, 215, 0, 0.5), 0 0 30px rgba(255, 215, 0, 0.3);
+    text-shadow: 0 0 10px rgba(255, 140, 0, 0.8), 0 0 20px rgba(255, 140, 0, 0.5), 0 0 30px rgba(255, 140, 0, 0.3);
     white-space: nowrap;
     margin-left: 0rem;
   }
@@ -520,44 +617,31 @@ const styles = `
 
   .dive-button {
     margin-top: 1.25rem;
-    background: transparent !important;
-    border: 2px solid rgba(0, 255, 255, 0.6) !important;
+    background: rgba(0,30,54,0.3) !important;
+    border: 1px solid rgba(0, 255, 255, 0.4) !important;
     color: var(--cyan) !important;
-    padding: 0.75rem 2.25rem !important;
-    font-size: clamp(0.85rem, 1.6vw, 1.2rem) !important;
-    letter-spacing: 0.35em !important;
+    padding: 1rem 3rem !important;
+    font-size: 1rem !important;
+    letter-spacing: 0.4em !important;
     text-transform: uppercase !important;
     cursor: pointer;
-    box-shadow: 0 0 20px rgba(0,255,255,0.06), inset 0 0 10px rgba(0,255,255,0.03) !important;
-    transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.25s ease !important;
-    border-radius: 2px !important;
+    backdrop-filter: blur(10px);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    border-radius: 0 !important;
     position: relative;
     overflow: hidden;
-  }
-
-  .dive-button::before {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 0;
-    height: 0;
-    border-radius: 50%;
-    background: radial-gradient(circle, rgba(0,255,255,0.2), transparent);
-    transform: translate(-50%, -50%);
-    transition: width 0.6s ease, height 0.6s ease;
-  }
-
-  .dive-button:hover::before {
-    width: 300px;
-    height: 300px;
+    font-weight: 300 !important;
+    font-family: 'Outfit', sans-serif !important;
   }
 
   .dive-button:hover {
-    transform: translateY(-4px) scale(1.02) !important;
-    box-shadow: 0 8px 30px rgba(0,255,255,0.12), inset 0 0 20px rgba(0,255,255,0.06) !important;
-    background: linear-gradient(90deg, rgba(0,255,255,0.04), rgba(217,167,86,0.02)) !important;
+    border-color: var(--gold) !important;
+    background: var(--gold) !important;
+    color: var(--navy) !important;
+    box-shadow: 0 0 40px rgba(255, 140, 0, 0.5) !important;
+    transform: translateY(-2px) !important;
   }
+
 
   @media (max-width: 768px) {
     .accent-label {

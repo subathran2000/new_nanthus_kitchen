@@ -40,10 +40,10 @@ const SpecialsPopup: React.FC<SpecialsPopupProps> = ({ open, onClose }) => {
                         transform: 'translate(-50%, -50%)',
                         width: { xs: '90%', sm: '800px', md: '1000px' },
                         height: { xs: '80vh', md: '600px' },
-                        bgcolor: 'rgba(0, 30, 54, 0.6)',
-                        border: '1px solid rgba(0, 255, 255, 0.3)',
+                        bgcolor: 'rgba(0, 15, 27, 0.8)',
+                        border: '1px solid rgba(255, 140, 0, 0.3)',
                         borderRadius: '20px',
-                        boxShadow: '0 0 50px rgba(0, 255, 255, 0.2)',
+                        boxShadow: '0 0 50px rgba(255, 140, 0, 0.2)',
                         p: 0,
                         outline: 'none',
                         overflow: 'hidden',
@@ -60,9 +60,9 @@ const SpecialsPopup: React.FC<SpecialsPopupProps> = ({ open, onClose }) => {
                             // Actually if it's top right of modal, it might be on top of text on desktop.
                             // Let's keep it safe.
                             zIndex: 100,
-                            color: '#00ffff',
-                            bgcolor: 'rgba(0,0,0,0.3)',
-                            '&:hover': { bgcolor: 'rgba(0,0,0,0.5)' }
+                            color: '#FF8C00',
+                            bgcolor: 'rgba(255,140,0,0.1)',
+                            '&:hover': { bgcolor: 'rgba(255,140,0,0.2)' }
                         }}
                     >
                         <Close />
@@ -98,16 +98,16 @@ const SpecialsPopup: React.FC<SpecialsPopupProps> = ({ open, onClose }) => {
                             flexDirection: 'column',
                             justifyContent: 'center',
                             alignItems: 'flex-start',
-                            background: 'linear-gradient(135deg, rgba(0, 30, 54, 0.95), rgba(0, 15, 27, 0.98))',
-                            borderLeft: { md: '1px solid rgba(0, 255, 255, 0.1)' }
+                            background: 'linear-gradient(135deg, rgba(0, 15, 27, 0.95), rgba(0, 5, 10, 0.98))',
+                            borderLeft: { md: '1px solid rgba(255, 140, 0, 0.1)' }
                         }}
                     >
                         <Box sx={{ display: 'flex', alignItems: 'center', mb: 2, gap: 1 }}>
-                            <RestaurantMenu sx={{ color: '#FFD700' }} />
+                            <RestaurantMenu sx={{ color: '#FF8C00' }} />
                             <Typography
                                 variant="overline"
                                 sx={{
-                                    color: '#FFD700',
+                                    color: '#FF8C00',
                                     letterSpacing: '3px',
                                     fontSize: '0.9rem',
                                     fontWeight: 'bold'
@@ -123,7 +123,7 @@ const SpecialsPopup: React.FC<SpecialsPopupProps> = ({ open, onClose }) => {
                                 color: '#fff',
                                 fontFamily: "'Playfair Display', serif",
                                 mb: 2,
-                                textShadow: '0 0 20px rgba(0,255,255,0.3)',
+                                textShadow: '0 0 20px rgba(255, 140, 0, 0.3)',
                                 fontSize: { xs: '1.8rem', md: '2.5rem' }
                             }}
                         >
@@ -146,22 +146,25 @@ const SpecialsPopup: React.FC<SpecialsPopupProps> = ({ open, onClose }) => {
                                 onClick={() => window.location.href = '/special'}
                                 sx={{
                                     py: 1.5,
-                                    px: 3,
-                                    border: '1px solid #FFD700',
-                                    color: '#FFD700',
+                                    px: 4,
+                                    background: 'linear-gradient(90deg, #FF8C00, #F4511E)',
+                                    color: '#fff',
                                     borderRadius: '50px',
                                     cursor: 'pointer',
                                     textTransform: 'uppercase',
-                                    letterSpacing: '1px',
-                                    transition: 'all 0.3s ease',
+                                    letterSpacing: '2px',
+                                    fontWeight: 'bold',
                                     fontSize: '0.85rem',
+                                    boxShadow: '0 10px 25px rgba(255, 140, 0, 0.3)',
+                                    transition: 'all 0.3s ease',
                                     '&:hover': {
-                                        bgcolor: 'rgba(255, 215, 0, 0.1)',
-                                        transform: 'translateY(-2px)'
+                                        transform: 'translateY(-3px)',
+                                        boxShadow: '0 15px 35px rgba(255, 140, 0, 0.4)',
+                                        filter: 'brightness(1.1)'
                                     }
                                 }}
                             >
-                                View All Specials
+                                View All Specials <span style={{ marginLeft: '6px' }}>→</span>
                             </Box>
                         </Box>
 
