@@ -37,7 +37,7 @@ const CreativeFooter = () => {
         pb: 8,
         overflow: "visible",
         color: "#fff",
-        fontFamily: '"Outfit", sans-serif',
+        fontFamily: '"Inter", sans-serif',
       }}
     >
       {/* Decor Glows */}
@@ -50,7 +50,7 @@ const CreativeFooter = () => {
           width: "80%",
           height: "300px",
           background:
-            "radial-gradient(ellipse at center, rgba(0, 255, 255, 0.05) 0%, transparent 70%)",
+            "radial-gradient(ellipse at center, rgba(255, 140, 0, 0.05) 0%, transparent 70%)",
           pointerEvents: "none",
           zIndex: 0,
         }}
@@ -76,8 +76,8 @@ const CreativeFooter = () => {
             sx={{
               background: "rgba(255, 255, 255, 0.03)",
               backdropFilter: "blur(20px)",
-              borderRadius: "40px",
-              border: "1px solid rgba(0, 255, 255, 0.15)",
+              borderRadius: "24px",
+              border: "1px solid rgba(255, 140, 0, 0.15)",
               p: { xs: 4, md: 8 },
               display: "flex",
               flexDirection: { xs: "column", md: "row" },
@@ -97,44 +97,28 @@ const CreativeFooter = () => {
                 width: "200px",
                 height: "2px",
                 background:
-                  "linear-gradient(90deg, transparent, #00ffff, transparent)",
+                  "linear-gradient(90deg, transparent, #FF8C00, transparent)",
                 animation: "moveLine 4s infinite linear",
               }}
             />
 
             <Box sx={{ flex: 1, textAlign: { xs: "center", md: "left" } }}>
-              <Box
-                sx={{
-                  display: "flex",
-                  alignItems: "center",
-                  mb: 2,
-                  justifyContent: { xs: "center", md: "flex-start" },
-                }}
-              >
-                <AutoAwesomeIcon
-                  sx={{ color: "#D9A756", mr: 2, fontSize: "2rem" }}
-                />
-                <Typography
-                  variant="overline"
-                  sx={{ color: "#D9A756", letterSpacing: "0.4em" }}
-                >
-                  THE SPICE CIRCLE
-                </Typography>
-              </Box>
               <Typography
                 variant="h3"
                 sx={{
+                  fontFamily: "'Inter', sans-serif",
                   fontWeight: 700,
                   mb: 2,
                   fontSize: { xs: "2rem", md: "3.5rem" },
                   lineHeight: 1.1,
+                  textShadow: '0 0 20px rgba(255, 140, 0, 0.2)',
                 }}
               >
                 Join Our <span className="footer-secret-text">Secret</span>{" "}
                 Kitchen.
               </Typography>
               <Typography
-                sx={{ color: "#aaccff", opacity: 0.8, maxWidth: "500px" }}
+                sx={{ color: "rgba(255, 255, 255, 0.7)", maxWidth: "500px", fontFamily: '"Inter", sans-serif' }}
               >
                 Receive exclusive invitations to tasting events, secret
                 traditional recipes, and culinary stories that you won't find
@@ -162,16 +146,20 @@ const CreativeFooter = () => {
                       disableUnderline: true,
                       sx: {
                         color: "#fff",
-                        bgcolor: "rgba(255, 255, 255, 0.05)",
-                        borderRadius: 0,
-                        px: 4,
-                        py: 2.5,
-                        border: "1px solid rgba(255, 255, 255, 0.1)",
-                        fontSize: "1.1rem",
+                        bgcolor: "rgba(255, 255, 255, 0.03)",
+                        borderRadius: "12px",
+                        px: 2,
+                        py: 1.5,
+                        border: "1px solid rgba(255, 140, 0, 0.15)",
+                        fontSize: "0.95rem",
                         transition: "all 0.3s ease",
+                        "&:hover": {
+                          border: "1px solid rgba(255, 140, 0, 0.4)",
+                        },
                         "&:focus-within": {
-                          borderColor: "#00ffff",
-                          boxShadow: "0 0 20px rgba(0, 255, 255, 0.1)",
+                          border: "1px solid #FF8C00",
+                          boxShadow: "0 0 20px rgba(255, 140, 0, 0.1)",
+                          bgcolor: "rgba(255, 255, 255, 0.05)",
                         },
                       },
                     }}
@@ -181,11 +169,15 @@ const CreativeFooter = () => {
                       <motion.div exit={{ opacity: 0, scale: 0.9 }}>
                         <Button
                           type="submit"
+                          fullWidth
                           variant="outlined"
                           disabled={!email}
-                          sx={commonButtonStyle}
+                          sx={{
+                            ...commonButtonStyle,
+                            py: 1.5
+                          }}
                         >
-                          Subscribe for Aromas
+                          Subscribe for updates
                         </Button>
                       </motion.div>
                     ) : (
@@ -195,7 +187,7 @@ const CreativeFooter = () => {
                         animate={{ opacity: 1, y: 0 }}
                         sx={{ textAlign: "center" }}
                       >
-                        <Typography sx={{ color: "#00ffff", fontWeight: 600 }}>
+                        <Typography sx={{ color: "#FF8C00", fontWeight: 600 }}>
                           Welcome to the Circle! Check your inbox soon.
                         </Typography>
                       </Box>
@@ -230,14 +222,13 @@ const CreativeFooter = () => {
             >
               NEW NANTHU'S <span className="footer-kitchen-text">KITCHEN</span>
             </Typography>
-            <Typography variant="body2" sx={{ color: "#aaccff", opacity: 0.6 }}>
+            <Typography variant="body2" sx={{ color: "rgba(255, 255, 255, 0.5)" }}>
               © 2026 New Nanthu's Kitchen. Crafted with passion & spice.
             </Typography>
             <Typography
               variant="caption"
               sx={{
-                color: "#aaccff",
-                opacity: 0.4,
+                color: "rgba(255, 255, 255, 0.4)",
                 mt: 1,
                 display: "block",
                 letterSpacing: "0.05em",
@@ -260,11 +251,12 @@ const CreativeFooter = () => {
               <IconButton
                 key={i}
                 component={motion.button}
-                whileHover={{ y: -5, color: "#D9A756" }}
+                whileHover={{ y: -5, color: "#FF8C00" }}
                 sx={{
-                  color: "#00ffff",
-                  bgcolor: "rgba(255, 255, 255, 0.05)",
-                  "&:hover": { bgcolor: "rgba(217, 167, 86, 0.1)" },
+                  color: "#FF8C00",
+                  bgcolor: "rgba(255, 140, 0, 0.05)",
+                  border: "1px solid rgba(255, 140, 0, 0.1)",
+                  "&:hover": { bgcolor: "rgba(255, 140, 0, 0.2)", color: "#fff" },
                 }}
               >
                 <Icon />

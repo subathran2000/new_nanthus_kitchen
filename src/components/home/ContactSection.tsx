@@ -33,10 +33,10 @@ const ContactSection = () => {
                             fontSize: { xs: '2.5rem', md: '4rem' },
                             mt: 1,
                             textTransform: 'uppercase',
-                            fontFamily: '"Outfit", sans-serif',
+                            fontFamily: '"Inter", sans-serif',
                         }}
                     >
-                        CONTACT <span style={{ color: '#00ffff' }}>US</span>
+                        CONTACT <span style={{ color: '#FF8C00' }}>US</span>
                     </Typography>
                     <Typography
                         variant="body1"
@@ -48,7 +48,7 @@ const ContactSection = () => {
                             mt: 2,
                             fontWeight: 300,
                             letterSpacing: '0.05em',
-                            fontFamily: '"Outfit", sans-serif',
+                            fontFamily: '"Inter", sans-serif',
                         }}
                     >
                         We'd love to hear from you. Reach out for inquiries, feedback, or just to say hello.
@@ -99,7 +99,7 @@ const ContactSection = () => {
                                 </Typography>
                             </Box>
                             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                                <PhoneIcon sx={{ color: '#D9A756', fontSize: '1.2rem' }} />
+                                <PhoneIcon sx={{ color: '#FF8C00', fontSize: '1.2rem' }} />
                                 <Typography variant="body1" sx={{ color: '#fff' }}>
                                     416-388-4791
                                 </Typography>

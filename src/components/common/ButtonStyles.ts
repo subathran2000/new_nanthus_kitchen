@@ -13,7 +13,7 @@ export const commonButtonStyle: SxProps<Theme> = {
     transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
     backgroundColor: 'rgba(0,30,54,0.3)',
     backdropFilter: 'blur(10px)',
-    fontFamily: '"Outfit", sans-serif',
+    fontFamily: '"Inter", sans-serif',
     '&:hover': {
         borderColor: '#FF8C00',
         bgcolor: '#FF8C00',

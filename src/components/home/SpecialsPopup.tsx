@@ -11,10 +11,7 @@ interface SpecialsPopupProps {
 
 const SpecialsPopup: React.FC<SpecialsPopupProps> = ({ open, onClose }) => {
     const [currentItem, setCurrentItem] = useState(specialItems[0]);
-
-    // Keep track of current item for the text description side
-    // The CardStack handles the visual cycling
-
+    
     return (
         <Modal
             open={open}

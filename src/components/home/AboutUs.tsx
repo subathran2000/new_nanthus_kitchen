@@ -143,7 +143,7 @@ const AboutCard: React.FC<{ item: AboutItem; index: number }> = ({ item, index }
               {
                 sx: {
                   fontSize: "2.5rem",
-                  color: isEven ? "#00ffff" : "#FF8C00",
+                  color: "#FF8C00",
                 },
               } as any,
             )}
@@ -153,10 +153,9 @@ const AboutCard: React.FC<{ item: AboutItem; index: number }> = ({ item, index }
         <Typography
           variant="h5"
           sx={{
-            fontFamily: "'Playfair Display', serif",
+            fontFamily: "'Inter', sans-serif",
             fontWeight: 700,
-            fontStyle: "italic",
-            color: isEven ? "#00ffff" : "#FF8C00",
+            color: "#FF8C00",
             mb: 2,
             fontSize: { xs: "1.4rem", md: "1.8rem" },
             letterSpacing: "0.02em",
@@ -190,7 +189,7 @@ const AboutCard: React.FC<{ item: AboutItem; index: number }> = ({ item, index }
             color: "rgba(255, 255, 255, 0.03)",
             userSelect: "none",
             zIndex: -1,
-            fontFamily: "'Outfit', sans-serif",
+            fontFamily: "'Inter', sans-serif",
           }}
         >
           0{index + 1}
@@ -229,7 +228,7 @@ const AboutUs: React.FC = () => {
         <Typography
           variant="h2"
           sx={{
-            fontFamily: "'Outfit', sans-serif",
+            fontFamily: "'Inter', sans-serif",
             fontWeight: 300,
             textTransform: 'uppercase',
             letterSpacing: { xs: '0.3em', md: '0.5em' },

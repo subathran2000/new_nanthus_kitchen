@@ -8,11 +8,9 @@ import {
   Float,
   Environment,
   useTexture,
-  Stars,
-  Sparkles,
-  Caustics,
   Cloud,
 } from "@react-three/drei";
+import Sparkles from "../common/Sparkles";
 import {
   EffectComposer,
   Bloom,
@@ -29,10 +27,12 @@ import OrderButton from "../common/OrderButton";
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import AboutUs from "./AboutUs";
 import LocationSelector from "../common/LocationSelector";
-import { menuData } from "../menu/spiral";
+
 import { commonButtonStyle } from '../common/ButtonStyles';
 import CateringSection from "./CateringSection";
 import ContactSection from "./ContactSection";
+import SpecialOfferSection from "./SpecialOfferSection";
+import PickupSection from "./PickupSection";
 
 // --- 3D Components ---
 
@@ -85,13 +85,11 @@ const SceneContent = () => {
 
   return (
     <>
-      {/* Bubbles - Locked in place, not rotating with the group */}
-      <Sparkles count={300} scale={15} size={4} speed={0.6} opacity={0.6} color="#aaccff" />
-      <Sparkles count={150} scale={10} size={10} speed={0.2} opacity={0.2} color="#ffffff" />
+      {/* Bubbles removed as per user request */}
 
       <group ref={groupRef}>
         {/* Subtle Cloud/Fog for depth */}
-        <Cloud opacity={0.1} speed={0.1} width={20} depth={5} segments={10} position={[0, -5, -10]} color="#aaccff" />
+        <Cloud opacity={0.1} speed={0.1} segments={10} position={[0, -5, -10]} color="#aaccff" />
 
         {/* Main Hero Crystal */}
         <FloatingCrystal position={[0, 0, 0]} color="#00aaff" speed={2} rotationSpeed={0.5} scale={1.5} />
@@ -164,7 +162,7 @@ const Landpage = ({ children }: { children?: React.ReactNode }) => {
     <div style={{ width: '100%', height: '100vh', background: '#001e36', overflow: 'hidden', position: 'relative' }}>
       <SpecialsPopup open={specialsPopupOpen} onClose={() => setSpecialsPopupOpen(false)} />
 
-
+      <Sparkles />
 
       {/* Top Left Logo Restored */}
       <Box
@@ -213,7 +211,6 @@ const Landpage = ({ children }: { children?: React.ReactNode }) => {
       </Box>
 
       <Canvas camera={{ position: [0, 0, 5], fov: isMobile ? 75 : isTablet ? 60 : 50 }} shadows>
-        <color attach="background" args={['#001e36']} />
         <fog attach="fog" args={['#001e36', 5, 25]} />
 
         <ScrollControls pages={isMobile ? 20 : 12} damping={0.15}>
@@ -341,7 +338,7 @@ const Landpage = ({ children }: { children?: React.ReactNode }) => {
                   <Typography
                     variant="h2"
                     sx={{
-                      fontFamily: "'Outfit', sans-serif",
+                      fontFamily: "'Inter', sans-serif",
                       fontWeight: 300,
                       textTransform: 'uppercase',
                       letterSpacing: { xs: '0.3em', md: '0.5em' },
@@ -459,8 +456,8 @@ const Landpage = ({ children }: { children?: React.ReactNode }) => {
                           lineHeight: 1.1,
                           textShadow: '0 5px 15px rgba(0,0,0,0.5)',
                           '& span': {
-                            color: '#00ffff',
-                            textShadow: '0 0 20px rgba(0, 255, 255, 0.4)',
+                            color: '#FF8C00',
+                            textShadow: '0 0 20px rgba(255, 140, 0, 0.4)',
                           }
                         }}
                       >
@@ -497,6 +494,17 @@ const Landpage = ({ children }: { children?: React.ReactNode }) => {
                   </motion.div>
                 </Box>
               </Box>
+            </Section>
+
+
+            {/* Special Offer Section - Added as per request */}
+            <Section style={{ height: 'auto', minHeight: isMobile ? 'auto' : '80vh', padding: { xs: '1.5rem 0', md: '0rem 0' }, justifyContent: 'center', zIndex: 10 }}>
+              <SpecialOfferSection />
+            </Section>
+
+            {/* Pickup Section - Order Online */}
+            <Section style={{ height: 'auto', minHeight: isMobile ? 'auto' : '60vh', padding: { xs: '1.5rem 0', md: '0rem 0' }, justifyContent: 'center', zIndex: 10 }}>
+              <PickupSection />
             </Section>
 
             {/* Catering Services Section */}

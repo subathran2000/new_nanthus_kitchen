@@ -7,7 +7,6 @@ import Sparkles from '../common/Sparkles';
 
 import { specialItems } from '../../data/specialItems';
 
-// --- 3D Background Components ---
 
 
 

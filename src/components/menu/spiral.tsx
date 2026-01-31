@@ -2,9 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
 import { Box, useTheme, useMediaQuery, IconButton, Typography, List, ListItem, ListItemText } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
-// import { Canvas } from '@react-three/fiber';
-// import { Sparkles as Sparkles3D, Caustics, Environment, Cloud } from '@react-three/drei';
-// import { EffectComposer, Bloom, Noise, Vignette } from '@react-three/postprocessing';
+
 
 import Sparkles from "../common/Sparkles";
 
@@ -160,41 +158,7 @@ export const menuData: MainCategory[] = [
     }
 ];
 
-// --- 3D Background Components ---
 
-// const BackgroundScene = () => {
-//     return (
-//         <group>
-//             {/* Caustics Effect */}
-//             <Caustics
-//                 color="#00ffff"
-//                 position={[0, -5, 0]}
-//                 lightSource={[5, 5, -10]}
-//                 worldRadius={10}
-//                 ior={1.1}
-//                 intensity={0.2}
-//                 causticsOnly={false}
-//                 backside={false}
-//             >
-//             </Caustics>
-
-//             {/* Bubbles */}
-//             <Sparkles3D count={300} scale={15} size={4} speed={0.6} opacity={0.6} color="#aaccff" />
-//             <Sparkles3D count={150} scale={10} size={10} speed={0.2} opacity={0.2} color="#ffffff" />
-
-//             {/* Subtle Cloud/Fog for depth */}
-//             <Cloud opacity={0.1} speed={0.1} segments={10} position={[0, -5, -10]} color="#aaccff" />
-
-//             {/* Lighting */}
-//             <ambientLight intensity={0.5} color="#001e36" />
-//             <spotLight position={[0, 20, 0]} intensity={2} angle={0.5} penumbra={1} color="#ccffff" castShadow />
-//             <pointLight position={[10, 10, 10]} intensity={1} color="#00ffff" />
-
-//             {/* Environment for reflections */}
-//             <Environment preset="city" blur={1} />
-//         </group>
-//     )
-// }
 
 interface SpiralBackgroundProps {
     activeCategory?: string;
@@ -215,9 +179,7 @@ const SpiralBackground: React.FC<SpiralBackgroundProps> = ({ activeCategory = "S
 
     const isSpiral = itemsToUse.length >= 3;
 
-    const spiralItems = isSpiral
-        ? [...itemsToUse, ...itemsToUse, ...itemsToUse, ...itemsToUse].slice(0, 20)
-        : itemsToUse; // for non-spiral mode use itemsToUse directly
+    const spiralItems = itemsToUse;
 
     const containerRef = useRef<HTMLDivElement>(null);
     const cardsRef = useRef<(HTMLDivElement | null)[]>([]);
@@ -227,6 +189,7 @@ const SpiralBackground: React.FC<SpiralBackgroundProps> = ({ activeCategory = "S
     const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
     const openRef = useRef(open)
     openRef.current = open
+
 
     const scrollYRef = useRef(0)
     const targetScrollYRef = useRef(0)
@@ -239,13 +202,12 @@ const SpiralBackground: React.FC<SpiralBackgroundProps> = ({ activeCategory = "S
     }, [activeCategory]);
 
     const getResponsiveValues = () => {
-        if (typeof window === "undefined") return { radius: 800, spacing: 180 };
+        if (typeof window === "undefined") return { radius: 800, spacing: 250 };
         const width = window.innerWidth;
-        if (width < 375) return { radius: 250, spacing: 100 };
-        if (width < 480) return { radius: 320, spacing: 130 };
-        if (width < 768) return { radius: 450, spacing: 150 };
-        if (width < 1024) return { radius: 650, spacing: 160 };
-        return { radius: 800, spacing: 180 };
+        if (width < 480) return { radius: 300, spacing: 180 };
+        if (width < 768) return { radius: 400, spacing: 200 };
+        if (width < 1024) return { radius: 600, spacing: 220 };
+        return { radius: 800, spacing: 250 };
     };
 
     useEffect(() => {
@@ -269,7 +231,6 @@ const SpiralBackground: React.FC<SpiralBackgroundProps> = ({ activeCategory = "S
             const targetTransition = openRef.current ? 1 : 0;
             transitionRef.current += (targetTransition - transitionRef.current) * 0.1;
 
-            // Snap if close to finish to avoid endless micro-calcs (optional, but good for perf)
             if (Math.abs(targetTransition - transitionRef.current) < 0.001) {
                 transitionRef.current = targetTransition;
             }
@@ -282,31 +243,27 @@ const SpiralBackground: React.FC<SpiralBackgroundProps> = ({ activeCategory = "S
                 // --- SPIRAL CALCS ---
                 const offset = i * spacing;
                 let spiralY = offset + scrollYRef.current;
+
+                // Center spiral vertically
                 spiralY -= totalHeight / 2;
 
+                // NEW SPIRAL LOGIC
                 const progress = spiralY / totalHeight;
-                const angle = progress * Math.PI * 2 * 4;
+                const angle = progress * Math.PI * 2 * 4; // Use the multiplier 4 for more curve
                 const isVisibleSpiral = spiralY >= minScroll && spiralY <= maxScroll;
 
                 // --- VERTICAL CALCS ---
-                // Vertical column on the left (e.g., 20% from left)
-                // Stack items based on index, centered vertically
-                const vertSpacing = isMobile ? 80 : 120; // Tighter spacing for vertical list
-                // Calculate y position relative to center (0)
+                const vertSpacing = isMobile ? 80 : 120;
+
                 const vertY = (i - (total - 1) / 2) * vertSpacing;
 
                 // --- INTERPOLATION ---
-                // Lerp properties
-                const currentLeftPct = 50 + (15 - 50) * t; // 50% -> 15%
+                const currentLeftPct = 50 + (15 - 50) * t;
                 const currentY = spiralY * (1 - t) + vertY * t;
-                const currentRotationY = (angle * 180 / Math.PI) * (1 - t); // angle -> 0
-                const currentTZ = -radius * (1 - t); // -radius -> 0 (flat)
+                const currentRotationY = ((angle * 180) / Math.PI) * (1 - t);
+                const currentTZ = -radius * (1 - t);
 
-                // Opacity: If t > 0, we want items to be visible even if they were out of spiral view?
-                // Or should we respect the vertical list bounds?
-                // Let's fade them in if they become part of the vertical list
-                // Use a simple blend: if mostly vertical, show all (or clip if massive list).
-                // Let's assume we show them. 
+                // If fully visible in spiral or transitioning to list
                 const opacity = (isVisibleSpiral ? 1 : 0) * (1 - t) + 1 * t;
 
                 gsap.set(card, {
@@ -409,18 +366,7 @@ const SpiralBackground: React.FC<SpiralBackgroundProps> = ({ activeCategory = "S
                 },
             }}
         >
-            {/* 3D Background */}
-            {/* <Box sx={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', zIndex: 0 }}>
-                <Canvas camera={{ position: [0, 0, 5], fov: 50 }}>
-                    <color attach="background" args={['#001e36']} />
-                    <fog attach="fog" args={['#001e36', 5, 25]} />
-                    <EffectComposer>
-                        <Bloom luminanceThreshold={0.5} luminanceSmoothing={0.9} height={300} intensity={0.5} />
-                        <Noise opacity={0.05} />
-                        <Vignette eskil={false} offset={0.1} darkness={1.1} />
-                    </EffectComposer>
-                </Canvas>
-            </Box> */}
+
 
             {/* Sparkles Background (2D from prompt) */}
             <Sparkles />
@@ -446,36 +392,37 @@ const SpiralBackground: React.FC<SpiralBackgroundProps> = ({ activeCategory = "S
                             background: `url(${item.imageUrl}) center/cover no-repeat`,
                             borderRadius: "16px",
                             position: "absolute",
-                            boxShadow:
-                                "0 25px 50px rgba(0,0,0,0.8), 0 10px 20px rgba(0,0,0,0.5)",
+
                             opacity: 0,
-                            border: "1px solid rgba(0, 255, 255, 0.3)",
+                            border: open && selected === i ? "2px solid #FF8C00" : "1px solid rgba(0, 255, 255, 0.3)",
+                            boxShadow: open && selected === i
+                                ? "0 0 30px rgba(255, 140, 0, 0.6), 0 25px 50px rgba(0,0,0,0.8)"
+                                : "0 25px 50px rgba(0,0,0,0.8), 0 10px 20px rgba(0,0,0,0.5)",
                             cursor: 'pointer',
                             userSelect: 'none',
-                            display: 'flex',
-                            flexDirection: 'column',
-                            justifyContent: 'flex-end',
-                            overflow: 'hidden',
-                            '&:hover .card-overlay': {
-                                transform: 'translateY(0)',
-                            }
                         }}
                     >
-                        <Box
-                            className="card-overlay"
-                            sx={{
-                                background: 'rgba(0, 30, 54, 0.8)',
-                                backdropFilter: 'blur(10px)',
-                                p: 2,
-                                transform: 'translateY(0)',
-                                transition: 'transform 0.3s ease-in-out',
-                                borderTop: '1px solid rgba(0, 255, 255, 0.2)',
-                            }}
-                        >
-                            <Typography variant="h6" sx={{ color: '#00ffff', fontWeight: 700, textAlign: 'center' }}>
-                                {item.title}
-                            </Typography>
-                        </Box>
+                        {/* Selected Item Overlay */}
+                        {open && selected === i && (
+                            <Box
+                                className="card-overlay"
+                                sx={{
+                                    position: 'absolute',
+                                    bottom: 0,
+                                    left: 0,
+                                    right: 0,
+                                    background: 'rgba(0, 30, 54, 0.9)',
+                                    backdropFilter: 'blur(10px)',
+                                    p: 2,
+                                    borderTop: '1px solid rgba(255, 140, 0, 0.5)',
+                                    animation: 'fadeIn 0.5s ease-out'
+                                }}
+                            >
+                                <Typography variant="h6" sx={{ color: '#FF8C00', fontWeight: 700, textAlign: 'center', fontFamily: "'Inter', sans-serif" }}>
+                                    {item.title}
+                                </Typography>
+                            </Box>
+                        )}
                     </Box>
                 ))
             ) : (
@@ -519,7 +466,7 @@ const SpiralBackground: React.FC<SpiralBackgroundProps> = ({ activeCategory = "S
                                 transition: 'transform 0.3s ease-in-out',
                                 borderTop: '1px solid rgba(0, 255, 255, 0.2)',
                             }}>
-                                <Typography variant="h6" sx={{ color: '#00ffff', fontWeight: 700, textAlign: 'center' }}>
+                                <Typography variant="h6" sx={{ color: '#FF8C00', fontWeight: 700, textAlign: 'center' }}>
                                     {item.title}
                                 </Typography>
                             </Box>
@@ -592,16 +539,18 @@ const SpiralBackground: React.FC<SpiralBackgroundProps> = ({ activeCategory = "S
                         <Typography
                             variant="h3"
                             sx={{
-                                color: '#fff',
-                                fontFamily: "'Playfair Display', serif",
+                                color: '#FF8C00',
+                                fontFamily: "'Inter', sans-serif",
                                 fontWeight: 700,
-                                textShadow: '0 0 20px rgba(255, 140, 0, 0.3)',
+                                textTransform: 'uppercase',
+                                letterSpacing: '0.1em',
+                                textShadow: '0 0 20px rgba(255, 140, 0, 0.4)',
                                 fontSize: { xs: '2rem', md: '3rem' }
                             }}
                         >
                             {selectedCategory?.title}
                         </Typography>
-                        <Box sx={{ width: '40px', height: '3px', bgcolor: '#FF8C00', borderRadius: '2px', mx: 'auto', mt: 2 }} />
+                        <Box sx={{ width: '60px', height: '2px', bgcolor: 'rgba(0, 255, 255, 0.3)', mx: 'auto', mt: 2 }} />
                     </Box>
 
                     {/* Menu Content */}
@@ -619,84 +568,128 @@ const SpiralBackground: React.FC<SpiralBackgroundProps> = ({ activeCategory = "S
                             <Box key={idx} sx={{ mb: 6 }}>
                                 <Typography variant="h5" sx={{
                                     color: '#FF8C00',
-                                    fontWeight: 700,
+                                    fontWeight: 600,
                                     mb: 3,
-                                    fontFamily: "'Playfair Display', serif",
-                                    borderBottom: '1px solid rgba(255, 140, 0, 0.2)',
-                                    pb: 1.5,
-                                    fontSize: { xs: '1.3rem', md: '1.8rem' }
+                                    fontFamily: "'Inter', sans-serif", // Courier or Monospace would match reference closer, but user asked for fonts. Sticking to Inter.
+                                    letterSpacing: '0.05em',
+                                    fontSize: { xs: '1.2rem', md: '1.5rem' }
                                 }}>
                                     {sub.title}
                                 </Typography>
-                                <List sx={{ p: 0 }}>
+                                <List sx={{ p: 0, display: 'flex', flexDirection: 'column', gap: 2 }}>
                                     {sub.items.map((item) => (
                                         <ListItem
                                             key={item.id}
                                             sx={{
-                                                p: { xs: 2.5, md: 3 },
+                                                p: 0,
                                                 mb: 2.5,
-                                                borderRadius: '24px',
-                                                background: 'rgba(255, 255, 255, 0.03)',
-                                                border: '1px solid rgba(255, 140, 0, 0.12)',
+                                                borderRadius: '16px',
+                                                background: 'rgba(0, 20, 35, 0.5)', // Default dark background
+                                                border: '1px solid rgba(255, 255, 255, 0.05)',
+                                                position: 'relative',
+                                                overflow: 'hidden',
                                                 transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
-                                                display: 'flex',
-                                                flexDirection: 'column',
-                                                alignItems: 'flex-start',
+                                                // Left accent bar (hidden by default)
+                                                '&::before': {
+                                                    content: '""',
+                                                    position: 'absolute',
+                                                    top: 0,
+                                                    left: 0,
+                                                    bottom: 0,
+                                                    width: '6px',
+                                                    background: '#FF8C00', // Orange accent
+                                                    opacity: 0,
+                                                    transition: 'opacity 0.3s ease',
+                                                    zIndex: 1
+                                                },
                                                 '&:hover': {
-                                                    background: 'rgba(255, 140, 0, 0.08)',
-                                                    transform: 'translateY(-3px)',
-                                                    borderColor: 'rgba(255, 140, 0, 0.4)',
-                                                    boxShadow: '0 15px 35px rgba(0,0,0,0.4)',
+                                                    background: 'linear-gradient(90deg, rgba(0, 30, 54, 0.95) 0%, rgba(0, 50, 85, 0.85) 100%)',
+                                                    borderColor: '#FF8C00',
+                                                    boxShadow: '0 0 25px rgba(255, 140, 0, 0.15), inset 0 0 20px rgba(255, 140, 0, 0.05)',
+                                                    transform: 'translateX(8px)',
+                                                    '&::before': {
+                                                        opacity: 1
+                                                    },
+                                                    // Target child elements on hover
+                                                    '& .item-image': {
+                                                        boxShadow: '0 0 20px rgba(255, 140, 0, 0.5)',
+                                                        borderColor: '#FF8C00',
+                                                    },
+                                                    '& .price-pill': {
+                                                        bgcolor: '#FF8C00',
+                                                        color: '#001e36',
+                                                        boxShadow: '0 0 20px rgba(255, 140, 0, 0.6)',
+                                                        borderColor: '#FF8C00'
+                                                    }
                                                 }
                                             }}
                                         >
-                                            <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', width: '100%', mb: 1.5 }}>
-                                                <Typography sx={{
-                                                    color: '#fff',
-                                                    fontWeight: 800,
-                                                    fontSize: { xs: '1.2rem', md: '1.5rem' },
-                                                    fontFamily: "'Playfair Display', serif",
-                                                    letterSpacing: '0.5px'
-                                                }}>
-                                                    {item.name}
-                                                </Typography>
-                                                <Typography sx={{
-                                                    color: '#FF8C00',
-                                                    fontWeight: 900,
-                                                    fontSize: '1.4rem'
-                                                }}>
-                                                    {item.price}
-                                                </Typography>
-                                            </Box>
+                                            <Box sx={{ display: 'flex', width: '100%', alignItems: 'center', position: 'relative', zIndex: 2 }}>
+                                                {/* Image Section */}
+                                                <Box
+                                                    className="item-image"
+                                                    sx={{
+                                                        width: '100px',
+                                                        height: '100px',
+                                                        minWidth: '100px',
+                                                        background: `url(${item.imageUrl}) center/cover no-repeat`,
+                                                        m: 2,
+                                                        ml: 3, // Extra spacing for the left accent bar
+                                                        borderRadius: '12px',
+                                                        transition: 'all 0.4s ease',
+                                                        border: '1px solid rgba(255,255,255,0.1)',
+                                                        boxShadow: '0 4px 10px rgba(0,0,0,0.3)'
+                                                    }}
+                                                />
 
-                                            <Typography sx={{
-                                                color: 'rgba(170, 204, 255, 0.75)',
-                                                fontSize: '1rem',
-                                                lineHeight: 1.6,
-                                                mb: 2,
-                                                fontWeight: 300
-                                            }}>
-                                                {item.description}
-                                            </Typography>
-
-                                            {item.options && (
-                                                <Box sx={{ display: 'flex', gap: 1.5, flexWrap: 'wrap' }}>
-                                                    {item.options.map((opt, oIdx) => (
-                                                        <Box key={oIdx} sx={{
+                                                {/* Content Section */}
+                                                <Box sx={{ flex: 1, px: 2, py: 2 }}>
+                                                    <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', mb: 0.5 }}>
+                                                        <Typography sx={{
                                                             color: '#fff',
-                                                            border: '1px solid rgba(255, 140, 0, 0.3)',
-                                                            px: 2,
-                                                            py: 0.5,
-                                                            borderRadius: '50px',
-                                                            fontSize: '0.85rem',
-                                                            bgcolor: 'rgba(255, 140, 0, 0.05)',
-                                                            fontWeight: 500
+                                                            fontWeight: 700,
+                                                            fontSize: '1.2rem',
+                                                            fontFamily: "'Inter', sans-serif",
+                                                            letterSpacing: '0.02em'
                                                         }}>
-                                                            {opt.label}: {opt.price}
-                                                        </Box>
-                                                    ))}
+                                                            {item.name}
+                                                        </Typography>
+                                                    </Box>
+
+                                                    <Typography sx={{
+                                                        color: 'rgba(170, 204, 255, 0.6)',
+                                                        fontSize: '0.9rem',
+                                                        lineHeight: 1.5,
+                                                        mb: 1,
+                                                        fontFamily: "'Inter', sans-serif",
+                                                        maxWidth: '90%'
+                                                    }}>
+                                                        {item.description}
+                                                    </Typography>
                                                 </Box>
-                                            )}
+
+                                                {/* Price Section */}
+                                                <Box sx={{ pr: 3, display: 'flex', alignItems: 'center' }}>
+                                                    <Box
+                                                        className="price-pill"
+                                                        sx={{
+                                                            bgcolor: 'transparent',
+                                                            color: '#FF8C00',
+                                                            border: '1px solid rgba(255, 140, 0, 0.6)',
+                                                            px: 2.5,
+                                                            py: 1,
+                                                            borderRadius: '50px',
+                                                            fontWeight: 700,
+                                                            fontSize: '1rem',
+                                                            fontFamily: "'Inter', sans-serif",
+                                                            transition: 'all 0.4s ease',
+                                                            letterSpacing: '0.05em'
+                                                        }}
+                                                    >
+                                                        {item.price}
+                                                    </Box>
+                                                </Box>
+                                            </Box>
                                         </ListItem>
                                     ))}
                                 </List>

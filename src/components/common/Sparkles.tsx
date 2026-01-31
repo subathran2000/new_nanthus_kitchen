@@ -1,18 +1,11 @@
 import { useEffect } from 'react';
-import { motion, useMotionValue, useSpring, useTransform, useScroll, useVelocity } from 'framer-motion';
+import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion';
 
 const Sparkles: React.FC = () => {
     const mouseX = useMotionValue(0);
     const mouseY = useMotionValue(0);
 
-    // Track scroll for the "line" effect
-    const { scrollY } = useScroll();
-    const scrollVelocity = useVelocity(scrollY);
-
-    // Transform scroll velocity into a vertical scale factor
-    // When scrolling fast, scaleY increases (stretching into a line)
-    const rawScaleY = useTransform(scrollVelocity, [-2000, 0, 2000], [15, 1, 15]);
-    const scaleY = useSpring(rawScaleY, { stiffness: 200, damping: 20 });
+    // Scroll velocity tracking removed - no expansion effect
 
     // Smooth springs for the background parallax (slower, floaty)
     const springX = useSpring(mouseX, { stiffness: 50, damping: 20 });
@@ -81,7 +74,7 @@ const Sparkles: React.FC = () => {
                         // Parallax movement
                         x: useTransform(springX, (value) => (value - (typeof window !== 'undefined' ? window.innerWidth / 2 : 0)) * star.depth),
                         y: useTransform(springY, (value) => (value - (typeof window !== 'undefined' ? window.innerHeight / 2 : 0)) * star.depth),
-                        scaleY: scaleY, // Apply stretch to background stars
+                        // scaleY removed - no scroll expansion
                         width: star.size,
                         height: star.size,
                         borderRadius: '50%',
@@ -91,22 +84,23 @@ const Sparkles: React.FC = () => {
                 />
             ))}
 
-            {/* Single Mouse Follower (No Stretch) */}
+            {/* Cursor Follower - Simple white glow */}
             <motion.div
                 style={{
-                    position: 'absolute',
-                    top: 0,
+                    position: 'fixed',
                     left: 0,
+                    top: 0,
+                    width: 20,
+                    height: 20,
+                    borderRadius: '50%',
+                    background: 'radial-gradient(circle, rgba(255,255,255,0.8) 0%, rgba(255,255,255,0.2) 50%, rgba(255,255,255,0) 70%)',
+                    boxShadow: '0 0 20px rgba(255, 255, 255, 0.6)',
+                    pointerEvents: 'none',
+                    zIndex: 9999,
                     x: followerX,
                     y: followerY,
                     translateX: '-50%',
                     translateY: '-50%',
-                    width: 20,
-                    height: 20,
-                    borderRadius: '50%',
-                    background: 'radial-gradient(circle, rgba(255,255,255,0.8) 0%, rgba(255,255,255,0) 70%)',
-                    pointerEvents: 'none',
-                    zIndex: 1,
                 }}
             />
         </div>

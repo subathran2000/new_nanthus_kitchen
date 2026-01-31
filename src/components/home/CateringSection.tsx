@@ -51,7 +51,7 @@ const CateringSection: React.FC = () => {
                 <Typography
                     variant="h2"
                     sx={{
-                        fontFamily: '"Outfit", sans-serif',
+                        fontFamily: '"Inter", sans-serif',
                         fontWeight: 300,
                         color: '#fff',
                         fontSize: { xs: '1.8rem', md: '3.5rem' },
@@ -63,7 +63,7 @@ const CateringSection: React.FC = () => {
                 >
                     CATERING
                 </Typography>
-                <div style={{ width: '40px', height: '1px', background: 'rgba(0, 255, 255, 0.3)', marginTop: '2rem' }} />
+                <div style={{ width: '40px', height: '1px', background: 'rgba(255, 140, 0, 0.3)', marginTop: '2rem' }} />
             </Box>
 
             {/* Content Section: Side-by-Side Text & Image */}

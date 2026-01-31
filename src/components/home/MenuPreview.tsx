@@ -51,7 +51,7 @@ const MenuPreview: React.FC = () => {
                 <Typography
                     variant="h2"
                     sx={{
-                        fontFamily: "'Outfit', sans-serif",
+                        fontFamily: "'Inter', sans-serif",
                         fontWeight: 300,
                         textTransform: 'uppercase',
                         letterSpacing: { xs: '0.3em', md: '0.5em' },
@@ -168,9 +168,9 @@ const MenuPreview: React.FC = () => {
                                 color: '#fff',
                                 textShadow: '0 5px 15px rgba(0,0,0,0.5)',
                                 '& span': {
-                                    color: '#00ffff',
+                                    color: '#FF8C00',
                                     mx: 1,
-                                    textShadow: '0 0 20px rgba(0, 255, 255, 0.4)',
+                                    textShadow: '0 0 20px rgba(255, 140, 0, 0.4)',
                                 }
                             }}
                         >

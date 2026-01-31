@@ -368,7 +368,7 @@ const CateringForm = () => {
                                     variant="h4"
                                     sx={{
                                         color: '#FF8C00',
-                                        fontFamily: "'Playfair Display', serif",
+                                        fontFamily: "'Inter', sans-serif",
                                         mb: 2,
                                         fontWeight: 700
                                     }}
