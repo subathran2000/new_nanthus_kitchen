@@ -50,13 +50,16 @@ const CardStack: React.FC<CardStackProps> = ({ items, onCenterCardChange }) => {
         }
     }, [activeIndex, items, onCenterCardChange]);
 
-    const handleDragEnd = (_: any, info: PanInfo) => {
-        const threshold = 100;
-        if (info.offset.x > threshold) {
-            handleNext();
-        } else if (info.offset.x < -threshold) {
-            handlePrev();
-        }
+    const handleDragEnd = (
+      _event: MouseEvent | TouchEvent | PointerEvent,
+      info: PanInfo,
+    ) => {
+      const threshold = 100;
+      if (info.offset.x > threshold) {
+        handleNext();
+      } else if (info.offset.x < -threshold) {
+        handlePrev();
+      }
     };
 
     return (

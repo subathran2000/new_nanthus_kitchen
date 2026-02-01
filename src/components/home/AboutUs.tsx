@@ -15,28 +15,35 @@ interface AboutItem {
 
 const aboutData: AboutItem[] = [
   {
-    title: "Our Legacy of Precision",
-    description: "Crafting the heart of homes since inception, Nanthu's Kitchen combines decades of engineering expertise with artistic flair to deliver kitchens that stand the test of time.",
-    icon: <HistoryIcon sx={{ color: 'white' }} />,
+    title: "Authentic Jaffna Heritage",
+    description:
+      "New Nanthu's Kitchen brings the authentic taste of Jaffna to Canada. With traditional recipes passed down through generations, we serve the true flavors of Sri Lankan cuisine with pride and passion.",
+    icon: <HistoryIcon sx={{ color: "white" }} />,
   },
   {
-    title: "Designing for Memories",
-    description: "We believe a kitchen is more than just a place to cook; it's a sanctuary for shared stories and laughter. Our designs prioritize warmth, functionality, and timeless soul.",
-    icon: <FavoriteIcon sx={{ color: 'white' }} />,
+    title: "Cooked with Heart",
+    description:
+      "We believe food is more than just a meal; it's a celebration of culture and family. Every dish is prepared with love, using the freshest ingredients and time-honored techniques that bring people together.",
+    icon: <FavoriteIcon sx={{ color: "white" }} />,
   },
   {
-    title: "Vision of Innovation",
-    description: "Integrating smart technology with sustainable materials, we are redefining modern living through kitchens that are as intelligent as they are beautiful.",
-    icon: <VisibilityIcon sx={{ color: 'white' }} />,
+    title: "Fresh & Quality Driven",
+    description:
+      "We source the finest ingredients daily to ensure every bite delivers authentic taste. From our signature Kothu to traditional Jaffna specialties, quality is never compromised.",
+    icon: <VisibilityIcon sx={{ color: "white" }} />,
   },
   {
-    title: "Excellence in Every Detail",
-    description: "From custom cabinetry to premium finishes, our obsession with detail ensures that every inch of your space reflects perfection and reflects you.",
-    icon: <StarIcon sx={{ color: 'white' }} />,
+    title: "Excellence in Every Dish",
+    description:
+      "From our aromatic Biryanis to perfectly grilled specialties, our attention to detail ensures every dish is a masterpiece. We serve excellence on every plate.",
+    icon: <StarIcon sx={{ color: "white" }} />,
   },
 ];
 
-const AboutCard: React.FC<{ item: AboutItem; index: number }> = ({ item, index }) => {
+const AboutCard: React.FC<{ item: AboutItem; index: number }> = ({
+  item,
+  index,
+}) => {
   const isEven = index % 2 === 0;
 
   return (
@@ -138,15 +145,13 @@ const AboutCard: React.FC<{ item: AboutItem; index: number }> = ({ item, index }
           }}
         >
           <Box sx={{ filter: "drop-shadow(0 0 8px rgba(255,255,255,0.4))" }}>
-            {React.cloneElement(
-              item.icon as React.ReactElement,
-              {
-                sx: {
-                  fontSize: "2.5rem",
-                  color: "#FF8C00",
-                },
-              } as any,
-            )}
+            {React.cloneElement(item.icon as React.ReactElement, {
+              // @ts-ignore - MUI icon sx prop type issue
+              sx: {
+                fontSize: "2.5rem",
+                color: "#FF8C00",
+              },
+            })}
           </Box>
         </Box>
 

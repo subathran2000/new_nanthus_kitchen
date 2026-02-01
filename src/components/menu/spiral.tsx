@@ -41,121 +41,228 @@ export interface MainCategory {
 }
 
 export const menuData: MainCategory[] = [
-    {
-        id: 1,
-        title: "Starters",
-        imageUrl: img1,
-        mealType: ['Lunch', 'Dinner'],
-        subCategories: [
-            {
-                title: "Vegetarian",
-                items: [
-                    { id: 101, name: "Bruschetta", description: "Toasted bread, tomato, basil, olive oil", price: "$6.00", imageUrl: img1 },
-                    { id: 102, name: "Stuffed Mushrooms", description: "Spinach and cheese stuffed mushrooms", price: "$8.00", imageUrl: img2 },
-                ]
-            },
-            {
-                title: "Non-Vegetarian",
-                items: [
-                    { id: 103, name: "Crispy Calamari", description: "Lightly fried, served with citrus aioli", price: "$12.00", imageUrl: img3 },
-                    { id: 104, name: "Chicken Wings", description: "Spicy buffalo wings with blue cheese dip", price: "$10.00", imageUrl: img4 },
-                ]
-            }
-        ]
-    },
-    {
-        id: 2,
-        title: "Mains",
-        imageUrl: img2,
-        mealType: ['Lunch', 'Dinner'],
-        subCategories: [
-            {
-                title: "Pasta",
-                items: [
-                    { id: 201, name: "Carbonara", description: "Creamy sauce, pancetta, parmesan", price: "$16.00", imageUrl: img5 },
-                    { id: 202, name: "Arrabbiata", description: "Spicy tomato sauce, garlic, chili", price: "$14.00", imageUrl: img6 },
-                ]
-            },
-            {
-                title: "Grill",
-                items: [
-                    { id: 203, name: "Ribeye Steak", description: "12oz, herb butter, fries", price: "$28.00", imageUrl: img1, options: [{ label: "Rare", price: "$28" }, { label: "Medium", price: "$28" }, { label: "Well Done", price: "$28" }] },
-                    { id: 204, name: "Grilled Salmon", description: "Lemon butter sauce, asparagus", price: "$24.00", imageUrl: img2 },
-                ]
-            }
-        ]
-    },
-    {
-        id: 3,
-        title: "Desserts",
-        imageUrl: img3,
-        mealType: ['Lunch', 'Dkjjinner'],
-        subCategories: [
-            {
-                title: "Cakes",
-                items: [
-                    { id: 301, name: "Chocolate Lava Cake", description: "Warm molten center, vanilla ice cream", price: "$9.00", imageUrl: img3 },
-                    { id: 302, name: "Cheesecake", description: "New York style, berry compote", price: "$8.00", imageUrl: img4 },
-                ]
-            },
-            {
-                title: "Ice Cream",
-                items: [
-                    { id: 303, name: "Sundae", description: "Three scoops, chocolate sauce, nuts", price: "$7.00", imageUrl: img5 },
-                ]
-            }
-        ]
-    },
-    {
-        id: 4,
-        title: "Beverages",
-        imageUrl: img4,
-        mealType: ['Breakfast', 'Lunch', 'Dinner'],
-        subCategories: [
-            {
-                title: "Hot",
-                items: [
-                    { id: 401, name: "Espresso", description: "Single shot", price: "$3.00", imageUrl: img6 },
-                    { id: 402, name: "Cappuccino", description: "Espresso, steamed milk, foam", price: "$4.50", imageUrl: img1 },
-                ]
-            },
-            {
-                title: "Cold",
-                items: [
-                    { id: 403, name: "Iced Latte", description: "Espresso, cold milk, ice", price: "$5.00", imageUrl: img2 },
-                    { id: 404, name: "Fresh Juice", description: "Orange, Apple, or Watermelon", price: "$6.00", imageUrl: img3 },
-                ]
-            }
-        ]
-    },
-    {
-        id: 5,
-        title: "Specials",
-        imageUrl: img5,
-        mealType: ['Dinner'],
-        subCategories: [
-            {
-                title: "Chef's Choice",
-                items: [
-                    { id: 501, name: "Truffle Risotto", description: "Wild mushrooms, truffle oil, parmesan", price: "$22.00", imageUrl: img4 },
-                ]
-            }
-        ]
-    },
-    {
-        id: 6,
-        title: "Vegan",
-        imageUrl: img6,
-        mealType: ['Breakfast', 'Lunch', 'Dinner'],
-        subCategories: [
-            {
-                title: "Bowls",
-                items: [
-                    { id: 601, name: "Buddha Bowl", description: "Quinoa, avocado, chickpeas, tahini", price: "$15.00", imageUrl: img5 },
-                ]
-            }
-        ]
-    }
+  {
+    id: 1,
+    title: "Starters",
+    imageUrl: img1,
+    mealType: ["Lunch", "Dinner"],
+    subCategories: [
+      {
+        title: "Vegetarian",
+        items: [
+          {
+            id: 101,
+            name: "Bruschetta",
+            description: "Toasted bread, tomato, basil, olive oil",
+            price: "$6.00",
+            imageUrl: img1,
+          },
+          {
+            id: 102,
+            name: "Stuffed Mushrooms",
+            description: "Spinach and cheese stuffed mushrooms",
+            price: "$8.00",
+            imageUrl: img2,
+          },
+        ],
+      },
+      {
+        title: "Non-Vegetarian",
+        items: [
+          {
+            id: 103,
+            name: "Crispy Calamari",
+            description: "Lightly fried, served with citrus aioli",
+            price: "$12.00",
+            imageUrl: img3,
+          },
+          {
+            id: 104,
+            name: "Chicken Wings",
+            description: "Spicy buffalo wings with blue cheese dip",
+            price: "$10.00",
+            imageUrl: img4,
+          },
+        ],
+      },
+    ],
+  },
+  {
+    id: 2,
+    title: "Mains",
+    imageUrl: img2,
+    mealType: ["Lunch", "Dinner"],
+    subCategories: [
+      {
+        title: "Pasta",
+        items: [
+          {
+            id: 201,
+            name: "Carbonara",
+            description: "Creamy sauce, pancetta, parmesan",
+            price: "$16.00",
+            imageUrl: img5,
+          },
+          {
+            id: 202,
+            name: "Arrabbiata",
+            description: "Spicy tomato sauce, garlic, chili",
+            price: "$14.00",
+            imageUrl: img6,
+          },
+        ],
+      },
+      {
+        title: "Grill",
+        items: [
+          {
+            id: 203,
+            name: "Ribeye Steak",
+            description: "12oz, herb butter, fries",
+            price: "$28.00",
+            imageUrl: img1,
+            options: [
+              { label: "Rare", price: "$28" },
+              { label: "Medium", price: "$28" },
+              { label: "Well Done", price: "$28" },
+            ],
+          },
+          {
+            id: 204,
+            name: "Grilled Salmon",
+            description: "Lemon butter sauce, asparagus",
+            price: "$24.00",
+            imageUrl: img2,
+          },
+        ],
+      },
+    ],
+  },
+  {
+    id: 3,
+    title: "Desserts",
+    imageUrl: img3,
+    mealType: ["Lunch", "Dinner"],
+    subCategories: [
+      {
+        title: "Cakes",
+        items: [
+          {
+            id: 301,
+            name: "Chocolate Lava Cake",
+            description: "Warm molten center, vanilla ice cream",
+            price: "$9.00",
+            imageUrl: img3,
+          },
+          {
+            id: 302,
+            name: "Cheesecake",
+            description: "New York style, berry compote",
+            price: "$8.00",
+            imageUrl: img4,
+          },
+        ],
+      },
+      {
+        title: "Ice Cream",
+        items: [
+          {
+            id: 303,
+            name: "Sundae",
+            description: "Three scoops, chocolate sauce, nuts",
+            price: "$7.00",
+            imageUrl: img5,
+          },
+        ],
+      },
+    ],
+  },
+  {
+    id: 4,
+    title: "Beverages",
+    imageUrl: img4,
+    mealType: ["Breakfast", "Lunch", "Dinner"],
+    subCategories: [
+      {
+        title: "Hot",
+        items: [
+          {
+            id: 401,
+            name: "Espresso",
+            description: "Single shot",
+            price: "$3.00",
+            imageUrl: img6,
+          },
+          {
+            id: 402,
+            name: "Cappuccino",
+            description: "Espresso, steamed milk, foam",
+            price: "$4.50",
+            imageUrl: img1,
+          },
+        ],
+      },
+      {
+        title: "Cold",
+        items: [
+          {
+            id: 403,
+            name: "Iced Latte",
+            description: "Espresso, cold milk, ice",
+            price: "$5.00",
+            imageUrl: img2,
+          },
+          {
+            id: 404,
+            name: "Fresh Juice",
+            description: "Orange, Apple, or Watermelon",
+            price: "$6.00",
+            imageUrl: img3,
+          },
+        ],
+      },
+    ],
+  },
+  {
+    id: 5,
+    title: "Specials",
+    imageUrl: img5,
+    mealType: ["Dinner"],
+    subCategories: [
+      {
+        title: "Chef's Choice",
+        items: [
+          {
+            id: 501,
+            name: "Truffle Risotto",
+            description: "Wild mushrooms, truffle oil, parmesan",
+            price: "$22.00",
+            imageUrl: img4,
+          },
+        ],
+      },
+    ],
+  },
+  {
+    id: 6,
+    title: "Vegan",
+    imageUrl: img6,
+    mealType: ["Breakfast", "Lunch", "Dinner"],
+    subCategories: [
+      {
+        title: "Bowls",
+        items: [
+          {
+            id: 601,
+            name: "Buddha Bowl",
+            description: "Quinoa, avocado, chickpeas, tahini",
+            price: "$15.00",
+            imageUrl: img5,
+          },
+        ],
+      },
+    ],
+  },
 ];
 
 

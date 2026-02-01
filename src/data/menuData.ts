@@ -1,0 +1,984 @@
+import img1 from "../assets/images/restaurent.jpg";
+import img2 from "../assets/images/special_bg.png";
+import img3 from "../assets/images/bg4.jpg";
+import img4 from "../assets/images/background.jpg";
+import img5 from "../assets/images/bg2.jpg";
+import img6 from "../assets/images/blue-paint-brush-stroke-effect.jpg";
+
+export interface ItemOption {
+  label: string;
+  price: string;
+}
+
+export interface FoodItem {
+  id: number;
+  name: string;
+  description: string;
+  price: string;
+  imageUrl: string;
+  options?: ItemOption[];
+  popular?: boolean;
+}
+
+export interface SubCategory {
+  title: string;
+  items: FoodItem[];
+}
+
+export interface MainCategory {
+  id: number;
+  title: string;
+  imageUrl: string;
+  mealType: string[];
+  subCategories: SubCategory[];
+}
+
+export const menuData: MainCategory[] = [
+  {
+    id: 1,
+    title: "Kothu",
+    imageUrl: img1,
+    mealType: ["Lunch", "Dinner"],
+    subCategories: [
+      {
+        title: "Kothu Varieties",
+        items: [
+          {
+            id: 101,
+            name: "Chicken Kothu",
+            description: "Classic kothu with tender chicken pieces",
+            price: "$12 | NS $14",
+            imageUrl: img1,
+            popular: true,
+          },
+          {
+            id: 102,
+            name: "Mutton Kothu",
+            description: "Rich and flavorful mutton kothu",
+            price: "$12 | NS $15",
+            imageUrl: img2,
+          },
+          {
+            id: 103,
+            name: "Beef Kothu",
+            description: "Hearty beef kothu",
+            price: "$12 | NS $15",
+            imageUrl: img3,
+          },
+          {
+            id: 104,
+            name: "Veggie Kothu",
+            description: "Fresh vegetable kothu",
+            price: "$10",
+            imageUrl: img4,
+          },
+          {
+            id: 105,
+            name: "Egg Kothu",
+            description: "Kothu with scrambled eggs",
+            price: "$10",
+            imageUrl: img5,
+          },
+          {
+            id: 106,
+            name: "Dolphin Kothu",
+            description: "Special dolphin fish kothu",
+            price: "$14 | NS $16",
+            imageUrl: img6,
+          },
+          {
+            id: 107,
+            name: "Seafood Kothu",
+            description: "Mixed seafood kothu",
+            price: "$14 | NS $16",
+            imageUrl: img1,
+          },
+          {
+            id: 108,
+            name: "Fish Kothu",
+            description: "Fresh fish kothu",
+            price: "$14 | NS $16",
+            imageUrl: img2,
+          },
+          {
+            id: 109,
+            name: "Cheese Kothu",
+            description: "Kothu with melted cheese",
+            price: "$15",
+            imageUrl: img3,
+            popular: true,
+          },
+        ],
+      },
+    ],
+  },
+  {
+    id: 2,
+    title: "Grilled",
+    imageUrl: img2,
+    mealType: ["Lunch", "Dinner"],
+    subCategories: [
+      {
+        title: "Grilled Items (includes Rice, Veggie, Fries or Salad)",
+        items: [
+          {
+            id: 201,
+            name: "Chicken Breast Skewer",
+            description: "Grilled chicken breast on skewer",
+            price: "$15",
+            imageUrl: img1,
+          },
+          {
+            id: 202,
+            name: "Chicken Dark Skewer",
+            description: "Tender dark meat skewer",
+            price: "$15",
+            imageUrl: img2,
+          },
+          {
+            id: 203,
+            name: "Lamb Skewer",
+            description: "Juicy lamb skewer",
+            price: "$16",
+            imageUrl: img3,
+          },
+          {
+            id: 204,
+            name: "Lamb Chop (4pc)",
+            description: "Four pieces of grilled lamb chops",
+            price: "$18",
+            imageUrl: img4,
+            popular: true,
+          },
+          {
+            id: 205,
+            name: "Chicken Shawarma",
+            description: "Middle Eastern style chicken shawarma",
+            price: "$15",
+            imageUrl: img5,
+          },
+          {
+            id: 206,
+            name: "Beef Shawarma",
+            description: "Savory beef shawarma",
+            price: "$15",
+            imageUrl: img6,
+          },
+          {
+            id: 207,
+            name: "Beef Skewers",
+            description: "Tender beef skewers",
+            price: "$16",
+            imageUrl: img1,
+          },
+        ],
+      },
+    ],
+  },
+  {
+    id: 3,
+    title: "Chicken Dishes",
+    imageUrl: img3,
+    mealType: ["Lunch", "Dinner"],
+    subCategories: [
+      {
+        title: "Chicken Specialties",
+        items: [
+          {
+            id: 301,
+            name: "Chicken Devil",
+            description: "Spicy Sri Lankan style chicken",
+            price: "$15",
+            imageUrl: img1,
+            popular: true,
+          },
+          {
+            id: 302,
+            name: "Chicken 65",
+            description: "Crispy fried chicken with spices",
+            price: "$15",
+            imageUrl: img2,
+            popular: true,
+          },
+          {
+            id: 303,
+            name: "Chili Chicken",
+            description: "Indo-Chinese chili chicken",
+            price: "$15",
+            imageUrl: img3,
+          },
+          {
+            id: 304,
+            name: "Tandoori Leg",
+            description: "Marinated tandoori chicken leg",
+            price: "$4",
+            imageUrl: img4,
+          },
+          {
+            id: 305,
+            name: "Butter Chicken",
+            description: "Creamy tomato-based curry",
+            price: "$16",
+            imageUrl: img5,
+            popular: true,
+          },
+          {
+            id: 306,
+            name: "Chicken Curry",
+            description: "Traditional chicken curry",
+            price: "M $9 | L $15",
+            imageUrl: img6,
+          },
+          {
+            id: 307,
+            name: "Chicken + Mix Veg",
+            description: "Chicken with mixed vegetables",
+            price: "$15",
+            imageUrl: img1,
+          },
+          {
+            id: 308,
+            name: "Chicken Tikka Masala",
+            description: "Classic tikka masala",
+            price: "$15",
+            imageUrl: img2,
+          },
+          {
+            id: 309,
+            name: "Jaffna Style Kozhi Pukkai",
+            description: "Authentic Jaffna chicken dish",
+            price: "$12",
+            imageUrl: img3,
+          },
+        ],
+      },
+    ],
+  },
+  {
+    id: 4,
+    title: "Seafood Dishes",
+    imageUrl: img4,
+    mealType: ["Lunch", "Dinner"],
+    subCategories: [
+      {
+        title: "Fresh Seafood",
+        items: [
+          {
+            id: 401,
+            name: "Mix Seafood Devil",
+            description: "Spicy mixed seafood",
+            price: "$18",
+            imageUrl: img1,
+            popular: true,
+          },
+          {
+            id: 402,
+            name: "Shrimp Devil",
+            description: "Spicy shrimp dish",
+            price: "$17",
+            imageUrl: img2,
+          },
+          {
+            id: 403,
+            name: "Squid Devil",
+            description: "Spicy squid dish",
+            price: "$17",
+            imageUrl: img3,
+          },
+          {
+            id: 404,
+            name: "Chili With Shrimp & Calamari",
+            description: "Spicy shrimp and calamari",
+            price: "$18",
+            imageUrl: img4,
+          },
+          {
+            id: 405,
+            name: "Fried Calamari",
+            description: "Crispy fried calamari rings",
+            price: "$16",
+            imageUrl: img5,
+          },
+        ],
+      },
+    ],
+  },
+  {
+    id: 5,
+    title: "Beef & Lamb",
+    imageUrl: img5,
+    mealType: ["Lunch", "Dinner"],
+    subCategories: [
+      {
+        title: "Beef Dishes",
+        items: [
+          {
+            id: 501,
+            name: "Beef Devil",
+            description: "Spicy Sri Lankan beef",
+            price: "$16",
+            imageUrl: img1,
+            popular: true,
+          },
+          {
+            id: 502,
+            name: "Chili Beef",
+            description: "Indo-Chinese chili beef",
+            price: "$16",
+            imageUrl: img2,
+          },
+          {
+            id: 503,
+            name: "Beef Pepper Fried",
+            description: "Pepper fried beef",
+            price: "$15",
+            imageUrl: img3,
+          },
+          {
+            id: 504,
+            name: "Garlic Beef + Veg",
+            description: "Garlic beef with vegetables",
+            price: "$15",
+            imageUrl: img4,
+          },
+        ],
+      },
+      {
+        title: "Lamb Dishes",
+        items: [
+          {
+            id: 505,
+            name: "Lamb Curry (Jaffna Style)",
+            description: "Authentic Jaffna lamb curry",
+            price: "M $10 | L $16",
+            imageUrl: img5,
+            popular: true,
+          },
+        ],
+      },
+    ],
+  },
+  {
+    id: 6,
+    title: "Biryani",
+    imageUrl: img6,
+    mealType: ["Lunch", "Dinner"],
+    subCategories: [
+      {
+        title: "Biryani Varieties",
+        items: [
+          {
+            id: 601,
+            name: "Chicken Biryani",
+            description: "Fragrant rice with chicken",
+            price: "$15",
+            imageUrl: img1,
+            popular: true,
+          },
+          {
+            id: 602,
+            name: "Mutton Biryani",
+            description: "Rich mutton biryani",
+            price: "$16",
+            imageUrl: img2,
+          },
+          {
+            id: 603,
+            name: "Fish Biryani",
+            description: "Flavorful fish biryani",
+            price: "$17",
+            imageUrl: img3,
+          },
+          {
+            id: 604,
+            name: "Seafood Biryani",
+            description: "Mixed seafood biryani",
+            price: "$17",
+            imageUrl: img4,
+          },
+          {
+            id: 605,
+            name: "Veggie Biryani",
+            description: "Vegetable biryani",
+            price: "$14",
+            imageUrl: img5,
+          },
+        ],
+      },
+    ],
+  },
+  {
+    id: 7,
+    title: "Fried Rice & Noodles",
+    imageUrl: img1,
+    mealType: ["Lunch", "Dinner"],
+    subCategories: [
+      {
+        title: "Fried Rice",
+        items: [
+          {
+            id: 701,
+            name: "Chicken Fried Rice",
+            description: "Classic chicken fried rice",
+            price: "$15",
+            imageUrl: img1,
+          },
+          {
+            id: 702,
+            name: "Beef Fried Rice",
+            description: "Savory beef fried rice",
+            price: "$16",
+            imageUrl: img2,
+          },
+          {
+            id: 703,
+            name: "Seafood Fried Rice",
+            description: "Mixed seafood fried rice",
+            price: "$17",
+            imageUrl: img3,
+          },
+          {
+            id: 704,
+            name: "Veggie Fried Rice",
+            description: "Vegetable fried rice",
+            price: "$13",
+            imageUrl: img4,
+          },
+          {
+            id: 705,
+            name: "Shawarma Fried Rice",
+            description: "Unique shawarma fried rice",
+            price: "$15",
+            imageUrl: img5,
+            popular: true,
+          },
+          {
+            id: 706,
+            name: "Nasi Goreng Fried Rice",
+            description: "Indonesian style fried rice",
+            price: "$15",
+            imageUrl: img6,
+          },
+        ],
+      },
+      {
+        title: "Noodles",
+        items: [
+          {
+            id: 707,
+            name: "Chicken Noodles",
+            description: "Stir-fried chicken noodles",
+            price: "$15",
+            imageUrl: img1,
+          },
+          {
+            id: 708,
+            name: "Beef Noodles",
+            description: "Savory beef noodles",
+            price: "$16",
+            imageUrl: img2,
+          },
+          {
+            id: 709,
+            name: "Seafood Noodles",
+            description: "Mixed seafood noodles",
+            price: "$17",
+            imageUrl: img3,
+          },
+          {
+            id: 710,
+            name: "Veggie Noodles",
+            description: "Vegetable noodles",
+            price: "$12",
+            imageUrl: img4,
+          },
+          {
+            id: 711,
+            name: "Nanthu's Special Noodles",
+            description: "Chef's special creation",
+            price: "$20",
+            imageUrl: img5,
+            popular: true,
+          },
+          {
+            id: 712,
+            name: "Chicken & Shrimp Noodles",
+            description: "Chicken and shrimp combo",
+            price: "$17",
+            imageUrl: img6,
+          },
+          {
+            id: 713,
+            name: "Seafood & Chicken Noodles",
+            description: "Mixed protein noodles",
+            price: "$18",
+            imageUrl: img1,
+          },
+        ],
+      },
+    ],
+  },
+  {
+    id: 8,
+    title: "Pasta",
+    imageUrl: img2,
+    mealType: ["Lunch", "Dinner"],
+    subCategories: [
+      {
+        title: "Pasta Dishes",
+        items: [
+          {
+            id: 801,
+            name: "Chicken & Shrimp Pasta",
+            description: "Creamy pasta with chicken and shrimp",
+            price: "$17",
+            imageUrl: img1,
+          },
+          {
+            id: 802,
+            name: "Chicken Pasta",
+            description: "Classic chicken pasta",
+            price: "$15",
+            imageUrl: img2,
+          },
+          {
+            id: 803,
+            name: "Chicken, Shrimp, Sausage Pasta",
+            description: "Triple protein pasta",
+            price: "$18",
+            imageUrl: img3,
+            popular: true,
+          },
+          {
+            id: 804,
+            name: "Seafood Pasta",
+            description: "Mixed seafood pasta",
+            price: "$17",
+            imageUrl: img4,
+          },
+          {
+            id: 805,
+            name: "Shrimp & Sausage Pasta",
+            description: "Shrimp and sausage combo",
+            price: "$17",
+            imageUrl: img5,
+          },
+          {
+            id: 806,
+            name: "Veggie Pasta",
+            description: "Fresh vegetable pasta",
+            price: "$13",
+            imageUrl: img6,
+          },
+        ],
+      },
+    ],
+  },
+  {
+    id: 9,
+    title: "Poutines",
+    imageUrl: img3,
+    mealType: ["Lunch", "Dinner"],
+    subCategories: [
+      {
+        title: "Poutine Varieties",
+        items: [
+          {
+            id: 901,
+            name: "Chicken Shawarma Poutine",
+            description: "Fries with cheese curds and chicken shawarma",
+            price: "$14",
+            imageUrl: img1,
+            popular: true,
+          },
+          {
+            id: 902,
+            name: "Beef Shawarma Poutine",
+            description: "Fries with cheese curds and beef shawarma",
+            price: "$15",
+            imageUrl: img2,
+          },
+          {
+            id: 903,
+            name: "Jaffna Style Poutine",
+            description: "Unique Jaffna twist on poutine",
+            price: "$14",
+            imageUrl: img3,
+          },
+        ],
+      },
+    ],
+  },
+  {
+    id: 10,
+    title: "Short Eats",
+    imageUrl: img4,
+    mealType: ["Breakfast", "Lunch", "Dinner"],
+    subCategories: [
+      {
+        title: "Snacks & Appetizers",
+        items: [
+          {
+            id: 1001,
+            name: "Mutton Rolls",
+            description: "Crispy rolls with mutton filling",
+            price: "$1.75",
+            imageUrl: img1,
+            popular: true,
+          },
+          {
+            id: 1002,
+            name: "Chicken Rolls",
+            description: "Crispy rolls with chicken filling",
+            price: "$1.75",
+            imageUrl: img2,
+            popular: true,
+          },
+          {
+            id: 1003,
+            name: "Veggie Rolls",
+            description: "Crispy vegetable rolls",
+            price: "$1.50",
+            imageUrl: img3,
+          },
+          {
+            id: 1004,
+            name: "Paruthurai Vadai",
+            description: "Traditional lentil fritters",
+            price: "$0.75",
+            imageUrl: img4,
+          },
+          {
+            id: 1005,
+            name: "Fish Cutlet",
+            description: "Spiced fish cutlet",
+            price: "$1",
+            imageUrl: img5,
+          },
+          {
+            id: 1006,
+            name: "Chicken Samosa",
+            description: "Crispy chicken samosa",
+            price: "$1",
+            imageUrl: img6,
+          },
+          {
+            id: 1007,
+            name: "Mutton Samosa",
+            description: "Crispy mutton samosa",
+            price: "$1",
+            imageUrl: img1,
+          },
+          {
+            id: 1008,
+            name: "Veg Samosa (3)",
+            description: "Three vegetable samosas",
+            price: "$2",
+            imageUrl: img2,
+          },
+          {
+            id: 1009,
+            name: "Spring Rolls (3)",
+            description: "Three crispy spring rolls",
+            price: "$1",
+            imageUrl: img3,
+          },
+          {
+            id: 1010,
+            name: "Laddu",
+            description: "Traditional sweet",
+            price: "$5",
+            imageUrl: img4,
+          },
+          {
+            id: 1011,
+            name: "Cake Box",
+            description: "Assorted cake pieces",
+            price: "$7 | $13",
+            imageUrl: img5,
+          },
+        ],
+      },
+    ],
+  },
+  {
+    id: 11,
+    title: "Jaffna Specialties",
+    imageUrl: img5,
+    mealType: ["Lunch", "Dinner"],
+    subCategories: [
+      {
+        title: "Authentic Jaffna Cuisine",
+        items: [
+          {
+            id: 1101,
+            name: "Banana Leaf - Chicken",
+            description: "Chicken meal served on banana leaf",
+            price: "$16",
+            imageUrl: img1,
+            popular: true,
+          },
+          {
+            id: 1102,
+            name: "Banana Leaf - Veggie",
+            description: "Vegetarian meal on banana leaf",
+            price: "$14",
+            imageUrl: img2,
+          },
+          {
+            id: 1103,
+            name: "Banana Leaf - Mutton",
+            description: "Mutton meal on banana leaf",
+            price: "$17",
+            imageUrl: img3,
+          },
+          {
+            id: 1104,
+            name: "Banana Leaf - Any Seafood",
+            description: "Seafood meal on banana leaf",
+            price: "$17",
+            imageUrl: img4,
+          },
+          {
+            id: 1105,
+            name: "Banana Leaf - All Seafood",
+            description: "Complete seafood feast on banana leaf",
+            price: "$25",
+            imageUrl: img5,
+          },
+          {
+            id: 1106,
+            name: "Lamprais",
+            description: "Traditional Sri Lankan rice packet",
+            price: "$17",
+            imageUrl: img6,
+            popular: true,
+          },
+          {
+            id: 1107,
+            name: "Veggie Puttu",
+            description: "Steamed rice flour with vegetables",
+            price: "$10",
+            imageUrl: img1,
+          },
+          {
+            id: 1108,
+            name: "Seafood Puttu",
+            description: "Puttu with seafood",
+            price: "$14",
+            imageUrl: img2,
+          },
+          {
+            id: 1109,
+            name: "Veggie Idiyappam",
+            description: "String hoppers with vegetables",
+            price: "$10",
+            imageUrl: img3,
+          },
+          {
+            id: 1110,
+            name: "Seafood Idiyappam",
+            description: "String hoppers with seafood",
+            price: "$14",
+            imageUrl: img4,
+          },
+          {
+            id: 1111,
+            name: "Roti",
+            description: "Traditional flatbread",
+            price: "$1.50",
+            imageUrl: img5,
+          },
+          {
+            id: 1112,
+            name: "Lemon Rice",
+            description: "Tangy lemon-flavored rice",
+            price: "$12",
+            imageUrl: img6,
+          },
+          {
+            id: 1113,
+            name: "Seafood Combo",
+            description: "Assortment of seafood dishes",
+            price: "$25",
+            imageUrl: img1,
+          },
+          {
+            id: 1114,
+            name: "Jaffna Style Kool",
+            description: "Traditional Jaffna seafood soup",
+            price: "$12",
+            imageUrl: img2,
+            popular: true,
+          },
+        ],
+      },
+    ],
+  },
+  {
+    id: 12,
+    title: "Sandwiches",
+    imageUrl: img6,
+    mealType: ["Lunch", "Dinner"],
+    subCategories: [
+      {
+        title: "Wraps & Sandwiches",
+        items: [
+          {
+            id: 1201,
+            name: "Chicken Shawarma with Pop",
+            description: "Chicken shawarma sandwich with drink",
+            price: "$10",
+            imageUrl: img1,
+          },
+          {
+            id: 1202,
+            name: "Beef Shawarma with Pop",
+            description: "Beef shawarma sandwich with drink",
+            price: "$12",
+            imageUrl: img2,
+          },
+          {
+            id: 1203,
+            name: "Falafel Sandwich",
+            description: "Crispy falafel in pita",
+            price: "$8",
+            imageUrl: img3,
+          },
+          {
+            id: 1204,
+            name: "Chicken Shawarma Wrap",
+            description: "Large chicken shawarma wrap",
+            price: "$13",
+            imageUrl: img4,
+            popular: true,
+          },
+          {
+            id: 1205,
+            name: "Beef Shawarma Wrap",
+            description: "Large beef shawarma wrap",
+            price: "$15",
+            imageUrl: img5,
+          },
+        ],
+      },
+    ],
+  },
+  {
+    id: 13,
+    title: "Kids Menu",
+    imageUrl: img1,
+    mealType: ["Lunch", "Dinner"],
+    subCategories: [
+      {
+        title: "For the Little Ones",
+        items: [
+          {
+            id: 1301,
+            name: "Chicken Fingers & Fries (3pc)",
+            description: "Three chicken fingers with fries",
+            price: "$10",
+            imageUrl: img1,
+          },
+          {
+            id: 1302,
+            name: "Kids Chicken Pasta",
+            description: "Child-sized chicken pasta",
+            price: "$10",
+            imageUrl: img2,
+          },
+          {
+            id: 1303,
+            name: "Kids Chicken Shawarma",
+            description: "Child-sized shawarma",
+            price: "$8.99",
+            imageUrl: img3,
+          },
+          {
+            id: 1304,
+            name: "Kids Beef Shawarma",
+            description: "Child-sized beef shawarma",
+            price: "$8.99",
+            imageUrl: img4,
+          },
+          {
+            id: 1305,
+            name: "Fish & Chips (2pc)",
+            description: "Two pieces of fish with chips",
+            price: "$12",
+            imageUrl: img5,
+          },
+        ],
+      },
+    ],
+  },
+  {
+    id: 14,
+    title: "Drinks",
+    imageUrl: img2,
+    mealType: ["Breakfast", "Lunch", "Dinner"],
+    subCategories: [
+      {
+        title: "Beverages",
+        items: [
+          {
+            id: 1401,
+            name: "Tea",
+            description: "Hot brewed tea",
+            price: "$1.75",
+            imageUrl: img1,
+          },
+          {
+            id: 1402,
+            name: "Water",
+            description: "Bottled water",
+            price: "$1.50",
+            imageUrl: img2,
+          },
+          {
+            id: 1403,
+            name: "Soft Drinks",
+            description: "Assorted soft drinks",
+            price: "$2",
+            imageUrl: img3,
+          },
+          {
+            id: 1404,
+            name: "Mango Can",
+            description: "Mango juice can",
+            price: "$2.50",
+            imageUrl: img4,
+          },
+          {
+            id: 1405,
+            name: "Pineapple",
+            description: "Pineapple juice",
+            price: "$2.50",
+            imageUrl: img5,
+          },
+          {
+            id: 1406,
+            name: "Apple Juice",
+            description: "Fresh apple juice",
+            price: "$2.50",
+            imageUrl: img6,
+          },
+          {
+            id: 1407,
+            name: "Orange Juice",
+            description: "Fresh orange juice",
+            price: "$2.50",
+            imageUrl: img1,
+          },
+          {
+            id: 1408,
+            name: "Necto",
+            description: "Necto drink",
+            price: "$2.75",
+            imageUrl: img2,
+          },
+        ],
+      },
+    ],
+  },
+];

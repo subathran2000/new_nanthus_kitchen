@@ -1,0 +1,11 @@
+# https://www.robotstxt.org/robotstxt.html
+User-agent: *
+Allow: /
+Disallow: /api/
+Disallow: /admin/
+
+# Crawl-delay
+Crawl-delay: 1
+
+# Sitemap
+Sitemap: https://newnanthuskitchen.com/sitemap.xml
