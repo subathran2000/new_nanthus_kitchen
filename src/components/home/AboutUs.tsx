@@ -60,33 +60,33 @@ const AboutCard: React.FC<{ item: AboutItem; index: number }> = ({
         width: "100%",
         display: "flex",
         justifyContent: isEven ? "flex-end" : "flex-start",
-        marginBottom: "6rem",
         position: "relative",
       }}
     >
       <Box
         sx={{
           width: { xs: "95%", sm: "85%", md: "550px" },
+          mb: { xs: "3rem", md: "6rem" }, // Moved here
           position: "relative",
           background:
-            "linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.01) 100%)",
-          backdropFilter: "blur(15px) saturate(180%)",
+            "linear-gradient(135deg, rgba(255, 255, 255, 0.03) 0%, rgba(255, 255, 255, 0.01) 100%)",
+          backdropFilter: "blur(30px) saturate(200%)",
           borderRadius: "24px",
-          padding: "3rem 2.5rem",
-          border: "1px solid rgba(255, 255, 255, 0.1)",
-          boxShadow: "0 20px 50px rgba(0, 0, 0, 0.3)",
-          transition: "all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)",
+          padding: { xs: "2.5rem 1.5rem", md: "3.5rem 3rem" },
+          border: "1px solid rgba(255, 255, 255, 0.05)",
+          boxShadow: "0 40px 100px rgba(0, 0, 0, 0.4)",
+          transition: "all 0.6s cubic-bezier(0.16, 1, 0.3, 1)",
           overflow: "visible",
           "&:hover": {
-            transform: "translateY(-10px) scale(1.02)",
+            transform: "translateY(-15px) scale(1.02)",
             background:
-              "linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.02) 100%)",
+              "linear-gradient(135deg, rgba(255, 255, 255, 0.06) 0%, rgba(255, 255, 255, 0.02) 100%)",
             border: isEven
-              ? "1px solid rgba(0, 255, 255, 0.4)"
-              : "1px solid rgba(255, 140, 0, 0.4)",
+              ? "1px solid rgba(0, 255, 255, 0.3)"
+              : "1px solid rgba(255, 140, 0, 0.3)",
             boxShadow: isEven
-              ? "0 30px 60px rgba(0, 255, 255, 0.1)"
-              : "0 30px 60px rgba(255, 140, 0, 0.1)",
+              ? "0 40px 80px rgba(0, 255, 255, 0.15)"
+              : "0 40px 80px rgba(255, 140, 0, 0.15)",
           },
           "&::before": {
             content: '""',
@@ -125,7 +125,7 @@ const AboutCard: React.FC<{ item: AboutItem; index: number }> = ({
           sx={{
             position: "absolute",
             top: "-32px",
-            [isEven ? "right" : "left"]: "40px",
+            [isEven ? "right" : "left"]: { xs: "20px", sm: "40px" },
             width: "74px",
             height: "74px",
             borderRadius: "22px", // Squircle shape for elegance
@@ -158,12 +158,13 @@ const AboutCard: React.FC<{ item: AboutItem; index: number }> = ({
         <Typography
           variant="h5"
           sx={{
-            fontFamily: "'Inter', sans-serif",
+            fontFamily: "'Playfair Display', serif",
             fontWeight: 700,
             color: "#FF8C00",
             mb: 2,
-            fontSize: { xs: "1.4rem", md: "1.8rem" },
-            letterSpacing: "0.02em",
+            fontSize: { xs: "1.25rem", md: "1.6rem" },
+            letterSpacing: "0.01em",
+            textTransform: 'uppercase'
           }}
         >
           {item.title}
@@ -224,8 +225,9 @@ const AboutUs: React.FC = () => {
             letterSpacing: '0.6em',
             mb: 2,
             display: 'block',
-            fontSize: '0.9rem',
-            fontWeight: 400
+            fontSize: '0.75rem',
+            fontWeight: 500,
+            fontFamily: "'Outfit', sans-serif"
           }}
         >
           THE STORY BEHIND
@@ -233,17 +235,17 @@ const AboutUs: React.FC = () => {
         <Typography
           variant="h2"
           sx={{
-            fontFamily: "'Inter', sans-serif",
-            fontWeight: 300,
+            fontFamily: "'Playfair Display', serif",
+            fontWeight: 700,
             textTransform: 'uppercase',
-            letterSpacing: { xs: '0.3em', md: '0.5em' },
+            letterSpacing: { xs: '0.1em', md: '0.15em' },
             color: '#fff',
-            fontSize: { xs: '1.8rem', md: '3.5rem' },
+            fontSize: { xs: '2.5rem', md: '4rem' },
             textShadow: '0 0 20px rgba(255, 255, 255, 0.1)',
-            lineHeight: 1.5,
+            lineHeight: 1.2,
             '& span': {
               color: '#FF8C00',
-              fontWeight: 500,
+              fontWeight: 700,
             }
           }}
         >
@@ -268,17 +270,18 @@ const AboutUs: React.FC = () => {
             top: 0,
             bottom: 0,
             left: '50%',
-            width: '2px',
-            background: 'linear-gradient(to bottom, transparent, rgba(255, 140, 0, 0.2), rgba(0, 255, 255, 0.2), transparent)',
+            width: '1px',
+            background: 'linear-gradient(to bottom, transparent, rgba(255, 140, 0, 0.4), rgba(0, 255, 255, 0.4), transparent)',
             display: { xs: 'none', md: 'block' },
             transform: 'translateX(-50%)',
+            zIndex: -1,
             '&::before': {
               content: '""',
               position: 'absolute',
               top: 0,
               left: '50%',
-              width: '8px',
-              height: '8px',
+              width: '4px',
+              height: '4px',
               background: '#FF8C00',
               borderRadius: '50%',
               transform: 'translateX(-50%)',

@@ -1,16 +1,10 @@
-import React, { useRef, useState, useEffect } from 'react'
-import { Box, Button, Typography, useTheme, useMediaQuery } from '@mui/material'
-import { Canvas, useFrame } from '@react-three/fiber'
+import { useRef, useState, useEffect } from 'react'
+import { Box, Button, Typography, useTheme, useMediaQuery, Dialog, IconButton } from '@mui/material'
+import { Canvas } from '@react-three/fiber'
 import {
   ScrollControls,
   Scroll,
-  useScroll,
-  Float,
-  Environment,
-  useTexture,
-  Cloud,
 } from "@react-three/drei";
-import Sparkles from "../common/Sparkles";
 import {
   EffectComposer,
   Bloom,
@@ -18,21 +12,14 @@ import {
   Vignette,
 } from "@react-three/postprocessing";
 import { motion } from "framer-motion";
-import * as THREE from "three";
-import CreativeFooter from "../Footer/Footer";
 import logoReflect from "../../assets/images/restaurent.jpg";
 import logo from "../../assets/images/new_nanthus_kitchen_logo.png";
-import TypewriterText from "../common/TypewriterText";
 import OrderButton from "../common/OrderButton";
-import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
-import AboutUs from "./AboutUs";
 import LocationSelector from "../common/LocationSelector";
-
-import { commonButtonStyle } from '../common/ButtonStyles';
-import CateringSection from "./CateringSection";
-import ContactSection from "./ContactSection";
+import AboutUs from "./AboutUs";
 import SpecialOfferSection from "./SpecialOfferSection";
 import PickupSection from "./PickupSection";
+<<<<<<< Updated upstream
 import type { FloatingCrystalProps } from "../../types";
 
 // --- 3D Components ---
@@ -171,6 +158,62 @@ const SceneContent = () => {
     </>
   );
 };
+=======
+import CateringSection from "./CateringSection";
+import ContactSection from "./ContactSection";
+
+import { commonButtonStyle } from '../common/ButtonStyles';
+import { CustomScrollbarUI, ScrollSync } from '../common/CustomScrollbar'
+
+import SpecialsPopup from './SpecialsPopup';
+import Sparkles from "../common/Sparkles";
+import TypewriterText from '../common/TypewriterText';
+import CreativeFooter from "../Footer/Footer";
+
+
+// --- Spline Types ---
+declare global {
+  namespace JSX {
+    interface IntrinsicElements {
+      'spline-viewer': any;
+    }
+  }
+}
+
+// --- 3D Components ---
+
+
+const SplineHero = () => {
+  useEffect(() => {
+    const script = document.createElement('script');
+    script.type = 'module';
+    script.src = 'https://unpkg.com/@splinetool/viewer@1.12.46/build/spline-viewer.js';
+    document.head.appendChild(script);
+
+    return () => {
+      // Cleanup if necessary, though spline-viewer usually handles itself
+    };
+  }, []);
+
+  return (
+    <Box sx={{
+      position: 'absolute',
+      top: 0,
+      left: 0,
+      width: '100%',
+      height: '100%',
+      zIndex: -1,
+      pointerEvents: 'none'
+    }}>
+      <spline-viewer
+        url="https://prod.spline.design/GvZVVfvnVofKhkKr/scene.splinecode"
+        style={{ width: '100%', height: '100%' }}
+      />
+    </Box>
+  );
+}
+
+>>>>>>> Stashed changes
 
 // --- HTML Content ---
 
@@ -186,6 +229,7 @@ const Section = ({ children, style, ...props }: SectionProps) => {
       component="section"
       {...props}
       sx={{
+<<<<<<< Updated upstream
         height: "100vh",
         width: "100%",
         display: "flex",
@@ -197,6 +241,18 @@ const Section = ({ children, style, ...props }: SectionProps) => {
         position: "relative",
         overflow: "hidden", // Add hidden overflow to every section as a safety net
         ...style,
+=======
+        height: '100vh',
+        width: '100%',
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center',
+        padding: { xs: '0.8rem', sm: '2rem' },
+        boxSizing: 'border-box',
+        position: 'relative',
+        ...style
+>>>>>>> Stashed changes
       }}
     >
       {children}
@@ -204,6 +260,7 @@ const Section = ({ children, style, ...props }: SectionProps) => {
   );
 };
 
+<<<<<<< Updated upstream
 import { CustomScrollbarUI, ScrollSync } from "../common/CustomScrollbar";
 
 import SpecialsPopup from "./SpecialsPopup";
@@ -214,17 +271,49 @@ const LandingPage = ({ children }: { children?: React.ReactNode }) => {
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
   const isTablet = useMediaQuery(theme.breakpoints.down("md"));
   const [locationSelectorOpen, setLocationSelectorOpen] = useState(false);
+=======
+
+const DecorativePanel = () => (
+  <Box sx={{
+    position: 'fixed',
+    left: 0,
+    top: 0,
+    bottom: 0,
+    width: '60px',
+    // borderRight: '1px solid rgba(255,140,0,0.05)',
+    zIndex: 50,
+    display: { xs: 'none', lg: 'flex' },
+    alignItems: 'center',
+    justifyContent: 'center',
+    writingMode: 'vertical-rl',
+    textTransform: 'uppercase',
+    letterSpacing: '0.4em',
+    color: 'rgba(255,255,255,0.1)',
+    fontSize: '9px',
+    gap: 4,
+    pointerEvents: 'none'
+  }}>
+  </Box>
+);
+
+const Landpage = () => {
+  const scrollbarRef = useRef<HTMLDivElement>(null)
+  const theme = useTheme()
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'))
+  const isTablet = useMediaQuery(theme.breakpoints.down('md'))
+  const [locationSelectorOpen, setLocationSelectorOpen] = useState(false)
+>>>>>>> Stashed changes
   const [specialsPopupOpen, setSpecialsPopupOpen] = useState(false);
 
   useEffect(() => {
-    // Show specials popup on mount after a short delay
     const timer = setTimeout(() => {
       setSpecialsPopupOpen(true);
-    }, 1000); // 1 second delay for better UX
+    }, 1000);
     return () => clearTimeout(timer);
   }, []);
 
   return (
+<<<<<<< Updated upstream
     <div
       style={{
         width: "100%",
@@ -239,13 +328,19 @@ const LandingPage = ({ children }: { children?: React.ReactNode }) => {
         onClose={() => setSpecialsPopupOpen(false)}
       />
 
+=======
+    <div style={{ width: '100%', height: '100vh', background: '#001e36', overflow: 'hidden', position: 'relative' }}>
+      <SpecialsPopup open={specialsPopupOpen} onClose={() => setSpecialsPopupOpen(false)} />
+>>>>>>> Stashed changes
       <Sparkles />
+      <DecorativePanel />
 
-      {/* Top Left Logo Restored */}
+      {/* Brand Logo */}
       <Box
         component="img"
         src={logo}
         alt="New Nanthu's Kitchen Logo"
+<<<<<<< Updated upstream
         onClick={() => {
           const scrollContainer = document.querySelector(
             ".lucide-scroll-container",
@@ -254,9 +349,12 @@ const LandingPage = ({ children }: { children?: React.ReactNode }) => {
             scrollContainer.scrollTo({ top: 0, behavior: "smooth" });
           }
         }}
+=======
+>>>>>>> Stashed changes
         sx={{
           position: "fixed",
           top: { xs: 20, md: 35 },
+<<<<<<< Updated upstream
           left: { xs: 20, md: 40 },
           width: { xs: "55px", md: "85px" },
           height: "auto",
@@ -271,23 +369,42 @@ const LandingPage = ({ children }: { children?: React.ReactNode }) => {
           "&:active": {
             transform: "scale(0.95)",
           },
+=======
+          left: { xs: 20, md: 80 },
+          width: { xs: '55px', md: '85px' },
+          height: 'auto',
+          zIndex: 2000,
+          cursor: 'pointer',
+          filter: 'drop-shadow(0 0 15px rgba(255, 140, 0, 0.2))',
+          transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
+          '&:hover': {
+            transform: 'scale(1.05)',
+            filter: 'drop-shadow(0 0 25px rgba(255, 140, 0, 0.4))',
+          }
+>>>>>>> Stashed changes
         }}
+        onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
       />
+
       <Box
         sx={{
           position: "fixed",
           top: { xs: 20, md: 35 },
           right: { xs: 20, md: 40 },
           zIndex: 2000,
+<<<<<<< Updated upstream
           display: "flex",
           flexDirection: "column",
           alignItems: "flex-end",
           gap: 3,
+=======
+>>>>>>> Stashed changes
         }}
       >
         <OrderButton onClick={() => setLocationSelectorOpen(true)} />
       </Box>
 
+<<<<<<< Updated upstream
       <Canvas
         camera={{
           position: [0, 0, 5],
@@ -299,10 +416,22 @@ const LandingPage = ({ children }: { children?: React.ReactNode }) => {
 
         <ScrollControls pages={isMobile ? 20 : 12} damping={0.15}>
           {/* Scroll Logic - Inside ScrollControls to access scroll data */}
+=======
+
+
+      <Canvas camera={{ position: [0, 0, 5], fov: isMobile ? 75 : isTablet ? 60 : 50 }} shadows>
+        <fog attach="fog" args={['#001e36', 5, 25]} />
+        <ScrollControls pages={isMobile ? 14.5 : 10.5} damping={0.15}>
+>>>>>>> Stashed changes
           <ScrollSync scrollbarRef={scrollbarRef} />
+          {/* Spline Animation in Hero Section */}
+          <Scroll html style={{ width: '100vw', pointerEvents: 'none' }}>
+            <Section style={{ pointerEvents: 'none' }}>
+              <SplineHero />
+            </Section>
+          </Scroll>
 
-          <SceneContent />
-
+<<<<<<< Updated upstream
           <Scroll html style={{ width: "100vw", overflowX: "hidden" }}>
             {/* Ultra Elegant Hero Section - Styled like LandingPage.tsx */}
             <Section>
@@ -323,6 +452,38 @@ const LandingPage = ({ children }: { children?: React.ReactNode }) => {
                     delay={0.5}
                     stagger={0.1}
                   />
+=======
+          <Scroll html style={{ width: '100vw', overflowX: 'hidden' }}>
+            <Section>
+              <Box className="hero-title-wrapper" sx={{
+                alignItems: { xs: 'center', md: 'flex-start' },
+                textAlign: 'left',
+                width: '100%',
+                maxWidth: '1400px',
+                mx: 'auto',
+                px: { xs: 3, md: 10 },
+                position: 'relative',
+                display: 'flex',
+                flexDirection: 'column'
+              }}>
+
+                <Box sx={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  mt: { xs: 0, md: 10 },
+                  width: '100%',
+                  alignItems: { xs: 'center', md: 'flex-start' }
+                }}>
+                  <Box sx={{ alignSelf: 'flex-start', mb: { xs: -1, md: 0 } }}>
+                    <TypewriterText
+                      text="New"
+                      as="span"
+                      className="accent-label"
+                      delay={0.5}
+                      stagger={0.1}
+                    />
+                  </Box>
+>>>>>>> Stashed changes
                   <TypewriterText
                     text="NANTHU'S"
                     as="h2"
@@ -330,18 +491,32 @@ const LandingPage = ({ children }: { children?: React.ReactNode }) => {
                     delay={1.5}
                     stagger={0.1}
                   />
-                </div>
-                <div className="title-divider"></div>
-                <TypewriterText
-                  text="THE ART OF KITCHEN"
-                  as="p"
-                  className="subtitle-tagline"
-                  delay={2.5}
-                  stagger={0.05}
-                />
+                </Box>
+
+                <Box sx={{ width: '40px', height: '1px', background: 'rgba(255, 140, 0, 0.4)', mt: 3, mb: 1, alignSelf: { xs: 'center', md: 'flex-start' } }} />
+
+                <Box sx={{
+                  display: 'flex',
+                  flexDirection: { xs: 'column', md: 'row' },
+                  alignItems: { xs: 'center', md: 'flex-start' },
+                  gap: 4,
+                  width: '100%',
+                  mt: 1
+                }}>
+                  <TypewriterText
+                    text="THE ART OF KITCHEN"
+                    as="p"
+                    className="subtitle-tagline"
+                    delay={2.5}
+                    stagger={0.05}
+                  />
+                  {!isMobile && <Box sx={{ flex: 1, height: '1px', background: 'rgba(255,255,255,0.05)', mb: '0.4rem' }} />}
+                </Box>
+
                 <Button
                   className="dive-button"
                   onClick={() => {
+<<<<<<< Updated upstream
                     const scrollContainer = document.querySelector(
                       ".lucide-scroll-container",
                     );
@@ -356,15 +531,22 @@ const LandingPage = ({ children }: { children?: React.ReactNode }) => {
                     } else if (menuSection) {
                       menuSection.scrollIntoView({ behavior: "smooth" });
                     }
+=======
+                    const menuSection = document.getElementById('menu-preview-section');
+                    if (menuSection) menuSection.scrollIntoView({ behavior: 'smooth' });
                   }}
-                  sx={{ mt: 4 }}
+                  sx={{
+                    mt: 5,
+                    ...commonButtonStyle
+>>>>>>> Stashed changes
+                  }}
                 >
                   DIVE IN
                 </Button>
 
-                {/* Subtle Scroll Indicator */}
                 <motion.div
                   initial={{ opacity: 0 }}
+<<<<<<< Updated upstream
                   animate={{ opacity: 0.5 }}
                   transition={{ delay: 3, duration: 1 }}
                   style={{ marginTop: "6rem" }}
@@ -396,13 +578,27 @@ const LandingPage = ({ children }: { children?: React.ReactNode }) => {
                       }}
                     />
                   </div>
+=======
+                  animate={{ opacity: 0.3 }}
+                  transition={{ delay: 3, duration: 2 }}
+                  style={{ marginTop: '8rem' }}
+                >
+                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+                    <Box sx={{ width: '1px', height: '60px', background: 'linear-gradient(to bottom, #FF8C00, transparent)' }} />
+                    <Typography variant="caption" sx={{ letterSpacing: '0.4em', color: '#fff', textTransform: 'uppercase', fontSize: '10px' }}>
+                      Scroll to explore
+                    </Typography>
+                  </Box>
+>>>>>>> Stashed changes
                 </motion.div>
-              </div>
+              </Box>
             </Section>
 
-            {/* About Us Section - Staggered Cards based on Reference Image */}
-            <AboutUs />
+            <Section style={{ height: 'auto', minHeight: '120vh' }}>
+              <AboutUs />
+            </Section>
 
+<<<<<<< Updated upstream
             <Section
               id="menu-preview-section"
               style={{
@@ -486,10 +682,21 @@ const LandingPage = ({ children }: { children?: React.ReactNode }) => {
                     flexDirection: { xs: "column", md: "row" },
                     alignItems: "center",
                     justifyContent: "center",
+=======
+            <Section id="menu-preview-section" style={{ height: 'auto', minHeight: isMobile ? 'auto' : '100vh', justifyContent: 'center', zIndex: 10 }}>
+              <Box sx={{ width: '100%', maxWidth: '1200px', mx: 'auto', px: 2, textAlign: 'center' }}>
+                <Box
+                  sx={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: { xs: 'center', md: 'flex-start' },
+                    textAlign: { xs: 'center', md: 'left' },
+                    mb: 6
+>>>>>>> Stashed changes
                   }}
                 >
-                  {/* Large Main Image */}
                   <motion.div
+<<<<<<< Updated upstream
                     initial={{ opacity: 0, scale: 0.95 }}
                     whileInView={{ opacity: 1, scale: 1 }}
                     animate={{
@@ -524,8 +731,23 @@ const LandingPage = ({ children }: { children?: React.ReactNode }) => {
                         }}
                       />
                     </Box>
+=======
+                    initial={{ opacity: 0, y: 30 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 1 }}
+                    viewport={{ once: true }}
+                  >
+                    <Typography variant="overline" sx={{ color: '#FF8C00', letterSpacing: '0.8em', mb: 2, display: 'block', fontSize: '0.75rem' }}>
+                      CURATED FLAVORS
+                    </Typography>
+                    <Typography variant="h2" sx={{ fontFamily: "'Playfair Display', serif", fontWeight: 700, fontSize: { xs: '2.5rem', md: '4.5rem' } }}>
+                      THE MENU
+                    </Typography>
+>>>>>>> Stashed changes
                   </motion.div>
+                </Box>
 
+<<<<<<< Updated upstream
                   {/* Glassmorphic Overlapping Card */}
                   <motion.div
                     initial={{
@@ -630,10 +852,38 @@ const LandingPage = ({ children }: { children?: React.ReactNode }) => {
                       </Button>
                     </Box>
                   </motion.div>
+=======
+                <Box sx={{ position: 'relative', display: 'flex', flexDirection: { xs: 'column', md: 'row' }, alignItems: 'center' }}>
+                  <Box sx={{ width: { xs: '100%', md: '70%' }, height: { xs: '350px', md: '600px' }, background: `url(${logoReflect}) center/cover`, borderRadius: '32px', boxShadow: '0 50px 100px rgba(0,0,0,0.5)' }} />
+                  <Box sx={{
+                    width: { xs: '90%', md: '450px' },
+                    ml: { xs: 0, md: -15 },
+                    mt: { xs: -5, md: 0 },
+                    p: 6,
+                    bgcolor: 'rgba(0,30,54,0.6)',
+                    backdropFilter: 'blur(30px)',
+                    borderRadius: '24px',
+                    border: '1px solid rgba(255,255,255,0.05)',
+                    textAlign: 'left'
+                  }}>
+                    <Typography variant="h4" sx={{ color: '#FF8C00', mb: 3, fontFamily: "'Playfair Display', serif" }}>Gastronomy Redefined</Typography>
+                    <Typography sx={{ color: 'rgba(255,255,255,0.7)', mb: 4, lineHeight: 1.8 }}>
+                      Discover a sensory experience where every dish tells a story of tradition, innovation, and passion.
+                    </Typography>
+                    <Button
+                      variant="outlined"
+                      onClick={() => window.location.href = '/menu-new'}
+                      sx={commonButtonStyle}
+                    >
+                      View Full Menu
+                    </Button>
+                  </Box>
+>>>>>>> Stashed changes
                 </Box>
               </Box>
             </Section>
 
+<<<<<<< Updated upstream
             {/* Special Offer Section - Added as per request */}
             <Section
               style={{
@@ -699,11 +949,23 @@ const LandingPage = ({ children }: { children?: React.ReactNode }) => {
                 justifyContent: "flex-start",
               }}
             >
+=======
+            <Section style={{ height: 'auto', minHeight: isMobile ? 'auto' : '80vh', zIndex: 10 }}>
+              <SpecialOfferSection />
+            </Section>
+            <Section style={{ height: 'auto', minHeight: isMobile ? 'auto' : '60vh', zIndex: 10 }}>
+              <PickupSection />
+            </Section>
+            <Section style={{ height: 'auto', minHeight: isMobile ? 'auto' : '80vh', zIndex: 10 }}>
+              <CateringSection />
+            </Section>
+            <Section style={{ height: 'auto', minHeight: isMobile ? 'auto' : '80vh', zIndex: 10 }}>
+              <ContactSection />
+            </Section>
+            <Section style={{ height: 'auto', zIndex: 10 }}>
+>>>>>>> Stashed changes
               <CreativeFooter />
             </Section>
-
-            {/* Render children (like Menu) here if nested */}
-            {children}
           </Scroll>
         </ScrollControls>
 
@@ -719,17 +981,21 @@ const LandingPage = ({ children }: { children?: React.ReactNode }) => {
         </EffectComposer>
       </Canvas>
 
-      {/* Custom Scrollbar UI - Moved to bottom to sit on top of Canvas */}
       {!isMobile && <CustomScrollbarUI ref={scrollbarRef} />}
 
-      {/* Location Selector Modal */}
       <LocationSelector
         open={locationSelectorOpen}
         onClose={() => setLocationSelectorOpen(false)}
+<<<<<<< Updated upstream
         onSelectLocation={(locationName) => {
           setLocationSelectorOpen(false);
           // Navigate to menu after location selection
           window.location.href = "/menu-new";
+=======
+        onSelectLocation={() => {
+          setLocationSelectorOpen(false);
+          window.location.href = '/menu-new';
+>>>>>>> Stashed changes
         }}
       />
     </div>
@@ -739,7 +1005,7 @@ const LandingPage = ({ children }: { children?: React.ReactNode }) => {
 export default LandingPage;
 
 const styles = `
-  @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;700&family=Pinyon+Script&family=Inter:wght@400;700;900&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;700&family=Pinyon+Script&family=Inter:wght@400;700;900&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Rock+Salt&display=swap');
 
   :root {
     --gold: #FF8C00;
@@ -775,14 +1041,18 @@ const styles = `
   .main-title {
     font-family: 'Inter', sans-serif !important;
     font-weight: 900 !important;
-    font-size: clamp(2.5rem, 11vw, 15rem) !important;
+    font-size: clamp(2rem, 11vw, 15rem) !important;
     letter-spacing: 0.1em !important;
     color: white !important;
     margin: 0 !important;
     font-style: normal !important;
     text-shadow: 0 10px 40px rgba(0,0,0,0.6);
-    text-align: center;
+    text-align: center !important;
     line-height: 1.1;
+@media (min-width: 900px) {
+    text-align: left !important;
+}
+    text-transform: uppercase;
   }
 
   .title-divider {
@@ -804,8 +1074,13 @@ const styles = `
     font-weight: 400;
     text-transform: uppercase;
     opacity: 0.9;
-    text-align: center;
-  }
+    text-align: center !important;
+}
+@media (min-width: 900px) {
+    .subtitle-tagline {
+        text-align: left !important;
+    }
+}
 
   .dive-button {
     margin-top: 1.25rem;

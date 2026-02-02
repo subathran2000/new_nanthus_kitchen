@@ -4,120 +4,95 @@ import { commonButtonStyle } from '../common/ButtonStyles';
 import StoreIcon from '@mui/icons-material/Store';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 
+
 const PickupSection: React.FC = () => {
     return (
         <Box
             sx={{
                 width: '100%',
-                maxWidth: '900px',
+                maxWidth: '1200px',
                 margin: '0 auto',
                 display: 'flex',
                 flexDirection: 'column',
-                alignItems: 'center',
-                textAlign: 'center',
-                padding: { xs: '2rem', md: '4rem 2rem' },
+                alignItems: { xs: 'center', md: 'flex-end' },
+                textAlign: { xs: 'center', md: 'right' },
+                padding: { xs: '4rem 2rem', md: '8rem 2rem' },
                 color: '#fff',
                 position: 'relative',
                 zIndex: 10
             }}
         >
-            {/* Overline */}
+
             <Typography
                 variant="overline"
                 sx={{
                     color: '#FF8C00',
-                    letterSpacing: '0.2em',
-                    fontSize: '0.9rem',
-                    fontWeight: 600,
-                    mb: 1,
+                    letterSpacing: '0.8em',
+                    fontSize: '0.75rem',
+                    fontWeight: 500,
+                    fontFamily: "'Outfit', sans-serif",
+                    mb: 2,
                     display: 'block'
                 }}
             >
-                ORDER ONLINE
+                BESPOKE SERVICE
             </Typography>
 
-            {/* Title */}
             <Typography
                 variant="h2"
                 sx={{
-                    fontFamily: '"Inter", sans-serif',
-                    fontWeight: 400,
-                    fontSize: { xs: '2.5rem', md: '5rem' },
+                    fontFamily: "'Playfair Display', serif",
+                    fontWeight: 700,
+                    fontSize: { xs: '2.5rem', md: '4.5rem' },
                     lineHeight: 1.1,
-                    mb: 3,
+                    mb: 4,
                     color: '#fff',
-                    '& span': {
-                        color: '#FF8C00',
-                    }
+                    letterSpacing: '0.05em',
                 }}
             >
-                ORDER FOR<br />
-                <span style={{ color: '#FF8C00' }}>PICKUP</span>
+                ORDER <span style={{ color: '#FF8C00', fontStyle: 'italic' }}>PICKUP</span>
             </Typography>
 
-            {/* Description */}
             <Typography
                 variant="body1"
                 sx={{
-                    color: 'rgba(255, 255, 255, 0.7)',
+                    color: 'rgba(255, 255, 255, 0.6)',
                     fontSize: '1.1rem',
-                    lineHeight: 1.6,
-                    maxWidth: '600px',
-                    mb: 5,
-                    fontFamily: '"Inter", sans-serif',
-                    fontWeight: 300
+                    lineHeight: 1.8,
+                    maxWidth: '500px',
+                    mb: 6,
+                    fontFamily: '"Outfit", sans-serif',
+                    fontWeight: 300,
+                    mx: { xs: 'auto', md: 0 }
                 }}
             >
-                Enjoy our authentic Jaffna cuisine at home. Order online and pick up from either of our two convenient locations.
+                Experience the pinnacle of Jaffna flavor in the comfort of your home.
+                Our team meticulously prepares each order for a refined takeaway experience.
             </Typography>
 
-            {/* Icons Info */}
             <Box
                 sx={{
                     display: 'flex',
-                    flexDirection: { xs: 'column', sm: 'row' },
-                    gap: { xs: 2, sm: 6 },
-                    mb: 6,
-                    color: '#FF8C00' // Gold icons
+                    flexDirection: { xs: 'column', md: 'row' },
+                    gap: 3,
+                    justifyContent: { xs: 'center', md: 'flex-end' },
+                    alignItems: 'center',
+                    width: '100%'
                 }}
             >
-                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
-                    <StoreIcon fontSize="medium" />
-                    <Typography sx={{ color: '#fff', fontFamily: '"Inter", sans-serif', fontWeight: 300 }}>
-                        Pickup Only - Two Locations
-                    </Typography>
-                </Box>
-                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
-                    <AccessTimeIcon fontSize="medium" />
-                    <Typography sx={{ color: '#fff', fontFamily: '"Inter", sans-serif', fontWeight: 300 }}>
-                        Ready in 20-30 mins
-                    </Typography>
-                </Box>
+                <Button variant="outlined" sx={commonButtonStyle}>SCARBOROUGH</Button>
+                <Button variant="outlined" sx={commonButtonStyle}>MARKHAM</Button>
             </Box>
 
-            {/* Buttons */}
-            <Box
-                sx={{
-                    display: 'flex',
-                    flexDirection: { xs: 'column', sm: 'row' },
-                    gap: 3,
-                    width: '100%',
-                    justifyContent: 'center'
-                }}
-            >
-                <Button
-                    variant="outlined"
-                    sx={commonButtonStyle}
-                >
-                    SCARBOROUGH
-                </Button>
-
-                <Button
-                    variant="outlined"
-                    sx={commonButtonStyle}
-                >
-                    MARKHAM
-                </Button>
+            <Box sx={{ display: 'flex', gap: 4, mt: 8, opacity: 0.4, justifyContent: { xs: 'center', md: 'flex-end' } }}>
+                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                    <StoreIcon sx={{ fontSize: 16, color: '#FF8C00' }} />
+                    <Typography variant="caption" sx={{ fontFamily: 'monospace', letterSpacing: '0.2em' }}>LOC_DUAL</Typography>
+                </Box>
+                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                    <AccessTimeIcon sx={{ fontSize: 16, color: '#FF8C00' }} />
+                    <Typography variant="caption" sx={{ fontFamily: 'monospace', letterSpacing: '0.2em' }}>EST_PREP: 25M</Typography>
+                </Box>
             </Box>
         </Box>
     );

@@ -10,7 +10,6 @@ import mainImage from "../../assets/images/restaurent.jpg";
 const MenuPreview: React.FC = () => {
     const theme = useTheme();
     const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
-    const isTablet = useMediaQuery(theme.breakpoints.down('md'));
 
     return (
         <Box
@@ -21,8 +20,8 @@ const MenuPreview: React.FC = () => {
                 display: 'flex',
                 flexDirection: 'column',
                 alignItems: 'center',
-                gap: { xs: '1.5rem', md: '2rem' },
-                padding: { xs: '4rem 1rem', md: '0rem 2rem' },
+                gap: { xs: '1rem', md: '2rem' },
+                padding: { xs: '3rem 1rem', md: '0rem 2rem' },
                 position: 'relative',
 
             }}
@@ -84,7 +83,7 @@ const MenuPreview: React.FC = () => {
                     flexDirection: { xs: 'column', md: 'row' },
                     alignItems: 'center',
                     justifyContent: 'center',
-                    gap: { xs: 4, md: 8 },
+                    gap: { xs: 2, md: 8 },
                 }}
             >
                 {/* Large Main Image */}

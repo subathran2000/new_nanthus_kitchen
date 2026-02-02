@@ -28,15 +28,15 @@ const Sparkles: React.FC = () => {
         };
     }, [mouseX, mouseY]);
 
-    // Generate static stars
-    const stars = Array.from({ length: 150 }).map((_, i) => ({
+    // Generate static stars - Doubled density as requested
+    const stars = Array.from({ length: 300 }).map((_, i) => ({
         id: i,
         x: Math.random() * 100, // percentage
         y: Math.random() * 100, // percentage
-        size: Math.random() * 3 + 1,
-        duration: Math.random() * 3 + 2,
-        delay: Math.random() * 2,
-        depth: Math.random() * 0.05 + 0.01,
+        size: Math.random() * 4 + 0.5, // More size variety
+        duration: Math.random() * 4 + 2,
+        delay: Math.random() * 3,
+        depth: Math.random() * 0.08 + 0.01, // More parallax depth variety
     }));
 
     return (

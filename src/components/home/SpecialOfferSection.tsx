@@ -1,186 +1,188 @@
-import React from 'react';
+﻿import React from 'react';
 import { Box, Typography, Button } from '@mui/material';
 import { commonButtonStyle } from '../common/ButtonStyles';
 import { motion } from 'framer-motion';
 import LocalOfferIcon from '@mui/icons-material/LocalOffer';
 
 // Import local images
-import specialImage from "../../assets/images/special_bg.png";
+import specialImage from '../../assets/images/special_bg.png';
 
 const SpecialOfferSection: React.FC = () => {
-    return (
+  return (
+    <Box
+      sx={{
+        width: '100%',
+        maxWidth: '1400px',
+        margin: '4rem auto 0',
+        position: 'relative',
+        minHeight: '80vh',
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        padding: { xs: '2rem', md: '0 80px' },
+      }}
+    >
       <Box
         sx={{
-          width: "100%",
-          maxWidth: "1400px",
-          margin: "2rem auto 4rem",
-          position: "relative",
-          minHeight: "70vh",
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "center",
-          padding: { xs: "2rem", md: "0" },
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: { xs: 'center', md: 'flex-start' },
+          textAlign: { xs: 'center', md: 'left' },
+          mb: { xs: 8, md: 10 },
+          position: 'relative',
         }}
       >
-        {/* Header Section (Centered) */}
-        <Box
+        <Typography
+          variant="overline"
           sx={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            mb: { xs: 6, md: 8 },
-            textAlign: "center",
+            color: '#FF8C00',
+            letterSpacing: '0.8em',
+            fontSize: '0.75rem',
+            display: 'block',
+            mb: 2,
+            fontWeight: 500,
+            fontFamily: "'Outfit', sans-serif",
           }}
         >
-          <Typography
-            variant="overline"
+          TEMPORARY COLLECTION
+        </Typography>
+
+        <Typography
+          variant="h2"
+          sx={{
+            fontFamily: "'Playfair Display', serif",
+            fontWeight: 700,
+            color: '#fff',
+            fontSize: { xs: '2.5rem', md: '4.5rem' },
+            letterSpacing: '0.05em',
+            lineHeight: 1.1,
+          }}
+        >
+          CHEF'S <span style={{ color: '#FF8C00', fontStyle: 'italic' }}>SELECT</span>
+        </Typography>
+
+        <Box sx={{ width: '60px', height: '1px', bgcolor: 'rgba(255,140,0,0.4)', mt: 3, mx: { xs: 'auto', md: 0 } }} />
+      </Box>
+
+      <Box
+        sx={{
+          display: 'flex',
+          flexDirection: { xs: 'column', md: 'row' },
+          alignItems: 'center',
+          gap: { xs: 4, md: 15 },
+          width: '100%',
+        }}
+      >
+        <Box
+          sx={{
+            position: 'relative',
+            width: { xs: '100%', md: '55%' },
+            height: { xs: '300px', sm: '400px', md: '650px' },
+            flexShrink: 0,
+          }}
+        >
+          <Box
             sx={{
-              color: "#FF8C00",
-              letterSpacing: "0.6em",
-              fontSize: "0.8rem",
-              display: "block",
-              mb: 2,
-              fontWeight: 400,
-            }}
-          >
-            LIMITED TIME
-          </Typography>
-          <Typography
-            variant="h2"
-            sx={{
-              fontFamily: '"Inter", sans-serif',
-              fontWeight: 300,
-              color: "#fff",
-              fontSize: { xs: "1.8rem", md: "3.5rem" },
-              letterSpacing: { xs: "0.2em", md: "0.3em" },
-              textTransform: "uppercase",
-              textShadow: "0 0 20px rgba(255, 255, 255, 0.1)",
-              lineHeight: 1.1,
-              "& span": {
-                color: "#FF8C00",
-                fontWeight: 600,
+              position: 'absolute',
+              inset: { xs: -10, md: -20 },
+              border: '1px solid rgba(255,140,0,0.15)',
+              borderRadius: '40px',
+              zIndex: 0,
+              '&::before': {
+                content: '""',
+                position: 'absolute',
+                inset: -1,
+                borderRadius: '40px',
+                padding: '1px',
+                background: 'linear-gradient(135deg, rgba(255,140,0,0.3), transparent, rgba(255,140,0,0.1))',
               },
             }}
-          >
-            Exclusive <span>Specials</span>
-          </Typography>
-          <div
-            style={{
-              width: "40px",
-              height: "1px",
-              background: "rgba(255, 140, 0, 0.3)",
-              marginTop: "2rem",
+          />
+
+          <Box
+            component={motion.div}
+            initial={{ opacity: 0, x: -30 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            transition={{ duration: 1.2 }}
+            sx={{
+              width: '100%',
+              height: '100%',
+              backgroundImage: `url(${specialImage})`,
+              backgroundSize: 'cover',
+              backgroundPosition: 'center',
+              borderRadius: '32px',
+              boxShadow: '0 50px 100px rgba(0,0,0,0.5)',
+              position: 'relative',
+              overflow: 'hidden',
+              zIndex: 1,
+              '&::after': {
+                content: '""',
+                position: 'absolute',
+                inset: 0,
+                background: 'linear-gradient(to bottom, transparent 60%, rgba(0,20,36,0.5))',
+              },
             }}
           />
         </Box>
 
-        {/* Content Section: Image Left, Text Right */}
-        <Box
-          sx={{
-            display: "flex",
-            flexDirection: { xs: "column", md: "row" },
-            alignItems: "center",
-            justifyContent: "center",
-            gap: { xs: 6, md: 10 },
-            width: "100%",
-            px: { xs: 2, md: 0 },
-          }}
-        >
-          {/* Left Side: Image & Frame */}
-          <Box
+        <Box sx={{
+          flex: 1,
+          textAlign: { xs: 'center', md: 'left' },
+          position: 'relative',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: { xs: 'center', md: 'flex-start' }
+        }}>
+          <Box sx={{ mb: 4, opacity: 0.08, display: { xs: 'none', md: 'block' } }}>
+            <Typography variant="h1" sx={{ fontSize: '12rem', fontFamily: "'Playfair Display', serif", fontWeight: 900, lineHeight: 0.8, ml: -6 }}>
+              01
+            </Typography>
+          </Box>
+
+          <Typography
+            variant="h3"
             sx={{
-              position: "relative",
-              width: { xs: "100%", md: "500px" },
-              height: { xs: "350px", md: "550px" },
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
+              color: '#fff',
+              fontSize: { xs: '1.8rem', md: '2.8rem' },
+              fontFamily: "'Playfair Display', serif",
+              fontWeight: 700,
+              mb: 4,
+              lineHeight: 1.2,
             }}
           >
-            {/* The Orange Offset Border Frame */}
-            <Box
-              sx={{
-                position: "absolute",
-                top: "20px",
-                left: "-20px",
-                width: "100%",
-                height: "100%",
-                border: "15px solid rgba(255, 255, 255, 0.05)",
-                zIndex: 1,
-                transform: "translate(-10px, 10px)",
-              }}
-            />
+            Fusion <span style={{ color: '#FF8C00' }}>Mastery</span><br />
+            In Every Plate
+          </Typography>
 
-            {/* Main Image */}
-            <Box
-              component={motion.div}
-              initial={{ opacity: 0, scale: 0.95 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 1 }}
-              sx={{
-                position: "relative",
-                zIndex: 2,
-                width: "100%",
-                height: "100%",
-                backgroundImage: `url(${specialImage})`,
-                backgroundSize: "cover",
-                backgroundPosition: "center",
-                boxShadow: "0 20px 40px rgba(0,0,0,0.6)",
-                filter: "brightness(0.9) contrast(110%)",
-                borderRadius: "4px",
-              }}
-            />
-          </Box>
-
-          {/* Right Side: Description & Button */}
-          <Box
-            sx={{ maxWidth: "500px", textAlign: { xs: "center", md: "left" } }}
+          <Typography
+            variant="body1"
+            sx={{
+              color: 'rgba(255, 255, 255, 0.6)',
+              fontSize: '1.1rem',
+              lineHeight: 1.9,
+              mb: 5,
+              fontWeight: 300,
+              fontFamily: '"Outfit", sans-serif',
+              maxWidth: '450px',
+              mx: { xs: 'auto', md: 0 }
+            }}
           >
-            <Typography
-              variant="h4"
-              sx={{
-                color: "#fff",
-                fontSize: { xs: "1.5rem", md: "2rem" },
-                fontFamily: '"Inter", sans-serif',
-                fontWeight: 700,
-                mb: 3,
-                lineHeight: 1.3,
-              }}
-            >
-              Unforgettable Flavors at
-              <br />
-              <span style={{ color: "#FF8C00" }}>Unbeatable Prices</span>
-            </Typography>
+            Our limited-time offerings represent the intersection of tradition and avant-garde technique.
+            Each dish is an ephemeral masterpiece, curated daily by our culinary team to surprise and delight the discerning palate.
+          </Typography>
 
-            <Typography
-              variant="body1"
-              sx={{
-                color: "rgba(255, 255, 255, 0.7)",
-                fontSize: "1rem",
-                lineHeight: 1.8,
-                mb: 4,
-                fontWeight: 300,
-                fontFamily: '"Inter", sans-serif',
-              }}
-            >
-              Dive into our chef's daily curated specials. From seasonal
-              delicacies to our signature Jaffna dishes, experience the pinnacle
-              of New Nanthu's Kitchen authentic flavors. These offers change
-              regularly to bring you the freshest tastes.
-            </Typography>
-
-            <Button
-              variant="outlined"
-              onClick={() => (window.location.href = "/special")}
-              startIcon={<LocalOfferIcon />}
-              sx={commonButtonStyle}
-            >
-              View Offerings
-            </Button>
-          </Box>
+          <Button
+            variant="outlined"
+            onClick={() => (window.location.href = '/special')}
+            startIcon={<LocalOfferIcon />}
+            sx={commonButtonStyle}
+          >
+            EXPERIENCE SPECIALS
+          </Button>
         </Box>
       </Box>
-    );
+    </Box>
+  );
 };
 
 export default SpecialOfferSection;

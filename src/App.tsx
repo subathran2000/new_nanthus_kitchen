@@ -2,7 +2,7 @@ import './App.css'
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Special from './components/special/Special'
 import About from './components/aboutUs/AboutUs'
-import Landing2 from '../src/components/home/landingPage-n'
+import Landing2 from './components/home/landingPage-static'
 import MenuNew from './components/menu/menuNew'
 import Sdmfnd from './components/menu/spiral'
 
