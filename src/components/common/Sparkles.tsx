@@ -42,13 +42,13 @@ const Sparkles: React.FC = () => {
     return (
         <div
             style={{
-                position: 'absolute',
+                position: 'fixed',
                 top: 0,
                 left: 0,
                 width: '100%',
                 height: '100%',
                 pointerEvents: 'none',
-                zIndex: 0,
+                zIndex: 5,
                 overflow: 'hidden',
             }}
         >
@@ -96,7 +96,7 @@ const Sparkles: React.FC = () => {
                     background: 'radial-gradient(circle, rgba(255,255,255,0.8) 0%, rgba(255,255,255,0.2) 50%, rgba(255,255,255,0) 70%)',
                     boxShadow: '0 0 20px rgba(255, 255, 255, 0.6)',
                     pointerEvents: 'none',
-                    zIndex: 9999,
+                    zIndex: 2005,
                     x: followerX,
                     y: followerY,
                     translateX: '-50%',

@@ -46,7 +46,7 @@ const LocationSelector: React.FC<LocationSelectorProps> = ({ open, onClose, onSe
                     timeout: 500,
                     sx: {
                         backdropFilter: 'blur(8px)',
-                        backgroundColor: 'rgba(0, 30, 54, 0.8)',
+                        backgroundColor: 'rgba(0, 0, 0, 0.8)',
                     }
                 }
             }}
@@ -62,7 +62,7 @@ const LocationSelector: React.FC<LocationSelectorProps> = ({ open, onClose, onSe
                         maxWidth: '1000px',
                         height: { xs: 'auto', md: '600px' },
                         maxHeight: { xs: '90vh', md: '600px' },
-                        bgcolor: 'rgba(0, 15, 27, 0.8)',
+                        bgcolor: 'rgba(0, 0, 0, 0.9)',
                         border: '1px solid rgba(255, 140, 0, 0.3)',
                         borderRadius: '20px',
                         boxShadow: '0 0 50px rgba(255, 140, 0, 0.2)',
@@ -118,7 +118,7 @@ const LocationSelector: React.FC<LocationSelectorProps> = ({ open, onClose, onSe
                                     content: '""',
                                     position: 'absolute',
                                     inset: 0,
-                                    background: 'linear-gradient(135deg, rgba(0, 15, 27, 0.95), rgba(0, 5, 10, 0.8))',
+                                    background: 'linear-gradient(135deg, rgba(0, 0, 0, 0.95), rgba(0, 0, 0, 0.8))',
                                 }
                             }}
                         />
@@ -164,7 +164,7 @@ const LocationSelector: React.FC<LocationSelectorProps> = ({ open, onClose, onSe
                             <Typography
                                 variant="body1"
                                 sx={{
-                                    color: '#aaccff',
+                                    color: 'rgba(255, 255, 255, 0.7)',
                                     lineHeight: 1.6,
                                     fontSize: '1rem',
                                     maxWidth: '300px',
@@ -185,7 +185,7 @@ const LocationSelector: React.FC<LocationSelectorProps> = ({ open, onClose, onSe
                             display: 'flex',
                             flexDirection: 'column',
                             justifyContent: 'center',
-                            bgcolor: 'rgba(0, 5, 15, 0.4)',
+                            bgcolor: 'rgba(0, 0, 0, 0.4)',
                             backdropFilter: 'blur(20px)',
                             borderLeft: { md: '1px solid rgba(255, 140, 0, 0.1)' }
                         }}
@@ -251,7 +251,7 @@ const LocationSelector: React.FC<LocationSelectorProps> = ({ open, onClose, onSe
 
                                         <Box sx={{ display: 'flex', alignItems: 'center', mb: 2, gap: 1, ml: 1 }}>
                                             <PhoneIcon sx={{ color: 'rgba(255, 140, 0, 0.6)', fontSize: '0.9rem' }} />
-                                            <Typography variant="body2" sx={{ color: 'rgba(170, 204, 255, 0.8)' }}>
+                                            <Typography variant="body2" sx={{ color: 'rgba(255, 255, 255, 0.6)' }}>
                                                 {location.phone}
                                             </Typography>
                                         </Box>

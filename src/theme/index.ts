@@ -15,9 +15,9 @@ export const colors = {
     contrastText: "#001e36",
   },
   background: {
-    default: "#001e36",
-    paper: "rgba(0, 30, 54, 0.95)",
-    light: "#002d50",
+    default: "#000000",
+    paper: "rgba(0, 0, 0, 0.95)",
+    light: "#1a1a1a",
   },
   text: {
     primary: "#ffffff",

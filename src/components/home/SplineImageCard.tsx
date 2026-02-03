@@ -11,9 +11,10 @@ interface SplineImageCardProps {
     mouseX?: number; // Optional normalized mouse X (-1 to 1)
     mouseY?: number; // Optional normalized mouse Y (-1 to 1)
     sx?: SxProps<Theme>;
+    onClick?: () => void;
 }
 
-const SplineImageCard: React.FC<SplineImageCardProps> = ({ src, alt, rotationX, rotationY, mouseX = 0, mouseY = 0, sx }) => {
+const SplineImageCard: React.FC<SplineImageCardProps> = ({ src, alt, rotationX, rotationY, mouseX = 0, mouseY = 0, sx, onClick }) => {
     const cardRef = useRef<HTMLDivElement>(null);
     const reflectionRef = useRef<HTMLDivElement>(null);
     const imageRef = useRef<HTMLImageElement>(null);
@@ -62,6 +63,7 @@ const SplineImageCard: React.FC<SplineImageCardProps> = ({ src, alt, rotationX, 
         >
             <Box
                 ref={cardRef}
+                onClick={onClick}
                 sx={{
                     width: '100%',
                     height: '100%',
@@ -72,6 +74,7 @@ const SplineImageCard: React.FC<SplineImageCardProps> = ({ src, alt, rotationX, 
                     transformStyle: 'preserve-3d',
                     background: '#000',
                     border: '1px solid rgba(255,255,255,0.1)',
+                    cursor: onClick ? 'pointer' : 'default',
                 }}
             >
                 {/* Main Image with Parallax */}

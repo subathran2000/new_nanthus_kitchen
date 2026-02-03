@@ -34,28 +34,18 @@ const SpecialOfferSection: React.FC = () => {
       >
         <Typography
           variant="overline"
-          sx={{
-            color: "#FF8C00",
-            letterSpacing: "0.4em",
-            fontSize: "0.75rem",
-            display: "block",
-            mb: 2,
-            fontWeight: 500,
-            fontFamily: "'Inter', sans-serif",
-          }}
+          className="overline-text"
         >
           TEMPORARY COLLECTION
         </Typography>
 
         <Typography
           variant="h2"
+          className="section-title"
           sx={{
-            fontFamily: "'Playfair Display', serif",
-            fontWeight: 700,
             color: "#fff",
-            fontSize: { xs: "2.5rem", md: "4.5rem" },
-            letterSpacing: "0.05em",
-            lineHeight: 1.1,
+            fontSize: { xs: "3rem", md: "5rem" },
+            lineHeight: 1,
           }}
         >
           CHEF'S{" "}
@@ -130,7 +120,7 @@ const SpecialOfferSection: React.FC = () => {
                 position: "absolute",
                 inset: 0,
                 background:
-                  "linear-gradient(to bottom, transparent 60%, rgba(0,20,36,0.5))",
+                  "linear-gradient(to bottom, transparent 60%, rgba(0,0,0,0.6))",
               },
             }}
           />

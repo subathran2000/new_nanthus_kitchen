@@ -130,8 +130,8 @@ const AboutCard: React.FC<{ item: AboutItem; index: number }> = ({
             height: "74px",
             borderRadius: "22px", // Squircle shape for elegance
             background: isEven
-              ? "linear-gradient(135deg, #001e36 0%, #003a5c 100%)"
-              : "linear-gradient(135deg, #001e36 0%, #2a1b0a 100%)",
+              ? "linear-gradient(135deg, #000000 0%, #1a1a1a 100%)"
+              : "linear-gradient(135deg, #000000 0%, #1a0a00 100%)",
             border: `2px solid ${isEven ? "rgba(0, 255, 255, 0.5)" : "rgba(255, 140, 0, 0.5)"}`,
             display: "flex",
             alignItems: "center",
@@ -222,29 +222,20 @@ const AboutUs: React.FC = () => {
       <Box sx={{ textAlign: 'center', mb: 8 }}>
         <Typography
           variant="overline"
-          sx={{
-            color: '#FF8C00',
-            letterSpacing: '0.6em',
-            mb: 2,
-            display: 'block',
-            fontSize: '0.75rem',
-            fontWeight: 500,
-            fontFamily: "'Outfit', sans-serif"
-          }}
+          className="overline-text"
+          sx={{ mb: 2 }}
         >
           THE STORY BEHIND
         </Typography>
         <Typography
           variant="h2"
+          className="section-title"
           sx={{
-            fontFamily: "'Playfair Display', serif",
-            fontWeight: 700,
             textTransform: 'uppercase',
-            letterSpacing: { xs: '0.1em', md: '0.15em' },
             color: '#fff',
-            fontSize: { xs: '2.5rem', md: '4rem' },
+            fontSize: { xs: '3rem', md: '5rem' },
             textShadow: '0 0 20px rgba(255, 255, 255, 0.1)',
-            lineHeight: 1.2,
+            lineHeight: 1,
             '& span': {
               color: '#FF8C00',
               fontWeight: 700,
@@ -255,11 +246,10 @@ const AboutUs: React.FC = () => {
         </Typography>
         <Box
           sx={{
-            width: '60px',
-            height: '4px',
-            background: 'linear-gradient(90deg, #FF8C00, transparent)',
-            margin: '2rem auto',
-            borderRadius: '2px'
+            width: '80px',
+            height: '1px',
+            background: 'rgba(255, 140, 0, 0.4)',
+            margin: '2.5rem auto',
           }}
         />
       </Box>

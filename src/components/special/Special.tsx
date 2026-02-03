@@ -196,7 +196,7 @@ const Coverflow3D: React.FC = () => {
                 minHeight: '100vh',
                 position: 'relative',
                 overflow: 'hidden',
-                bgcolor: '#001e36',
+                bgcolor: '#000000',
             }}
         >
             <Sparkles />
@@ -209,7 +209,7 @@ const Coverflow3D: React.FC = () => {
                     alignItems: 'center',
                     justifyContent: 'center',
                     position: 'relative',
-                    zIndex: 1,
+                    zIndex: 10,
                 }}
             >
                 {/* Home Button */}
@@ -332,7 +332,7 @@ const Coverflow3D: React.FC = () => {
                                         position: 'relative',
                                         overflow: 'hidden',
                                         transformStyle: 'preserve-3d',
-                                        bgcolor: '#001e36',
+                                        bgcolor: '#000000',
                                         border: index === currentIndex ? '2px solid rgba(255, 140, 0, 0.5)' : '2px solid rgba(255, 255, 255, 0.1)',
                                     }}
                                 >
@@ -376,7 +376,7 @@ const Coverflow3D: React.FC = () => {
                                             left: 0,
                                             width: '100%',
                                             height: '100%',
-                                            background: 'linear-gradient(to bottom, rgba(0, 30, 54, 0) 0%, rgba(0, 30, 54, 0.6) 50%, rgba(0, 30, 54, 1) 100%)',
+                                            background: 'linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.6) 50%, rgba(0, 0, 0, 1) 100%)',
                                         },
                                     }}
                                 />
@@ -514,7 +514,7 @@ const Coverflow3D: React.FC = () => {
                                 variant="body1"
                                 sx={{
                                     fontSize: { xs: '14px', sm: '16px', md: '18px' },
-                                    color: '#aaccff',
+                                    color: 'rgba(255, 255, 255, 0.7)',
                                     opacity: 0.9,
                                     textAlign: 'center',
                                     lineHeight: 1.6,

@@ -75,12 +75,21 @@ const SplineHero = () => {
       width: '100%',
       height: '100%',
       zIndex: -1,
-      pointerEvents: 'none'
+      pointerEvents: 'none',
+      overflow: 'hidden' // Ensure cropping
     }}>
-      <spline-viewer
-        url="https://prod.spline.design/GvZVVfvnVofKhkKr/scene.splinecode"
-        style={{ width: '100%', height: '100%' }}
-      />
+      <Box sx={{
+        width: '100%',
+        height: '110%', // Height overflow
+        position: 'absolute',
+        top: 0,
+        left: 0,
+      }}>
+        <spline-viewer
+          url="https://prod.spline.design/GvZVVfvnVofKhkKr/scene.splinecode"
+          style={{ width: '100%', height: '100%' }}
+        />
+      </Box>
     </Box>
   );
 }
@@ -108,6 +117,7 @@ const Section = ({ children, style, ...props }: SectionProps) => {
         padding: { xs: "0.8rem", sm: "2rem" },
         boxSizing: "border-box",
         position: "relative",
+        zIndex: 10,
         ...style,
       }}
     >
@@ -160,7 +170,7 @@ const Landpage = () => {
       style={{
         width: "100%",
         height: "100vh",
-        background: "#001e36",
+        background: "#000000",
         overflow: "hidden",
         position: "relative",
       }}
@@ -169,7 +179,6 @@ const Landpage = () => {
         open={specialsPopupOpen}
         onClose={() => setSpecialsPopupOpen(false)}
       />
-      <Sparkles />
       <DecorativePanel />
 
       {/* Brand Logo */}
@@ -213,7 +222,7 @@ const Landpage = () => {
         }}
         shadows
       >
-        <fog attach="fog" args={["#001e36", 5, 25]} />
+        <fog attach="fog" args={["#000000", 5, 25]} />
         <ScrollControls pages={isMobile ? 14.5 : 10.5} damping={0.15}>
           <ScrollSync scrollbarRef={scrollbarRef} />
           {/* Spline Animation in Hero Section */}
@@ -439,7 +448,7 @@ const Landpage = () => {
                       ml: { xs: 0, md: -15 },
                       mt: { xs: -5, md: 0 },
                       p: 6,
-                      bgcolor: "rgba(0,30,54,0.6)",
+                      bgcolor: "rgba(0,0,0,0.6)",
                       backdropFilter: "blur(30px)",
                       borderRadius: "24px",
                       border: "1px solid rgba(255,255,255,0.05)",
@@ -542,6 +551,7 @@ const Landpage = () => {
           window.location.href = "/menu";
         }}
       />
+      <Sparkles />
     </div>
   );
 };
@@ -554,7 +564,7 @@ const styles = `
   :root {
     --gold: #FF8C00;
     --cyan: #00ffff;
-    --navy: #001e36;
+    --navy: #000000;
   }
 
   .hero-title-wrapper {
@@ -635,7 +645,7 @@ const styles = `
 
   .dive-button {
     margin-top: 1.25rem;
-    background: rgba(0,30,54,0.3) !important;
+    background: rgba(0,0,0,0.3) !important;
     border: 1px solid rgba(0, 255, 255, 0.4) !important;
     color: var(--cyan) !important;
     padding: 1rem 3rem !important;

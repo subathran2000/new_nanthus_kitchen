@@ -2,10 +2,11 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./menuNew.css";
 import MenuSpiral from "./MenuSpiral";
-import { IconButton } from "@mui/material";
+import { IconButton, Box } from "@mui/material";
 import ArrowBack from "@mui/icons-material/ArrowBack";
 import HomeIcon from "@mui/icons-material/Home";
 import InteractiveMenu from "./InteractiveMenu";
+import Sparkles from "../common/Sparkles";
 
 const MenuNew = () => {
   const navigate = useNavigate();
@@ -39,41 +40,57 @@ const MenuNew = () => {
   };
 
   return (
-    <div className="menu-container">
-      {view === "gallery" ? (
-        <InteractiveMenu
-          onSelectCategory={handleClick}
-          onBack={() => navigate("/")}
-          onHome={() => navigate("/")}
-        />
-      ) : (
-        <>
-          <IconButton
-            onClick={() => setView("gallery")}
-            aria-label="Back to menu selection"
-            sx={{
-              ...buttonStyle,
-              left: { xs: "20px", md: "40px" },
-            }}
-          >
-            <ArrowBack />
-          </IconButton>
+    <Box
+      className="menu-container"
+      sx={{
+        position: 'relative',
+        minHeight: '100vh',
+        bgcolor: '#000000',
+        overflow: 'hidden'
+      }}
+    >
+      {/* Universal Sparkles Background */}
+      <Box sx={{ position: 'fixed', inset: 0, zIndex: 1, pointerEvents: 'none' }}>
+        <Sparkles />
+      </Box>
 
-          <IconButton
-            onClick={() => navigate("/")}
-            aria-label="Go to home page"
-            sx={{
-              ...buttonStyle,
-              right: { xs: "20px", md: "40px" },
-            }}
-          >
-            <HomeIcon />
-          </IconButton>
+      {/* Content Layer */}
+      <Box sx={{ position: 'relative', zIndex: 10 }}>
+        {view === "gallery" ? (
+          <InteractiveMenu
+            onSelectCategory={handleClick}
+            onBack={() => navigate("/")}
+            onHome={() => navigate("/")}
+          />
+        ) : (
+          <>
+            <IconButton
+              onClick={() => setView("gallery")}
+              aria-label="Back to menu selection"
+              sx={{
+                ...buttonStyle,
+                left: { xs: "20px", md: "40px" },
+              }}
+            >
+              <ArrowBack />
+            </IconButton>
 
-          <MenuSpiral activeCategory={activeCategory} />
-        </>
-      )}
-    </div>
+            <IconButton
+              onClick={() => navigate("/")}
+              aria-label="Go to home page"
+              sx={{
+                ...buttonStyle,
+                right: { xs: "20px", md: "40px" },
+              }}
+            >
+              <HomeIcon />
+            </IconButton>
+
+            <MenuSpiral activeCategory={activeCategory} />
+          </>
+        )}
+      </Box>
+    </Box>
   );
 };
 

@@ -35,28 +35,18 @@ const CateringSection: React.FC = () => {
       >
         <Typography
           variant="overline"
-          sx={{
-            color: '#FF8C00',
-            letterSpacing: '0.8em',
-            fontSize: '0.75rem',
-            fontWeight: 500,
-            fontFamily: "'Outfit', sans-serif",
-            mb: 2,
-            display: 'block',
-          }}
+          className="overline-text"
         >
           GLOBAL SERVICES
         </Typography>
 
         <Typography
           variant="h2"
+          className="section-title"
           sx={{
-            fontFamily: "'Playfair Display', serif",
-            fontWeight: 700,
             color: '#fff',
-            fontSize: { xs: '2.5rem', md: '4.5rem' },
-            letterSpacing: '0.05em',
-            lineHeight: 1.1,
+            fontSize: { xs: '3rem', md: '5rem' },
+            lineHeight: 1,
           }}
         >
           PREMIUM <span style={{ color: '#FF8C00', fontStyle: 'italic' }}>CATERING</span>
@@ -167,7 +157,7 @@ const CateringSection: React.FC = () => {
                 content: '""',
                 position: 'absolute',
                 inset: 0,
-                background: 'linear-gradient(to top, rgba(0,20,36,0.6), transparent)',
+                background: 'linear-gradient(to top, rgba(0,0,0,0.8), transparent)',
               },
             }}
           />
@@ -182,7 +172,7 @@ const CateringSection: React.FC = () => {
         PaperProps={{
           sx: {
             borderRadius: '20px',
-            background: 'rgba(0, 15, 27, 0.8)',
+            background: 'rgba(0, 0, 0, 0.9)',
             border: '1px solid rgba(255, 140, 0, 0.3)',
             boxShadow: '0 0 50px rgba(255, 140, 0, 0.2)',
             overflow: 'hidden',
@@ -192,7 +182,7 @@ const CateringSection: React.FC = () => {
         BackdropProps={{
           sx: {
             backdropFilter: 'blur(8px)',
-            backgroundColor: 'rgba(0, 30, 54, 0.8)',
+            backgroundColor: 'rgba(0, 0, 0, 0.9)',
           },
         }}
       >

@@ -8,8 +8,8 @@ import type { MealType } from "../../types";
 
 // Helper to get image for category
 const getCategoryImage = (type: string) => {
-  const match = menuData.find((cat) => cat.mealType.includes(type as MealType));
-  return match?.imageUrl || "";
+    const match = menuData.find((cat) => cat.mealType.includes(type as MealType));
+    return match?.imageUrl || "";
 };
 
 interface InteractiveMenuProps {
@@ -66,12 +66,12 @@ export default function InteractiveMenu({ onSelectCategory, onBack, onHome }: In
     };
 
     return (
-        <Box sx={{ position: 'relative', width: '100%', height: '100vh', bgcolor: '#001e36', overflow: 'hidden' }}>
+        <Box sx={{ position: 'relative', width: '100%', height: '100vh', bgcolor: 'transparent', overflow: 'hidden' }}>
 
             {/* Background Texture - simple gradient or noise could go here, keeping it clean dark navy as requested */}
             <Box sx={{
                 position: 'absolute', inset: 0,
-                background: 'radial-gradient(circle at 50% 50%, rgba(20, 50, 80, 0.5) 0%, #001e36 80%)'
+                background: 'transparent'
             }} />
 
             {/* Navigation Buttons */}
@@ -175,7 +175,7 @@ export default function InteractiveMenu({ onSelectCategory, onBack, onHome }: In
                             {/* Gradient Overlay */}
                             <Box sx={{
                                 position: 'absolute', inset: 0,
-                                background: 'linear-gradient(to top, rgba(0,30,54,1) 0%, rgba(0,30,54,0.6) 30%, rgba(0,30,54,0.3) 60%, transparent 100%)'
+                                background: 'linear-gradient(to top, rgba(0,0,0,1) 0%, rgba(0,0,0,0.7) 30%, rgba(0,0,0,0.4) 60%, transparent 100%)'
                             }} />
 
                             {/* Dynamic Accent Border (Bottom) */}

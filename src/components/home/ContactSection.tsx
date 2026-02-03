@@ -28,27 +28,17 @@ const ContactSection = () => {
             }}>
                 <Typography
                     variant="overline"
-                    sx={{
-                        color: '#FF8C00',
-                        letterSpacing: '0.8em',
-                        fontSize: '0.75rem',
-                        fontWeight: 500,
-                        fontFamily: "'Outfit', sans-serif",
-                        mb: 2,
-                        display: 'block'
-                    }}
+                    className="overline-text"
                 >
                     ESTABLISH CONTACT
                 </Typography>
                 <Typography
                     variant="h2"
+                    className="section-title"
                     sx={{
-                        fontFamily: "'Playfair Display', serif",
-                        fontWeight: 700,
                         color: '#fff',
-                        fontSize: { xs: '2.5rem', md: '4.5rem' },
-                        letterSpacing: '0.05em',
-                        lineHeight: 1.1,
+                        fontSize: { xs: '3rem', md: '5rem' },
+                        lineHeight: 1,
                     }}
                 >
                     SAY <span style={{ color: '#FF8C00', fontStyle: 'italic' }}>HELLO</span>
@@ -155,7 +145,7 @@ const ContactSection = () => {
                 PaperProps={{
                     sx: {
                         borderRadius: '0',
-                        background: 'rgba(0, 30, 54, 0.95)',
+                        background: 'rgba(0, 0, 0, 0.95)',
                         backdropFilter: 'blur(30px)',
                         border: '1px solid rgba(255, 140, 0, 0.1)',
                     }

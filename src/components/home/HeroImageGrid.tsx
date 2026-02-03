@@ -10,9 +10,10 @@ import imgSpecial from "../../assets/images/special_bg.png";
 
 interface HeroImageGridProps {
     variant?: 'desktop' | 'mobile-top' | 'mobile-bottom';
+    onSpecialsClick?: () => void;
 }
 
-const HeroImageGrid: React.FC<HeroImageGridProps> = ({ variant = 'desktop' }) => {
+const HeroImageGrid: React.FC<HeroImageGridProps> = ({ variant = 'desktop', onSpecialsClick }) => {
     const [rotation, setRotation] = useState({ x: 0, y: 0 });
     const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
 
@@ -148,6 +149,7 @@ const HeroImageGrid: React.FC<HeroImageGridProps> = ({ variant = 'desktop' }) =>
                             mouseX={mousePos.x}
                             mouseY={mousePos.y}
                             sx={{ width: '100%', height: '100%' }}
+                            onClick={img.alt === "Gourmet Experience" ? onSpecialsClick : undefined}
                         />
                     </Box>
                 ))}

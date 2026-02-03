@@ -11,7 +11,7 @@ interface SpecialsPopupProps {
 
 const SpecialsPopup: React.FC<SpecialsPopupProps> = ({ open, onClose }) => {
     const [currentItem, setCurrentItem] = useState(specialItems[0]);
-    
+
     return (
         <Modal
             open={open}
@@ -23,7 +23,7 @@ const SpecialsPopup: React.FC<SpecialsPopupProps> = ({ open, onClose }) => {
                     timeout: 500,
                     sx: {
                         backdropFilter: 'blur(8px)',
-                        backgroundColor: 'rgba(0, 30, 54, 0.8)',
+                        backgroundColor: 'rgba(0, 0, 0, 0.8)',
                     }
                 }
             }}
@@ -35,15 +35,16 @@ const SpecialsPopup: React.FC<SpecialsPopupProps> = ({ open, onClose }) => {
                         top: '50%',
                         left: '50%',
                         transform: 'translate(-50%, -50%)',
-                        width: { xs: '90%', sm: '800px', md: '1000px' },
-                        height: { xs: '80vh', md: '600px' },
-                        bgcolor: 'rgba(0, 15, 27, 0.8)',
+                        width: { xs: '95%', sm: '800px', md: '1000px' },
+                        height: { xs: 'auto', md: '600px' },
+                        maxHeight: { xs: '90vh', md: '600px' },
+                        bgcolor: 'rgba(0, 0, 0, 0.95)',
                         border: '1px solid rgba(255, 140, 0, 0.3)',
                         borderRadius: '20px',
                         boxShadow: '0 0 50px rgba(255, 140, 0, 0.2)',
                         p: 0,
                         outline: 'none',
-                        overflow: 'hidden',
+                        overflowY: 'auto',
                         display: 'flex',
                         flexDirection: { xs: 'column', md: 'row' }
                     }}
@@ -78,7 +79,13 @@ const SpecialsPopup: React.FC<SpecialsPopupProps> = ({ open, onClose }) => {
                             minHeight: { xs: '400px', md: 'auto' } // Height for mobile
                         }}
                     >
-                        <Box sx={{ width: '100%', height: '100%', maxWidth: '400px', maxHeight: '500px' }}>
+                        <Box sx={{
+                            width: '100%',
+                            height: { xs: '350px', md: '100%' },
+                            maxWidth: '400px',
+                            maxHeight: '500px',
+                            position: 'relative'
+                        }}>
                             <CardStack
                                 items={specialItems}
                                 onCenterCardChange={setCurrentItem}
@@ -95,7 +102,7 @@ const SpecialsPopup: React.FC<SpecialsPopupProps> = ({ open, onClose }) => {
                             flexDirection: 'column',
                             justifyContent: 'center',
                             alignItems: 'flex-start',
-                            background: 'linear-gradient(135deg, rgba(0, 15, 27, 0.95), rgba(0, 5, 10, 0.98))',
+                            background: 'linear-gradient(135deg, rgba(0, 0, 0, 0.95), rgba(10, 10, 10, 0.98))',
                             borderLeft: { md: '1px solid rgba(255, 140, 0, 0.1)' }
                         }}
                     >
@@ -130,7 +137,7 @@ const SpecialsPopup: React.FC<SpecialsPopupProps> = ({ open, onClose }) => {
                         <Typography
                             variant="body1"
                             sx={{
-                                color: '#aaccff',
+                                color: 'rgba(255, 255, 255, 0.7)',
                                 mb: 4,
                                 lineHeight: 1.6
                             }}
@@ -161,7 +168,7 @@ const SpecialsPopup: React.FC<SpecialsPopupProps> = ({ open, onClose }) => {
                                     }
                                 }}
                             >
-                                View All Specials <span style={{ marginLeft: '6px' }}>→</span>
+                                View All Specials
                             </Box>
                         </Box>
 

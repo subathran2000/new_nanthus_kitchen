@@ -15,6 +15,7 @@ import CreativeFooter from "../Footer/Footer"
 import TypewriterText from '../common/TypewriterText'
 import { commonButtonStyle } from '../common/ButtonStyles'
 import SpecialsPopup from './SpecialsPopup'
+import SplineBackground from '../common/SplineBackground'
 import HeroImageGrid from './HeroImageGrid'
 import Sparkles from '../common/Sparkles'
 import { CustomScrollbarUI } from '../common/CustomScrollbar'; // Import the specific scrollbar component
@@ -23,21 +24,27 @@ const Section: React.FC<{
   children: React.ReactNode;
   style?: React.CSSProperties;
   id?: string;
-  className?: string; // Add className prop
+  className?: string;
 }> = ({ children, style, id, className }) => (
   <Box
     id={id}
     className={className}
+    component={motion.section}
+    initial={{ opacity: 0, y: 50 }}
+    whileInView={{ opacity: 1, y: 0 }}
+    viewport={{ once: true, margin: "-100px" }}
+    transition={{ duration: 1, ease: [0.19, 1, 0.22, 1] }}
     sx={{
       minHeight: '100vh',
       width: '100%',
       position: 'relative',
+      zIndex: 10,
       display: 'flex',
       flexDirection: 'column',
       justifyContent: 'center',
       alignItems: 'center',
       overflow: 'hidden',
-      py: 10,
+      py: 12,
       ...style
     }}
   >
@@ -54,6 +61,14 @@ const LandingStatic: React.FC = () => {
   const [specialsPopupOpen, setSpecialsPopupOpen] = useState(false)
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const scrollbarRef = useRef<HTMLDivElement>(null); // Ref for custom scrollbar
+
+  // Automatically open specials after a short delay
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setSpecialsPopupOpen(true);
+    }, 3000);
+    return () => clearTimeout(timer);
+  }, []);
 
   // Animation variants
   const fadeInUp = {
@@ -97,7 +112,7 @@ const LandingStatic: React.FC = () => {
       sx={{
         width: "100%",
         minHeight: "100vh",
-        bgcolor: "#001e36",
+        bgcolor: "#000000",
         color: "#fff",
         overflowX: "hidden",
         position: "relative",
@@ -118,8 +133,11 @@ const LandingStatic: React.FC = () => {
         <CustomScrollbarUI ref={scrollbarRef} />
       </Box>
 
-      {/* Global Sparkles Background */}
-      <Sparkles />
+      {/* Full-viewport Spline background (fixed behind content) */}
+      <SplineBackground onSpecialsClick={() => setSpecialsPopupOpen(true)} />
+
+      <SplineBackground onSpecialsClick={() => setSpecialsPopupOpen(true)} />
+
       {/* Top bar with logo + order button */}
       <Box sx={{ position: "fixed", top: 20, left: 20, zIndex: 2000 }}>
         <Box
@@ -170,7 +188,10 @@ const LandingStatic: React.FC = () => {
             display: { xs: "none", md: "block" }, // HIDDEN on mobile
           }}
         >
-          <HeroImageGrid variant="desktop" />
+          <HeroImageGrid
+            variant="desktop"
+            onSpecialsClick={() => setSpecialsPopupOpen(true)}
+          />
         </Box>
 
         <Box
@@ -273,7 +294,10 @@ const LandingStatic: React.FC = () => {
                 mb: 2,
               }}
             >
-              <HeroImageGrid variant="mobile-bottom" />
+              <HeroImageGrid
+                variant="mobile-bottom"
+                onSpecialsClick={() => setSpecialsPopupOpen(true)}
+              />
             </Box>
 
             <Button
@@ -346,27 +370,22 @@ const LandingStatic: React.FC = () => {
               flexDirection: "column",
               alignItems: { xs: "center", md: "flex-start" },
               textAlign: { xs: "center", md: "left" },
-              mb: 6,
+              mb: 8,
             }}
           >
             <Typography
               variant="overline"
-              sx={{
-                color: "#FF8C00",
-                letterSpacing: "0.8em",
-                mb: 2,
-                display: "block",
-                fontSize: "0.75rem",
-              }}
+              className="overline-text"
             >
               CURATED FLAVORS
             </Typography>
             <Typography
               variant="h2"
+              className="section-title"
               sx={{
-                fontFamily: "'Playfair Display', serif",
-                fontWeight: 700,
-                fontSize: { xs: "2.5rem", md: "4.5rem" },
+                fontSize: { xs: "3rem", md: "5rem" },
+                color: "white",
+                lineHeight: 1,
               }}
             >
               THE MENU
@@ -383,24 +402,36 @@ const LandingStatic: React.FC = () => {
           >
             <Box
               sx={{
-                width: { xs: "100%", md: "70%" },
-                height: { xs: "350px", md: "600px" },
+                width: { xs: "100%", md: "75%" },
+                height: { xs: "400px", md: "650px" },
                 background: `url(${logoReflect}) center/cover`,
-                borderRadius: "32px",
-                boxShadow: "0 50px 100px rgba(0,30,54,0.2)",
+                borderRadius: "0px",
+                position: "relative",
+                "&::after": {
+                  content: '""',
+                  position: "absolute",
+                  top: 0,
+                  left: 0,
+                  width: "100%",
+                  height: "100%",
+                  background: "linear-gradient(to right, rgba(0,0,0,0.4), transparent)",
+                }
               }}
             />
             <Box
               sx={{
-                width: { xs: "90%", md: "450px" },
+                width: { xs: "95%", md: "480px" },
                 ml: { xs: 0, md: -15 },
-                mt: { xs: -5, md: 0 },
-                p: 6,
-                bgcolor: "rgba(0,30,54,0.6)",
-                backdropFilter: "blur(30px)",
-                borderRadius: "24px",
-                border: "1px solid rgba(255,255,255,0.05)",
+                mt: { xs: -8, md: 0 },
+                p: { xs: 4, md: 8 },
+                bgcolor: "rgba(0,0,0,0.7)",
+                backdropFilter: "blur(40px)",
+                WebkitBackdropFilter: "blur(40px)",
+                borderRadius: "0px",
+                border: "1px solid rgba(255,140,0,0.2)",
                 textAlign: "left",
+                zIndex: 2,
+                boxShadow: "0 40px 80px rgba(0,0,0,0.5)",
               }}
             >
               <Typography
@@ -409,20 +440,31 @@ const LandingStatic: React.FC = () => {
                   color: "#FF8C00",
                   mb: 3,
                   fontFamily: "'Playfair Display', serif",
+                  fontWeight: 700,
+                  fontSize: { xs: "1.75rem", md: "2.25rem" },
                 }}
               >
                 Gastronomy Redefined
               </Typography>
               <Typography
-                sx={{ color: "rgba(255,255,255,0.7)", mb: 4, lineHeight: 1.8 }}
+                sx={{
+                  color: "rgba(255,255,255,0.7)",
+                  mb: 5,
+                  lineHeight: 1.8,
+                  fontSize: "1.1rem",
+                  fontFamily: "'Outfit', sans-serif"
+                }}
               >
                 Discover a sensory experience where every dish tells a story of
-                tradition, innovation, and passion.
+                tradition, innovation, and passion. Crafting moments that linger.
               </Typography>
               <Button
                 variant="outlined"
                 onClick={() => (window.location.href = "/menu-new")}
-                sx={commonButtonStyle}
+                sx={{
+                  ...commonButtonStyle,
+                  width: { xs: "100%", md: "auto" }
+                }}
               >
                 View Full Menu
               </Button>
@@ -464,6 +506,7 @@ const LandingStatic: React.FC = () => {
         open={specialsPopupOpen}
         onClose={() => setSpecialsPopupOpen(false)}
       />
+      <Sparkles />
     </Box>
   );
 };
@@ -476,7 +519,7 @@ const styles = `
   :root {
     --gold: #FF8C00;
     --cyan: #00ffff;
-    --navy: #001e36;
+    --navy: #000000;
   }
 
   .accent-label {
@@ -529,7 +572,7 @@ const styles = `
 
   .dive-button {
     margin-top: 1.25rem;
-    background: rgba(0,30,54,0.3) !important;
+    background: rgba(0,0,0,0.3) !important;
     border: 1px solid rgba(0, 255, 255, 0.4) !important;
     color: var(--cyan) !important;
     padding: 1rem 3rem !important;
