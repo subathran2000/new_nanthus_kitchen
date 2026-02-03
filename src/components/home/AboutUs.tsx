@@ -145,13 +145,15 @@ const AboutCard: React.FC<{ item: AboutItem; index: number }> = ({
           }}
         >
           <Box sx={{ filter: "drop-shadow(0 0 8px rgba(255,255,255,0.4))" }}>
-            {React.cloneElement(item.icon as React.ReactElement, {
-              // @ts-ignore - MUI icon sx prop type issue
-              sx: {
-                fontSize: "2.5rem",
-                color: "#FF8C00",
+            {React.cloneElement(
+              item.icon as React.ReactElement<{ sx?: object }>,
+              {
+                sx: {
+                  fontSize: "2.5rem",
+                  color: "#FF8C00",
+                },
               },
-            })}
+            )}
           </Box>
         </Box>
 
@@ -164,7 +166,7 @@ const AboutCard: React.FC<{ item: AboutItem; index: number }> = ({
             mb: 2,
             fontSize: { xs: "1.25rem", md: "1.6rem" },
             letterSpacing: "0.01em",
-            textTransform: 'uppercase'
+            textTransform: "uppercase",
           }}
         >
           {item.title}

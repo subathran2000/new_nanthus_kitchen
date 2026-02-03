@@ -4,7 +4,7 @@ import { commonButtonStyle } from '../common/ButtonStyles'
 import PhoneIcon from '@mui/icons-material/Phone';
 import EmailIcon from '@mui/icons-material/Email';
 import CloseIcon from '@mui/icons-material/Close'
-import ContactForm from './ContactForm'
+import ContactForm from "./ContactFormRefactored";
 
 
 const ContactSection = () => {

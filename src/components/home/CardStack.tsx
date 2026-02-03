@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import type { PanInfo } from 'framer-motion';
 import { Box, IconButton } from '@mui/material';
 import { ChevronLeft, ChevronRight } from '@mui/icons-material';
-import type { SpecialItem } from '../../data/specialItems';
+import type { SpecialItem } from "../../types";
 
 interface CardStackProps {
     items: SpecialItem[];

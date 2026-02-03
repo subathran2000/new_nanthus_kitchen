@@ -12,32 +12,35 @@ const OrderButton: React.FC<OrderButtonProps> = ({ onClick }) => {
     <motion.div
       initial={{ opacity: 0, x: -100 }}
       animate={{ opacity: 1, x: 0 }}
-      transition={{ duration: 0.8, delay: 1, ease: 'easeOut' }}
+      transition={{ duration: 0.8, delay: 1, ease: "easeOut" }}
       style={{ zIndex: 1000 }}
     >
       <Button
         variant="contained"
         onClick={onClick}
-        startIcon={<ShoppingCartIcon />}
+        startIcon={<ShoppingCartIcon sx={{ fontSize: { xs: 16, md: 18 } }} />}
         sx={{
-          background: 'linear-gradient(90deg, #FF8C00, #F4511E)',
-          color: '#fff',
-          borderRadius: '50px',
-          px: { xs: 3, sm: 5 },
-          py: 1.5,
-          fontWeight: 'bold',
-          textTransform: 'uppercase',
-          fontSize: { xs: '0.75rem', md: '0.9rem' },
-          letterSpacing: '0.2em',
-          boxShadow: '0 5px 15px rgba(255, 140, 0, 0.3)',
-          '&:hover': {
-            filter: 'brightness(1.1)',
-            boxShadow: '0 8px 25px rgba(255, 140, 0, 0.4)',
-            transform: 'translateY(-2px)',
-            background: 'linear-gradient(90deg, #FF8C00, #F4511E)',
+          background: "linear-gradient(135deg, #FF8C00 0%, #FF6B00 100%)",
+          color: "#fff",
+          borderRadius: "4px",
+          px: { xs: 2.5, sm: 4 },
+          py: { xs: 1.25, md: 1.5 },
+          fontWeight: 600,
+          textTransform: "uppercase",
+          fontSize: { xs: "0.7rem", md: "0.8rem" },
+          letterSpacing: "0.15em",
+          boxShadow: "0 4px 20px rgba(255, 140, 0, 0.3)",
+          fontFamily: "'Inter', sans-serif",
+          border: "none",
+          "&:hover": {
+            background: "linear-gradient(135deg, #FFB84D 0%, #FF8C00 100%)",
+            boxShadow: "0 6px 30px rgba(255, 140, 0, 0.4)",
+            transform: "translateY(-2px)",
           },
-          transition: 'all 0.3s ease',
-          fontFamily: "'Outfit', sans-serif",
+          "&:active": {
+            transform: "translateY(0)",
+          },
+          transition: "all 0.3s ease",
         }}
       >
         Order Online

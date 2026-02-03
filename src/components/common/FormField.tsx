@@ -43,6 +43,16 @@ const FormField: React.FC<FormFieldProps> = ({
   sx = {},
   fullWidth = true,
 }) => {
+  // Merge styles properly for MUI
+  const mergedSx: SxProps<Theme> = {
+    ...(formInputStyle as object),
+    ...(sx as object),
+    "& .MuiFormHelperText-root": {
+      color: "#FF6B6B",
+      fontSize: "0.8rem",
+    },
+  };
+
   return (
     <TextField
       fullWidth={fullWidth}
@@ -58,27 +68,19 @@ const FormField: React.FC<FormFieldProps> = ({
       helperText={error}
       multiline={multiline}
       rows={rows}
-      InputProps={
-        icon
+      slotProps={{
+        input: icon
           ? {
               startAdornment: (
                 <InputAdornment position="start">{icon}</InputAdornment>
               ),
             }
-          : undefined
-      }
-      // @ts-ignore - MUI sx prop type inference issue
-      sx={{
-        ...formInputStyle,
-        ...sx,
-        "& .MuiFormHelperText-root": {
-          color: "#FF6B6B",
-          fontSize: "0.8rem",
-        },
+          : undefined,
       }}
+      sx={mergedSx}
       variant="outlined"
     />
   );
-};
+};;
 
 export default FormField;

@@ -6,8 +6,8 @@ import React, { useEffect, useRef, useCallback } from "react";
  */
 export const useInView = (
   options: IntersectionObserverInit = {},
-): [React.RefObject<HTMLDivElement>, boolean] => {
-  const ref = useRef<HTMLDivElement>(null);
+): readonly [React.RefObject<HTMLDivElement | null>, boolean] => {
+  const ref = useRef<HTMLDivElement | null>(null);
   const [isInView, setIsInView] = React.useState(false);
 
   useEffect(() => {
@@ -28,7 +28,6 @@ export const useInView = (
     return () => observer.disconnect();
   }, [options]);
 
-  // @ts-ignore - RefObject type inference issue
   return [ref, isInView] as const;
 };
 

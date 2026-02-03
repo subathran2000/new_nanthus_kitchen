@@ -93,101 +93,128 @@ const LandingStatic: React.FC = () => {
   }, []);
 
   return (
-    <Box sx={{ width: '100%', minHeight: '100vh', bgcolor: '#001e36', color: '#fff', overflowX: 'hidden', position: 'relative' }}>
-
+    <Box
+      sx={{
+        width: "100%",
+        minHeight: "100vh",
+        bgcolor: "#001e36",
+        color: "#fff",
+        overflowX: "hidden",
+        position: "relative",
+      }}
+    >
       {/* Custom Scrollbar Overlay - Fixed Position */}
-      <Box sx={{
-        position: 'fixed',
-        top: 0,
-        left: 0,
-        width: '100%',
-        height: '100%',
-        pointerEvents: 'none',
-        zIndex: 9999
-      }}>
+      <Box
+        sx={{
+          position: "fixed",
+          top: 0,
+          left: 0,
+          width: "100%",
+          height: "100%",
+          pointerEvents: "none",
+          zIndex: 9999,
+        }}
+      >
         <CustomScrollbarUI ref={scrollbarRef} />
       </Box>
 
       {/* Global Sparkles Background */}
       <Sparkles />
       {/* Top bar with logo + order button */}
-      <Box sx={{ position: 'fixed', top: 20, left: 20, zIndex: 2000 }}>
+      <Box sx={{ position: "fixed", top: 20, left: 20, zIndex: 2000 }}>
         <Box
           component="img"
           src={logo}
           alt="logo"
           sx={{
             width: { xs: 48, md: 85 },
-            cursor: 'pointer',
-            filter: 'drop-shadow(0 0 15px rgba(255, 140, 0, 0.2))',
-            transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
-            '&:hover': {
-              transform: 'scale(1.05)',
-              filter: 'drop-shadow(0 0 25px rgba(255, 140, 0, 0.4))',
-            }
+            cursor: "pointer",
+            filter: "drop-shadow(0 0 15px rgba(255, 140, 0, 0.2))",
+            transition: "all 0.4s cubic-bezier(0.16, 1, 0.3, 1)",
+            "&:hover": {
+              transform: "scale(1.05)",
+              filter: "drop-shadow(0 0 25px rgba(255, 140, 0, 0.4))",
+            },
           }}
-          onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+          onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
         />
       </Box>
 
-      <Box sx={{ position: 'fixed', top: 20, right: 30, zIndex: 2000 }}>
+      <Box sx={{ position: "fixed", top: 20, right: 30, zIndex: 2000 }}>
         <OrderButton onClick={() => setLocationSelectorOpen(true)} />
       </Box>
 
       {/* Hero Section */}
-      <Section style={{ height: '100vh', textAlign: 'left', display: 'flex', alignItems: 'center', overflow: 'visible' }}>
-
+      <Section
+        style={{
+          height: "100vh",
+          textAlign: "left",
+          display: "flex",
+          alignItems: "center",
+          overflow: "visible",
+        }}
+      >
         {/* DESKTOP ONLY: Synchronized 3D Background Grid - Right Cluster */}
-        <Box sx={{
-          position: 'absolute',
-          top: '50%',
-          right: 0,
-          transform: 'translateY(-50%)',
-          width: '850px',
-          height: '850px',
-          zIndex: 1,
-          opacity: 0.8,
-          pointerEvents: 'none',
-          overflow: 'visible',
-          display: { xs: 'none', md: 'block' } // HIDDEN on mobile
-        }}>
+        <Box
+          sx={{
+            position: "absolute",
+            top: "50%",
+            right: 0,
+            transform: "translateY(-50%)",
+            width: "850px",
+            height: "850px",
+            zIndex: 1,
+            opacity: 0.8,
+            pointerEvents: "none",
+            overflow: "visible",
+            display: { xs: "none", md: "block" }, // HIDDEN on mobile
+          }}
+        >
           <HeroImageGrid variant="desktop" />
         </Box>
 
-
-        <Box sx={{
-          display: 'flex',
-          flexDirection: { xs: 'column', md: 'row' },
-          alignItems: 'center',
-          justifyContent: 'flex-start',
-          width: '100%',
-          maxWidth: '1400px',
-          mx: 'auto',
-          px: { xs: 3, md: 10 },
-          pt: { xs: 10, md: 0 }, // Shift content down on mobile
-          position: 'relative',
-          zIndex: 10,
-          overflow: 'visible'
-        }}>
-
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: { xs: "column", md: "row" },
+            alignItems: "center",
+            justifyContent: "flex-start",
+            width: "100%",
+            maxWidth: "1400px",
+            mx: "auto",
+            px: { xs: 3, md: 10 },
+            pt: { xs: 10, md: 0 }, // Shift content down on mobile
+            position: "relative",
+            zIndex: 10,
+            overflow: "visible",
+          }}
+        >
           {/* Main Content Overlay */}
-          <Box sx={{
-            flex: 1,
-            alignItems: { xs: 'center', md: 'flex-start' },
-            textAlign: 'left',
-            display: 'flex',
-            flexDirection: 'column',
-            width: '100%'
-          }}>
-
-
-            <Box sx={{
-              display: 'flex',
-              flexDirection: 'column',
-              width: '100%',
-              alignItems: { xs: 'center', md: 'flex-start' }
-            }}>
-              <Box sx={{ alignSelf: 'flex-start', ml: { xs: '15%', md: 0 }, mb: { xs: -1, md: 0 } }}>
+          <Box
+            sx={{
+              flex: 1,
+              alignItems: { xs: "center", md: "flex-start" },
+              textAlign: "left",
+              display: "flex",
+              flexDirection: "column",
+              width: "100%",
+            }}
+          >
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                width: "100%",
+                alignItems: { xs: "center", md: "flex-start" },
+              }}
+            >
+              <Box
+                sx={{
+                  alignSelf: "flex-start",
+                  ml: { xs: "15%", md: 0 },
+                  mb: { xs: -1, md: 0 },
+                }}
+              >
                 <TypewriterText
                   text="New"
                   as="span"
@@ -198,23 +225,34 @@ const LandingStatic: React.FC = () => {
               </Box>
               <TypewriterText
                 text="NANTHU'S"
-                as="h2"
+                as="h6"
                 className="main-title"
                 delay={1.5}
                 stagger={0.1}
               />
             </Box>
 
-            <Box sx={{ width: '40px', height: '1px', background: 'rgba(255, 140, 0, 0.4)', mt: 3, mb: 1, alignSelf: { xs: 'center', md: 'flex-start' } }} />
+            <Box
+              sx={{
+                width: "40px",
+                height: "1px",
+                background: "rgba(255, 140, 0, 0.4)",
+                mt: 3,
+                mb: 1,
+                alignSelf: { xs: "center", md: "flex-start" },
+              }}
+            />
 
-            <Box sx={{
-              display: 'flex',
-              flexDirection: { xs: 'column', md: 'row' },
-              alignItems: { xs: 'center', md: 'flex-start' },
-              gap: 4,
-              width: '100%',
-              mt: 1
-            }}>
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: { xs: "column", md: "row" },
+                alignItems: { xs: "center", md: "flex-start" },
+                gap: 4,
+                width: "100%",
+                mt: 1,
+              }}
+            >
               <TypewriterText
                 text="THE ART OF KITCHEN"
                 as="p"
@@ -225,26 +263,31 @@ const LandingStatic: React.FC = () => {
             </Box>
 
             {/* MOBILE BOTTOM GRID (4 Images) - Below Subtitle, Before Actions */}
-            <Box sx={{
-              display: { xs: 'block', md: 'none' },
-              width: '100%',
-              height: '40vh', // Significant height for the bottom 4 images
-              position: 'relative',
-              mt: 2,
-              mb: 2
-            }}>
+            <Box
+              sx={{
+                display: { xs: "block", md: "none" },
+                width: "100%",
+                height: "40vh", // Significant height for the bottom 4 images
+                position: "relative",
+                mt: 2,
+                mb: 2,
+              }}
+            >
               <HeroImageGrid variant="mobile-bottom" />
             </Box>
 
             <Button
               className="dive-button"
               onClick={() => {
-                const menuSection = document.getElementById('menu-preview-section');
-                if (menuSection) menuSection.scrollIntoView({ behavior: 'smooth' });
+                const menuSection = document.getElementById(
+                  "menu-preview-section",
+                );
+                if (menuSection)
+                  menuSection.scrollIntoView({ behavior: "smooth" });
               }}
               sx={{
                 mt: 5,
-                ...commonButtonStyle
+                ...commonButtonStyle,
               }}
             >
               DIVE IN
@@ -254,11 +297,26 @@ const LandingStatic: React.FC = () => {
               initial={{ opacity: 0 }}
               animate={{ opacity: 0.3 }}
               transition={{ delay: 3, duration: 2 }}
-              style={{ marginTop: '8rem' }}
+              style={{ marginTop: "8rem" }}
             >
-              <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-                <Box sx={{ width: '1px', height: '60px', background: 'linear-gradient(to bottom, #FF8C00, transparent)' }} />
-                <Typography variant="caption" sx={{ letterSpacing: '0.4em', color: '#fff', textTransform: 'uppercase', fontSize: '10px' }}>
+              <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
+                <Box
+                  sx={{
+                    width: "1px",
+                    height: "60px",
+                    background:
+                      "linear-gradient(to bottom, #FF8C00, transparent)",
+                  }}
+                />
+                <Typography
+                  variant="caption"
+                  sx={{
+                    letterSpacing: "0.4em",
+                    color: "#fff",
+                    textTransform: "uppercase",
+                    fontSize: "10px",
+                  }}
+                >
                   Scroll to explore
                 </Typography>
               </Box>
@@ -274,44 +332,96 @@ const LandingStatic: React.FC = () => {
 
       {/* Menu preview */}
       <Section id="menu-preview-section" style={{ paddingTop: 0 }}>
-        <Box sx={{ width: '100%', maxWidth: 1200, mx: 'auto', px: { xs: 2, md: 0 } }}>
+        <Box
+          sx={{
+            width: "100%",
+            maxWidth: 1200,
+            mx: "auto",
+            px: { xs: 2, md: 0 },
+          }}
+        >
           <Box
             sx={{
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: { xs: 'center', md: 'flex-start' },
-              textAlign: { xs: 'center', md: 'left' },
-              mb: 6
+              display: "flex",
+              flexDirection: "column",
+              alignItems: { xs: "center", md: "flex-start" },
+              textAlign: { xs: "center", md: "left" },
+              mb: 6,
             }}
           >
-            <Typography variant="overline" sx={{ color: '#FF8C00', letterSpacing: '0.8em', mb: 2, display: 'block', fontSize: '0.75rem' }}>
+            <Typography
+              variant="overline"
+              sx={{
+                color: "#FF8C00",
+                letterSpacing: "0.8em",
+                mb: 2,
+                display: "block",
+                fontSize: "0.75rem",
+              }}
+            >
               CURATED FLAVORS
             </Typography>
-            <Typography variant="h2" sx={{ fontFamily: "'Playfair Display', serif", fontWeight: 700, fontSize: { xs: '2.5rem', md: '4.5rem' } }}>
+            <Typography
+              variant="h2"
+              sx={{
+                fontFamily: "'Playfair Display', serif",
+                fontWeight: 700,
+                fontSize: { xs: "2.5rem", md: "4.5rem" },
+              }}
+            >
               THE MENU
             </Typography>
           </Box>
 
-          <Box sx={{ position: 'relative', display: 'flex', flexDirection: { xs: 'column', md: 'row' }, alignItems: 'center' }}>
-            <Box sx={{ width: { xs: '100%', md: '70%' }, height: { xs: '350px', md: '600px' }, background: `url(${logoReflect}) center/cover`, borderRadius: '32px', boxShadow: '0 50px 100px rgba(0,30,54,0.2)' }} />
-            <Box sx={{
-              width: { xs: '90%', md: '450px' },
-              ml: { xs: 0, md: -15 },
-              mt: { xs: -5, md: 0 },
-              p: 6,
-              bgcolor: 'rgba(0,30,54,0.6)',
-              backdropFilter: 'blur(30px)',
-              borderRadius: '24px',
-              border: '1px solid rgba(255,255,255,0.05)',
-              textAlign: 'left'
-            }}>
-              <Typography variant="h4" sx={{ color: '#FF8C00', mb: 3, fontFamily: "'Playfair Display', serif" }}>Gastronomy Redefined</Typography>
-              <Typography sx={{ color: 'rgba(255,255,255,0.7)', mb: 4, lineHeight: 1.8 }}>
-                Discover a sensory experience where every dish tells a story of tradition, innovation, and passion.
+          <Box
+            sx={{
+              position: "relative",
+              display: "flex",
+              flexDirection: { xs: "column", md: "row" },
+              alignItems: "center",
+            }}
+          >
+            <Box
+              sx={{
+                width: { xs: "100%", md: "70%" },
+                height: { xs: "350px", md: "600px" },
+                background: `url(${logoReflect}) center/cover`,
+                borderRadius: "32px",
+                boxShadow: "0 50px 100px rgba(0,30,54,0.2)",
+              }}
+            />
+            <Box
+              sx={{
+                width: { xs: "90%", md: "450px" },
+                ml: { xs: 0, md: -15 },
+                mt: { xs: -5, md: 0 },
+                p: 6,
+                bgcolor: "rgba(0,30,54,0.6)",
+                backdropFilter: "blur(30px)",
+                borderRadius: "24px",
+                border: "1px solid rgba(255,255,255,0.05)",
+                textAlign: "left",
+              }}
+            >
+              <Typography
+                variant="h4"
+                sx={{
+                  color: "#FF8C00",
+                  mb: 3,
+                  fontFamily: "'Playfair Display', serif",
+                }}
+              >
+                Gastronomy Redefined
+              </Typography>
+              <Typography
+                sx={{ color: "rgba(255,255,255,0.7)", mb: 4, lineHeight: 1.8 }}
+              >
+                Discover a sensory experience where every dish tells a story of
+                tradition, innovation, and passion.
               </Typography>
               <Button
                 variant="outlined"
-                onClick={() => window.location.href = '/menu-new'}
+                onClick={() => (window.location.href = "/menu-new")}
                 sx={commonButtonStyle}
               >
                 View Full Menu
@@ -345,7 +455,10 @@ const LandingStatic: React.FC = () => {
       <LocationSelector
         open={locationSelectorOpen}
         onClose={() => setLocationSelectorOpen(false)}
-        onSelectLocation={() => { setLocationSelectorOpen(false); window.location.href = '/menu-new' }}
+        onSelectLocation={() => {
+          setLocationSelectorOpen(false);
+          window.location.href = "/menu-new";
+        }}
       />
       <SpecialsPopup
         open={specialsPopupOpen}

@@ -6,10 +6,11 @@ import type { SxProps, Theme } from "@mui/material";
  */
 export const formInputStyle: SxProps<Theme> = {
   "& .MuiOutlinedInput-root": {
-    borderRadius: "12px",
+    borderRadius: "8px",
     background: "rgba(255, 255, 255, 0.03)",
     transition: "all 0.3s ease",
     fontSize: "0.9rem",
+    fontFamily: "'Inter', sans-serif",
     "& fieldset": {
       borderColor: "rgba(255, 140, 0, 0.15)",
     },
@@ -27,6 +28,7 @@ export const formInputStyle: SxProps<Theme> = {
   "& .MuiInputLabel-root": {
     color: "rgba(255, 255, 255, 0.4)",
     fontSize: "0.85rem",
+    fontFamily: "'Inter', sans-serif",
     "&.Mui-focused": {
       color: "#FF8C00",
     },

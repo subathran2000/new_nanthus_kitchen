@@ -3,13 +3,13 @@ import { Box, Typography, IconButton, useTheme, useMediaQuery } from '@mui/mater
 import { motion } from 'framer-motion';
 import ArrowBack from '@mui/icons-material/ArrowBack';
 import HomeIcon from '@mui/icons-material/Home';
-import { menuData } from './spiral';
+import { menuData } from "../../data/menuData";
+import type { MealType } from "../../types";
 
 // Helper to get image for category
 const getCategoryImage = (type: string) => {
-    // Find first category/item that matches this mealType
-    const match = menuData.find(cat => cat.mealType.includes(type));
-    return match?.imageUrl || '';
+  const match = menuData.find((cat) => cat.mealType.includes(type as MealType));
+  return match?.imageUrl || "";
 };
 
 interface InteractiveMenuProps {

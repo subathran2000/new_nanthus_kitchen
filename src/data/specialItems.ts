@@ -1,93 +1,63 @@
-export interface SpecialItem {
-    src: string;
-    alt: string;
-    title: string;
-    description: string;
-}
+import type { SpecialItem } from "../types";
+
+// Import local images for better control
+import img1 from "../assets/images/restaurent.jpg";
+import img2 from "../assets/images/special_bg.png";
+import img3 from "../assets/images/bg4.jpg";
+import img4 from "../assets/images/background.jpg";
+import img5 from "../assets/images/bg2.jpg";
+import img6 from "../assets/images/blue-paint-brush-stroke-effect.jpg";
 
 export const specialItems: SpecialItem[] = [
-    {
-        src: 'https://i.pinimg.com/736x/29/af/f8/29aff8a83317d3eb09ecfbeb347688e2.jpg',
-        alt: 'Mountain Landscape',
-        title: 'Mountain Landscape',
-        description: 'Majestic peaks covered in snow during golden hour'
-    },
-    {
-        src: 'https://i.pinimg.com/736x/29/af/f8/29aff8a83317d3eb09ecfbeb347688e2.jpg',
-        alt: 'Forest Path',
-        title: 'Forest Path',
-        description: 'A winding trail through ancient woodland'
-    },
-    {
-        src: 'https://i.pinimg.com/736x/29/af/f8/29aff8a83317d3eb09ecfbeb347688e2.jpg',
-        alt: 'Lake Reflection',
-        title: 'Lake Reflection',
-        description: 'Serene waters mirroring the surrounding landscape'
-    },
-    {
-        src: 'https://i.pinimg.com/736x/29/af/f8/29aff8a83317d3eb09ecfbeb347688e2.jpg',
-        alt: 'Ocean Sunset',
-        title: 'Ocean Sunset',
-        description: 'Golden hour over endless ocean waves'
-    },
-    {
-        src: 'https://i.pinimg.com/736x/29/af/f8/29aff8a83317d3eb09ecfbeb347688e2.jpg',
-        alt: 'Desert Dunes',
-        title: 'Desert Dunes',
-        description: 'Rolling sand dunes under vast blue skies'
-    },
-    {
-        src: 'https://i.pinimg.com/736x/29/af/f8/29aff8a83317d3eb09ecfbeb347688e2.jpg',
-        alt: 'Starry Night',
-        title: 'Starry Night',
-        description: 'Countless stars illuminating the dark sky'
-    },
-    {
-        src: 'https://i.pinimg.com/736x/29/af/f8/29aff8a83317d3eb09ecfbeb347688e2.jpg',
-        alt: 'Waterfall',
-        title: 'Waterfall',
-        description: 'Cascading water through lush green forest'
-    },
-    {
-        src: 'https://i.pinimg.com/736x/29/af/f8/29aff8a83317d3eb09ecfbeb347688e2.jpg',
-        alt: 'Mountain Landscape',
-        title: 'Mountain Landscape',
-        description: 'Majestic peaks covered in snow during golden hour'
-    },
-    {
-        src: 'https://i.pinimg.com/736x/29/af/f8/29aff8a83317d3eb09ecfbeb347688e2.jpg',
-        alt: 'Forest Path',
-        title: 'Forest Path',
-        description: 'A winding trail through ancient woodland'
-    },
-    {
-        src: 'https://i.pinimg.com/736x/29/af/f8/29aff8a83317d3eb09ecfbeb347688e2.jpg',
-        alt: 'Lake Reflection',
-        title: 'Lake Reflection',
-        description: 'Serene waters mirroring the surrounding landscape'
-    },
-    {
-        src: 'https://i.pinimg.com/736x/29/af/f8/29aff8a83317d3eb09ecfbeb347688e2.jpg',
-        alt: 'Ocean Sunset',
-        title: 'Ocean Sunset',
-        description: 'Golden hour over endless ocean waves'
-    },
-    {
-        src: 'https://i.pinimg.com/736x/29/af/f8/29aff8a83317d3eb09ecfbeb347688e2.jpg',
-        alt: 'Desert Dunes',
-        title: 'Desert Dunes',
-        description: 'Rolling sand dunes under vast blue skies'
-    },
-    {
-        src: 'https://i.pinimg.com/736x/29/af/f8/29aff8a83317d3eb09ecfbeb347688e2.jpg',
-        alt: 'Starry Night',
-        title: 'Starry Night',
-        description: 'Countless stars illuminating the dark sky'
-    },
-    {
-        src: 'https://i.pinimg.com/736x/29/af/f8/29aff8a83317d3eb09ecfbeb347688e2.jpg',
-        alt: 'Waterfall',
-        title: 'Waterfall',
-        description: 'Cascading water through lush green forest'
-    }
+  {
+    src: img1,
+    alt: "Nanthu's Special Biryani",
+    title: "Nanthu's Special Biryani",
+    description:
+      "Aromatic basmati rice layered with tender meat and secret spices",
+    price: "$18",
+  },
+  {
+    src: img2,
+    alt: "Jaffna Crab Curry",
+    title: "Jaffna Crab Curry",
+    description:
+      "Fresh crab in authentic Jaffna-style curry with aromatic spices",
+    price: "$25",
+  },
+  {
+    src: img3,
+    alt: "Lamb Chops Special",
+    title: "Lamb Chops Special",
+    description: "Succulent grilled lamb chops with mint chutney",
+    price: "$22",
+  },
+  {
+    src: img4,
+    alt: "Seafood Kothu",
+    title: "Seafood Kothu",
+    description: "Mixed seafood with shredded roti and vegetables",
+    price: "$16",
+  },
+  {
+    src: img5,
+    alt: "Butter Chicken",
+    title: "Butter Chicken",
+    description: "Creamy tomato-based curry with tender chicken",
+    price: "$16",
+  },
+  {
+    src: img6,
+    alt: "Chef's Tasting Platter",
+    title: "Chef's Tasting Platter",
+    description: "A curated selection of our signature dishes",
+    price: "$35",
+  },
+  {
+    src: img1,
+    alt: "Mutton Kothu",
+    title: "Mutton Kothu",
+    description: "Rich and flavorful mutton with chopped roti",
+    price: "$15",
+  },
 ];

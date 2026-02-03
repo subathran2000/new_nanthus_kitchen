@@ -1,3 +1,6 @@
+import type { MainCategory } from "../types";
+
+// Menu images
 import img1 from "../assets/images/restaurent.jpg";
 import img2 from "../assets/images/special_bg.png";
 import img3 from "../assets/images/bg4.jpg";
@@ -5,33 +8,8 @@ import img4 from "../assets/images/background.jpg";
 import img5 from "../assets/images/bg2.jpg";
 import img6 from "../assets/images/blue-paint-brush-stroke-effect.jpg";
 
-export interface ItemOption {
-  label: string;
-  price: string;
-}
-
-export interface FoodItem {
-  id: number;
-  name: string;
-  description: string;
-  price: string;
-  imageUrl: string;
-  options?: ItemOption[];
-  popular?: boolean;
-}
-
-export interface SubCategory {
-  title: string;
-  items: FoodItem[];
-}
-
-export interface MainCategory {
-  id: number;
-  title: string;
-  imageUrl: string;
-  mealType: string[];
-  subCategories: SubCategory[];
-}
+// Re-export types for convenience
+export type { ItemOption, FoodItem, SubCategory, MainCategory } from "../types";
 
 export const menuData: MainCategory[] = [
   {

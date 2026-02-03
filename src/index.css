@@ -24,8 +24,9 @@ body {
     background-color: var(--navy);
     color: white;
     overflow-x: hidden;
-    scrollbar-width: none;
-    -ms-overflow-style: none;
+    /* Hide scrollbar for all browsers */
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE and Edge */
 }
 
 /* Cinematic Noise Overlay */
@@ -57,6 +58,7 @@ code {
 
 .luxury-glass {
     background: var(--glass);
+    -webkit-backdrop-filter: blur(20px);
     backdrop-filter: blur(20px);
     border: 1px solid var(--glass-border);
     box-shadow: var(--masterpiece-shadow);

@@ -3,7 +3,7 @@ import { Box, Typography, Button, Dialog, IconButton, DialogContent } from '@mui
 import CloseIcon from '@mui/icons-material/Close';
 import { motion } from 'framer-motion';
 import { commonButtonStyle } from '../common/ButtonStyles';
-import CateringForm from './CateringForm';
+import CateringForm from "./CateringFormRefactored";
 import cateringImage from '../../assets/images/bg2.jpg';
 
 const CateringSection: React.FC = () => {

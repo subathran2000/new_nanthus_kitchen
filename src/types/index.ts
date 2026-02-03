@@ -1,15 +1,52 @@
 import type { ReactNode } from "react";
 
+// ============================================
+// MENU DATA TYPES (Single Source of Truth)
+// ============================================
+
 /**
- * Props for FloatingCrystal 3D component
+ * Item option for menu items with variants (e.g., size, cooking style)
  */
-export interface FloatingCrystalProps {
-  position: [number, number, number];
-  color: string;
-  speed: number;
-  rotationSpeed: number;
-  scale: number;
+export interface ItemOption {
+  label: string;
+  price: string;
 }
+
+/**
+ * Individual food item in menu
+ */
+export interface FoodItem {
+  id: number;
+  name: string;
+  description: string;
+  price: string;
+  imageUrl: string;
+  options?: ItemOption[];
+  popular?: boolean;
+}
+
+/**
+ * Sub-category within a main menu category
+ */
+export interface SubCategory {
+  title: string;
+  items: FoodItem[];
+}
+
+/**
+ * Main menu category (e.g., Kothu, Biryani, Grilled)
+ */
+export interface MainCategory {
+  id: number;
+  title: string;
+  imageUrl: string;
+  mealType: MealType[];
+  subCategories: SubCategory[];
+}
+
+// ============================================
+// COMPONENT PROPS
+// ============================================
 
 /**
  * Props for Section component
@@ -17,8 +54,13 @@ export interface FloatingCrystalProps {
 export interface SectionProps {
   children: ReactNode;
   style?: React.CSSProperties;
-  [key: string]: any; // Allow other MUI Box props
+  id?: string;
+  className?: string;
 }
+
+// ============================================
+// FORM TYPES
+// ============================================
 
 /**
  * Contact form data interface
@@ -61,21 +103,25 @@ export const EventType = {
   OTHER: "other",
 } as const;
 
-export type EventType = (typeof EventType)[keyof typeof EventType];
+export type EventTypeValue = (typeof EventType)[keyof typeof EventType];
 
 /**
  * Menu category type
  */
 export type MealType = "Lunch" | "Dinner" | "Breakfast" | "Dessert";
 
+// ============================================
+// SPECIAL ITEMS
+// ============================================
+
 /**
- * Special item data
+ * Special item data for specials carousel
  */
 export interface SpecialItem {
-  id: number;
+  src: string;
+  alt: string;
   title: string;
   description: string;
-  image: string;
   price?: string;
 }
 
