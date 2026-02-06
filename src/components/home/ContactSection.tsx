@@ -158,7 +158,14 @@ const ContactSection = () => {
                             position: 'absolute',
                             right: 20,
                             top: 20,
+                            zIndex: 100,
                             color: '#FF8C00',
+                            bgcolor: 'rgba(255,140,0,0.1)',
+                            '&:hover': {
+                                bgcolor: 'rgba(255,140,0,0.2)',
+                                transform: 'rotate(90deg)'
+                            },
+                            transition: 'all 0.3s ease',
                         }}
                     >
                         <CloseIcon />

@@ -66,7 +66,7 @@ export default function InteractiveMenu({ onSelectCategory, onBack, onHome }: In
     };
 
     return (
-        <Box sx={{ position: 'relative', width: '100%', height: '100vh', bgcolor: 'transparent', overflow: 'hidden' }}>
+        <Box sx={{ position: 'relative', width: '100%', height: '100vh', bgcolor: '#001e36', overflow: 'hidden' }}>
 
             {/* Background Texture - simple gradient or noise could go here, keeping it clean dark navy as requested */}
             <Box sx={{

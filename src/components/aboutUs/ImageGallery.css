@@ -9,7 +9,7 @@
     grid-gap: 0.5em;
     padding: 0.5em;
     overflow: hidden;
-    background: linear-gradient(135deg, rgba(10, 15, 20, 0.9), rgba(15, 20, 30, 0.85));
+    background: linear-gradient(135deg, rgba(0, 20, 40, 0.9), rgba(0, 10, 20, 0.85));
     backdrop-filter: blur(35px);
     -webkit-backdrop-filter: blur(35px);
     border-radius: 20px;
@@ -280,9 +280,9 @@ video.gallery__image {
     justify-content: center;
     padding: clamp(1rem, 3vw, 2.5rem);
     background: linear-gradient(135deg,
-            rgba(217, 167, 86, 0.15) 0%,
-            rgba(10, 15, 20, 0.9) 50%,
-            rgba(0, 255, 255, 0.1) 100%);
+            rgba(255, 140, 0, 0.05) 0%,
+            rgba(0, 20, 40, 0.9) 50%,
+            rgba(0, 255, 255, 0.05) 100%);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
     border-radius: 8px;
@@ -380,16 +380,8 @@ video.gallery__image {
 /* Enhanced hover effect for text cards */
 .gallery__image-wrapper:hover .text-content-card {
     background: linear-gradient(135deg,
-            rgba(217, 167, 86, 0.25) 0%,
-            rgba(10, 15, 20, 0.95) 50%,
-            rgba(0, 255, 255, 0.2) 100%);
-}
-
-/* Selected state for text cards */
-.gallery__image-wrapper--selected .text-content-card {
-    background: linear-gradient(135deg,
             rgba(217, 167, 86, 0.3) 0%,
-            rgba(10, 15, 20, 0.95) 50%,
+            rgba(0, 20, 40, 0.95) 50%,
             rgba(0, 255, 255, 0.25) 100%);
 }
 

@@ -1,252 +1,353 @@
-import React, { useState, useCallback, memo } from "react";
+import React, { useState } from 'react';
 import {
-  Box,
-  Typography,
-  Button,
-  useTheme,
-  useMediaQuery,
-} from "@mui/material";
-import { motion, AnimatePresence } from "framer-motion";
-import PersonIcon from "@mui/icons-material/Person";
-import EmailIcon from "@mui/icons-material/Email";
-import SubjectIcon from "@mui/icons-material/Subject";
-import NoteIcon from "@mui/icons-material/Note";
+    Box,
+    Typography,
+    TextField,
+    Button,
+    InputAdornment,
+} from '@mui/material';
+import { motion, AnimatePresence } from 'framer-motion';
+import PersonIcon from '@mui/icons-material/Person';
+import EmailIcon from '@mui/icons-material/Email';
+import SubjectIcon from '@mui/icons-material/Subject';
+import NoteIcon from '@mui/icons-material/Note';
+import EmailOutlinedIcon from '@mui/icons-material/EmailOutlined';
 
-import FormField from "../common/FormField";
-import {
-  formContainerStyle,
-  formLeftColumnStyle,
-  formRightColumnStyle,
-  formTitleStyle,
-  formDescriptionStyle,
-  formButtonStyle,
-  successMessageStyle,
-} from "../common/FormStyles";
-import {
-  FormStatus as FormStatusConst,
-  type FormStatusType,
-} from "../../types";
-import type { ContactFormData } from "../../types";
-import { validateContactForm } from "../../utils/validation";
-
-// Import background image
+// Import local images
 import contactBg from "../../assets/images/Navy Blue Wallpaper.jpg";
 
-interface ContactFormProps {
-  onSubmitCallback?: (data: ContactFormData) => void | Promise<void>;
-}
+const ContactForm = () => {
+    const [formData, setFormData] = useState({
+        name: '',
+        email: '',
+        subject: '',
+        message: '',
+    });
 
-const ContactForm = memo(({ onSubmitCallback }: ContactFormProps) => {
-  const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down("md"));
+    const [submitted, setSubmitted] = useState(false);
 
-  const [formData, setFormData] = useState<ContactFormData>({
-    name: "",
-    email: "",
-    subject: "",
-    message: "",
-  });
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setFormData({ ...formData, [e.target.name]: e.target.value });
+    };
 
-  const [errors, setErrors] = useState<Record<string, string>>({});
-  const [status, setStatus] = useState<FormStatusType>(FormStatusConst.IDLE);
+    const handleSubmit = (e: React.FormEvent) => {
+        e.preventDefault();
+        setSubmitted(true);
+        setTimeout(() => setSubmitted(false), 5000);
+    };
 
-  const handleChange = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      const { name, value } = e.target;
-      setFormData((prev) => ({ ...prev, [name]: value }));
-      // Clear error for this field when user starts typing
-      if (errors[name]) {
-        setErrors((prev) => {
-          const newErrors = { ...prev };
-          delete newErrors[name];
-          return newErrors;
-        });
-      }
-    },
-    [errors],
-  );
-
-  const handleSubmit = useCallback(
-    async (e: React.FormEvent) => {
-      e.preventDefault();
-
-      // Validate form
-      const validation = validateContactForm(formData);
-      if (!validation.isValid) {
-        setErrors(validation.errors);
-        return;
-      }
-
-      setStatus(FormStatusConst.LOADING);
-      setErrors({});
-
-      try {
-        // Call optional callback if provided
-        if (onSubmitCallback) {
-          await onSubmitCallback(formData);
-        } else {
-          // TODO: Implement API call to backend
-          // await fetch('/api/contact', { method: 'POST', body: JSON.stringify(formData) });
+    /* 🌿 Specials-Style Input Style */
+    const inputStyle = {
+        '& .MuiOutlinedInput-root': {
+            borderRadius: '12px',
+            background: 'rgba(255, 255, 255, 0.03)',
+            transition: 'all 0.3s ease',
+            fontSize: '0.9rem',
+            '& fieldset': {
+                borderColor: 'rgba(255, 140, 0, 0.15)',
+            },
+            '&:hover fieldset': {
+                borderColor: 'rgba(255, 140, 0, 0.4)',
+            },
+            '&.Mui-focused fieldset': {
+                borderColor: '#FF8C00',
+            },
+            '& input': {
+                color: '#fff',
+                padding: '12px 14px',
+            },
+        },
+        '& .MuiInputLabel-root': {
+            color: 'rgba(255, 255, 255, 0.4)',
+            fontSize: '0.85rem',
+            '&.Mui-focused': {
+                color: '#FF8C00',
+            },
+        },
+        '& .MuiInputAdornment-root svg': {
+            color: 'rgba(255, 140, 0, 0.4)',
+        },
+        '& .Mui-focused .MuiInputAdornment-root svg': {
+            color: '#FF8C00',
         }
+    };
 
-        setStatus(FormStatusConst.SUCCESS);
-        setFormData({ name: "", email: "", subject: "", message: "" });
-
-        // Reset status after 5 seconds
-        setTimeout(() => setStatus(FormStatusConst.IDLE), 5000);
-      } catch (error) {
-        setStatus(FormStatusConst.ERROR);
-        setErrors({ submit: "Failed to submit form. Please try again." });
-      }
-    },
-    [formData, onSubmitCallback],
-  );
-
-  return (
-    <Box sx={formContainerStyle}>
-      {/* Left Column: Visual/Branding */}
-      {!isMobile && (
-        <Box sx={formLeftColumnStyle}>
-          <Box
+    return (
+        <Box
             sx={{
-              position: "absolute",
-              top: 0,
-              left: 0,
-              width: "100%",
-              height: "100%",
-              backgroundImage: `url(${contactBg})`,
-              backgroundSize: "cover",
-              backgroundPosition: "center",
-              opacity: 0.4,
-              zIndex: 0,
+                width: '100%',
+                height: '100%',
+                display: 'flex',
+                flexDirection: { xs: 'column', md: 'row' },
+                bgcolor: 'transparent',
             }}
-          />
-
-          <Box sx={{ position: "relative", zIndex: 1 }}>
-            <Typography
-              sx={{
-                fontSize: { xs: "2rem", md: "2.8rem" },
-                fontWeight: 300,
-                mb: 2,
-                background: "linear-gradient(135deg, #FF8C00, #FFB84D)",
-                WebkitBackgroundClip: "text",
-                WebkitTextFillColor: "transparent",
-              }}
+        >
+            {/* Left Column: Visual/Branding (Specials Style) */}
+            <Box
+                sx={{
+                    flex: 1,
+                    p: { xs: 4, md: 6 },
+                    position: 'relative',
+                    display: { xs: 'none', md: 'flex' },
+                    flexDirection: 'column',
+                    justifyContent: 'center',
+                    alignItems: 'flex-start',
+                    overflow: 'hidden',
+                    minHeight: { xs: '250px', md: 'auto' }
+                }}
             >
-              Get In Touch
-            </Typography>
-            <Typography
-              sx={{
-                fontSize: { xs: "0.95rem", md: "1.1rem" },
-                color: "rgba(255, 255, 255, 0.7)",
-                lineHeight: 1.7,
-              }}
-            >
-              Have questions? We'd love to hear from you. Send us a message and
-              we'll respond as soon as possible.
-            </Typography>
-          </Box>
-        </Box>
-      )}
+                {/* Background Image with Overlay */}
+                <Box
+                    sx={{
+                        position: 'absolute',
+                        inset: 0,
+                        backgroundImage: `url("${contactBg}")`,
+                        backgroundSize: 'cover',
+                        backgroundPosition: 'center',
+                        zIndex: 0,
+                        '&::after': {
+                            content: '""',
+                            position: 'absolute',
+                            inset: 0,
+                            background: 'linear-gradient(135deg, rgba(0, 15, 27, 0.9), rgba(0, 5, 10, 0.7))',
+                        }
+                    }}
+                />
 
-      {/* Right Column: Form */}
-      <Box sx={formRightColumnStyle}>
-        <Typography sx={formTitleStyle}>Contact Us</Typography>
-        <Typography sx={formDescriptionStyle}>
-          Fill out the form below and we'll get back to you shortly.
-        </Typography>
-
-        <form onSubmit={handleSubmit}>
-          <Box sx={{ display: "flex", flexDirection: "column", gap: 2.5 }}>
-            <FormField
-              name="name"
-              label="Full Name"
-              value={formData.name}
-              onChange={handleChange}
-              icon={<PersonIcon />}
-              error={errors.name}
-              placeholder="John Doe"
-              required
-            />
-
-            <FormField
-              name="email"
-              label="Email Address"
-              value={formData.email}
-              onChange={handleChange}
-              icon={<EmailIcon />}
-              error={errors.email}
-              type="email"
-              placeholder="your@email.com"
-              required
-            />
-
-            <FormField
-              name="subject"
-              label="Subject"
-              value={formData.subject}
-              onChange={handleChange}
-              icon={<SubjectIcon />}
-              error={errors.subject}
-              placeholder="What is this about?"
-              required
-            />
-
-            <FormField
-              name="message"
-              label="Message"
-              value={formData.message}
-              onChange={handleChange}
-              icon={<NoteIcon />}
-              error={errors.message}
-              placeholder="Tell us more..."
-              multiline
-              rows={4}
-              required
-            />
-
-            {errors.submit && (
-              <Box sx={successMessageStyle}>
-                <Typography>{errors.submit}</Typography>
-              </Box>
-            )}
-
-            <AnimatePresence>
-              {status === FormStatusConst.SUCCESS && (
                 <motion.div
-                  initial={{ opacity: 0, y: -10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -10 }}
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ duration: 0.8 }}
+                    style={{ position: 'relative', zIndex: 1 }}
                 >
-                  <Box sx={successMessageStyle}>
-                    <Typography>
-                      ✓ Thank you! Your message has been sent successfully.
+                    <Box sx={{ display: 'flex', alignItems: 'center', mb: 2, gap: 1.5 }}>
+                        <EmailOutlinedIcon sx={{ color: '#FF8C00', fontSize: '2rem' }} />
+                        <Typography
+                            variant="overline"
+                            sx={{
+                                color: '#FF8C00',
+                                letterSpacing: '4px',
+                                fontSize: '0.9rem',
+                                fontWeight: 'bold'
+                            }}
+                        >
+                            CONNECT WITH US
+                        </Typography>
+                    </Box>
+
+                    <Typography
+                        variant="h3"
+                        sx={{
+                            color: '#fff',
+                            fontFamily: "'Playfair Display', serif",
+                            mb: 3,
+                            textShadow: '0 0 20px rgba(255, 140, 0, 0.3)',
+                            fontSize: { xs: '2.2rem', md: '3.2rem' },
+                            fontWeight: 700,
+                            lineHeight: 1.1
+                        }}
+                    >
+                        We'd Love to <br />
+                        <span style={{ color: '#FF8C00' }}>Hear</span> From <br />
+                        You
                     </Typography>
-                  </Box>
+
+                    <Typography
+                        variant="body1"
+                        sx={{
+                            color: '#aaccff',
+                            lineHeight: 1.7,
+                            fontSize: '1rem',
+                            maxWidth: '350px',
+                            fontWeight: 300,
+                            opacity: 0.9
+                        }}
+                    >
+                        Whether you have a question about our menu, events, or just want to say hello, our team is here to help.
+                    </Typography>
                 </motion.div>
-              )}
-            </AnimatePresence>
+            </Box>
 
-            <Button
-              type="submit"
-              variant="outlined"
-              disabled={status === FormStatusConst.LOADING}
-              sx={{
-                ...formButtonStyle,
-                mt: 2,
-              }}
+            {/* Right Column: Form (Glassmorphic) */}
+            <Box
+                sx={{
+                    flex: 1.2,
+                    p: { xs: 4, md: 6 },
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'center',
+                    bgcolor: 'rgba(0, 20, 40, 0.4)',
+                    backdropFilter: 'blur(20px)',
+                    position: 'relative',
+                    borderLeft: { md: '1px solid rgba(255, 140, 0, 0.1)' }
+                }}
             >
-              {status === FormStatusConst.LOADING
-                ? "Sending..."
-                : "Send Message"}
-            </Button>
-          </Box>
-        </form>
-      </Box>
-    </Box>
-  );
-});
+                <AnimatePresence mode="wait">
+                    {!submitted ? (
+                        <motion.form
+                            key="contact-form"
+                            initial={{ opacity: 0, y: 10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            exit={{ opacity: 0, scale: 0.95 }}
+                            onSubmit={handleSubmit}
+                            style={{ width: '100%' }}
+                        >
+                            <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2.5 }}>
+                                <Box sx={{ display: 'flex', gap: 2, flexDirection: { xs: 'column', sm: 'row' } }}>
+                                    <TextField
+                                        fullWidth
+                                        label="YOUR NAME"
+                                        name="name"
+                                        required
+                                        sx={inputStyle}
+                                        value={formData.name}
+                                        onChange={handleChange}
+                                        InputProps={{
+                                            startAdornment: (
+                                                <InputAdornment position="start">
+                                                    <PersonIcon />
+                                                </InputAdornment>
+                                            ),
+                                        }}
+                                    />
+                                    <TextField
+                                        fullWidth
+                                        label="EMAIL ADDRESS"
+                                        name="email"
+                                        type="email"
+                                        required
+                                        sx={inputStyle}
+                                        value={formData.email}
+                                        onChange={handleChange}
+                                        InputProps={{
+                                            startAdornment: (
+                                                <InputAdornment position="start">
+                                                    <EmailIcon />
+                                                </InputAdornment>
+                                            ),
+                                        }}
+                                    />
+                                </Box>
 
-ContactForm.displayName = "ContactForm";
+                                <TextField
+                                    fullWidth
+                                    label="SUBJECT"
+                                    name="subject"
+                                    required
+                                    sx={inputStyle}
+                                    value={formData.subject}
+                                    onChange={handleChange}
+                                    InputProps={{
+                                        startAdornment: (
+                                            <InputAdornment position="start">
+                                                <SubjectIcon />
+                                            </InputAdornment>
+                                        ),
+                                    }}
+                                />
+
+                                <TextField
+                                    fullWidth
+                                    multiline
+                                    rows={4}
+                                    label="HOW CAN WE HELP?"
+                                    name="message"
+                                    required
+                                    sx={{
+                                        ...inputStyle,
+                                        '& .MuiOutlinedInput-root': {
+                                            height: 'auto',
+                                            alignItems: 'flex-start',
+                                            pt: 1.5,
+                                        }
+                                    }}
+                                    value={formData.message}
+                                    onChange={handleChange}
+                                    InputProps={{
+                                        startAdornment: (
+                                            <InputAdornment position="start" sx={{ mt: 1 }}>
+                                                <NoteIcon />
+                                            </InputAdornment>
+                                        ),
+                                    }}
+                                />
+
+                                <Box sx={{ mt: 2 }}>
+                                    <Box
+                                        component="button"
+                                        type="submit"
+                                        sx={{
+                                            width: '100%',
+                                            py: 2,
+                                            background: 'linear-gradient(90deg, #FF8C00, #F4511E)',
+                                            border: 'none',
+                                            borderRadius: '50px',
+                                            color: '#fff',
+                                            fontWeight: 'bold',
+                                            fontSize: '0.9rem',
+                                            letterSpacing: '2px',
+                                            textTransform: 'uppercase',
+                                            cursor: 'pointer',
+                                            boxShadow: '0 10px 25px rgba(255, 140, 0, 0.3)',
+                                            transition: 'all 0.3s ease',
+                                            '&:hover': {
+                                                transform: 'translateY(-3px)',
+                                                boxShadow: '0 15px 35px rgba(255, 140, 0, 0.4)',
+                                                filter: 'brightness(1.1)'
+                                            }
+                                        }}
+                                    >
+                                        Send Message <span style={{ marginLeft: '10px' }}>→</span>
+                                    </Box>
+                                </Box>
+                            </Box>
+                        </motion.form>
+                    ) : (
+                        <motion.div
+                            key="success"
+                            initial={{ opacity: 0, scale: 0.9 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            style={{ textAlign: 'center' }}
+                        >
+                            <Box sx={{ p: 4 }}>
+                                <Typography
+                                    variant="h4"
+                                    sx={{
+                                        color: '#FF8C00',
+                                        fontFamily: "'Playfair Display', serif",
+                                        mb: 2,
+                                        fontWeight: 700
+                                    }}
+                                >
+                                    Message Sent!
+                                </Typography>
+                                <Typography sx={{ color: '#aaccff', fontSize: '1.1rem', mb: 4 }}>
+                                    Thank you for reaching out. <br />
+                                    We'll get back to you as soon as possible.
+                                </Typography>
+                                <Button
+                                    onClick={() => setSubmitted(false)}
+                                    sx={{
+                                        color: '#fff',
+                                        border: '1px solid rgba(255,255,255,0.2)',
+                                        borderRadius: '50px',
+                                        px: 4,
+                                        textTransform: 'none',
+                                        '&:hover': {
+                                            borderColor: '#FF8C00',
+                                            color: '#FF8C00'
+                                        }
+                                    }}
+                                >
+                                    Send Another Message
+                                </Button>
+                            </Box>
+                        </motion.div>
+                    )}
+                </AnimatePresence>
+            </Box>
+        </Box>
+    );
+};
 
 export default ContactForm;

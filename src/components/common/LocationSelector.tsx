@@ -62,7 +62,7 @@ const LocationSelector: React.FC<LocationSelectorProps> = ({ open, onClose, onSe
                         maxWidth: '1000px',
                         height: { xs: 'auto', md: '600px' },
                         maxHeight: { xs: '90vh', md: '600px' },
-                        bgcolor: 'rgba(0, 0, 0, 0.9)',
+                        bgcolor: 'rgba(0, 20, 40, 0.98)',
                         border: '1px solid rgba(255, 140, 0, 0.3)',
                         borderRadius: '20px',
                         boxShadow: '0 0 50px rgba(255, 140, 0, 0.2)',
@@ -185,7 +185,7 @@ const LocationSelector: React.FC<LocationSelectorProps> = ({ open, onClose, onSe
                             display: 'flex',
                             flexDirection: 'column',
                             justifyContent: 'center',
-                            bgcolor: 'rgba(0, 0, 0, 0.4)',
+                            bgcolor: 'rgba(0, 20, 40, 0.4)',
                             backdropFilter: 'blur(20px)',
                             borderLeft: { md: '1px solid rgba(255, 140, 0, 0.1)' }
                         }}

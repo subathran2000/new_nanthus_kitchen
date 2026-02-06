@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { IconButton } from "@mui/material";
 import { Home } from "@mui/icons-material";
 import ImageGallery from "./ImageGallery";
-import Sparkles from "../common/Sparkles";
+import Reusable3DBackground from "../common/Reusable3DBackground";
 
 const AboutUs = () => {
   const navigate = useNavigate();
@@ -16,14 +16,13 @@ const AboutUs = () => {
         flexDirection: "column",
         alignItems: "center",
         justifyContent: "center",
-        background: "#001e36",
+        background: "transparent",
         padding: "4rem 1rem",
         position: "relative",
         overflow: "hidden",
       }}
     >
-      {/* Sparkles Background */}
-      <Sparkles />
+      <Reusable3DBackground />
 
       {/* Home Button */}
       <IconButton

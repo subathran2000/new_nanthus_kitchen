@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Box, IconButton, Typography, useTheme, useMediaQuery } from '@mui/material';
 import { ChevronLeft, ChevronRight, Home } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
-import Sparkles from '../common/Sparkles';
+import Reusable3DBackground from '../common/Reusable3DBackground';
 
 
 import { specialItems } from '../../data/specialItems';
@@ -196,10 +196,10 @@ const Coverflow3D: React.FC = () => {
                 minHeight: '100vh',
                 position: 'relative',
                 overflow: 'hidden',
-                bgcolor: '#000000',
+                bgcolor: 'transparent',
             }}
         >
-            <Sparkles />
+            <Reusable3DBackground />
 
             <Box
                 sx={{
@@ -332,7 +332,7 @@ const Coverflow3D: React.FC = () => {
                                         position: 'relative',
                                         overflow: 'hidden',
                                         transformStyle: 'preserve-3d',
-                                        bgcolor: '#000000',
+                                        bgcolor: '#001e36',
                                         border: index === currentIndex ? '2px solid rgba(255, 140, 0, 0.5)' : '2px solid rgba(255, 255, 255, 0.1)',
                                     }}
                                 >
@@ -376,7 +376,7 @@ const Coverflow3D: React.FC = () => {
                                             left: 0,
                                             width: '100%',
                                             height: '100%',
-                                            background: 'linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.6) 50%, rgba(0, 0, 0, 1) 100%)',
+                                            background: 'linear-gradient(to bottom, rgba(0, 15, 27, 0) 0%, rgba(0, 15, 27, 0.6) 50%, rgba(0, 30, 54, 1) 100%)',
                                         },
                                     }}
                                 />

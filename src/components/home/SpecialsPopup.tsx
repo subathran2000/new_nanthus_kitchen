@@ -38,10 +38,11 @@ const SpecialsPopup: React.FC<SpecialsPopupProps> = ({ open, onClose }) => {
                         width: { xs: '95%', sm: '800px', md: '1000px' },
                         height: { xs: 'auto', md: '600px' },
                         maxHeight: { xs: '90vh', md: '600px' },
-                        bgcolor: 'rgba(0, 0, 0, 0.95)',
+                        bgcolor: 'rgba(0, 20, 40, 0.98)',
                         border: '1px solid rgba(255, 140, 0, 0.3)',
                         borderRadius: '20px',
-                        boxShadow: '0 0 50px rgba(255, 140, 0, 0.2)',
+                        boxShadow: '0 0 50px rgba(0, 140, 255, 0.2)', // Bluish shadow for navy theme? Or keep orange?
+                        // User said "background theme color". Navy is the theme now.
                         p: 0,
                         outline: 'none',
                         overflowY: 'auto',
@@ -54,9 +55,7 @@ const SpecialsPopup: React.FC<SpecialsPopupProps> = ({ open, onClose }) => {
                         sx={{
                             position: 'absolute',
                             top: 10,
-                            right: 10, // Move to right of the whole modal or just content? 
-                            // Actually if it's top right of modal, it might be on top of text on desktop.
-                            // Let's keep it safe.
+                            right: 10,
                             zIndex: 100,
                             color: '#FF8C00',
                             bgcolor: 'rgba(255,140,0,0.1)',
@@ -69,14 +68,14 @@ const SpecialsPopup: React.FC<SpecialsPopupProps> = ({ open, onClose }) => {
                     {/* Card Stack Section */}
                     <Box
                         sx={{
-                            flex: 1.2, // Give more space to cards
+                            flex: 1.2,
                             position: 'relative',
                             display: 'flex',
                             alignItems: 'center',
                             justifyContent: 'center',
                             p: 4,
                             perspective: '1000px',
-                            minHeight: { xs: '400px', md: 'auto' } // Height for mobile
+                            minHeight: { xs: '400px', md: 'auto' }
                         }}
                     >
                         <Box sx={{
@@ -102,7 +101,7 @@ const SpecialsPopup: React.FC<SpecialsPopupProps> = ({ open, onClose }) => {
                             flexDirection: 'column',
                             justifyContent: 'center',
                             alignItems: 'flex-start',
-                            background: 'linear-gradient(135deg, rgba(0, 0, 0, 0.95), rgba(10, 10, 10, 0.98))',
+                            background: 'linear-gradient(135deg, rgba(0, 20, 40, 0.95), rgba(0, 10, 20, 0.98))',
                             borderLeft: { md: '1px solid rgba(255, 140, 0, 0.1)' }
                         }}
                     >

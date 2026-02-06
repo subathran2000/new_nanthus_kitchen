@@ -6,7 +6,7 @@ import { IconButton, Box } from "@mui/material";
 import ArrowBack from "@mui/icons-material/ArrowBack";
 import HomeIcon from "@mui/icons-material/Home";
 import InteractiveMenu from "./InteractiveMenu";
-import Sparkles from "../common/Sparkles";
+import Reusable3DBackground from "../common/Reusable3DBackground";
 
 const MenuNew = () => {
   const navigate = useNavigate();
@@ -45,14 +45,11 @@ const MenuNew = () => {
       sx={{
         position: 'relative',
         minHeight: '100vh',
-        bgcolor: '#000000',
+        bgcolor: "#001e36",
         overflow: 'hidden'
       }}
     >
-      {/* Universal Sparkles Background */}
-      <Box sx={{ position: 'fixed', inset: 0, zIndex: 1, pointerEvents: 'none' }}>
-        <Sparkles />
-      </Box>
+      <Reusable3DBackground />
 
       {/* Content Layer */}
       <Box sx={{ position: 'relative', zIndex: 10 }}>

@@ -1,6 +1,5 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, Suspense } from "react";
 import { gsap } from "gsap";
-import { motion } from "framer-motion";
 import {
   Box,
   useTheme,
@@ -11,29 +10,17 @@ import {
   ListItem,
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
+import { Canvas } from '@react-three/fiber';
+import { Sparkles, Caustics, Environment, Cloud } from '@react-three/drei';
+import { EffectComposer, Bloom, Noise, Vignette } from '@react-three/postprocessing';
 
+import Reusable3DBackground from "../common/Reusable3DBackground";
 import { menuData } from "../../data/menuData";
 import type { MainCategory } from "../../types";
 
-interface SpiralBackgroundProps {
-  activeCategory?: string;
-}
 
-const MotionBox = motion(Box);
 
-const MenuSpiral: React.FC<SpiralBackgroundProps> = ({
-  activeCategory = "Lunch",
-}) => {
-  const filteredItems = menuData.filter((item) =>
-    item.mealType.includes(
-      activeCategory as "Lunch" | "Dinner" | "Breakfast" | "Dessert",
-    ),
-  );
-  const itemsToUse = filteredItems.length > 0 ? filteredItems : menuData;
-  const spiralItems = itemsToUse;
-  const displayedItems = spiralItems;
-  const isSpiral = displayedItems.length > 2;
-
+const MenuSpiral: React.FC<{ activeCategory?: string }> = ({ activeCategory = "Lunch" }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const cardsRef = useRef<(HTMLDivElement | null)[]>([]);
   const [open, setOpen] = useState(false);
@@ -47,11 +34,16 @@ const MenuSpiral: React.FC<SpiralBackgroundProps> = ({
   const targetScrollYRef = useRef(0);
   const transitionRef = useRef(0);
 
-  // Reset scroll when category changes
-  useEffect(() => {
-    scrollYRef.current = 0;
-    targetScrollYRef.current = 0;
-  }, [activeCategory]);
+  // Prepare exactly 20 items to match the density of the provided code
+  const filteredItems = menuData.filter((item) =>
+    item.mealType.includes(activeCategory as any)
+  );
+  const baseItems = filteredItems.length > 0 ? filteredItems : menuData;
+  const items: MainCategory[] = [];
+  while (items.length < 20) {
+    items.push(...baseItems as any);
+  }
+  const displayedItems = items.slice(0, 20);
 
   const getResponsiveValues = () => {
     if (typeof window === "undefined") return { radius: 800, spacing: 250 };
@@ -63,14 +55,11 @@ const MenuSpiral: React.FC<SpiralBackgroundProps> = ({
   };
 
   useEffect(() => {
-    if (!isSpiral) return;
-
     const prevOverflowX = document.documentElement.style.overflowX;
     document.documentElement.style.overflowX = "hidden";
 
     const cards = cardsRef.current;
     const total = cards.length;
-
     const { radius, spacing } = getResponsiveValues();
     const totalHeight = total * spacing;
 
@@ -78,18 +67,19 @@ const MenuSpiral: React.FC<SpiralBackgroundProps> = ({
     const maxScroll = totalHeight / 2;
 
     const updateCards = () => {
+      // Transition logic for sidebar opening
       const targetTransition = openRef.current ? 1 : 0;
       transitionRef.current += (targetTransition - transitionRef.current) * 0.1;
 
       if (Math.abs(targetTransition - transitionRef.current) < 0.001) {
         transitionRef.current = targetTransition;
       }
-
       const t = transitionRef.current;
 
       cards.forEach((card, i) => {
         if (!card) return;
 
+        // Spiral math from "perfect" version
         const offset = i * spacing;
         let spiralY = offset + scrollYRef.current;
         spiralY -= totalHeight / 2;
@@ -98,15 +88,20 @@ const MenuSpiral: React.FC<SpiralBackgroundProps> = ({
         const angle = progress * Math.PI * 2 * 4;
         const isVisibleSpiral = spiralY >= minScroll && spiralY <= maxScroll;
 
+        // Vertical List Positioning (from "old way")
         const vertSpacing = isMobile ? 80 : 120;
         const vertY = (i - (total - 1) / 2) * vertSpacing;
 
-        // When open (t=1), shift cards to the center of the left 30% area (~15%)
+        // --- BLENDING LOGIC (Merged) ---
         const currentLeftPct = 50 + (15 - 50) * t;
         const currentY = spiralY * (1 - t) + vertY * t;
         const currentRotationY = ((angle * 180) / Math.PI) * (1 - t);
         const currentTZ = -radius * (1 - t);
 
+        // Z-Index calculation
+        const zIndex = Math.round(Math.cos(angle) * 100 * (1 - t)) + 10;
+
+        // Opacity blend
         const opacity = (isVisibleSpiral ? 1 : 0) * (1 - t) + 1 * t;
 
         gsap.set(card, {
@@ -118,7 +113,7 @@ const MenuSpiral: React.FC<SpiralBackgroundProps> = ({
           left: `${currentLeftPct}%`,
           top: "50%",
           opacity: opacity,
-          zIndex: Math.round(Math.cos(angle) * 100 * (1 - t)) + 10,
+          zIndex: zIndex
         });
       });
     };
@@ -126,62 +121,24 @@ const MenuSpiral: React.FC<SpiralBackgroundProps> = ({
     const handleWheel = (e: WheelEvent) => {
       if (openRef.current) return;
       const newTargetScroll = targetScrollYRef.current - e.deltaY * 0.5;
-      targetScrollYRef.current = Math.max(
-        minScroll,
-        Math.min(maxScroll, newTargetScroll),
-      );
-    };
-
-    let touchStartY = 0;
-    let touchLastY = 0;
-
-    const handleTouchStart = (e: TouchEvent) => {
-      if (openRef.current) return;
-      touchStartY = e.touches[0].clientY;
-      touchLastY = touchStartY;
-    };
-
-    const handleTouchMove = (e: TouchEvent) => {
-      if (openRef.current) return;
-      e.preventDefault();
-      const touchY = e.touches[0].clientY;
-      const deltaY = touchLastY - touchY;
-      touchLastY = touchY;
-
-      const newTargetScroll = targetScrollYRef.current - deltaY * 2;
-      targetScrollYRef.current = Math.max(
-        minScroll,
-        Math.min(maxScroll, newTargetScroll),
-      );
-    };
-
-    const handleTouchEnd = () => {
-      touchStartY = 0;
-      touchLastY = 0;
+      targetScrollYRef.current = Math.max(minScroll, Math.min(maxScroll, newTargetScroll));
     };
 
     window.addEventListener("wheel", handleWheel, { passive: false });
-    window.addEventListener("touchstart", handleTouchStart, { passive: true });
-    window.addEventListener("touchmove", handleTouchMove, { passive: false });
-    window.addEventListener("touchend", handleTouchEnd);
 
     const ticker = gsap.ticker.add(() => {
       if (!openRef.current) {
-        scrollYRef.current +=
-          (targetScrollYRef.current - scrollYRef.current) * 0.1;
+        scrollYRef.current += (targetScrollYRef.current - scrollYRef.current) * 0.1;
       }
       updateCards();
     });
 
     return () => {
       window.removeEventListener("wheel", handleWheel);
-      window.removeEventListener("touchstart", handleTouchStart);
-      window.removeEventListener("touchmove", handleTouchMove);
-      window.removeEventListener("touchend", handleTouchEnd);
       gsap.ticker.remove(ticker);
       document.documentElement.style.overflowX = prevOverflowX;
     };
-  }, [spiralItems, isMobile, activeCategory, isSpiral]);
+  }, [displayedItems, isMobile]);
 
   const selectedCategory: MainCategory | null =
     selected !== null ? displayedItems[selected % displayedItems.length] : null;
@@ -193,31 +150,27 @@ const MenuSpiral: React.FC<SpiralBackgroundProps> = ({
         perspective: "1500px",
         width: "100%",
         height: "100vh",
-        background: "transparent",
+        background: "#001e36",
         overflow: "hidden",
         position: "relative",
         transform: "translateZ(0)",
         WebkitBackfaceVisibility: "hidden",
         backfaceVisibility: "hidden",
-        fontFamily: "'Inter', sans-serif",
-        color: "rgba(255, 255, 255, 0.7)",
+        fontFamily: "'Courier New', Courier, monospace",
+        color: "#aaccff",
+        '&::before': {
+          content: '""',
+          position: 'absolute',
+          top: 0, left: 0, right: 0, bottom: 0,
+          background: 'radial-gradient(circle at 50% 50%, rgba(0, 255, 255, 0.1) 0%, transparent 50%)',
+          pointerEvents: 'none',
+          zIndex: 1,
+        },
       }}
     >
-      {/* Universal Glow Background */}
-      <Box sx={{
-        position: "absolute",
-        top: 0,
-        left: 0,
-        right: 0,
-        bottom: 0,
-        background:
-          "radial-gradient(circle at 50% 50%, rgba(0, 255, 255, 0.05) 0%, transparent 60%)",
-        pointerEvents: "none",
-        zIndex: 1,
-      }}
-      />
+      <Reusable3DBackground />
 
-      {/* Backdrop for side panel - dims the left side */}
+      {/* Sidebar Overlay (Functional Layer) */}
       <Box
         onClick={() => setOpen(false)}
         sx={{
@@ -233,138 +186,47 @@ const MenuSpiral: React.FC<SpiralBackgroundProps> = ({
         }}
       />
 
-      {/* Conditional Rendering: Spiral vs Horizontal */}
-      {isSpiral ? (
-        // 3D Spiral Mode
-        displayedItems.map((item, i) => (
-          <Box
-            key={item.id}
-            onClick={() => {
-              setSelected(i);
-              setOpen(true);
-            }}
-            ref={(el: HTMLDivElement | null) => {
-              cardsRef.current[i] = el;
-            }}
-            className="spiral-card"
-            sx={{
-              width: "90%",
-              maxWidth: "400px",
-              aspectRatio: "1/1",
-              background: `url(${item.imageUrl}) center/cover no-repeat`,
-              borderRadius: "24px",
-              position: "absolute",
-              opacity: 0,
-              border: "1px solid rgba(0, 255, 255, 0.2)",
-              boxShadow: "0 30px 60px rgba(0,0,0,0.6)",
-              cursor: "pointer",
-              userSelect: "none",
-              transition: "border 0.3s ease, box-shadow 0.3s ease",
-              "&::after": {
-                content: '""',
-                position: "absolute",
-                inset: 0,
-                borderRadius: "24px",
-                boxShadow: "inset 0 0 20px rgba(0,255,255,0.1)",
-                pointerEvents: "none"
-              },
-              "&:hover": {
-                border: "1px solid rgba(255, 140, 0, 0.6)",
-                boxShadow: "0 0 30px rgba(255, 140, 0, 0.3), 0 30px 60px rgba(0,0,0,0.8)"
-              }
-            }}
-          />
-        ))
-      ) : (
-        // Horizontal List Mode (for 1-2 items)
+      {/* Spiral Cards */}
+      {displayedItems.map((item, i) => (
         <Box
-          component={motion.div}
-          animate={{
-            x: open && !isMobile ? "-35%" : "0%", // Shift more aggressively to clear the 70% panel
-            scale: open && !isMobile ? 0.85 : 1
+          key={i}
+          ref={(el: HTMLDivElement | null) => {
+            cardsRef.current[i] = el;
           }}
-          transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+          onClick={(e) => {
+            e.stopPropagation();
+            setSelected(i);
+            setOpen(true);
+          }}
+          className="spiral-card"
           sx={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            gap: { xs: 3, md: 8 },
-            width: "100%",
-            height: "100%",
-            flexDirection: { xs: "column", md: "row" },
-            px: 4,
-            zIndex: 10,
-            position: "relative"
+            width: "90%",
+            maxWidth: "400px",
+            aspectRatio: "1/1",
+            background: `url(${item.imageUrl}) center/cover no-repeat`,
+            borderRadius: "16px",
+            position: "absolute",
+            boxShadow: "0 25px 50px rgba(0,0,0,0.8), 0 10px 20px rgba(0,0,0,0.5)",
+            opacity: 0,
+            border: "1px solid rgba(0, 255, 255, 0.3)",
+            cursor: "pointer",
+            transition: "border 0.3s ease, box-shadow 0.3s ease",
+            "&:hover": {
+              border: "1px solid rgba(255, 140, 0, 0.8)",
+              boxShadow: "0 0 30px rgba(255, 140, 0, 0.4), 0 25px 50px rgba(0,0,0,0.9)"
+            }
           }}
-        >
-          {displayedItems.map((item, i) => (
-            <MotionBox
-              key={item.id}
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: i * 0.2, duration: 0.6 }}
-              whileHover={{ scale: 1.05, y: -10 }}
-              onClick={() => {
-                setSelected(i);
-                setOpen(true);
-              }}
-              sx={{
-                width: "90%",
-                maxWidth: { xs: "300px", md: "420px" },
-                aspectRatio: "1/1",
-                background: `url(${item.imageUrl}) center/cover no-repeat`,
-                borderRadius: "32px",
-                border: "1px solid rgba(255, 255, 255, 0.1)",
-                boxShadow: "0 40px 80px rgba(0,0,0,0.8)",
-                cursor: "pointer",
-                transition: "all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)",
-                position: "relative",
-                overflow: "hidden",
-                filter: open && !isMobile ? "blur(3px) brightness(0.7)" : "none",
-                "&::before": {
-                  content: '""',
-                  position: "absolute",
-                  inset: 0,
-                  background: "linear-gradient(to top, rgba(0,0,0,0.8) 0%, transparent 60%)",
-                  opacity: 0.6
-                },
-                "&:hover": {
-                  boxShadow: "0 0 40px rgba(255, 140, 0, 0.4), 0 40px 80px rgba(0,0,0,1)",
-                  borderColor: "rgba(255, 140, 0, 0.8)"
-                }
-              }}
-            >
-              <Box sx={{
-                position: "absolute",
-                bottom: 30,
-                left: 0,
-                right: 0,
-                textAlign: "center"
-              }}>
-                <Typography variant="h5" sx={{
-                  color: "#fff",
-                  fontFamily: "'Playfair Display', serif",
-                  fontWeight: 700,
-                  letterSpacing: "0.05em",
-                  textShadow: "0 2px 10px rgba(0,0,0,0.5)"
-                }}>
-                  {item.title}
-                </Typography>
-              </Box>
-            </MotionBox>
-          ))}
-        </Box>
-      )}
+        />
+      ))}
 
-      {/* Side Panel Detail View */}
+      {/* Side Panel Detail View (Old Way Restored) */}
       <Box
         sx={{
           position: "fixed",
           top: 0,
           right: 0,
           bottom: 0,
-          width: { xs: "100%", sm: "100%", md: "70%", lg: "70%" }, // Take 70% of screen to meet the 30% card area
-          maxWidth: "100%",
+          width: { xs: "100%", sm: "100%", md: "70%", lg: "70%" },
           boxSizing: "border-box",
           background: "rgba(0, 15, 27, 0.9)",
           backdropFilter: "blur(40px) saturate(150%)",
@@ -385,15 +247,12 @@ const MenuSpiral: React.FC<SpiralBackgroundProps> = ({
           aria-label="Close menu panel"
           sx={{
             position: "absolute",
-            top: { xs: "80px", md: "100px" },
+            top: { xs: "20px", md: "25px" },
             right: { xs: "20px", md: "25px" },
             zIndex: 1100,
             color: "#FF8C00",
             bgcolor: "rgba(255,140,0,0.1)",
-            "&:hover": {
-              bgcolor: "rgba(255,140,0,0.2)",
-              transform: "rotate(90deg)",
-            },
+            "&:hover": { bgcolor: "rgba(255,140,0,0.2)", transform: "rotate(90deg)" },
             transition: "all 0.3s ease",
           }}
         >
@@ -430,15 +289,7 @@ const MenuSpiral: React.FC<SpiralBackgroundProps> = ({
             >
               {selectedCategory?.title}
             </Typography>
-            <Box
-              sx={{
-                width: "60px",
-                height: "2px",
-                bgcolor: "rgba(0, 255, 255, 0.3)",
-                mx: "auto",
-                mt: 2,
-              }}
-            />
+            <Box sx={{ width: "60px", height: "2px", bgcolor: "rgba(0, 255, 255, 0.3)", mx: "auto", mt: 2 }} />
           </Box>
 
           {/* Menu Content */}
@@ -458,14 +309,7 @@ const MenuSpiral: React.FC<SpiralBackgroundProps> = ({
                 >
                   {sub.title}
                 </Typography>
-                <List
-                  sx={{
-                    p: 0,
-                    display: "flex",
-                    flexDirection: "column",
-                    gap: 2,
-                  }}
-                >
+                <List sx={{ p: 0, display: "flex", flexDirection: "column", gap: 2 }}>
                   {sub.items.map((menuItem) => (
                     <ListItem
                       key={menuItem.id}
@@ -481,21 +325,16 @@ const MenuSpiral: React.FC<SpiralBackgroundProps> = ({
                         "&::before": {
                           content: '""',
                           position: "absolute",
-                          top: 0,
-                          left: 0,
-                          bottom: 0,
-                          width: "6px",
+                          top: 0, left: 0, bottom: 0, width: "6px",
                           background: "#FF8C00",
                           opacity: 0,
                           transition: "opacity 0.3s ease",
                           zIndex: 1,
                         },
                         "&:hover": {
-                          background:
-                            "linear-gradient(90deg, rgba(0, 0, 0, 0.95) 0%, rgba(26, 26, 26, 0.85) 100%)",
+                          background: "linear-gradient(90deg, rgba(0, 0, 0, 0.95) 0%, rgba(26, 26, 26, 0.85) 100%)",
                           borderColor: "#FF8C00",
-                          boxShadow:
-                            "0 0 25px rgba(255, 140, 0, 0.15), inset 0 0 20px rgba(255, 140, 0, 0.05)",
+                          boxShadow: "0 0 25px rgba(255, 140, 0, 0.15), inset 0 0 20px rgba(255, 140, 0, 0.05)",
                           transform: "translateX(8px)",
                           "&::before": { opacity: 1 },
                           "& .item-image": {
@@ -511,16 +350,14 @@ const MenuSpiral: React.FC<SpiralBackgroundProps> = ({
                         },
                       }}
                     >
-                      <Box
-                        sx={{
-                          display: "flex",
-                          flexDirection: { xs: "column", md: "row" },
-                          width: "100%",
-                          alignItems: { xs: "stretch", md: "center" },
-                          position: "relative",
-                          zIndex: 2,
-                        }}
-                      >
+                      <Box sx={{
+                        display: "flex",
+                        flexDirection: { xs: "column", md: "row" },
+                        width: "100%",
+                        alignItems: { xs: "stretch", md: "center" },
+                        position: "relative",
+                        zIndex: 2,
+                      }}>
                         <Box
                           className="item-image"
                           sx={{
@@ -537,109 +374,32 @@ const MenuSpiral: React.FC<SpiralBackgroundProps> = ({
                           }}
                         />
 
-                        <Box
-                          sx={{
-                            flex: 1,
-                            px: { xs: 2, md: 2 },
-                            py: 2,
-                            minWidth: 0,
-                          }}
-                        >
-                          <Box
-                            sx={{
-                              display: "flex",
-                              justifyContent: "space-between",
-                              alignItems: "flex-start",
-                              mb: 0.5,
-                              flexDirection: { xs: "column", md: "row" },
-                              gap: { xs: 1, md: 0 },
-                            }}
-                          >
-                            <Typography
-                              sx={{
-                                color: "#fff",
-                                fontWeight: 700,
-                                fontSize: { xs: "1.1rem", md: "1.2rem" },
-                                fontFamily: "'Inter', sans-serif",
-                                letterSpacing: "0.02em",
-                              }}
-                            >
+                        <Box sx={{ flex: 1, px: { xs: 2, md: 2 }, py: 2, minWidth: 0 }}>
+                          <Box sx={{
+                            display: "flex",
+                            justifyContent: "space-between",
+                            alignItems: "flex-start",
+                            mb: 0.5,
+                            flexDirection: { xs: "column", md: "row" },
+                            gap: { xs: 1, md: 0 },
+                          }}>
+                            <Typography sx={{ color: "#fff", fontWeight: 700, fontSize: { xs: "1.1rem", md: "1.2rem" }, fontFamily: "'Inter', sans-serif" }}>
                               {menuItem.name}
                               {menuItem.popular && (
-                                <Box
-                                  component="span"
-                                  sx={{
-                                    ml: 1,
-                                    color: "#FF8C00",
-                                    fontSize: "0.75rem",
-                                    fontWeight: 600,
-                                  }}
-                                >
-                                  ★ Popular
-                                </Box>
+                                <Box component="span" sx={{ ml: 1, color: "#FF8C00", fontSize: "0.75rem", fontWeight: 600 }}>★ Popular</Box>
                               )}
                             </Typography>
-
-                            <Box
-                              className="price-pill"
-                              sx={{
-                                display: { xs: "block", md: "none" },
-                                bgcolor: "transparent",
-                                color: "#FF8C00",
-                                border: "1px solid rgba(255, 140, 0, 0.6)",
-                                px: 2,
-                                py: 0.5,
-                                borderRadius: "50px",
-                                fontWeight: 700,
-                                fontSize: "0.95rem",
-                                fontFamily: "'Inter', sans-serif",
-                                transition: "all 0.4s ease",
-                                letterSpacing: "0.05em",
-                                alignSelf: "flex-start",
-                              }}
-                            >
+                            <Box className="price-pill" sx={{ display: { xs: "block", md: "none" }, color: "#FF8C00", border: "1px solid rgba(255, 140, 0, 0.6)", px: 2, py: 0.5, borderRadius: "50px", fontWeight: 700, fontSize: "0.95rem" }}>
                               {menuItem.price}
                             </Box>
                           </Box>
-
-                          <Typography
-                            sx={{
-                              color: "rgba(255, 255, 255, 0.6)",
-                              fontSize: "0.9rem",
-                              lineHeight: 1.5,
-                              mb: 1,
-                              fontFamily: "'Inter', sans-serif",
-                              maxWidth: "90%",
-                            }}
-                          >
+                          <Typography sx={{ color: "rgba(255, 255, 255, 0.6)", fontSize: "0.9rem", lineHeight: 1.5, mb: 1, fontFamily: "'Inter', sans-serif" }}>
                             {menuItem.description}
                           </Typography>
                         </Box>
 
-                        <Box
-                          sx={{
-                            pr: 2,
-                            display: { xs: "none", md: "flex" },
-                            alignItems: "center",
-                            flexShrink: 0,
-                          }}
-                        >
-                          <Box
-                            className="price-pill"
-                            sx={{
-                              bgcolor: "transparent",
-                              color: "#FF8C00",
-                              border: "1px solid rgba(255, 140, 0, 0.6)",
-                              px: 2.5,
-                              py: 1,
-                              borderRadius: "50px",
-                              fontWeight: 700,
-                              fontSize: "1rem",
-                              fontFamily: "'Inter', sans-serif",
-                              transition: "all 0.4s ease",
-                              letterSpacing: "0.05em",
-                            }}
-                          >
+                        <Box sx={{ pr: 3, display: { xs: "none", md: "flex" }, alignItems: "center" }}>
+                          <Box className="price-pill" sx={{ color: "#FF8C00", border: "1px solid rgba(255, 140, 0, 0.6)", px: 2.5, py: 1, borderRadius: "50px", fontWeight: 700 }}>
                             {menuItem.price}
                           </Box>
                         </Box>
@@ -654,11 +414,10 @@ const MenuSpiral: React.FC<SpiralBackgroundProps> = ({
       </Box>
 
       <style>{`
-        @media (max-width: 1024px) { .spiral-card { max-width: 350px; } }
-        @media (max-width: 768px) { .spiral-card { max-width: 300px; } }
-        @media (max-width: 480px) { .spiral-card { max-width: 250px; } }
-        @media (max-width: 375px) { .spiral-card { max-width: 200px; } }
-      `}</style>
+                @media (max-width: 1024px) { .spiral-card { max-width: 350px; } }
+                @media (max-width: 768px) { .spiral-card { max-width: 300px; } }
+                @media (max-width: 480px) { .spiral-card { max-width: 250px; } }
+            `}</style>
     </Box>
   );
 };
