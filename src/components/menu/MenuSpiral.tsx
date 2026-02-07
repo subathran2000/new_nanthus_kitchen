@@ -233,7 +233,7 @@ const MenuSpiral: React.FC<{ activeCategory?: string }> = ({ activeCategory = "L
           WebkitBackdropFilter: "blur(40px) saturate(150%)",
           borderLeft: "1px solid rgba(255, 255, 255, 0.1)",
           boxShadow: "-40px 0 100px rgba(0,0,0,0.9)",
-          zIndex: 1000,
+          zIndex: 3000,
           transform: open ? "translateX(0)" : "translateX(100%)",
           transition: "transform 0.7s cubic-bezier(0.16, 1, 0.3, 1)",
           display: "flex",
@@ -247,9 +247,9 @@ const MenuSpiral: React.FC<{ activeCategory?: string }> = ({ activeCategory = "L
           aria-label="Close menu panel"
           sx={{
             position: "absolute",
-            top: { xs: "20px", md: "25px" },
+            top: { xs: "80px", md: "110px" },
             right: { xs: "20px", md: "25px" },
-            zIndex: 1100,
+            zIndex: 3100,
             color: "#FF8C00",
             bgcolor: "rgba(255,140,0,0.1)",
             "&:hover": { bgcolor: "rgba(255,140,0,0.2)", transform: "rotate(90deg)" },
@@ -279,7 +279,7 @@ const MenuSpiral: React.FC<{ activeCategory?: string }> = ({ activeCategory = "L
               variant="h3"
               sx={{
                 color: "#FF8C00",
-                fontFamily: "'Inter', sans-serif",
+                fontFamily: "'Raleway', sans-serif",
                 fontWeight: 700,
                 textTransform: "uppercase",
                 letterSpacing: "0.1em",
@@ -302,9 +302,10 @@ const MenuSpiral: React.FC<{ activeCategory?: string }> = ({ activeCategory = "L
                     color: "#FF8C00",
                     fontWeight: 600,
                     mb: 3,
-                    fontFamily: "'Inter', sans-serif",
+                    fontFamily: "'Raleway', sans-serif",
                     letterSpacing: "0.05em",
                     fontSize: { xs: "1.2rem", md: "1.5rem" },
+                    textAlign: { xs: "center", md: "left" },
                   }}
                 >
                   {sub.title}
@@ -354,42 +355,48 @@ const MenuSpiral: React.FC<{ activeCategory?: string }> = ({ activeCategory = "L
                         display: "flex",
                         flexDirection: { xs: "column", md: "row" },
                         width: "100%",
-                        alignItems: { xs: "stretch", md: "center" },
+                        alignItems: { xs: "center", md: "center" },
                         position: "relative",
                         zIndex: 2,
                       }}>
                         <Box
                           className="item-image"
                           sx={{
-                            width: { xs: "100%", md: "100px" },
-                            height: { xs: "180px", md: "100px" },
+                            width: { xs: "120px", md: "100px" },
+                            height: { xs: "120px", md: "100px" },
                             minWidth: { xs: "auto", md: "100px" },
                             background: `url(${menuItem.imageUrl}) center/cover no-repeat`,
-                            m: { xs: 0, md: 2 },
-                            ml: { xs: 0, md: 3 },
-                            borderRadius: { xs: "16px 16px 0 0", md: "12px" },
+                            m: { xs: "20px auto 10px auto", md: 2 },
+                            ml: { xs: "auto", md: 3 },
+                            borderRadius: { xs: "50%", md: "12px" },
                             transition: "all 0.4s ease",
                             border: "1px solid rgba(255,255,255,0.1)",
                             boxShadow: "0 4px 10px rgba(0,0,0,0.3)",
                           }}
                         />
 
-                        <Box sx={{ flex: 1, px: { xs: 2, md: 2 }, py: 2, minWidth: 0 }}>
+                        <Box sx={{
+                          flex: 1,
+                          px: { xs: 3, md: 2 },
+                          py: 2,
+                          minWidth: 0,
+                          textAlign: { xs: "center", md: "left" }
+                        }}>
                           <Box sx={{
                             display: "flex",
-                            justifyContent: "space-between",
-                            alignItems: "flex-start",
+                            justifyContent: { xs: "center", md: "space-between" },
+                            alignItems: { xs: "center", md: "flex-start" },
                             mb: 0.5,
                             flexDirection: { xs: "column", md: "row" },
                             gap: { xs: 1, md: 0 },
                           }}>
-                            <Typography sx={{ color: "#fff", fontWeight: 700, fontSize: { xs: "1.1rem", md: "1.2rem" }, fontFamily: "'Inter', sans-serif" }}>
+                            <Typography sx={{ color: "#fff", fontWeight: 700, fontSize: { xs: "1.1rem", md: "1.2rem" }, fontFamily: "'Raleway', sans-serif" }}>
                               {menuItem.name}
                               {menuItem.popular && (
-                                <Box component="span" sx={{ ml: 1, color: "#FF8C00", fontSize: "0.75rem", fontWeight: 600 }}>★ Popular</Box>
+                                <Box component="span" sx={{ display: { xs: "block", md: "inline-block" }, ml: { xs: 0, md: 1 }, color: "#FF8C00", fontSize: "0.75rem", fontWeight: 600 }}>★ Popular</Box>
                               )}
                             </Typography>
-                            <Box className="price-pill" sx={{ display: { xs: "block", md: "none" }, color: "#FF8C00", border: "1px solid rgba(255, 140, 0, 0.6)", px: 2, py: 0.5, borderRadius: "50px", fontWeight: 700, fontSize: "0.95rem" }}>
+                            <Box className="price-pill" sx={{ display: { xs: "inline-block", md: "none" }, color: "#FF8C00", border: "1px solid rgba(255, 140, 0, 0.6)", px: 2, py: 0.5, borderRadius: "50px", fontWeight: 700, fontSize: "0.95rem" }}>
                               {menuItem.price}
                             </Box>
                           </Box>

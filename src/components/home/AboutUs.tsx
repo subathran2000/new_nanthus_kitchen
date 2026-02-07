@@ -160,7 +160,7 @@ const AboutCard: React.FC<{ item: AboutItem; index: number }> = ({
         <Typography
           variant="h5"
           sx={{
-            fontFamily: "'Playfair Display', serif",
+            fontFamily: "'Raleway', sans-serif",
             fontWeight: 700,
             color: "#FF8C00",
             mb: 2,
@@ -236,22 +236,11 @@ const AboutUs: React.FC = () => {
             fontSize: { xs: '3rem', md: '5rem' },
             textShadow: '0 0 20px rgba(255, 255, 255, 0.1)',
             lineHeight: 1,
-            '& span': {
-              color: '#FF8C00',
-              fontWeight: 700,
-            }
+            fontFamily: "'Libre Caslon Display', serif",
           }}
         >
-          Who <span>We Are</span>
+          Who We Are
         </Typography>
-        <Box
-          sx={{
-            width: '80px',
-            height: '1px',
-            background: 'rgba(255, 140, 0, 0.4)',
-            margin: '2.5rem auto',
-          }}
-        />
       </Box>
 
       <Box sx={{ position: 'relative' }}>

@@ -228,6 +228,7 @@ const LandingStatic: React.FC = () => {
                       flexDirection: "column",
                       width: "100%",
                       alignItems: { xs: "center", md: "flex-start" },
+                      marginTop: "8%",
                     }}
                   >
                     <Box
@@ -247,23 +248,13 @@ const LandingStatic: React.FC = () => {
                     </Box>
                     <TypewriterText
                       text="NANTHU'S"
-                      as="h6"
+                      as="h2"
                       className="main-title"
                       delay={1.5}
                       stagger={0.1}
                     />
                   </Box>
 
-                  <Box
-                    sx={{
-                      width: "40px",
-                      height: "1px",
-                      background: "rgba(255, 140, 0, 0.4)",
-                      mt: 3,
-                      mb: 1,
-                      alignSelf: { xs: "center", md: "flex-start" },
-                    }}
-                  />
 
                   <Box
                     sx={{
@@ -302,7 +293,6 @@ const LandingStatic: React.FC = () => {
                   </Box>
 
                   <Button
-                    className="dive-button"
                     onClick={() => {
                       const menuSection = document.getElementById("menu-preview-section");
                       const scrollContainer = document.querySelector('.lucide-scroll-container');
@@ -327,7 +317,7 @@ const LandingStatic: React.FC = () => {
                     transition={{ delay: 3, duration: 2 }}
                     style={{ marginTop: "8rem" }}
                   >
-                    <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
+                    <Box sx={{ display: "flex", alignItems: "center", gap: 2, marginTop: "-20%" }}>
                       <Box
                         sx={{
                           width: "1px",
@@ -372,8 +362,8 @@ const LandingStatic: React.FC = () => {
                   sx={{
                     display: "flex",
                     flexDirection: "column",
-                    alignItems: { xs: "center", md: "flex-start" },
-                    textAlign: { xs: "center", md: "left" },
+                    alignItems: "center",
+                    textAlign: "center",
                     mb: 8,
                   }}
                 >
@@ -390,6 +380,7 @@ const LandingStatic: React.FC = () => {
                       fontSize: { xs: "3rem", md: "5rem" },
                       color: "white",
                       lineHeight: 1,
+                      fontFamily: "'Libre Caslon Display', serif",
                     }}
                   >
                     THE MENU
@@ -527,7 +518,7 @@ const LandingStatic: React.FC = () => {
 export default LandingStatic;
 
 const styles = `
-  @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;700&family=Pinyon+Script&family=Inter:wght@400;700;900&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Rock+Salt&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;700&family=Pinyon+Script&family=Inter:wght@400;700;900&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Rock+Salt&family=Raleway:wght@400;700;900&family=Libre+Caslon+Display&display=swap');
 
   :root {
     --gold: #FF8C00;
@@ -549,7 +540,7 @@ const styles = `
   }
 
   .main-title {
-    font-family: 'Inter', sans-serif !important;
+    font-family: 'Raleway', sans-serif !important;
     font-weight: 900 !important;
     font-size: clamp(2rem, 11vw, 15rem) !important;
     letter-spacing: 0.1em !important;
@@ -559,11 +550,14 @@ const styles = `
     text-shadow: 0 10px 40px rgba(0,0,0,0.6);
     text-align: center !important;
     line-height: 1.1;
-@media (min-width: 900px) {
-    text-align: left !important;
-}
     text-transform: uppercase;
     white-space: nowrap !important;
+  }
+
+  @media (min-width: 900px) {
+    .main-title {
+      text-align: left !important;
+    }
   }
 
   .subtitle-tagline {
@@ -583,32 +577,6 @@ const styles = `
     }
 }
 
-  .dive-button {
-    margin-top: 1.25rem;
-    background: rgba(0,0,0,0.3) !important;
-    border: 1px solid rgba(0, 255, 255, 0.4) !important;
-    color: var(--cyan) !important;
-    padding: 1rem 3rem !important;
-    font-size: 1rem !important;
-    letter-spacing: 0.4em !important;
-    text-transform: uppercase !important;
-    cursor: pointer;
-    backdrop-filter: blur(10px);
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
-    border-radius: 0 !important;
-    position: relative;
-    overflow: hidden;
-    font-weight: 300 !important;
-    font-family: 'Outfit', sans-serif !important;
-  }
-
-  .dive-button:hover {
-    border-color: var(--gold) !important;
-    background: var(--gold) !important;
-    color: var(--navy) !important;
-    box-shadow: 0 0 40px rgba(255, 140, 0, 0.5) !important;
-    transform: translateY(-2px) !important;
-  }
 
   @media (max-width: 768px) {
     .accent-label {

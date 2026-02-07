@@ -5,6 +5,7 @@ import { motion } from 'framer-motion';
 import { commonButtonStyle } from '../common/ButtonStyles';
 import CateringForm from "./CateringFormRefactored";
 import cateringImage from '../../assets/images/bg2.jpg';
+import AccordionFoldImage from './AccordionFoldImage';
 
 const CateringSection: React.FC = () => {
   const [isFormOpen, setIsFormOpen] = useState(false);
@@ -27,8 +28,8 @@ const CateringSection: React.FC = () => {
         sx={{
           display: 'flex',
           flexDirection: 'column',
-          alignItems: { xs: 'center', md: 'flex-start' },
-          textAlign: { xs: 'center', md: 'left' },
+          alignItems: 'center',
+          textAlign: 'center',
           mb: { xs: 8, md: 10 },
           position: 'relative',
         }}
@@ -47,12 +48,12 @@ const CateringSection: React.FC = () => {
             color: '#fff',
             fontSize: { xs: '3rem', md: '5rem' },
             lineHeight: 1,
+            fontFamily: "'Libre Caslon Display', serif",
           }}
         >
-          PREMIUM <span style={{ color: '#FF8C00', fontStyle: 'italic' }}>CATERING</span>
+          PREMIUM CATERING
         </Typography>
 
-        <Box sx={{ width: '60px', height: '1px', bgcolor: 'rgba(255,140,0,0.4)', mt: 3, mx: { xs: 'auto', md: 0 } }} />
       </Box>
 
       <Box
@@ -68,17 +69,35 @@ const CateringSection: React.FC = () => {
           sx={{
             flex: 1,
             textAlign: { xs: 'center', md: 'left' },
+            position: 'relative',
             display: 'flex',
             flexDirection: 'column',
             alignItems: { xs: 'center', md: 'flex-start' },
           }}
         >
+          <Box
+            sx={{ mb: 4, opacity: 0.08, display: { xs: 'none', md: 'block' } }}
+          >
+            <Typography
+              variant="h1"
+              sx={{
+                fontSize: '12rem',
+                fontFamily: "'Raleway', sans-serif",
+                fontWeight: 900,
+                lineHeight: 0.8,
+                ml: -6,
+              }}
+            >
+              02
+            </Typography>
+          </Box>
+
           <Typography
             variant="h3"
             sx={{
               color: '#fff',
               fontSize: { xs: '1.8rem', md: '2.8rem' },
-              fontFamily: "'Playfair Display', serif",
+              fontFamily: "'Raleway', sans-serif",
               fontWeight: 700,
               mb: 4,
               lineHeight: 1.2,
@@ -95,7 +114,7 @@ const CateringSection: React.FC = () => {
               lineHeight: 1.9,
               mb: 5,
               fontWeight: 300,
-              fontFamily: '"Outfit", sans-serif',
+              fontFamily: "'Inter', sans-serif",
               maxWidth: '450px',
               mx: { xs: 'auto', md: 0 },
             }}
@@ -137,28 +156,15 @@ const CateringSection: React.FC = () => {
             }}
           />
 
-          <Box
-            component={motion.div}
-            initial={{ opacity: 0, scale: 1.05 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 1.5 }}
+          <AccordionFoldImage
+            src={cateringImage}
+            mode="auto"
             sx={{
               width: '100%',
               height: '100%',
-              backgroundImage: `url(${cateringImage})`,
-              backgroundSize: 'cover',
-              backgroundPosition: 'center',
               borderRadius: '32px',
               boxShadow: '0 50px 100px rgba(0,0,0,0.5)',
-              filter: 'brightness(0.8)',
-              position: 'relative',
               zIndex: 1,
-              '&::after': {
-                content: '""',
-                position: 'absolute',
-                inset: 0,
-                background: 'linear-gradient(to top, rgba(0,0,0,0.8), transparent)',
-              },
             }}
           />
         </Box>

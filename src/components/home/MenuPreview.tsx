@@ -50,7 +50,7 @@ const MenuPreview: React.FC = () => {
                 <Typography
                     variant="h2"
                     sx={{
-                        fontFamily: "'Inter', sans-serif",
+                        fontFamily: "'Libre Caslon Display', serif",
                         fontWeight: 300,
                         textTransform: 'uppercase',
                         letterSpacing: { xs: '0.3em', md: '0.5em' },
@@ -61,15 +61,6 @@ const MenuPreview: React.FC = () => {
                 >
                     OUR MENU
                 </Typography>
-                <Box
-                    sx={{
-                        width: '60px',
-                        height: '2px',
-                        background: 'linear-gradient(90deg, #FF8C00, transparent)',
-                        margin: '1.5rem auto 0',
-                        borderRadius: '2px'
-                    }}
-                />
             </motion.div>
 
             {/* Main Content Area: Image + Overlapping Card */}
@@ -175,8 +166,6 @@ const MenuPreview: React.FC = () => {
                         >
                             DESIGN <span>&</span> TASTE
                         </Typography>
-
-                        <Box sx={{ width: '40px', height: '1px', background: 'rgba(255, 255, 255, 0.2)', my: 1 }} />
 
                         <Typography
                             variant="body1"

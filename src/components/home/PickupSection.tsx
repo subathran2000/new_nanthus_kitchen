@@ -14,8 +14,8 @@ const PickupSection: React.FC = () => {
         margin: "0 auto",
         display: "flex",
         flexDirection: "column",
-        alignItems: { xs: "center", md: "flex-end" },
-        textAlign: { xs: "center", md: "right" },
+        alignItems: "center",
+        textAlign: "center",
         padding: { xs: "4rem 2rem", md: "8rem 2rem" },
         color: "#fff",
         position: "relative",
@@ -37,10 +37,10 @@ const PickupSection: React.FC = () => {
           lineHeight: 1,
           mb: 4,
           color: "#fff",
+          fontFamily: "'Libre Caslon Display', serif",
         }}
       >
-        ORDER{" "}
-        <span style={{ color: "#FF8C00", fontStyle: "italic" }}>PICKUP</span>
+        ORDER PICKUP
       </Typography>
 
       <Typography
@@ -53,7 +53,7 @@ const PickupSection: React.FC = () => {
           mb: 6,
           fontFamily: "'Inter', sans-serif",
           fontWeight: 300,
-          mx: { xs: "auto", md: 0 },
+          mx: "auto",
         }}
       >
         Experience the pinnacle of Jaffna flavor in the comfort of your home.
@@ -66,7 +66,7 @@ const PickupSection: React.FC = () => {
           display: "flex",
           flexDirection: { xs: "column", md: "row" },
           gap: 3,
-          justifyContent: { xs: "center", md: "flex-end" },
+          justifyContent: { xs: "center", md: "center" },
           alignItems: "center",
           width: "100%",
         }}
@@ -79,34 +79,7 @@ const PickupSection: React.FC = () => {
         </Button>
       </Box>
 
-      <Box
-        sx={{
-          display: "flex",
-          gap: 4,
-          mt: 8,
-          opacity: 0.4,
-          justifyContent: { xs: "center", md: "flex-end" },
-        }}
-      >
-        <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-          <StoreIcon sx={{ fontSize: 16, color: "#FF8C00" }} />
-          <Typography
-            variant="caption"
-            sx={{ fontFamily: "monospace", letterSpacing: "0.2em" }}
-          >
-            LOC_DUAL
-          </Typography>
-        </Box>
-        <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-          <AccessTimeIcon sx={{ fontSize: 16, color: "#FF8C00" }} />
-          <Typography
-            variant="caption"
-            sx={{ fontFamily: "monospace", letterSpacing: "0.2em" }}
-          >
-            EST_PREP: 25M
-          </Typography>
-        </Box>
-      </Box>
+
     </Box>
   );
 };

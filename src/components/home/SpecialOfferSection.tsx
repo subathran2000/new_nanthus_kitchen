@@ -6,6 +6,7 @@ import LocalOfferIcon from '@mui/icons-material/LocalOffer';
 
 // Import local images
 import specialImage from '../../assets/images/special_bg.png';
+import AccordionFoldImage from './AccordionFoldImage';
 
 const SpecialOfferSection: React.FC = () => {
   return (
@@ -26,8 +27,8 @@ const SpecialOfferSection: React.FC = () => {
         sx={{
           display: "flex",
           flexDirection: "column",
-          alignItems: { xs: "center", md: "flex-start" },
-          textAlign: { xs: "center", md: "left" },
+          alignItems: "center",
+          textAlign: "center",
           mb: { xs: 8, md: 10 },
           position: "relative",
         }}
@@ -46,21 +47,12 @@ const SpecialOfferSection: React.FC = () => {
             color: "#fff",
             fontSize: { xs: "3rem", md: "5rem" },
             lineHeight: 1,
+            fontFamily: "'Libre Caslon Display', serif",
           }}
         >
-          CHEF'S{" "}
-          <span style={{ color: "#FF8C00", fontStyle: "italic" }}>SELECT</span>
+          CHEF'S SELECT
         </Typography>
 
-        <Box
-          sx={{
-            width: "60px",
-            height: "1px",
-            bgcolor: "rgba(255,140,0,0.4)",
-            mt: 3,
-            mx: { xs: "auto", md: 0 },
-          }}
-        />
       </Box>
 
       <Box
@@ -99,29 +91,15 @@ const SpecialOfferSection: React.FC = () => {
             }}
           />
 
-          <Box
-            component={motion.div}
-            initial={{ opacity: 0, x: -30 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            transition={{ duration: 1.2 }}
+          <AccordionFoldImage
+            src={specialImage}
+            mode="auto"
             sx={{
               width: "100%",
               height: "100%",
-              backgroundImage: `url(${specialImage})`,
-              backgroundSize: "cover",
-              backgroundPosition: "center",
               borderRadius: "32px",
               boxShadow: "0 50px 100px rgba(0,0,0,0.5)",
-              position: "relative",
-              overflow: "hidden",
               zIndex: 1,
-              "&::after": {
-                content: '""',
-                position: "absolute",
-                inset: 0,
-                background:
-                  "linear-gradient(to bottom, transparent 60%, rgba(0,0,0,0.6))",
-              },
             }}
           />
         </Box>
@@ -143,7 +121,7 @@ const SpecialOfferSection: React.FC = () => {
               variant="h1"
               sx={{
                 fontSize: "12rem",
-                fontFamily: "'Playfair Display', serif",
+                fontFamily: "'Raleway', sans-serif",
                 fontWeight: 900,
                 lineHeight: 0.8,
                 ml: -6,
@@ -158,7 +136,7 @@ const SpecialOfferSection: React.FC = () => {
             sx={{
               color: "#fff",
               fontSize: { xs: "1.8rem", md: "2.8rem" },
-              fontFamily: "'Playfair Display', serif",
+              fontFamily: "'Raleway', sans-serif",
               fontWeight: 700,
               mb: 4,
               lineHeight: 1.2,

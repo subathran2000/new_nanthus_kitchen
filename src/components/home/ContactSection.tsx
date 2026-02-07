@@ -23,8 +23,8 @@ const ContactSection = () => {
                 position: 'relative',
                 display: 'flex',
                 flexDirection: 'column',
-                alignItems: { xs: 'center', md: 'flex-start' },
-                textAlign: { xs: 'center', md: 'left' }
+                alignItems: 'center',
+                textAlign: 'center'
             }}>
                 <Typography
                     variant="overline"
@@ -39,11 +39,11 @@ const ContactSection = () => {
                         color: '#fff',
                         fontSize: { xs: '3rem', md: '5rem' },
                         lineHeight: 1,
+                        fontFamily: "'Libre Caslon Display', serif",
                     }}
                 >
-                    SAY <span style={{ color: '#FF8C00', fontStyle: 'italic' }}>HELLO</span>
+                    SAY HELLO
                 </Typography>
-                <Box sx={{ width: '60px', height: '1px', bgcolor: 'rgba(255,140,0,0.4)', mt: 3, mx: { xs: 'auto', md: 0 } }} />
             </Box>
 
             <Box sx={{
@@ -119,7 +119,7 @@ const ContactSection = () => {
                     alignItems: { xs: 'center', md: 'flex-start' },
                     width: '100%'
                 }}>
-                    <Typography variant="h5" sx={{ color: '#fff', fontFamily: "'Playfair Display', serif", fontWeight: 700 }}>Initiate Project Inquiry</Typography>
+                    <Typography variant="h5" sx={{ color: '#fff', fontFamily: "'Raleway', sans-serif", fontWeight: 700 }}>Initiate Project Inquiry</Typography>
                     <Typography sx={{ color: 'rgba(255,255,255,0.5)', lineHeight: 1.8 }}>
                         We're always looking for new culinary collaborations and catering opportunities. Let's discuss your next milestone.
                     </Typography>

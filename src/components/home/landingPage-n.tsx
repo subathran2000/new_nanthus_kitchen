@@ -275,16 +275,6 @@ const Landpage = () => {
                   />
                 </Box>
 
-                <Box
-                  sx={{
-                    width: "40px",
-                    height: "1px",
-                    background: "rgba(255, 140, 0, 0.4)",
-                    mt: 3,
-                    mb: 1,
-                    alignSelf: { xs: "center", md: "flex-start" },
-                  }}
-                />
 
                 <Box
                   sx={{
@@ -316,7 +306,6 @@ const Landpage = () => {
                 </Box>
 
                 <Button
-                  className="dive-button"
                   onClick={() => {
                     const menuSection = document.getElementById(
                       "menu-preview-section",
@@ -389,8 +378,8 @@ const Landpage = () => {
                   sx={{
                     display: "flex",
                     flexDirection: "column",
-                    alignItems: { xs: "center", md: "flex-start" },
-                    textAlign: { xs: "center", md: "left" },
+                    alignItems: "center",
+                    textAlign: "center",
                     mb: 6,
                   }}
                 >
@@ -415,7 +404,7 @@ const Landpage = () => {
                     <Typography
                       variant="h2"
                       sx={{
-                        fontFamily: "'Playfair Display', serif",
+                        fontFamily: "'Libre Caslon Display', serif",
                         fontWeight: 700,
                         fontSize: { xs: "2.5rem", md: "4.5rem" },
                       }}
@@ -559,7 +548,7 @@ const Landpage = () => {
 export default Landpage;
 
 const styles = `
-  @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;700&family=Pinyon+Script&family=Inter:wght@400;700;900&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Rock+Salt&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;700&family=Pinyon+Script&family=Inter:wght@400;700;900&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Rock+Salt&family=Libre+Caslon+Display&display=swap');
 
   :root {
     --gold: #FF8C00;
@@ -643,32 +632,6 @@ const styles = `
     }
   }
 
-  .dive-button {
-    margin-top: 1.25rem;
-    background: rgba(0,0,0,0.3) !important;
-    border: 1px solid rgba(0, 255, 255, 0.4) !important;
-    color: var(--cyan) !important;
-    padding: 1rem 3rem !important;
-    font-size: 1rem !important;
-    letter-spacing: 0.4em !important;
-    text-transform: uppercase !important;
-    cursor: pointer;
-    backdrop-filter: blur(10px);
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
-    border-radius: 0 !important;
-    position: relative;
-    overflow: hidden;
-    font-weight: 300 !important;
-    font-family: 'Outfit', sans-serif !important;
-  }
-
-  .dive-button:hover {
-    border-color: var(--gold) !important;
-    background: var(--gold) !important;
-    color: var(--navy) !important;
-    box-shadow: 0 0 40px rgba(255, 140, 0, 0.5) !important;
-    transform: translateY(-2px) !important;
-  }
 
 
   @media (max-width: 768px) {
