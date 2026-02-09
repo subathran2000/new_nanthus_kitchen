@@ -4,7 +4,6 @@ import { commonButtonStyle } from '../common/ButtonStyles';
 import { motion } from 'framer-motion';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 
-// Import local images
 import mainImage from "../../assets/images/restaurent.jpg";
 
 const MenuPreview: React.FC = () => {
@@ -13,57 +12,66 @@ const MenuPreview: React.FC = () => {
 
     return (
         <Box
+            component="section"
             sx={{
                 width: '100%',
                 maxWidth: '1200px',
                 margin: '0 auto',
+                background: 'transparent',
                 display: 'flex',
                 flexDirection: 'column',
                 alignItems: 'center',
-                gap: { xs: '1rem', md: '2rem' },
-                padding: { xs: '3rem 1rem', md: '0rem 2rem' },
+                gap: { xs: '1.5rem', md: '2.5rem' },
+                padding: { xs: '3rem 1rem', md: '4rem 2rem' },
                 position: 'relative',
-
             }}
         >
-            {/* Heading Above All */}
+            {/* Section label + title */}
             <motion.div
-                initial={{ opacity: 0, y: -20 }}
+                initial={{ opacity: 0, y: -16 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8 }}
+                transition={{ duration: 0.6 }}
                 viewport={{ once: true }}
-                style={{ textAlign: 'center' }}
+                style={{ textAlign: 'center', width: '100%' }}
             >
-                <Typography
-                    variant="overline"
+                <Box
                     sx={{
-                        color: '#FF8C00',
-                        letterSpacing: '0.6em',
-                        mb: 2,
-                        display: 'block',
-                        fontSize: '0.9rem',
-                        fontWeight: 400
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        gap: 1.5,
+                        mb: 1.5,
                     }}
                 >
-                    KITCHEN MAGIC
-                </Typography>
+                    <Box sx={{ width: 24, height: 1, bgcolor: '#FF8C00' }} />
+                    <Typography
+                        variant="overline"
+                        sx={{
+                            color: '#FF8C00',
+                            letterSpacing: '0.5em',
+                            fontSize: '0.8rem',
+                            fontWeight: 500,
+                        }}
+                    >
+                        KITCHEN MAGIC
+                    </Typography>
+                    <Box sx={{ width: 24, height: 1, bgcolor: '#FF8C00' }} />
+                </Box>
                 <Typography
                     variant="h2"
                     sx={{
                         fontFamily: "'Libre Caslon Display', serif",
                         fontWeight: 300,
                         textTransform: 'uppercase',
-                        letterSpacing: { xs: '0.3em', md: '0.5em' },
+                        letterSpacing: { xs: '0.25em', md: '0.45em' },
                         color: '#fff',
-                        fontSize: { xs: '1.8rem', md: '3.5rem' },
-                        textShadow: '0 0 20px rgba(255, 255, 255, 0.1)',
+                        fontSize: { xs: '1.75rem', md: '3.25rem' },
                     }}
                 >
                     OUR MENU
                 </Typography>
             </motion.div>
 
-            {/* Main Content Area: Image + Overlapping Card */}
+            {/* Content: image + text block */}
             <Box
                 sx={{
                     position: 'relative',
@@ -74,65 +82,63 @@ const MenuPreview: React.FC = () => {
                     flexDirection: { xs: 'column', md: 'row' },
                     alignItems: 'center',
                     justifyContent: 'center',
-                    gap: { xs: 2, md: 8 },
+                    gap: { xs: 2.5, md: 6 },
                 }}
             >
-                {/* Large Main Image */}
+                {/* Image block */}
                 <motion.div
-                    initial={{ opacity: 0, scale: 0.95 }}
+                    initial={{ opacity: 0, scale: 0.98 }}
                     whileInView={{ opacity: 1, scale: 1 }}
                     animate={{
-                        y: [0, -10, 0],
-                        transition: { duration: 6, repeat: Infinity, ease: "easeInOut" }
+                        y: [0, -8, 0],
+                        transition: { duration: 5, repeat: Infinity, ease: 'easeInOut' },
                     }}
-                    transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
+                    transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
                     viewport={{ once: true }}
                     style={{ width: '100%', zIndex: 1 }}
                 >
                     <Box
                         sx={{
-                            width: isMobile ? '100%' : '85%',
-                            height: { xs: '300px', sm: '450px', md: '550px' },
+                            width: isMobile ? '100%' : '82%',
+                            height: { xs: '280px', sm: '420px', md: '520px' },
                             background: `url(${mainImage}) center/cover no-repeat`,
-                            borderRadius: { xs: '24px', md: '40px' },
-                            boxShadow: '0 30px 60px rgba(0, 0, 0, 0.5)',
+                            borderRadius: { xs: '20px', md: '32px' },
+                            border: '1px solid rgba(255, 255, 255, 0.08)',
+                            boxShadow: '0 20px 50px rgba(0, 0, 0, 0.35)',
                             position: 'relative',
                             overflow: 'hidden',
                         }}
                     >
-                        {/* Subtle overlay gradient */}
                         <Box
                             sx={{
                                 position: 'absolute',
                                 inset: 0,
-                                background: 'linear-gradient(135deg, rgba(0, 30, 54, 0.2), transparent)',
+                                background: 'linear-gradient(160deg, rgba(0, 20, 40, 0.15), transparent 50%)',
                             }}
                         />
                     </Box>
                 </motion.div>
 
-                {/* Overlapping Dark Card */}
+                {/* Text block — transparent, no card fill */}
                 <motion.div
-                    initial={{ opacity: 0, x: isMobile ? 0 : 50, y: isMobile ? 30 : 0 }}
+                    initial={{ opacity: 0, x: isMobile ? 0 : 40, y: isMobile ? 20 : 0 }}
                     whileInView={{ opacity: 1, x: 0, y: 0 }}
-                    transition={{ duration: 1, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
+                    transition={{ duration: 0.8, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
                     viewport={{ once: true }}
                     style={{
                         zIndex: 2,
-                        width: isMobile ? '100%' : '500px',
+                        width: isMobile ? '100%' : '420px',
                     }}
                 >
                     <Box
                         sx={{
                             background: 'transparent',
-                            backdropFilter: 'none',
-                            padding: { xs: '1rem', md: '2rem' },
-                            borderRadius: '0',
-                            border: 'none',
-                            boxShadow: 'none',
+                            padding: { xs: '1rem 0', md: '1.5rem 0' },
+                            borderLeft: { xs: 'none', md: '3px solid rgba(255, 140, 0, 0.6)' },
+                            pl: { md: 2 },
                             display: 'flex',
                             flexDirection: 'column',
-                            gap: 2,
+                            gap: 1.5,
                             textAlign: { xs: 'center', md: 'left' },
                             alignItems: { xs: 'center', md: 'flex-start' },
                         }}
@@ -140,10 +146,10 @@ const MenuPreview: React.FC = () => {
                         <Typography
                             variant="overline"
                             sx={{
-                                color: '#FF8C00',
-                                letterSpacing: '0.4em',
-                                fontSize: '0.75rem',
-                                fontWeight: 600
+                                color: 'rgba(255, 140, 0, 0.95)',
+                                letterSpacing: '0.35em',
+                                fontSize: '0.7rem',
+                                fontWeight: 600,
                             }}
                         >
                             CONCEPT
@@ -153,15 +159,14 @@ const MenuPreview: React.FC = () => {
                             variant="h3"
                             sx={{
                                 fontFamily: "'Inter', sans-serif",
-                                fontWeight: 800,
-                                fontSize: { xs: '1.8rem', md: '2.8rem' },
+                                fontWeight: 700,
+                                fontSize: { xs: '1.65rem', md: '2.5rem' },
                                 color: '#fff',
-                                textShadow: '0 5px 15px rgba(0,0,0,0.5)',
+                                lineHeight: 1.2,
                                 '& span': {
                                     color: '#FF8C00',
-                                    mx: 1,
-                                    textShadow: '0 0 20px rgba(255, 140, 0, 0.4)',
-                                }
+                                    mx: 0.5,
+                                },
                             }}
                         >
                             DESIGN <span>&</span> TASTE
@@ -170,12 +175,11 @@ const MenuPreview: React.FC = () => {
                         <Typography
                             variant="body1"
                             sx={{
-                                color: 'rgba(255, 255, 255, 0.6)',
-                                fontSize: '1rem',
-                                lineHeight: 1.8,
-                                maxWidth: '380px',
-                                mb: 2,
-                                fontFamily: "'Inter', sans-serif",
+                                color: 'rgba(255, 255, 255, 0.7)',
+                                fontSize: '0.95rem',
+                                lineHeight: 1.75,
+                                maxWidth: '360px',
+                                mb: 1,
                                 fontWeight: 300,
                             }}
                         >

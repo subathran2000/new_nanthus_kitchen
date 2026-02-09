@@ -15,7 +15,7 @@ const CateringSection: React.FC = () => {
       sx={{
         width: '100%',
         maxWidth: '1400px',
-        margin: '4rem auto 8rem',
+        margin: '4rem auto 2rem',
         position: 'relative',
         minHeight: '80vh',
         display: 'flex',
@@ -158,7 +158,7 @@ const CateringSection: React.FC = () => {
 
           <AccordionFoldImage
             src={cateringImage}
-            mode="auto"
+            mode="scroll"
             sx={{
               width: '100%',
               height: '100%',

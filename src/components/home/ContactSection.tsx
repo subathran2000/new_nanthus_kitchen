@@ -15,7 +15,7 @@ const ContactSection = () => {
             width: '100%',
             maxWidth: '1400px',
             mx: 'auto',
-            padding: { xs: '4rem 2rem', md: '10rem 80px' },
+            padding: { xs: '2rem 2rem', md: '4rem 80px' },
             position: 'relative'
         }}>
             <Box sx={{

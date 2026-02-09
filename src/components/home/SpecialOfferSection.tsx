@@ -1,4 +1,4 @@
-﻿import React from 'react';
+import React from 'react';
 import { Box, Typography, Button } from '@mui/material';
 import { commonButtonStyle } from '../common/ButtonStyles';
 import { motion } from 'framer-motion';
@@ -93,7 +93,7 @@ const SpecialOfferSection: React.FC = () => {
 
           <AccordionFoldImage
             src={specialImage}
-            mode="auto"
+            mode="scroll"
             sx={{
               width: "100%",
               height: "100%",

@@ -1,5 +1,6 @@
 import React, { useRef, useState, useEffect, Suspense } from 'react'
 import { Box, Button, Typography, useTheme, useMediaQuery } from '@mui/material'
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward'
 import { useNavigate } from 'react-router-dom'
 import { motion } from "framer-motion"
 import { Canvas } from '@react-three/fiber'
@@ -25,7 +26,7 @@ import SpecialsPopup from './SpecialsPopup'
 import HeroImageGrid from './HeroImageGrid'
 import Sparkles from '../common/Sparkles'
 import { CustomScrollbarUI, ScrollSync } from '../common/CustomScrollbar'
-import ThreeBackground from './ThreeBackground' // Import the new 3D background
+import ThreeBackground from './ThreeBackground'
 
 const Section: React.FC<{
   children: React.ReactNode;
@@ -153,7 +154,7 @@ const LandingStatic: React.FC = () => {
         <color attach="background" args={['#001e36']} />
         <fog attach="fog" args={['#001e36', 5, 25]} />
 
-        <ScrollControls pages={isMobile ? 17 : 11} damping={0.15}>
+        <ScrollControls pages={isMobile ? 11 : 9} damping={0.15}>
           {/* Internal components can access useScroll now */}
           {!isMobile && <ScrollSync scrollbarRef={scrollbarRef} />}
 
@@ -344,35 +345,50 @@ const LandingStatic: React.FC = () => {
             </Section>
 
             {/* 2. About Us */}
-            <Section style={{ paddingTop: 0 }}>
+            <Section style={{ paddingTop: 0, paddingBottom: 0 }}>
               <AboutUs />
             </Section>
 
-            {/* 3. Menu preview */}
-            <Section id="menu-preview-section" style={{ paddingTop: 0 }}>
+            {/* 3. Menu preview — transparent background */}
+            <Section id="menu-preview-section" style={{ paddingTop: 0, paddingBottom: 0, background: 'transparent' }}>
               <Box
                 sx={{
                   width: "100%",
                   maxWidth: 1200,
                   mx: "auto",
-                  px: { xs: 2, md: 0 },
+                  background: "transparent",
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                  gap: { xs: "1.5rem", md: "2.5rem" },
+                  padding: { xs: "3rem 1rem", md: "4rem 2rem" },
+                  px: { xs: 2, md: 4 },
                 }}
               >
-                <Box
-                  sx={{
-                    display: "flex",
-                    flexDirection: "column",
-                    alignItems: "center",
-                    textAlign: "center",
-                    mb: 8,
-                  }}
-                >
-                  <Typography
-                    variant="overline"
-                    className="overline-text"
+                {/* Section label + title */}
+                <Box sx={{ textAlign: "center", width: "100%" }}>
+                  <Box
+                    sx={{
+                      display: "inline-flex",
+                      alignItems: "center",
+                      gap: 1.5,
+                      mb: 1.5,
+                    }}
                   >
-                    CURATED FLAVORS
-                  </Typography>
+                    <Box sx={{ width: 24, height: 1, bgcolor: "#FF8C00" }} />
+                    <Typography
+                      variant="overline"
+                      sx={{
+                        color: "#FF8C00",
+                        letterSpacing: "0.5em",
+                        fontSize: "0.8rem",
+                        fontWeight: 500,
+                      }}
+                    >
+                      KITCHEN MAGIC
+                    </Typography>
+                    <Box sx={{ width: 24, height: 1, bgcolor: "#FF8C00" }} />
+                  </Box>
                   <Typography
                     variant="h2"
                     className="section-title"
@@ -383,85 +399,108 @@ const LandingStatic: React.FC = () => {
                       fontFamily: "'Libre Caslon Display', serif",
                     }}
                   >
-                    THE MENU
+                    OUR MENU
                   </Typography>
                 </Box>
 
+                {/* Content: image + text block */}
                 <Box
                   sx={{
                     position: "relative",
+                    width: "100%",
+                    maxWidth: 1000,
                     display: "flex",
                     flexDirection: { xs: "column", md: "row" },
                     alignItems: "center",
+                    justifyContent: "center",
+                    gap: { xs: 2.5, md: 6 },
                   }}
                 >
+                  {/* Image block */}
                   <Box
                     sx={{
-                      width: { xs: "100%", md: "75%" },
-                      height: { xs: "400px", md: "650px" },
-                      background: `url(${logoReflect}) center/cover`,
-                      borderRadius: "0px",
+                      width: isMobile ? "100%" : "82%",
+                      height: { xs: "280px", sm: "420px", md: "520px" },
+                      background: `url(${logoReflect}) center/cover no-repeat`,
+                      borderRadius: { xs: "20px", md: "32px" },
+                      border: "1px solid rgba(255, 255, 255, 0.08)",
+                      boxShadow: "0 20px 50px rgba(0, 0, 0, 0.35)",
                       position: "relative",
-                      "&::after": {
-                        content: '""',
-                        position: "absolute",
-                        top: 0,
-                        left: 0,
-                        width: "100%",
-                        height: "100%",
-                        background: "linear-gradient(to right, rgba(0,0,0,0.4), transparent)",
-                      }
+                      overflow: "hidden",
                     }}
-                  />
+                  >
+                    <Box
+                      sx={{
+                        position: "absolute",
+                        inset: 0,
+                        background:
+                          "linear-gradient(160deg, rgba(0, 20, 40, 0.15), transparent 50%)",
+                      }}
+                    />
+                  </Box>
+
+                  {/* Text block — transparent, no card fill */}
                   <Box
                     sx={{
-                      width: { xs: "95%", md: "480px" },
-                      ml: { xs: 0, md: -15 },
-                      mt: { xs: -8, md: 0 },
-                      p: { xs: 4, md: 8 },
-                      bgcolor: "rgba(0,0,0,0.7)",
-                      backdropFilter: "blur(40px)",
-                      WebkitBackdropFilter: "blur(40px)",
-                      borderRadius: "0px",
-                      border: "1px solid rgba(255,140,0,0.2)",
-                      textAlign: "left",
+                      width: { xs: "100%", md: "420px" },
+                      background: "transparent",
+                      padding: { xs: "1rem 0", md: "1.5rem 0" },
+                      borderLeft: { xs: "none", md: "3px solid rgba(255, 140, 0, 0.6)" },
+                      pl: { md: 2 },
+                      display: "flex",
+                      flexDirection: "column",
+                      gap: 1.5,
+                      textAlign: { xs: "center", md: "left" },
+                      alignItems: { xs: "center", md: "flex-start" },
                       zIndex: 2,
-                      boxShadow: "0 40px 80px rgba(0,0,0,0.5)",
                     }}
                   >
                     <Typography
-                      variant="h4"
+                      variant="overline"
                       sx={{
-                        color: "#FF8C00",
-                        mb: 3,
-                        fontFamily: "'Playfair Display', serif",
-                        fontWeight: 700,
-                        fontSize: { xs: "1.75rem", md: "2.25rem" },
+                        color: "rgba(255, 140, 0, 0.95)",
+                        letterSpacing: "0.35em",
+                        fontSize: "0.7rem",
+                        fontWeight: 600,
                       }}
                     >
-                      Gastronomy Redefined
+                      CONCEPT
                     </Typography>
                     <Typography
+                      variant="h3"
                       sx={{
-                        color: "rgba(255,255,255,0.7)",
-                        mb: 5,
-                        lineHeight: 1.8,
-                        fontSize: "1.1rem",
-                        fontFamily: "'Outfit', sans-serif"
+                        fontFamily: "'Inter', sans-serif",
+                        fontWeight: 700,
+                        fontSize: { xs: "1.65rem", md: "2.5rem" },
+                        color: "#fff",
+                        lineHeight: 1.2,
+                        "& span": { color: "#FF8C00", mx: 0.5 },
                       }}
                     >
-                      Discover a sensory experience where every dish tells a story of
-                      tradition, innovation, and passion. Crafting moments that linger.
+                      DESIGN <span>&</span> TASTE
+                    </Typography>
+                    <Typography
+                      variant="body1"
+                      sx={{
+                        color: "rgba(255, 255, 255, 0.7)",
+                        fontSize: "0.95rem",
+                        lineHeight: 1.75,
+                        maxWidth: "360px",
+                        mb: 1,
+                        fontWeight: 300,
+                      }}
+                    >
+                      Experience the perfect fusion of culinary artistry and modern design.
+                      Our menu is a curated collection of flavors, textures, and visual
+                      delights crafted to elevate your dining journey.
                     </Typography>
                     <Button
                       variant="outlined"
                       onClick={() => (window.location.href = "/menu-new")}
-                      sx={{
-                        ...commonButtonStyle,
-                        width: { xs: "100%", md: "auto" }
-                      }}
+                      endIcon={<ArrowForwardIcon />}
+                      sx={{ ...commonButtonStyle, width: { xs: "100%", md: "auto" } }}
                     >
-                      View Full Menu
+                      EXPLORE MENU
                     </Button>
                   </Box>
                 </Box>
@@ -477,15 +516,22 @@ const LandingStatic: React.FC = () => {
               <PickupSection />
             </Section>
 
-            <Section style={{ paddingTop: 0 }}>
+            <Section style={{ paddingTop: 0, paddingBottom: 0 }}>
               <CateringSection />
             </Section>
 
-            <Section style={{ paddingTop: 0 }}>
+            <Section style={{ paddingTop: 0, paddingBottom: 0 }}>
               <ContactSection />
             </Section>
 
-            <Section style={{ paddingTop: 0 }}>
+            <Section
+              style={{
+                paddingTop: 0,
+                paddingBottom: 0,
+                minHeight: "auto",
+                justifyContent: "flex-start",
+              }}
+            >
               <CreativeFooter />
             </Section>
 

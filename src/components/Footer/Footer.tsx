@@ -34,7 +34,7 @@ const CreativeFooter = () => {
         width: "100%",
         position: "relative",
         mt: 4,
-        pb: 8,
+        pb: 0,
         overflow: "visible",
         color: "#fff",
         fontFamily: '"Inter", sans-serif',

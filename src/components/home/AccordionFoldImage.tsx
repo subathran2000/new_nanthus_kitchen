@@ -1,7 +1,7 @@
-import { useRef } from 'react';
+import { useRef, useEffect } from 'react';
 import { Box, keyframes } from '@mui/material';
 import type { SxProps, Theme } from '@mui/material';
-import { motion, useScroll, useTransform, useSpring } from 'framer-motion';
+import { motion, useInView, useMotionValue, animate, useTransform } from 'framer-motion';
 
 interface AccordionFoldImageProps {
     src: string;
@@ -15,6 +15,10 @@ const SKEW_VAL = 15; // deg
 const CRUNCH_VAL = 0.6;
 const DURATION = '4s';
 const DELAY = '1s';
+
+// Scroll mode: folded when out of view, unfolded when in view
+const SCROLL_CRUNCH = 0.5;
+const SCROLL_SKEW = 20;
 
 // CSS Keyframes for 'auto' mode
 const crunchAnimation = keyframes`
@@ -32,27 +36,26 @@ const evenFoldAnimation = keyframes`
   50% { transform: skewY(-${SKEW_VAL}deg); filter: brightness(0.75); }
 `;
 
+const springTransition = { type: "spring" as const, stiffness: 120, damping: 24 };
+
 const AccordionFoldImage: React.FC<AccordionFoldImageProps> = ({ src, sx, mode = 'scroll' }) => {
     const containerRef = useRef<HTMLDivElement>(null);
 
-    const { scrollYProgress } = useScroll({
-        target: containerRef,
-        offset: ["start end", "center center", "end start"],
+    // Use IntersectionObserver (via useInView) - works with R3F ScrollControls & custom scroll
+    const isInView = useInView(containerRef, {
+        amount: 0.25, // Unfold when 25% of accordion is visible
+        margin: "-50px", // Slight margin so it triggers a bit before fully entering
     });
 
-    // Smooth out the scroll progress
-    const smoothProgress = useSpring(scrollYProgress, {
-        stiffness: 100,
-        damping: 30,
-        restDelta: 0.001
-    });
+    // Animated values: folded (0) -> unfolded (1) based on scroll visibility
+    const progress = useMotionValue(isInView ? 1 : 0);
 
-    // Scale: Folded (0.5) -> Open (1) -> Folded (0.5)
-    // We use a constant for the crunch factor in scroll mode
-    const SCROLL_CRUNCH = 0.5;
-    const SCROLL_SKEW = 20;
+    // Sync progress with isInView
+    useEffect(() => {
+        animate(progress, isInView ? 1 : 0, springTransition);
+    }, [isInView, progress]);
 
-    const scaleX = useTransform(smoothProgress, [0, 0.5, 1], [SCROLL_CRUNCH, 1, SCROLL_CRUNCH]);
+    const scaleX = useTransform(progress, [0, 1], [SCROLL_CRUNCH, 1]);
 
     return (
         <Box
@@ -72,23 +75,16 @@ const AccordionFoldImage: React.FC<AccordionFoldImageProps> = ({ src, sx, mode =
                 const isOdd = i % 2 !== 0;
                 const backgroundPosition = `${(i / (FOLDS - 1)) * 100}%`;
 
-                // Hooks must be called unconditionally if we use them, 
-                // but here we are using transforms only for scroll mode.
-                // However, useTransform must be called at top level or in a loop but consistently.
-                // To keep it clean, we'll define transformations for scroll mode here.
-
-                // Skew: max skew at edges, 0 at center
                 const skewY = useTransform(
-                    smoothProgress,
-                    [0, 0.5, 1],
-                    [isOdd ? -SCROLL_SKEW : SCROLL_SKEW, 0, isOdd ? -SCROLL_SKEW : SCROLL_SKEW]
+                    progress,
+                    [0, 1],
+                    [isOdd ? -SCROLL_SKEW : SCROLL_SKEW, 0]
                 );
 
-                // Brightness: darker when folded, normal when open
                 const brightnessProgress = useTransform(
-                    smoothProgress,
-                    [0, 0.5, 1],
-                    [isOdd ? 0.7 : 1.3, 1, isOdd ? 0.7 : 1.3]
+                    progress,
+                    [0, 1],
+                    [isOdd ? 0.7 : 1.3, 1]
                 );
 
                 const filter = useTransform(brightnessProgress, (b) => `brightness(${b})`);
