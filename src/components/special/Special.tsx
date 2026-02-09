@@ -205,39 +205,49 @@ const Coverflow3D: React.FC = () => {
             <Box
                 sx={{
                     width: '100%',
+                    minHeight: '100vh',
                     height: '100vh',
                     display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
+                    flexDirection: 'column',
                     position: 'relative',
                     zIndex: 10,
+                    overflow: 'hidden',
                 }}
             >
                 <NavButtons onHome={() => routeTo('/')} />
 
-                {/* Title and Description */}
+                {/* Heading: own band so it never touches the cards */}
                 <Box
                     sx={{
-                        position: 'absolute',
-                        top: { xs: '160px', md: '70px' }, // Moved further down
-                        left: '50%',
-                        transform: 'translateX(-50%)',
-                        color: 'white',
-                        textAlign: 'center',
-                        zIndex: 200,
-                        width: '90%',
-                        maxWidth: '600px',
+                        flexShrink: 0,
+                        width: '100%',
+                        px: { xs: 2, sm: 3 },
+                        pt: { xs: 10, sm: 11, md: 12 },
+                        pb: { xs: 2, sm: 3 },
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        minHeight: { xs: 72, sm: 80, md: 96 },
+                        boxSizing: 'border-box',
                     }}
                 >
                     <Typography
                         variant="h3"
+                        component="h1"
                         sx={{
-                            fontSize: { xs: '24px', sm: '32px', md: '48px' },
+                            fontSize: { xs: 'clamp(18px, 5vw, 24px)', sm: 'clamp(24px, 4vw, 32px)', md: 'clamp(28px, 3.5vw, 48px)' },
                             fontWeight: 700,
-                            mb: 1,
                             color: '#fff',
+                            textAlign: 'center',
                             textShadow: '0 0 20px rgba(255, 140, 0, 0.5)',
                             animation: 'fadeIn 0.6s forwards',
+                            maxWidth: '90%',
+                            overflow: 'hidden',
+                            textOverflow: 'ellipsis',
+                            display: '-webkit-box',
+                            WebkitLineClamp: 2,
+                            WebkitBoxOrient: 'vertical',
+                            lineHeight: 1.2,
                             '@keyframes fadeIn': {
                                 from: {
                                     opacity: 0,
@@ -254,19 +264,21 @@ const Coverflow3D: React.FC = () => {
                     </Typography>
                 </Box>
 
-                {/* Coverflow Container */}
+                {/* Coverflow Container - takes remaining space, cards stay below heading */}
                 <Box
                     ref={containerRef}
                     tabIndex={0}
                     sx={{
+                        flex: 1,
+                        minHeight: 0,
                         width: '100%',
-                        height: '100%',
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
                         perspective: '1200px',
                         position: 'relative',
                         outline: 'none',
+                        py: { xs: 1, sm: 2 },
                     }}
                 >
                     {/* Coverflow Items */}
@@ -278,7 +290,8 @@ const Coverflow3D: React.FC = () => {
                             transformStyle: 'preserve-3d',
                             position: 'relative',
                             width: '100%',
-                            height: '600px',
+                            height: { xs: 'min(420px, 55vh)', sm: 'min(520px, 60vh)', md: '600px' },
+                            maxHeight: '600px',
                         }}
                     >
                         {imageData.map((item, index) => (
@@ -418,92 +431,83 @@ const Coverflow3D: React.FC = () => {
                     >
                         <ChevronRight sx={{ fontSize: { xs: '24px', md: '32px' } }} />
                     </IconButton>
+                </Box>
 
-                    {/* Bottom Info Section (Dots + Description) */}
-                    <Box
-                        sx={{
-                            position: 'absolute',
-                            bottom: { xs: '40px', md: '60px' }, // Moved up
-                            left: '50%',
-                            transform: 'translateX(-50%)',
-                            display: 'flex',
-                            flexDirection: 'column',
-                            alignItems: 'center',
-                            gap: '20px',
-                            zIndex: 200,
-                            width: '90%',
-                            maxWidth: '800px',
-                        }}
-                    >
-                        {/* Dots Indicator */}
-                        <Box
+                {/* Bottom band: dots + description — never touches cards */}
+                <Box
+                    sx={{
+                        flexShrink: 0,
+                        width: '100%',
+                        px: { xs: 2, sm: 3 },
+                        pt: { xs: 2, sm: 3 },
+                        pb: { xs: 3, sm: 4, md: 5 },
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                        gap: { xs: 1.5, sm: 2 },
+                        zIndex: 200,
+                        maxWidth: '800px',
+                        mx: 'auto',
+                        boxSizing: 'border-box',
+                    }}
+                >
+                    <Box sx={{ display: 'flex', gap: '12px', padding: '10px 20px' }}>
+                        {[-2, -1, 0, 1, 2].map((offset) => {
+                            const index = (currentIndex + offset + imageData.length) % imageData.length;
+                            let scale = 1;
+                            let opacity = 1;
+                            if (offset === 0) {
+                                scale = 1.5;
+                                opacity = 1;
+                            } else if (Math.abs(offset) === 1) {
+                                scale = 1;
+                                opacity = 0.7;
+                            } else {
+                                scale = 0.6;
+                                opacity = 0.4;
+                            }
+                            return (
+                                <Box
+                                    key={`${index}-${offset}`}
+                                    onClick={() => {
+                                        handleUserInteraction();
+                                        goToIndex(index);
+                                    }}
+                                    sx={{
+                                        width: '10px',
+                                        height: '10px',
+                                        borderRadius: '50%',
+                                        bgcolor: offset === 0 ? '#FF8C00' : 'rgba(255, 140, 0, 0.8)',
+                                        cursor: 'pointer',
+                                        transition: 'all 0.3s ease',
+                                        transform: `scale(${scale})`,
+                                        opacity,
+                                        boxShadow: offset === 0 ? '0 0 10px rgba(255, 140, 0, 0.8)' : 'none',
+                                        '&:hover': {
+                                            opacity: 1,
+                                            transform: `scale(${scale * 1.2})`,
+                                        },
+                                    }}
+                                />
+                            );
+                        })}
+                    </Box>
+                    <Box sx={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
+                        <Typography
+                            variant="body1"
                             sx={{
-                                display: 'flex',
-                                gap: '12px',
-                                padding: '10px 20px',
+                                fontSize: { xs: '14px', sm: '16px', md: '18px' },
+                                color: 'rgba(255, 255, 255, 0.7)',
+                                opacity: 0.9,
+                                textAlign: 'center',
+                                lineHeight: 1.6,
+                                textShadow: '0 2px 4px rgba(0,0,0,0.5)',
+                                maxWidth: '600px',
+                                width: '100%',
                             }}
                         >
-                            {[-2, -1, 0, 1, 2].map((offset) => {
-                                const index = (currentIndex + offset + imageData.length) % imageData.length;
-                                let scale = 1;
-                                let opacity = 1;
-
-                                if (offset === 0) {
-                                    scale = 1.5;
-                                    opacity = 1;
-                                } else if (Math.abs(offset) === 1) {
-                                    scale = 1;
-                                    opacity = 0.7;
-                                } else {
-                                    scale = 0.6;
-                                    opacity = 0.4;
-                                }
-
-                                return (
-                                    <Box
-                                        key={`${index}-${offset}`}
-                                        onClick={() => {
-                                            handleUserInteraction();
-                                            goToIndex(index);
-                                        }}
-                                        sx={{
-                                            width: '10px',
-                                            height: '10px',
-                                            borderRadius: '50%',
-                                            bgcolor: offset === 0 ? '#FF8C00' : 'rgba(255, 140, 0, 0.8)',
-                                            cursor: 'pointer',
-                                            transition: 'all 0.3s ease',
-                                            transform: `scale(${scale})`,
-                                            opacity: opacity,
-                                            boxShadow: offset === 0 ? '0 0 10px rgba(255, 140, 0, 0.8)' : 'none',
-                                            '&:hover': {
-                                                opacity: 1,
-                                                transform: `scale(${scale * 1.2})`,
-                                            },
-                                        }}
-                                    />
-                                );
-                            })}
-                        </Box>
-
-                        {/* Description Section - Perfectly Centered */}
-                        <Box sx={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
-                            <Typography
-                                variant="body1"
-                                sx={{
-                                    fontSize: { xs: '14px', sm: '16px', md: '18px' },
-                                    color: 'rgba(255, 255, 255, 0.7)',
-                                    opacity: 0.9,
-                                    textAlign: 'center',
-                                    lineHeight: 1.6,
-                                    textShadow: '0 2px 4px rgba(0,0,0,0.5)',
-                                    maxWidth: '600px',
-                                    width: '100%',
-                                }}
-                            >
-                                {imageData[currentIndex].description}
-                            </Typography>
-                        </Box>
+                            {imageData[currentIndex].description}
+                        </Typography>
                     </Box>
                 </Box>
             </Box>

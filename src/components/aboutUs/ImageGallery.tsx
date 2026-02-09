@@ -179,6 +179,8 @@ const GallerySection: React.FC<GallerySectionProps> = ({ title, media, sectionIn
                 videoRefs.current.forEach((v) => v?.pause());
                 video.play();
                 setPlayingVideo(id);
+                // Expand this card to big view when playing from small
+                selectImage(id);
             }
         }
     };
@@ -239,17 +241,13 @@ const GallerySection: React.FC<GallerySectionProps> = ({ title, media, sectionIn
         <div style={{ marginBottom: '6rem' }}>
             {/* Section Title */}
             <h2 style={{
-                fontSize: 'clamp(1.8rem, 5vw, 3rem)',
-                fontWeight: '800',
-                background: 'linear-gradient(135deg, #FF8C00 0%, #ff9f1a 50%, #FF8C00 100%)',
-                WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent',
-                backgroundClip: 'text',
-                marginBottom: '3rem',
-                letterSpacing: '0.05em',
+                fontSize: 'clamp(1.5rem, 4vw, 2.25rem)',
+                fontWeight: '500',
+                fontFamily: '"Playfair Display", Georgia, serif',
+                color: 'rgba(255, 252, 245, 0.95)',
+                marginBottom: '2.5rem',
+                letterSpacing: '0.02em',
                 textAlign: 'center',
-                fontFamily: '"Inter", system-ui, -apple-system, sans-serif',
-                textTransform: 'uppercase'
             }}>
                 {title}
             </h2>
@@ -260,8 +258,16 @@ const GallerySection: React.FC<GallerySectionProps> = ({ title, media, sectionIn
                     <div
                         key={item.id}
                         className="gallery__image-wrapper"
+                        data-media-type={item.type}
                         onClick={() => selectImage(item.id)}
                     >
+                        <div className="media-badge">
+                            {item.type === 'image'
+                                ? 'Photo'
+                                : item.type === 'video'
+                                    ? 'Video'
+                                    : 'Story'}
+                        </div>
                         {mediaErrors.has(item.id) && (item.type === 'image' || item.type === 'video') ? (
                             <div className="text-content-card">
                                 <div className="text-content-inner">
@@ -287,15 +293,22 @@ const GallerySection: React.FC<GallerySectionProps> = ({ title, media, sectionIn
                                 <div
                                     className={`video-play-overlay ${playingVideo === item.id ? 'playing' : ''}`}
                                     onClick={(e) => handlePlayVideo(item.id, e)}
+                                    role="button"
+                                    aria-label={playingVideo === item.id ? 'Stop video' : 'Play video'}
                                 >
                                     {playingVideo !== item.id && (
-                                        <svg
-                                            className="play-icon"
-                                            viewBox="0 0 24 24"
-                                            fill="currentColor"
-                                        >
-                                            <path d="M8 5v14l11-7z" />
-                                        </svg>
+                                        <div className="play-button">
+                                            <span className="play-circle" aria-hidden="true">
+                                                <svg
+                                                    className="play-icon"
+                                                    viewBox="0 0 24 24"
+                                                    fill="currentColor"
+                                                >
+                                                    <path d="M8 5v14l11-7z" />
+                                                </svg>
+                                            </span>
+                                            <span className="play-label">Play</span>
+                                        </div>
                                     )}
                                 </div>
                             </>
@@ -319,7 +332,10 @@ const GallerySection: React.FC<GallerySectionProps> = ({ title, media, sectionIn
                         )}
                         {item.title && item.type !== 'text' && (
                             <div className="media-text-overlay">
-                                <span>{item.title}</span>
+                                <span className="media-title">{item.title}</span>
+                                <span className="media-meta">
+                                    {item.type === 'video' ? 'Tap to play' : 'Tap to view'}
+                                </span>
                             </div>
                         )}
                     </div>
