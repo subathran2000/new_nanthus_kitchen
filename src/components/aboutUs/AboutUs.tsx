@@ -1,8 +1,7 @@
 import { useNavigate } from "react-router-dom";
-import { IconButton } from "@mui/material";
-import { Home } from "@mui/icons-material";
 import ImageGallery from "./ImageGallery";
 import Reusable3DBackground from "../common/Reusable3DBackground";
+import NavButtons from "../common/NavButtons";
 
 const AboutUs = () => {
   const navigate = useNavigate();
@@ -24,32 +23,7 @@ const AboutUs = () => {
     >
       <Reusable3DBackground />
 
-      {/* Home Button */}
-      <IconButton
-        onClick={() => navigate("/")}
-        sx={{
-          position: "absolute",
-          top: { xs: "20px", md: "40px" },
-          right: { xs: "20px", md: "40px" },
-          bgcolor: "rgba(255, 140, 0, 0.1)",
-          border: "2px solid rgba(255, 140, 0, 0.3)",
-          color: "#FF8C00",
-          width: "50px",
-          height: "50px",
-          backdropFilter: "blur(10px)",
-          boxShadow:
-            "0 8px 32px rgba(255, 140, 0, 0.3), 0 0 20px rgba(255, 140, 0, 0.2)",
-          zIndex: 1001,
-          "&:hover": {
-            bgcolor: "rgba(255, 140, 0, 0.2)",
-            transform: "scale(1.1)",
-            boxShadow:
-              "0 0 30px rgba(255, 140, 0, 0.6), 0 0 60px rgba(255, 140, 0, 0.4)",
-          },
-        }}
-      >
-        <Home />
-      </IconButton>
+      <NavButtons onHome={() => navigate("/")} />
 
       {/* Title Section */}
       <div

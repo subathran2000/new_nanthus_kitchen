@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Box, IconButton, Typography, useTheme, useMediaQuery } from '@mui/material';
-import { ChevronLeft, ChevronRight, Home } from '@mui/icons-material';
+import { ChevronLeft, ChevronRight } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
 import Reusable3DBackground from '../common/Reusable3DBackground';
+import NavButtons from '../common/NavButtons';
 
 
 import { specialItems } from '../../data/specialItems';
@@ -212,30 +213,7 @@ const Coverflow3D: React.FC = () => {
                     zIndex: 10,
                 }}
             >
-                {/* Home Button */}
-                <IconButton
-                    onClick={() => routeTo('/')}
-                    sx={{
-                        position: 'absolute',
-                        top: { xs: '20px', md: '40px' },
-                        right: { xs: '20px', md: '40px' },
-                        bgcolor: 'rgba(255, 140, 0, 0.1)',
-                        border: '2px solid rgba(255, 140, 0, 0.3)',
-                        color: '#FF8C00',
-                        width: { xs: '40px', sm: '40px', md: '40px' },
-                        height: { xs: '40px', sm: '40px', md: '40px' },
-                        backdropFilter: 'blur(10px)',
-                        boxShadow: '0 8px 32px rgba(255, 140, 0, 0.3), 0 0 20px rgba(255, 140, 0, 0.2)',
-                        zIndex: 1001,
-                        '&:hover': {
-                            bgcolor: 'rgba(255, 140, 0, 0.2)',
-                            transform: 'scale(1.1)',
-                            boxShadow: '0 0 30px rgba(255, 140, 0, 0.6), 0 0 60px rgba(255, 140, 0, 0.4)',
-                        },
-                    }}
-                >
-                    <Home />
-                </IconButton>
+                <NavButtons onHome={() => routeTo('/')} />
 
                 {/* Title and Description */}
                 <Box

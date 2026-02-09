@@ -112,8 +112,20 @@ const LandingStatic: React.FC = () => {
         </Box>
       )}
 
-      {/* Top bar with logo */}
-      <Box sx={{ position: "fixed", top: 20, left: 20, zIndex: 2000 }}>
+      {/* Top bar: logo + order button on same line */}
+      <Box
+        sx={{
+          position: "fixed",
+          top: 20,
+          left: 0,
+          right: 0,
+          px: { xs: 2, md: 4 },
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          zIndex: 2000,
+        }}
+      >
         <Box
           component="img"
           src={logo}
@@ -129,17 +141,12 @@ const LandingStatic: React.FC = () => {
             },
           }}
           onClick={() => {
-            // Try to find the scroll container and scroll to top
             const scrollContainer = document.querySelector('.lucide-scroll-container');
             if (scrollContainer) {
               scrollContainer.scrollTo({ top: 0, behavior: 'smooth' });
             }
           }}
         />
-      </Box>
-
-      {/* Order Button */}
-      <Box sx={{ position: "fixed", top: 20, right: 30, zIndex: 2000 }}>
         <OrderButton onClick={() => setLocationSelectorOpen(true)} />
       </Box>
 
@@ -154,7 +161,7 @@ const LandingStatic: React.FC = () => {
         <color attach="background" args={['#001e36']} />
         <fog attach="fog" args={['#001e36', 5, 25]} />
 
-        <ScrollControls pages={isMobile ? 11 : 9} damping={0.15}>
+        <ScrollControls pages={isMobile ? 13 : 11} damping={0.15}>
           {/* Internal components can access useScroll now */}
           {!isMobile && <ScrollSync scrollbarRef={scrollbarRef} />}
 
