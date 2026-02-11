@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useCallback } from "react";
+import React, { useEffect, useRef, useCallback, useMemo } from "react";
 
 /**
  * Hook to detect if element is in viewport
@@ -10,6 +10,13 @@ export const useInView = (
   const ref = useRef<HTMLDivElement | null>(null);
   const [isInView, setIsInView] = React.useState(false);
 
+  // Stabilize options to prevent infinite re-renders
+  const { threshold, rootMargin, root } = options;
+  const stableOptions = useMemo(
+    () => ({ threshold, rootMargin, root }),
+    [threshold, rootMargin, root],
+  );
+
   useEffect(() => {
     if (!ref.current) return;
 
@@ -18,15 +25,15 @@ export const useInView = (
         setIsInView(entry.isIntersecting);
       },
       {
-        threshold: 0.1,
-        ...options,
+        ...stableOptions,
+        threshold: stableOptions.threshold ?? 0.1,
       },
     );
 
     observer.observe(ref.current);
 
     return () => observer.disconnect();
-  }, [options]);
+  }, [stableOptions]);
 
   return [ref, isInView] as const;
 };

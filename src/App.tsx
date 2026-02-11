@@ -1,15 +1,15 @@
-import './App.css'
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { lazy, Suspense } from "react";
 import { Box, CircularProgress } from "@mui/material";
+import ErrorBoundary from "./components/common/ErrorBoundary";
 
 // Eagerly load the main landing page
-import LandingPage from "./components/home/landingPage-static";
+import LandingPage from "./components/home/LandingPage";
 
 // Lazy load other routes for better performance
-const Special = lazy(() => import("./components/special/Special"));
-const About = lazy(() => import("./components/aboutUs/AboutUs"));
-const MenuNew = lazy(() => import("./components/menu/menuNew"));
+const SpecialsPage = lazy(() => import("./components/special/Special"));
+const AboutPage = lazy(() => import("./components/aboutUs/AboutUs"));
+const MenuPage = lazy(() => import("./components/menu/MenuPage"));
 
 // Loading fallback component
 const PageLoader = () => (
@@ -19,30 +19,30 @@ const PageLoader = () => (
       justifyContent: "center",
       alignItems: "center",
       height: "100vh",
-      bgcolor: "#001e36",
+      bgcolor: "#0A1628",
     }}
   >
-    <CircularProgress sx={{ color: "#FF8C00" }} />
+    <CircularProgress sx={{ color: "#F5A623" }} />
   </Box>
 );
 
 function App() {
   return (
     <BrowserRouter>
-      <Suspense fallback={<PageLoader />}>
-        <Routes>
-          <Route path="/" element={<LandingPage />} />
-          <Route path="/special" element={<Special />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/menu" element={<MenuNew />} />
-          {/* Redirect old menu-new route to new menu route */}
-          <Route path="/menu-new" element={<MenuNew />} />
-          {/* 404 fallback - redirect to home */}
-          <Route path="*" element={<LandingPage />} />
-        </Routes>
-      </Suspense>
+      <ErrorBoundary>
+        <Suspense fallback={<PageLoader />}>
+          <Routes>
+            <Route path="/" element={<LandingPage />} />
+            <Route path="/special" element={<SpecialsPage />} />
+            <Route path="/about" element={<AboutPage />} />
+            <Route path="/menu" element={<MenuPage />} />
+            {/* 404 fallback */}
+            <Route path="*" element={<LandingPage />} />
+          </Routes>
+        </Suspense>
+      </ErrorBoundary>
     </BrowserRouter>
   );
 }
 
-export default App
+export default App;

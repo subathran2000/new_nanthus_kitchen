@@ -1,19 +1,24 @@
 /* Footer CSS - replaces inline styles */
 
 .footer-secret-text {
-  color: #FF8C00;
+  color: #F5A623;
 }
 
 .footer-kitchen-text {
-  color: #FF8C00;
+  color: #F5A623;
 }
 
 .footer-creator-link {
   color: inherit;
   text-decoration: none;
-  border-bottom: 1px solid rgba(255, 140, 0, 0.3);
+  border-bottom: 1px solid rgba(59, 130, 246, 0.2);
 }
 
 .footer-creator-link:hover {
-  color: #FF8C00;
+  color: #F5A623;
+}
+
+@keyframes moveLine {
+  0% { left: -200px; }
+  100% { left: 100%; }
 }

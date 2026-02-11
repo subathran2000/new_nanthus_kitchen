@@ -1,11 +1,11 @@
-import React from 'react';
-import { Box, Typography, Button } from '@mui/material';
-import { commonButtonStyle } from '../common/ButtonStyles';
-import { motion } from 'framer-motion';
-import HistoryIcon from '@mui/icons-material/History';
-import FavoriteIcon from '@mui/icons-material/Favorite';
-import VisibilityIcon from '@mui/icons-material/Visibility';
-import StarIcon from '@mui/icons-material/Star';
+import React from "react";
+import { Box, Typography, Button } from "@mui/material";
+import { commonButtonStyle } from "../common/ButtonStyles";
+import { motion } from "framer-motion";
+import HistoryIcon from "@mui/icons-material/History";
+import FavoriteIcon from "@mui/icons-material/Favorite";
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import StarIcon from "@mui/icons-material/Star";
 
 interface AboutItem {
   title: string;
@@ -66,13 +66,17 @@ const AboutCard: React.FC<{ item: AboutItem; index: number }> = ({
       <Box
         sx={{
           width: { xs: "95%", sm: "85%", md: "550px" },
-          mb: { xs: "3rem", md: "6rem" }, // Moved here
+          mb: { xs: "2.5rem", sm: "3rem", md: "6rem" },
           position: "relative",
           background:
             "linear-gradient(135deg, rgba(255, 255, 255, 0.03) 0%, rgba(255, 255, 255, 0.01) 100%)",
           backdropFilter: "blur(30px) saturate(200%)",
-          borderRadius: "24px",
-          padding: { xs: "2.5rem 1.5rem", md: "3.5rem 3rem" },
+          borderRadius: { xs: "16px", md: "24px" },
+          padding: {
+            xs: "2rem 1.25rem",
+            sm: "2.5rem 1.5rem",
+            md: "3.5rem 3rem",
+          },
           border: "1px solid rgba(255, 255, 255, 0.05)",
           boxShadow: "0 40px 100px rgba(0, 0, 0, 0.4)",
           transition: "all 0.6s cubic-bezier(0.16, 1, 0.3, 1)",
@@ -82,11 +86,11 @@ const AboutCard: React.FC<{ item: AboutItem; index: number }> = ({
             background:
               "linear-gradient(135deg, rgba(255, 255, 255, 0.06) 0%, rgba(255, 255, 255, 0.02) 100%)",
             border: isEven
-              ? "1px solid rgba(0, 255, 255, 0.3)"
-              : "1px solid rgba(255, 140, 0, 0.3)",
+              ? "1px solid rgba(59, 130, 246, 0.3)"
+              : "1px solid rgba(59, 130, 246, 0.2)",
             boxShadow: isEven
-              ? "0 40px 80px rgba(0, 255, 255, 0.15)"
-              : "0 40px 80px rgba(255, 140, 0, 0.15)",
+              ? "0 40px 80px rgba(59, 130, 246, 0.15)"
+              : "0 40px 80px rgba(59, 130, 246, 0.1)",
           },
           "&::before": {
             content: '""',
@@ -95,8 +99,8 @@ const AboutCard: React.FC<{ item: AboutItem; index: number }> = ({
             borderRadius: "24px",
             padding: "1px",
             background: isEven
-              ? "linear-gradient(135deg, rgba(0, 255, 255, 0.5), transparent, rgba(0, 255, 255, 0.1))"
-              : "linear-gradient(135deg, rgba(255, 140, 0, 0.5), transparent, rgba(255, 140, 0, 0.1))",
+              ? "linear-gradient(135deg, rgba(59, 130, 246, 0.5), transparent, rgba(59, 130, 246, 0.1))"
+              : "linear-gradient(135deg, rgba(59, 130, 246, 0.4), transparent, rgba(59, 130, 246, 0.1))",
             mask: "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
             maskComposite: "exclude",
             WebkitMaskComposite: "destination-out",
@@ -113,8 +117,8 @@ const AboutCard: React.FC<{ item: AboutItem; index: number }> = ({
             width: "100px",
             height: "100px",
             background: isEven
-              ? "radial-gradient(circle at top right, rgba(0, 255, 255, 0.15), transparent 70%)"
-              : "radial-gradient(circle at top left, rgba(255, 140, 0, 0.15), transparent 70%)",
+              ? "radial-gradient(circle at top right, rgba(59, 130, 246, 0.15), transparent 70%)"
+              : "radial-gradient(circle at top left, rgba(59, 130, 246, 0.1), transparent 70%)",
             borderRadius: "24px",
             pointerEvents: "none",
           }}
@@ -131,8 +135,8 @@ const AboutCard: React.FC<{ item: AboutItem; index: number }> = ({
             borderRadius: "22px", // Squircle shape for elegance
             background: isEven
               ? "linear-gradient(135deg, #000000 0%, #1a1a1a 100%)"
-              : "linear-gradient(135deg, #000000 0%, #1a0a00 100%)",
-            border: `2px solid ${isEven ? "rgba(0, 255, 255, 0.5)" : "rgba(255, 140, 0, 0.5)"}`,
+              : "linear-gradient(135deg, #000000 0%, #0A1628 100%)",
+            border: `2px solid ${isEven ? "rgba(59, 130, 246, 0.5)" : "rgba(59, 130, 246, 0.4)"}`,
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
@@ -150,7 +154,7 @@ const AboutCard: React.FC<{ item: AboutItem; index: number }> = ({
               {
                 sx: {
                   fontSize: "2.5rem",
-                  color: "#FF8C00",
+                  color: "#F5A623",
                 },
               },
             )}
@@ -162,7 +166,7 @@ const AboutCard: React.FC<{ item: AboutItem; index: number }> = ({
           sx={{
             fontFamily: "'Raleway', sans-serif",
             fontWeight: 700,
-            color: "#FF8C00",
+            color: "#F5A623",
             mb: 2,
             fontSize: { xs: "1.25rem", md: "1.6rem" },
             letterSpacing: "0.01em",
@@ -207,34 +211,30 @@ const AboutCard: React.FC<{ item: AboutItem; index: number }> = ({
   );
 };
 
-const AboutUs: React.FC = () => {
+const AboutPreview: React.FC = () => {
   return (
     <Box
       sx={{
-        width: '100%',
-        maxWidth: '1300px',
-        margin: '2rem auto 3rem',
-        padding: '0 2rem',
-        position: 'relative',
+        width: "100%",
+        maxWidth: "1300px",
+        margin: "2rem auto 3rem",
+        padding: { xs: "0 1.25rem", sm: "0 2rem" },
+        position: "relative",
         zIndex: 10,
       }}
     >
-      <Box sx={{ textAlign: 'center', mb: 8 }}>
-        <Typography
-          variant="overline"
-          className="overline-text"
-          sx={{ mb: 2 }}
-        >
+      <Box sx={{ textAlign: "center", mb: 8 }}>
+        <Typography variant="overline" className="overline-text" sx={{ mb: 2 }}>
           THE STORY BEHIND
         </Typography>
         <Typography
           variant="h2"
           className="section-title"
           sx={{
-            textTransform: 'uppercase',
-            color: '#fff',
-            fontSize: { xs: '3rem', md: '5rem' },
-            textShadow: '0 0 20px rgba(255, 255, 255, 0.1)',
+            textTransform: "uppercase",
+            color: "#fff",
+            fontSize: { xs: "3rem", md: "5rem" },
+            textShadow: "0 0 20px rgba(255, 255, 255, 0.1)",
             lineHeight: 1,
             fontFamily: "'Libre Caslon Display', serif",
           }}
@@ -243,31 +243,32 @@ const AboutUs: React.FC = () => {
         </Typography>
       </Box>
 
-      <Box sx={{ position: 'relative' }}>
+      <Box sx={{ position: "relative" }}>
         {/* Artistic Path Line */}
         <Box
           sx={{
-            position: 'absolute',
+            position: "absolute",
             top: 0,
             bottom: 0,
-            left: '50%',
-            width: '1px',
-            background: 'linear-gradient(to bottom, transparent, rgba(255, 140, 0, 0.4), rgba(0, 255, 255, 0.4), transparent)',
-            display: { xs: 'none', md: 'block' },
-            transform: 'translateX(-50%)',
+            left: "50%",
+            width: "1px",
+            background:
+              "linear-gradient(to bottom, transparent, rgba(245, 166, 35, 0.4), rgba(59, 130, 246, 0.4), transparent)",
+            display: { xs: "none", md: "block" },
+            transform: "translateX(-50%)",
             zIndex: -1,
-            '&::before': {
+            "&::before": {
               content: '""',
-              position: 'absolute',
+              position: "absolute",
               top: 0,
-              left: '50%',
-              width: '4px',
-              height: '4px',
-              background: '#FF8C00',
-              borderRadius: '50%',
-              transform: 'translateX(-50%)',
-              boxShadow: '0 0 15px #FF8C00'
-            }
+              left: "50%",
+              width: "4px",
+              height: "4px",
+              background: "#F5A623",
+              borderRadius: "50%",
+              transform: "translateX(-50%)",
+              boxShadow: "0 0 15px #F5A623",
+            },
           }}
         />
 
@@ -277,7 +278,7 @@ const AboutUs: React.FC = () => {
       </Box>
 
       {/* Explore More Button */}
-      <Box sx={{ display: 'flex', justifyContent: 'center', mt: 4 }}>
+      <Box sx={{ display: "flex", justifyContent: "center", mt: 4 }}>
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -285,7 +286,8 @@ const AboutUs: React.FC = () => {
           transition={{ delay: 0.5 }}
         >
           <Button
-            onClick={() => window.location.href = '/about'}
+            component="a"
+            href="/about"
             variant="outlined"
             sx={commonButtonStyle}
           >
@@ -297,4 +299,4 @@ const AboutUs: React.FC = () => {
   );
 };
 
-export default AboutUs;
+export default AboutPreview;

@@ -1,7 +1,7 @@
-import { useRef, useEffect } from 'react';
+import { useRef, useEffect, type FC } from 'react';
 import { Box, keyframes } from '@mui/material';
 import type { SxProps, Theme } from '@mui/material';
-import { motion, useInView, useMotionValue, animate, useTransform } from 'framer-motion';
+import { motion, useInView, useMotionValue, animate, useTransform, type MotionValue } from 'framer-motion';
 
 interface AccordionFoldImageProps {
     src: string;
@@ -38,7 +38,61 @@ const evenFoldAnimation = keyframes`
 
 const springTransition = { type: "spring" as const, stiffness: 120, damping: 24 };
 
-const AccordionFoldImage: React.FC<AccordionFoldImageProps> = ({ src, sx, mode = 'scroll' }) => {
+/**
+ * Individual fold strip — extracted so hooks are called at the top level
+ * of a component rather than inside a `.map()` loop (Rules of Hooks).
+ */
+const FoldStrip: FC<{
+    index: number;
+    src: string;
+    mode: 'scroll' | 'auto';
+    progress: MotionValue<number>;
+}> = ({ index, src, mode, progress }) => {
+    const isOdd = index % 2 !== 0;
+    const backgroundPosition = `${(index / (FOLDS - 1)) * 100}%`;
+
+    const skewY = useTransform(
+        progress,
+        [0, 1],
+        [isOdd ? -SCROLL_SKEW : SCROLL_SKEW, 0]
+    );
+
+    const brightnessProgress = useTransform(
+        progress,
+        [0, 1],
+        [isOdd ? 0.7 : 1.3, 1]
+    );
+
+    const filter = useTransform(brightnessProgress, (b: number) => `brightness(${b})`);
+
+    return (
+        <Box
+            component={mode === 'auto' ? 'div' : motion.div}
+            style={mode === 'scroll' ? { skewY, filter } : {}}
+            sx={{
+                flex: 1,
+                backgroundImage: `url(${src})`,
+                backgroundSize: `${FOLDS * 100}% 100%`,
+                backgroundPosition: `${backgroundPosition} center`,
+                backgroundRepeat: "no-repeat",
+                height: "100%",
+                transformOrigin: isOdd ? "left" : "right",
+                borderRadius:
+                    index === 0 ? "32px 0 0 32px" :
+                        index === FOLDS - 1 ? "0 32px 32px 0" : "0",
+                zIndex: index === Math.floor(FOLDS / 2) ? 10 : 1,
+                animation: mode === 'auto'
+                    ? `${isOdd ? oddFoldAnimation : evenFoldAnimation} ${DURATION} ${DELAY} ease-in-out infinite`
+                    : 'none',
+            }}
+        />
+    );
+};
+
+/** Indices array created once to avoid re-creating on every render. */
+const FOLD_INDICES = Array.from({ length: FOLDS }, (_, i) => i);
+
+const AccordionFoldImage: FC<AccordionFoldImageProps> = ({ src, sx, mode = 'scroll' }) => {
     const containerRef = useRef<HTMLDivElement>(null);
 
     // Use IntersectionObserver (via useInView) - works with R3F ScrollControls & custom scroll
@@ -71,51 +125,15 @@ const AccordionFoldImage: React.FC<AccordionFoldImageProps> = ({ src, sx, mode =
                 ...sx,
             }}
         >
-            {[...Array(FOLDS)].map((_, i) => {
-                const isOdd = i % 2 !== 0;
-                const backgroundPosition = `${(i / (FOLDS - 1)) * 100}%`;
-
-                const skewY = useTransform(
-                    progress,
-                    [0, 1],
-                    [isOdd ? -SCROLL_SKEW : SCROLL_SKEW, 0]
-                );
-
-                const brightnessProgress = useTransform(
-                    progress,
-                    [0, 1],
-                    [isOdd ? 0.7 : 1.3, 1]
-                );
-
-                const filter = useTransform(brightnessProgress, (b) => `brightness(${b})`);
-
-                return (
-                    <Box
-                        key={i}
-                        component={mode === 'auto' ? 'div' : motion.div}
-                        style={mode === 'scroll' ? {
-                            skewY,
-                            filter,
-                        } : {}}
-                        sx={{
-                            flex: 1,
-                            backgroundImage: `url(${src})`,
-                            backgroundSize: `${FOLDS * 100}% 100%`,
-                            backgroundPosition: `${backgroundPosition} center`,
-                            backgroundRepeat: "no-repeat",
-                            height: "100%",
-                            transformOrigin: isOdd ? "left" : "right",
-                            borderRadius:
-                                i === 0 ? "32px 0 0 32px" :
-                                    i === FOLDS - 1 ? "0 32px 32px 0" : "0",
-                            zIndex: i === Math.floor(FOLDS / 2) ? 10 : 1,
-                            animation: mode === 'auto'
-                                ? `${isOdd ? oddFoldAnimation : evenFoldAnimation} ${DURATION} ${DELAY} ease-in-out infinite`
-                                : 'none',
-                        }}
-                    />
-                );
-            })}
+            {FOLD_INDICES.map((i) => (
+                <FoldStrip
+                    key={i}
+                    index={i}
+                    src={src}
+                    mode={mode}
+                    progress={progress}
+                />
+            ))}
         </Box>
     );
 };

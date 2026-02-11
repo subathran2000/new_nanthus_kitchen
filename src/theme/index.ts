@@ -1,28 +1,29 @@
 import { createTheme } from "@mui/material/styles";
 
 // Design tokens - Single source of truth for colors
+// Based on the New Nanthu's Kitchen logo: blue, golden yellow, white
 export const colors = {
   primary: {
-    main: "#FF8C00",
-    light: "#FFB84D",
-    dark: "#CC7000",
-    contrastText: "#001e36",
+    main: "#F5A623",
+    light: "#FFD166",
+    dark: "#D4880C",
+    contrastText: "#0A1628",
   },
   secondary: {
-    main: "#00ffff",
-    light: "#66ffff",
-    dark: "#00cccc",
-    contrastText: "#001e36",
+    main: "#3B82F6",
+    light: "#60A5FA",
+    dark: "#1D4ED8",
+    contrastText: "#FFFFFF",
   },
   background: {
-    default: "#000000",
-    paper: "rgba(0, 0, 0, 0.95)",
-    light: "#1a1a1a",
+    default: "#0A1628",
+    paper: "rgba(10, 22, 40, 0.95)",
+    light: "#0F1D32",
   },
   text: {
-    primary: "#ffffff",
-    secondary: "rgba(255, 255, 255, 0.7)",
-    disabled: "rgba(255, 255, 255, 0.4)",
+    primary: "#FFFFFF",
+    secondary: "rgba(180, 210, 255, 0.7)",
+    disabled: "rgba(180, 210, 255, 0.35)",
   },
   error: {
     main: "#FF6B6B",
@@ -30,7 +31,7 @@ export const colors = {
   success: {
     main: "#4CAF50",
   },
-  divider: "rgba(255, 255, 255, 0.08)",
+  divider: "rgba(59, 130, 246, 0.12)",
 };
 
 // CSS custom properties for use in CSS files
@@ -117,15 +118,15 @@ export const theme = createTheme({
         },
         contained: {
           background: `linear-gradient(90deg, ${colors.primary.main}, ${colors.primary.light})`,
-          boxShadow: `0 5px 15px rgba(255, 140, 0, 0.3)`,
+          boxShadow: `0 5px 15px rgba(59, 130, 246, 0.3)`,
           "&:hover": {
-            boxShadow: `0 8px 25px rgba(255, 140, 0, 0.4)`,
+            boxShadow: `0 8px 25px rgba(59, 130, 246, 0.4)`,
             transform: "translateY(-2px)",
           },
         },
         outlined: {
-          borderColor: "rgba(0, 255, 255, 0.4)",
-          color: colors.secondary.main,
+          borderColor: "rgba(59, 130, 246, 0.3)",
+          color: colors.primary.main,
           backdropFilter: "blur(10px)",
           "&:hover": {
             borderColor: colors.primary.main,
@@ -142,10 +143,10 @@ export const theme = createTheme({
             borderRadius: "12px",
             background: "rgba(255, 255, 255, 0.03)",
             "& fieldset": {
-              borderColor: "rgba(255, 140, 0, 0.15)",
+              borderColor: "rgba(59, 130, 246, 0.2)",
             },
             "&:hover fieldset": {
-              borderColor: "rgba(255, 140, 0, 0.4)",
+              borderColor: "rgba(59, 130, 246, 0.4)",
             },
             "&.Mui-focused fieldset": {
               borderColor: colors.primary.main,
@@ -173,9 +174,9 @@ export const theme = createTheme({
     MuiCard: {
       styleOverrides: {
         root: {
-          background: "rgba(255, 255, 255, 0.03)",
+          background: "rgba(15, 29, 50, 0.6)",
           backdropFilter: "blur(20px)",
-          border: "1px solid rgba(255, 255, 255, 0.08)",
+          border: "1px solid rgba(59, 130, 246, 0.12)",
           boxShadow: "0 30px 60px rgba(0, 0, 0, 0.5)",
         },
       },

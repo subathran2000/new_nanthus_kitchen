@@ -1,4 +1,4 @@
-import type { ReactNode } from "react";
+import type { ReactNode, CSSProperties } from "react";
 
 // ============================================
 // MENU DATA TYPES (Single Source of Truth)
@@ -53,7 +53,7 @@ export interface MainCategory {
  */
 export interface SectionProps {
   children: ReactNode;
-  style?: React.CSSProperties;
+  style?: CSSProperties;
   id?: string;
   className?: string;
 }

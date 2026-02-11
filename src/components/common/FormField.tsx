@@ -81,6 +81,6 @@ const FormField: React.FC<FormFieldProps> = ({
       variant="outlined"
     />
   );
-};;
+};
 
 export default FormField;

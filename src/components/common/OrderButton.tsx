@@ -20,21 +20,23 @@ const OrderButton: React.FC<OrderButtonProps> = ({ onClick }) => {
         onClick={onClick}
         startIcon={<ShoppingCartIcon sx={{ fontSize: { xs: 16, md: 18 } }} />}
         sx={{
-          background: "linear-gradient(135deg, #FF8C00 0%, #FF6B00 100%)",
+          background: "linear-gradient(135deg, #F5A623 0%, #D4880C 100%)",
           color: "#fff",
           borderRadius: "4px",
-          px: { xs: 2.5, sm: 4 },
-          py: { xs: 1.25, md: 1.5 },
+          px: { xs: 2, sm: 3, md: 4 },
+          py: { xs: 1, sm: 1.25, md: 1.5 },
+          minHeight: { xs: 40, md: 44 },
           fontWeight: 600,
           textTransform: "uppercase",
-          fontSize: { xs: "0.7rem", md: "0.8rem" },
+          fontSize: { xs: "0.65rem", sm: "0.7rem", md: "0.8rem" },
           letterSpacing: "0.15em",
-          boxShadow: "0 4px 20px rgba(255, 140, 0, 0.3)",
+          boxShadow: "0 4px 20px rgba(59, 130, 246, 0.3)",
           fontFamily: "'Inter', sans-serif",
           border: "none",
+          whiteSpace: "nowrap",
           "&:hover": {
-            background: "linear-gradient(135deg, #FFB84D 0%, #FF8C00 100%)",
-            boxShadow: "0 6px 30px rgba(255, 140, 0, 0.4)",
+            background: "linear-gradient(135deg, #FFB84D 0%, #F5A623 100%)",
+            boxShadow: "0 6px 30px rgba(59, 130, 246, 0.4)",
             transform: "translateY(-2px)",
           },
           "&:active": {

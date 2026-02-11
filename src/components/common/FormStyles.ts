@@ -12,13 +12,13 @@ export const formInputStyle: SxProps<Theme> = {
     fontSize: "0.9rem",
     fontFamily: "'Inter', sans-serif",
     "& fieldset": {
-      borderColor: "rgba(255, 140, 0, 0.15)",
+      borderColor: "rgba(59, 130, 246, 0.12)",
     },
     "&:hover fieldset": {
-      borderColor: "rgba(255, 140, 0, 0.4)",
+      borderColor: "rgba(59, 130, 246, 0.3)",
     },
     "&.Mui-focused fieldset": {
-      borderColor: "#FF8C00",
+      borderColor: "#F5A623",
     },
     "& input": {
       color: "#fff",
@@ -30,14 +30,14 @@ export const formInputStyle: SxProps<Theme> = {
     fontSize: "0.85rem",
     fontFamily: "'Inter', sans-serif",
     "&.Mui-focused": {
-      color: "#FF8C00",
+      color: "#F5A623",
     },
   },
   "& .MuiInputAdornment-root svg": {
-    color: "rgba(255, 140, 0, 0.4)",
+    color: "rgba(59, 130, 246, 0.3)",
   },
   "& .Mui-focused .MuiInputAdornment-root svg": {
-    color: "#FF8C00",
+    color: "#F5A623",
   },
   "& .MuiSelect-select": {
     color: "#fff",
@@ -53,9 +53,9 @@ export const formInputStyle: SxProps<Theme> = {
  */
 export const formButtonStyle: SxProps<Theme> = {
   background:
-    "linear-gradient(135deg, rgba(255, 140, 0, 0.2), rgba(255, 200, 100, 0.1))",
-  border: "1px solid rgba(255, 140, 0, 0.3)",
-  color: "#FF8C00",
+    "linear-gradient(135deg, rgba(59, 130, 246, 0.15), rgba(59, 130, 246, 0.1))",
+  border: "1px solid rgba(59, 130, 246, 0.2)",
+  color: "#F5A623",
   fontWeight: 600,
   letterSpacing: "0.05em",
   textTransform: "uppercase",
@@ -65,9 +65,9 @@ export const formButtonStyle: SxProps<Theme> = {
   transition: "all 0.3s ease",
   "&:hover": {
     background:
-      "linear-gradient(135deg, rgba(255, 140, 0, 0.4), rgba(255, 200, 100, 0.2))",
-    boxShadow: "0 0 30px rgba(255, 140, 0, 0.5)",
-    border: "1px solid rgba(255, 140, 0, 0.6)",
+      "linear-gradient(135deg, rgba(59, 130, 246, 0.3), rgba(59, 130, 246, 0.15))",
+    boxShadow: "0 0 30px rgba(59, 130, 246, 0.4)",
+    border: "1px solid rgba(59, 130, 246, 0.5)",
   },
   "&:active": {
     transform: "scale(0.98)",
@@ -119,7 +119,7 @@ export const formTitleStyle: SxProps<Theme> = {
   fontSize: { xs: "1.8rem", md: "2.5rem" },
   fontWeight: 300,
   mb: 2,
-  background: "linear-gradient(135deg, #FF8C00, #FFB84D)",
+  background: "linear-gradient(135deg, #F5A623, #FFB84D)",
   WebkitBackgroundClip: "text",
   WebkitTextFillColor: "transparent",
 };

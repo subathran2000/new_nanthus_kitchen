@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import "./menuNew.css";
+import "./MenuPage.css";
 import MenuSpiral from "./MenuSpiral";
 import { Box } from "@mui/material";
 import InteractiveMenu from "./InteractiveMenu";
@@ -22,16 +22,16 @@ const MenuNew = () => {
     <Box
       className="menu-container"
       sx={{
-        position: 'relative',
-        minHeight: '100vh',
-        bgcolor: "#001e36",
-        overflow: 'hidden'
+        position: "relative",
+        minHeight: "100vh",
+        bgcolor: "#0A1628",
+        overflow: "hidden",
       }}
     >
       <Reusable3DBackground />
 
       {/* Content Layer */}
-      <Box sx={{ position: 'relative', zIndex: 10 }}>
+      <Box sx={{ position: "relative", zIndex: 10 }}>
         {view === "gallery" ? (
           <InteractiveMenu
             onSelectCategory={handleClick}

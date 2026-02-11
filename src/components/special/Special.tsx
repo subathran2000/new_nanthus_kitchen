@@ -11,18 +11,16 @@ import { specialItems } from '../../data/specialItems';
 
 
 
-const Coverflow3D: React.FC = () => {
+const SpecialsPage: React.FC = () => {
     const theme = useTheme();
     const isMobile = useMediaQuery(theme.breakpoints.down('md'));
     const isSmall = useMediaQuery(theme.breakpoints.down('sm'));
-    const routeTo = useNavigate();
+    const routerNavigate = useNavigate();
 
     const [currentIndex, setCurrentIndex] = useState(3);
     const [isAnimating, setIsAnimating] = useState(false);
     const containerRef = useRef<HTMLDivElement>(null);
     const autoplayIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
-
-    const imageData = specialItems;
 
 
     const navigate = (direction: number) => {
@@ -32,8 +30,8 @@ const Coverflow3D: React.FC = () => {
         let newIndex = currentIndex + direction;
 
         if (newIndex < 0) {
-            newIndex = imageData.length - 1;
-        } else if (newIndex >= imageData.length) {
+            newIndex = specialItems.length - 1;
+        } else if (newIndex >= specialItems.length) {
             newIndex = 0;
         }
 
@@ -56,7 +54,7 @@ const Coverflow3D: React.FC = () => {
 
     const startAutoplay = () => {
         autoplayIntervalRef.current = setInterval(() => {
-            setCurrentIndex((prev) => (prev + 1) % imageData.length);
+            setCurrentIndex((prev) => (prev + 1) % specialItems.length);
         }, 4000);
     };
 
@@ -159,10 +157,10 @@ const Coverflow3D: React.FC = () => {
     const getItemStyle = (index: number) => {
         let offset = index - currentIndex;
 
-        if (offset > imageData.length / 2) {
-            offset = offset - imageData.length;
-        } else if (offset < -imageData.length / 2) {
-            offset = offset + imageData.length;
+        if (offset > specialItems.length / 2) {
+            offset = offset - specialItems.length;
+        } else if (offset < -specialItems.length / 2) {
+            offset = offset + specialItems.length;
         }
 
         const absOffset = Math.abs(offset);
@@ -214,7 +212,7 @@ const Coverflow3D: React.FC = () => {
                     overflow: 'hidden',
                 }}
             >
-                <NavButtons onHome={() => routeTo('/')} />
+                <NavButtons onHome={() => routerNavigate('/')} />
 
                 {/* Heading: own band so it never touches the cards */}
                 <Box
@@ -239,7 +237,7 @@ const Coverflow3D: React.FC = () => {
                             fontWeight: 700,
                             color: '#fff',
                             textAlign: 'center',
-                            textShadow: '0 0 20px rgba(255, 140, 0, 0.5)',
+                            textShadow: '0 0 20px rgba(59, 130, 246, 0.4)',
                             animation: 'fadeIn 0.6s forwards',
                             maxWidth: '90%',
                             overflow: 'hidden',
@@ -260,7 +258,7 @@ const Coverflow3D: React.FC = () => {
                             },
                         }}
                     >
-                        {imageData[currentIndex].title}
+                        {specialItems[currentIndex].title}
                     </Typography>
                 </Box>
 
@@ -294,7 +292,7 @@ const Coverflow3D: React.FC = () => {
                             maxHeight: '600px',
                         }}
                     >
-                        {imageData.map((item, index) => (
+                        {specialItems.map((item, index) => (
                             <Box
                                 key={index}
                                 onClick={() => {
@@ -318,13 +316,13 @@ const Coverflow3D: React.FC = () => {
                                         height: '100%',
                                         borderRadius: '10px',
                                         boxShadow: index === currentIndex
-                                            ? '0 40px 80px rgba(255, 140, 0, 0.5), 0 0 60px rgba(255, 140, 0, 0.4), 0 0 100px rgba(255, 140, 0, 0.2)'
+                                            ? '0 40px 80px rgba(59, 130, 246, 0.4), 0 0 60px rgba(59, 130, 246, 0.3), 0 0 100px rgba(59, 130, 246, 0.15)'
                                             : '0 30px 60px rgba(0, 0, 0, 0.9), 0 10px 30px rgba(0, 0, 0, 0.7)',
                                         position: 'relative',
                                         overflow: 'hidden',
                                         transformStyle: 'preserve-3d',
-                                        bgcolor: '#001e36',
-                                        border: index === currentIndex ? '2px solid rgba(255, 140, 0, 0.5)' : '2px solid rgba(255, 255, 255, 0.1)',
+                                        bgcolor: '#0A1628',
+                                        border: index === currentIndex ? '2px solid rgba(59, 130, 246, 0.4)' : '2px solid rgba(255, 255, 255, 0.1)',
                                     }}
                                 >
                                     <Box
@@ -367,7 +365,7 @@ const Coverflow3D: React.FC = () => {
                                             left: 0,
                                             width: '100%',
                                             height: '100%',
-                                            background: 'linear-gradient(to bottom, rgba(0, 15, 27, 0) 0%, rgba(0, 15, 27, 0.6) 50%, rgba(0, 30, 54, 1) 100%)',
+                                            background: 'linear-gradient(to bottom, rgba(10, 22, 40, 0) 0%, rgba(10, 22, 40, 0.6) 50%, rgba(10, 22, 40, 1) 100%)',
                                         },
                                     }}
                                 />
@@ -386,22 +384,22 @@ const Coverflow3D: React.FC = () => {
                             top: '50%',
                             left: { xs: '20px', md: '120px' },
                             transform: 'translateY(-50%)',
-                            bgcolor: 'rgba(255, 140, 0, 0.1)',
-                            border: '2px solid rgba(255, 140, 0, 0.3)',
-                            color: '#FF8C00',
+                            bgcolor: 'rgba(59, 130, 246, 0.1)',
+                            border: '2px solid rgba(59, 130, 246, 0.2)',
+                            color: '#F5A623',
                             width: { xs: '45px', md: '40px' },
                             height: { xs: '45px', md: '40px' },
                             backdropFilter: 'blur(10px)',
-                            boxShadow: '0 8px 32px rgba(255, 140, 0, 0.3), 0 0 20px rgba(255, 140, 0, 0.2)',
+                            boxShadow: '0 8px 32px rgba(59, 130, 246, 0.2), 0 0 20px rgba(59, 130, 246, 0.15)',
                             zIndex: 1001,
                             '&:hover': {
-                                bgcolor: 'rgba(255, 140, 0, 0.2)',
+                                bgcolor: 'rgba(59, 130, 246, 0.15)',
                                 transform: 'translateY(-50%) scale(1.1)',
-                                boxShadow: '0 0 30px rgba(255, 140, 0, 0.6), 0 0 60px rgba(255, 140, 0, 0.4)',
+                                boxShadow: '0 0 30px rgba(59, 130, 246, 0.5), 0 0 60px rgba(59, 130, 246, 0.3)',
                             },
                         }}
                     >
-                        <ChevronLeft sx={{ fontSize: { xs: '20px', md: '24px' } }} />
+                        <ChevronLeft sx={{ fontSize: { xs: '24px', md: '28px' } }} />
                     </IconButton>
 
                     <IconButton
@@ -414,22 +412,22 @@ const Coverflow3D: React.FC = () => {
                             top: '50%',
                             right: { xs: '20px', md: '120px' },
                             transform: 'translateY(-50%)',
-                            bgcolor: 'rgba(255, 140, 0, 0.1)',
-                            border: '2px solid rgba(255, 140, 0, 0.3)',
-                            color: '#FF8C00',
+                            bgcolor: 'rgba(59, 130, 246, 0.1)',
+                            border: '2px solid rgba(59, 130, 246, 0.2)',
+                            color: '#F5A623',
                             width: { xs: '45px', md: '40px' },
                             height: { xs: '45px', md: '40px' },
                             backdropFilter: 'blur(10px)',
-                            boxShadow: '0 8px 32px rgba(255, 140, 0, 0.3), 0 0 20px rgba(255, 140, 0, 0.2)',
+                            boxShadow: '0 8px 32px rgba(59, 130, 246, 0.2), 0 0 20px rgba(59, 130, 246, 0.15)',
                             zIndex: 1001,
                             '&:hover': {
-                                bgcolor: 'rgba(255, 140, 0, 0.2)',
+                                bgcolor: 'rgba(59, 130, 246, 0.15)',
                                 transform: 'translateY(-50%) scale(1.1)',
-                                boxShadow: '0 0 30px rgba(255, 140, 0, 0.6), 0 0 60px rgba(255, 140, 0, 0.4)',
+                                boxShadow: '0 0 30px rgba(59, 130, 246, 0.5), 0 0 60px rgba(59, 130, 246, 0.3)',
                             },
                         }}
                     >
-                        <ChevronRight sx={{ fontSize: { xs: '24px', md: '32px' } }} />
+                        <ChevronRight sx={{ fontSize: { xs: '24px', md: '28px' } }} />
                     </IconButton>
                 </Box>
 
@@ -453,7 +451,7 @@ const Coverflow3D: React.FC = () => {
                 >
                     <Box sx={{ display: 'flex', gap: '12px', padding: '10px 20px' }}>
                         {[-2, -1, 0, 1, 2].map((offset) => {
-                            const index = (currentIndex + offset + imageData.length) % imageData.length;
+                            const index = (currentIndex + offset + specialItems.length) % specialItems.length;
                             let scale = 1;
                             let opacity = 1;
                             if (offset === 0) {
@@ -477,12 +475,12 @@ const Coverflow3D: React.FC = () => {
                                         width: '10px',
                                         height: '10px',
                                         borderRadius: '50%',
-                                        bgcolor: offset === 0 ? '#FF8C00' : 'rgba(255, 140, 0, 0.8)',
+                                        bgcolor: offset === 0 ? '#F5A623' : 'rgba(245, 166, 35, 0.8)',
                                         cursor: 'pointer',
                                         transition: 'all 0.3s ease',
                                         transform: `scale(${scale})`,
                                         opacity,
-                                        boxShadow: offset === 0 ? '0 0 10px rgba(255, 140, 0, 0.8)' : 'none',
+                                        boxShadow: offset === 0 ? '0 0 10px rgba(245, 166, 35, 0.8)' : 'none',
                                         '&:hover': {
                                             opacity: 1,
                                             transform: `scale(${scale * 1.2})`,
@@ -506,7 +504,7 @@ const Coverflow3D: React.FC = () => {
                                 width: '100%',
                             }}
                         >
-                            {imageData[currentIndex].description}
+                            {specialItems[currentIndex].description}
                         </Typography>
                     </Box>
                 </Box>
@@ -515,4 +513,4 @@ const Coverflow3D: React.FC = () => {
     );
 };
 
-export default Coverflow3D;
+export default SpecialsPage;

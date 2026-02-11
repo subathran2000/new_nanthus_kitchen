@@ -1,7 +1,7 @@
 import type { MainCategory } from "../types";
 
 // Menu images
-import img1 from "../assets/images/restaurent.jpg";
+import img1 from "../assets/images/restaurant.jpg";
 import img2 from "../assets/images/special_bg.png";
 import img3 from "../assets/images/bg4.jpg";
 import img4 from "../assets/images/background.jpg";

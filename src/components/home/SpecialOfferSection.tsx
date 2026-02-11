@@ -1,12 +1,10 @@
 import React from 'react';
 import { Box, Typography, Button } from '@mui/material';
-import { commonButtonStyle } from '../common/ButtonStyles';
-import { motion } from 'framer-motion';
-import LocalOfferIcon from '@mui/icons-material/LocalOffer';
+import { commonButtonStyle } from "../common/ButtonStyles";
+import LocalOfferIcon from "@mui/icons-material/LocalOffer";
 
-// Import local images
-import specialImage from '../../assets/images/special_bg.png';
-import AccordionFoldImage from './AccordionFoldImage';
+import specialImage from "../../assets/images/special_bg.png";
+import AccordionFoldImage from "./AccordionFoldImage";
 
 const SpecialOfferSection: React.FC = () => {
   return (
@@ -14,13 +12,13 @@ const SpecialOfferSection: React.FC = () => {
       sx={{
         width: "100%",
         maxWidth: "1400px",
-        margin: "4rem auto 0",
+        margin: "2rem auto 0",
         position: "relative",
-        minHeight: "80vh",
+        minHeight: { xs: "auto", md: "80vh" },
         display: "flex",
         flexDirection: "column",
         justifyContent: "center",
-        padding: { xs: "2rem", md: "0 80px" },
+        padding: { xs: "1.5rem 1.25rem", sm: "2rem", md: "0 80px" },
       }}
     >
       <Box
@@ -29,15 +27,12 @@ const SpecialOfferSection: React.FC = () => {
           flexDirection: "column",
           alignItems: "center",
           textAlign: "center",
-          mb: { xs: 8, md: 10 },
+          mb: { xs: 5, md: 10 },
           position: "relative",
         }}
       >
-        <Typography
-          variant="overline"
-          className="overline-text"
-        >
-          TEMPORARY COLLECTION
+        <Typography variant="overline" className="overline-text">
+          LIMITED TIME SPECIALS
         </Typography>
 
         <Typography
@@ -52,7 +47,6 @@ const SpecialOfferSection: React.FC = () => {
         >
           CHEF'S SELECT
         </Typography>
-
       </Box>
 
       <Box
@@ -60,7 +54,7 @@ const SpecialOfferSection: React.FC = () => {
           display: "flex",
           flexDirection: { xs: "column", md: "row" },
           alignItems: "center",
-          gap: { xs: 4, md: 15 },
+          gap: { xs: 4, md: 10 },
           width: "100%",
         }}
       >
@@ -68,25 +62,25 @@ const SpecialOfferSection: React.FC = () => {
           sx={{
             position: "relative",
             width: { xs: "100%", md: "55%" },
-            height: { xs: "300px", sm: "400px", md: "650px" },
+            height: { xs: "250px", sm: "350px", md: "650px" },
             flexShrink: 0,
           }}
         >
           <Box
             sx={{
               position: "absolute",
-              inset: { xs: -10, md: -20 },
-              border: "1px solid rgba(255,140,0,0.15)",
-              borderRadius: "40px",
+              inset: { xs: -8, md: -20 },
+              border: "1px solid rgba(59, 130, 246, 0.15)",
+              borderRadius: { xs: "24px", md: "40px" },
               zIndex: 0,
               "&::before": {
                 content: '""',
                 position: "absolute",
                 inset: -1,
-                borderRadius: "40px",
+                borderRadius: { xs: "24px", md: "40px" },
                 padding: "1px",
                 background:
-                  "linear-gradient(135deg, rgba(255,140,0,0.3), transparent, rgba(255,140,0,0.1))",
+                  "linear-gradient(135deg, rgba(59, 130, 246, 0.2), transparent, rgba(59, 130, 246, 0.08))",
               },
             }}
           />
@@ -142,7 +136,7 @@ const SpecialOfferSection: React.FC = () => {
               lineHeight: 1.2,
             }}
           >
-            Fusion <span style={{ color: "#FF8C00" }}>Mastery</span>
+            Fusion <span style={{ color: "#F5A623" }}>Mastery</span>
             <br />
             In Every Plate
           </Typography>
@@ -160,15 +154,16 @@ const SpecialOfferSection: React.FC = () => {
               mx: { xs: "auto", md: 0 },
             }}
           >
-            Our limited-time offerings represent the intersection of tradition
-            and avant-garde technique. Each dish is an ephemeral masterpiece,
-            curated daily by our culinary team to surprise and delight the
-            discerning palate.
+            Our limited-time specials showcase the best of Jaffna cuisine
+            reimagined with a modern twist. Handcrafted daily by our chefs using
+            the freshest seasonal ingredients, these dishes are available only
+            while supplies last.
           </Typography>
 
           <Button
+            component="a"
+            href="/special"
             variant="outlined"
-            onClick={() => (window.location.href = "/special")}
             startIcon={<LocalOfferIcon />}
             sx={commonButtonStyle}
           >

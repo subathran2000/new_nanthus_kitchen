@@ -1,3 +1,5 @@
+import type { KeyboardEvent as ReactKeyboardEvent } from "react";
+
 /**
  * Accessibility utilities for improving WCAG compliance
  */
@@ -102,7 +104,7 @@ export const getContrastRatio = (
  * Keyboard navigation helper - handle common keyboard shortcuts
  */
 export const handleKeyboardNavigation = (
-  event: React.KeyboardEvent,
+  event: ReactKeyboardEvent,
   actions: {
     onEnter?: () => void;
     onEscape?: () => void;

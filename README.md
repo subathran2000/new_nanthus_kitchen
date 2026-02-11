@@ -1,73 +1,59 @@
-# React + TypeScript + Vite
+# New Nanthu's Kitchen
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Authentic Jaffna cuisine restaurant website — built with React, TypeScript, Three.js, and Material UI.
 
-Currently, two official plugins are available:
+## Tech Stack
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- **React 19** with TypeScript
+- **Vite** (Rolldown) for build tooling
+- **Material UI 7** for component library
+- **Three.js** / React Three Fiber for 3D effects
+- **Framer Motion** for animations
+- **React Router 7** for client-side routing
+- **GSAP** for advanced animations
 
-## React Compiler
+## Getting Started
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+```bash
+# Install dependencies
+pnpm install
 
-## Expanding the ESLint configuration
+# Start dev server
+pnpm dev
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+# Build for production
+pnpm build
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+# Preview production build
+pnpm preview
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+# Lint
+pnpm lint
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## Project Structure
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
 ```
+src/
++-- components/
+¦   +-- common/       # Shared UI components (buttons, forms, backgrounds)
+¦   +-- home/         # Landing page sections
+¦   +-- menu/         # Menu page with interactive spiral view
+¦   +-- special/      # Specials page with 3D coverflow
+¦   +-- aboutUs/      # About page with image gallery
+¦   +-- footer/       # Footer component
++-- data/             # Menu data and special items
++-- hooks/            # Custom React hooks
++-- theme/            # MUI theme configuration
++-- types/            # TypeScript type definitions
++-- utils/            # Utility functions (validation, accessibility)
+```
+
+## Routes
+
+| Path | Page |
+|------|------|
+| / | Landing page |
+| /menu | Interactive menu |
+| /special | Chef's specials |
+| /about | About us / Gallery |

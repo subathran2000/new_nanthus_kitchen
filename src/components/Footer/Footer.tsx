@@ -6,7 +6,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import InstagramIcon from "@mui/icons-material/Instagram";
 import FacebookIcon from "@mui/icons-material/Facebook";
 import SvgIcon from "@mui/material/SvgIcon";
-import AutoAwesomeIcon from "@mui/icons-material/AutoAwesome";
+import { SOCIAL_LINKS, BRAND } from "../../constants/businessInfo";
 import "./Footer.css";
 
 const TikTokIcon = (props: React.ComponentProps<typeof SvgIcon>) => (
@@ -15,7 +15,7 @@ const TikTokIcon = (props: React.ComponentProps<typeof SvgIcon>) => (
   </SvgIcon>
 );
 
-const CreativeFooter = () => {
+const Footer = () => {
   const [email, setEmail] = useState("");
   const [subscribed, setSubscribed] = useState(false);
 
@@ -33,7 +33,7 @@ const CreativeFooter = () => {
       sx={{
         width: "100%",
         position: "relative",
-        mt: 4,
+        mt: 0,
         pb: 0,
         overflow: "visible",
         color: "#fff",
@@ -50,7 +50,7 @@ const CreativeFooter = () => {
           width: "80%",
           height: "300px",
           background:
-            "radial-gradient(ellipse at center, rgba(255, 140, 0, 0.05) 0%, transparent 70%)",
+            "radial-gradient(ellipse at center, rgba(59, 130, 246, 0.05) 0%, transparent 70%)",
           pointerEvents: "none",
           zIndex: 0,
         }}
@@ -60,7 +60,7 @@ const CreativeFooter = () => {
         sx={{
           maxWidth: "1200px",
           mx: "auto",
-          px: 4,
+          px: { xs: 2, sm: 3, md: 4 },
           position: "relative",
           zIndex: 1,
         }}
@@ -76,13 +76,13 @@ const CreativeFooter = () => {
             sx={{
               background: "rgba(255, 255, 255, 0.03)",
               backdropFilter: "blur(20px)",
-              borderRadius: "24px",
-              border: "1px solid rgba(255, 140, 0, 0.15)",
-              p: { xs: 4, md: 8 },
+              borderRadius: { xs: "16px", md: "24px" },
+              border: "1px solid rgba(59, 130, 246, 0.12)",
+              p: { xs: 3, sm: 4, md: 8 },
               display: "flex",
               flexDirection: { xs: "column", md: "row" },
               alignItems: "center",
-              gap: 6,
+              gap: { xs: 3, md: 6 },
               boxShadow: "0 40px 100px rgba(0,0,0,0.5)",
               position: "relative",
               overflow: "hidden",
@@ -97,7 +97,7 @@ const CreativeFooter = () => {
                 width: "200px",
                 height: "2px",
                 background:
-                  "linear-gradient(90deg, transparent, #FF8C00, transparent)",
+                  "linear-gradient(90deg, transparent, #F5A623, transparent)",
                 animation: "moveLine 4s infinite linear",
               }}
             />
@@ -109,9 +109,9 @@ const CreativeFooter = () => {
                   fontFamily: "'Inter', sans-serif",
                   fontWeight: 700,
                   mb: 2,
-                  fontSize: { xs: "2rem", md: "3.5rem" },
+                  fontSize: { xs: "1.5rem", sm: "2rem", md: "3.5rem" },
                   lineHeight: 1.1,
-                  textShadow: '0 0 20px rgba(255, 140, 0, 0.2)',
+                  textShadow: '0 0 20px rgba(59, 130, 246, 0.15)',
                 }}
               >
                 Join Our <span className="footer-secret-text">Secret</span>{" "}
@@ -142,24 +142,26 @@ const CreativeFooter = () => {
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     variant="standard"
-                    InputProps={{
-                      disableUnderline: true,
-                      sx: {
-                        color: "#fff",
-                        bgcolor: "rgba(255, 255, 255, 0.03)",
-                        borderRadius: "12px",
-                        px: 2,
-                        py: 1.5,
-                        border: "1px solid rgba(255, 140, 0, 0.15)",
-                        fontSize: "0.95rem",
-                        transition: "all 0.3s ease",
-                        "&:hover": {
-                          border: "1px solid rgba(255, 140, 0, 0.4)",
-                        },
-                        "&:focus-within": {
-                          border: "1px solid #FF8C00",
-                          boxShadow: "0 0 20px rgba(255, 140, 0, 0.1)",
-                          bgcolor: "rgba(255, 255, 255, 0.05)",
+                    slotProps={{
+                      input: {
+                        disableUnderline: true,
+                        sx: {
+                          color: "#fff",
+                          bgcolor: "rgba(255, 255, 255, 0.03)",
+                          borderRadius: "12px",
+                          px: 2,
+                          py: 1.5,
+                          border: "1px solid rgba(59, 130, 246, 0.12)",
+                          fontSize: "0.95rem",
+                          transition: "all 0.3s ease",
+                          "&:hover": {
+                            border: "1px solid rgba(59, 130, 246, 0.3)",
+                          },
+                          "&:focus-within": {
+                            border: "1px solid #F5A623",
+                            boxShadow: "0 0 20px rgba(59, 130, 246, 0.1)",
+                            bgcolor: "rgba(255, 255, 255, 0.05)",
+                          },
                         },
                       },
                     }}
@@ -187,7 +189,7 @@ const CreativeFooter = () => {
                         animate={{ opacity: 1, y: 0 }}
                         sx={{ textAlign: "center" }}
                       >
-                        <Typography sx={{ color: "#FF8C00", fontWeight: 600 }}>
+                        <Typography sx={{ color: "#F5A623", fontWeight: 600 }}>
                           Welcome to the Circle! Check your inbox soon.
                         </Typography>
                       </Box>
@@ -202,7 +204,8 @@ const CreativeFooter = () => {
         {/* Footer Bottom */}
         <Box
           sx={{
-            mt: 10,
+            mt: 8,
+            pb: 0,
             display: "flex",
             flexDirection: { xs: "column", md: "row" },
             justifyContent: "space-between",
@@ -223,7 +226,7 @@ const CreativeFooter = () => {
               NEW NANTHU'S <span className="footer-kitchen-text">KITCHEN</span>
             </Typography>
             <Typography variant="body2" sx={{ color: "rgba(255, 255, 255, 0.5)" }}>
-              © 2026 New Nanthu's Kitchen. Crafted with passion & spice.
+              {BRAND.copyright}
             </Typography>
             <Typography
               variant="caption"
@@ -236,27 +239,35 @@ const CreativeFooter = () => {
             >
               Created by{" "}
               <a
-                href="https://www.akvisionsystems.com"
+                href={BRAND.createdBy.url}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="footer-creator-link"
               >
-                AK Vision Systems
+                {BRAND.createdBy.name}
               </a>
             </Typography>
           </Box>
 
           <Box sx={{ display: "flex", gap: 2 }}>
-            {[InstagramIcon, FacebookIcon, TikTokIcon].map((Icon, i) => (
+            {[
+              { Icon: InstagramIcon, href: SOCIAL_LINKS.instagram, label: "Instagram" },
+              { Icon: FacebookIcon, href: SOCIAL_LINKS.facebook, label: "Facebook" },
+              { Icon: TikTokIcon, href: SOCIAL_LINKS.tiktok, label: "TikTok" },
+            ].map(({ Icon, href, label }) => (
               <IconButton
-                key={i}
-                component={motion.button}
-                whileHover={{ y: -5, color: "#FF8C00" }}
+                key={label}
+                component="a"
+                href={href}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={label}
                 sx={{
-                  color: "#FF8C00",
-                  bgcolor: "rgba(255, 140, 0, 0.05)",
-                  border: "1px solid rgba(255, 140, 0, 0.1)",
-                  "&:hover": { bgcolor: "rgba(255, 140, 0, 0.2)", color: "#fff" },
+                  color: "#F5A623",
+                  bgcolor: "rgba(59, 130, 246, 0.05)",
+                  border: "1px solid rgba(59, 130, 246, 0.1)",
+                  "&:hover": { bgcolor: "rgba(59, 130, 246, 0.15)", color: "#fff", transform: "translateY(-5px)" },
+                  transition: "all 0.3s ease",
                 }}
               >
                 <Icon />
@@ -265,15 +276,8 @@ const CreativeFooter = () => {
           </Box>
         </Box>
       </Box>
-
-      <style>{`
-                @keyframes moveLine {
-                    0% { left: -200px; }
-                    100% { left: 100%; }
-                }
-            `}</style>
     </Box>
   );
 };
 
-export default CreativeFooter;
+export default Footer;

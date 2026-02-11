@@ -59,7 +59,7 @@ const AboutUs = () => {
             fontWeight: 600,
             letterSpacing: "0.35em",
             textTransform: "uppercase",
-            color: "rgba(255, 200, 140, 0.95)",
+            color: "rgba(180, 210, 255, 0.95)",
             marginBottom: "1rem",
             fontFamily: "'Inter', sans-serif",
           }}
