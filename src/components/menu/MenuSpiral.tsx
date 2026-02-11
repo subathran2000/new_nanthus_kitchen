@@ -354,6 +354,7 @@ const MenuSpiral: FC<SpiralBackgroundProps> = ({
   const isSpiral = displayedItems.length > 2;
 
   const containerRef = useRef<HTMLDivElement>(null);
+  const sidePanelRef = useRef<HTMLDivElement>(null);
   const cardsRef = useRef<(HTMLDivElement | null)[]>([]);
   const [open, setOpen] = useState(false);
   const [selected, setSelected] = useState<number | null>(null);
@@ -370,20 +371,24 @@ const MenuSpiral: FC<SpiralBackgroundProps> = ({
   const targetScrollYRef = useRef(0);
   const transitionRef = useRef(0);
 
-  // Reset scroll when category changes
+  // Reset scroll and trigger entrance animation when category changes
+  const [isEntering, setIsEntering] = useState(true);
   useEffect(() => {
+    setIsEntering(true);
     scrollYRef.current = 0;
     targetScrollYRef.current = 0;
+    const timer = setTimeout(() => setIsEntering(false), 800);
+    return () => clearTimeout(timer);
   }, [activeCategory]);
 
   const getResponsiveValues = () => {
-    // Tight spiral: small radius and minimal step so cards sit close together
-    if (typeof window === "undefined") return { radius: 580, spacing: 110 };
+    // Cylinder radius: cards sit on a ring; slightly smaller on mobile
+    if (typeof window === "undefined") return { radius: 420, cylinderCards: 7 };
     const width = window.innerWidth;
-    if (width < 480) return { radius: 240, spacing: 85 };
-    if (width < 768) return { radius: 320, spacing: 95 };
-    if (width < 1024) return { radius: 440, spacing: 105 };
-    return { radius: 580, spacing: 110 };
+    if (width < 480) return { radius: 200, cylinderCards: 7 };
+    if (width < 768) return { radius: 280, cylinderCards: 7 };
+    if (width < 1024) return { radius: 360, cylinderCards: 7 };
+    return { radius: 420, cylinderCards: 7 };
   };
 
   useEffect(() => {
@@ -395,56 +400,176 @@ const MenuSpiral: FC<SpiralBackgroundProps> = ({
     const cards = cardsRef.current;
     const total = cards.length;
 
-    const { radius, spacing } = getResponsiveValues();
-    const totalHeight = total * spacing;
+    const { radius, cylinderCards } = getResponsiveValues();
+    // Card size: ~92% container, max 400px → strip gap proportional to card width
+    const cardWidthPx = typeof window !== "undefined" ? Math.min(window.innerWidth * 0.38, 220) : 180;
+    const hasMoreThanSeven = total > cylinderCards;
+    const scrollStep = 160;
+    const maxCylinderScroll = hasMoreThanSeven ? (total - cylinderCards) * scrollStep : 0;
+    const rotationFactor = 0.008;
 
-    const minScroll = -totalHeight / 2;
-    const maxScroll = totalHeight / 2;
+    const easeOutCubic = (s: number) => 1 - Math.pow(1 - s, 3);
+    const easeInOutCubic = (s: number) => s < 0.5 ? 4 * s * s * s : 1 - Math.pow(-2 * s + 2, 3) / 2;
 
     const updateCards = () => {
       const targetTransition = openRef.current ? 1 : 0;
-      transitionRef.current += (targetTransition - transitionRef.current) * 0.1;
-
+      transitionRef.current += (targetTransition - transitionRef.current) * 0.06;
       if (Math.abs(targetTransition - transitionRef.current) < 0.001) {
         transitionRef.current = targetTransition;
       }
-
       const t = transitionRef.current;
+      const vertSpacing = isMobile ? 80 : 120;
+
+      if (!hasMoreThanSeven) {
+        const baseAngle = scrollYRef.current * rotationFactor;
+        const n = Math.min(total, cylinderCards);
+        const angleStep = (2 * Math.PI) / n;
+
+        cards.forEach((card, i) => {
+          if (!card) return;
+          const inCylinderRing = i < n;
+          const angle = (i % n) * angleStep + baseAngle;
+          const cylinderX = radius * Math.sin(angle);
+          const cylinderZ = -radius * Math.cos(angle);
+          const rotationYDeg = (angle * 180) / Math.PI;
+          const vertY = (i - (total - 1) / 2) * vertSpacing;
+          const currentLeftPct = 50 + (15 - 50) * t;
+          const currentY = (vertY + scrollYRef.current) * t;
+          const currentX = cylinderX * (1 - t);
+          const currentZ = cylinderZ * (1 - t);
+          const currentRotationY = rotationYDeg * (1 - t);
+          const depthScale = 0.6 + 0.4 * (Math.cos(angle) + 1) / 2;
+          const currentScale = t === 1 ? 1 : (inCylinderRing ? depthScale : 1);
+          const opacity = t === 1 ? 1 : (inCylinderRing ? 1 : 0);
+          // Enhanced entry stagger + exit fade
+          const staggerDelay = isEntering ? i * 0.05 : 0;
+          const entryT = isEntering ? 0 : 1;
+
+          gsap.to(card, {
+            x: currentX,
+            y: currentY,
+            z: currentZ,
+            rotationY: currentRotationY,
+            scale: currentScale,
+            transformOrigin: "50% 50% 0px",
+            xPercent: -50,
+            yPercent: -50,
+            left: `${currentLeftPct}%`,
+            top: "50%",
+            opacity: isEntering ? 0 : opacity,
+            duration: isEntering ? 0.6 : 0.01,
+            delay: staggerDelay,
+            ease: "power2.out",
+            zIndex: Math.round(Math.cos(angle) * 100 * (1 - t)) + (openRef.current ? 600 : 10),
+            overwrite: "auto"
+          });
+        });
+        return;
+      }
+
+      const rawScroll = Math.max(0, Math.min(maxCylinderScroll, scrollYRef.current));
+      const scrollIndex = rawScroll / scrollStep;
+      const offset = Math.floor(scrollIndex);
+      const fraction = scrollIndex - offset;
+      const easedFraction = easeOutCubic(fraction);
+      const blendFraction = easeInOutCubic(fraction);
+
+      const vw = typeof window !== "undefined" ? window.innerWidth / 100 : 10;
+      const leftStripStart = -Math.min(400, vw * 36);
+      const rightStripStart = Math.min(400, vw * 36);
+      const horizontalGap = Math.max(100, cardWidthPx * 0.55);
+      const stripScaleNear = 0.58;
+      const stripScaleFar = 0.36;
+      const stripOpacityNear = 0.9;
+      const stripOpacityFar = 0.4;
+
+      const getCylinderPos = (angle: number) => ({
+        x: radius * Math.sin(angle),
+        z: -radius * Math.cos(angle),
+        rot: (angle * 180) / Math.PI,
+        scale: 0.6 + 0.4 * (Math.cos(angle) + 1) / 2,
+      });
 
       cards.forEach((card, i) => {
         if (!card) return;
-
-        const offset = i * spacing;
-        let spiralY = offset + scrollYRef.current;
-        spiralY -= totalHeight / 2;
-
-        const progress = spiralY / totalHeight;
-        const angle = progress * Math.PI * 2 * 4;
-        const isVisibleSpiral = spiralY >= minScroll && spiralY <= maxScroll;
-
-        const vertSpacing = isMobile ? 80 : 120;
         const vertY = (i - (total - 1) / 2) * vertSpacing;
-
-        // When open (t=1), shift cards to the center of the left 30% area (~15%); scrollable via scrollYRef
         const currentLeftPct = 50 + (15 - 50) * t;
-        const currentY = spiralY * (1 - t) + (vertY + scrollYRef.current) * t;
-        const currentRotationY = ((angle * 180) / Math.PI) * (1 - t);
-        const currentTZ = -radius * (1 - t);
+        const currentY = (vertY + scrollYRef.current) * t;
 
-        const opacity = (isVisibleSpiral ? 1 : 0) * (1 - t) + 1 * t;
+        let currentX: number;
+        let currentZ: number;
+        let currentRotationY: number;
+        let currentScale: number;
+        let opacity: number;
+        let zIndex: number;
 
-        gsap.set(card, {
+        // Unified slot logic for smoothness
+        const slot = i - scrollIndex;
+
+        if (slot < 0) {
+          // Left Strip (moving continuously)
+          const leftProgress = Math.abs(slot);
+          currentX = (leftStripStart + slot * horizontalGap) * (1 - t);
+          currentZ = slot * 6 * (1 - t);
+          currentRotationY = 0;
+          currentScale = t === 1 ? 1 : Math.max(stripScaleFar, stripScaleNear - leftProgress * 0.1);
+          opacity = t === 1 ? 1 : Math.max(stripOpacityFar, stripOpacityNear - leftProgress * 0.15);
+          zIndex = 10 - Math.floor(leftProgress);
+        } else if (slot < cylinderCards - 1) {
+          // Inside Cylinder
+          const angle = slot * (2 * Math.PI) / cylinderCards;
+          const cyl = getCylinderPos(angle);
+          currentX = cyl.x * (1 - t);
+          currentZ = cyl.z * (1 - t);
+          currentRotationY = cyl.rot * (1 - t);
+          currentScale = t === 1 ? 1 : cyl.scale;
+          opacity = 1;
+          zIndex = 20 + Math.round(Math.cos(angle) * 70 * (1 - t));
+        } else if (slot < cylinderCards) {
+          // Exit Cylinder to Right (blend)
+          const localFraction = slot - (cylinderCards - 1);
+          const localBlend = easeInOutCubic(localFraction);
+          const angle = slot * (2 * Math.PI) / cylinderCards;
+          const cyl = getCylinderPos(angle);
+          const rightX = rightStripStart;
+          currentX = (1 - localBlend) * cyl.x * (1 - t) + localBlend * rightX * (1 - t);
+          currentZ = (1 - localBlend) * cyl.z * (1 - t);
+          currentRotationY = (1 - localBlend) * cyl.rot * (1 - t);
+          currentScale = t === 1 ? 1 : (1 - localBlend) * cyl.scale + localBlend * stripScaleNear;
+          opacity = 1;
+          zIndex = 15;
+        } else {
+          // Right Strip (moving continuously)
+          const rightProgress = slot - (cylinderCards - 1);
+          currentX = (rightStripStart + (rightProgress - 1) * horizontalGap) * (1 - t);
+          currentZ = -(rightProgress - 1) * 6 * (1 - t);
+          currentRotationY = 0;
+          currentScale = t === 1 ? 1 : Math.max(stripScaleFar, stripScaleNear - (rightProgress - 1) * 0.1);
+          opacity = t === 1 ? 1 : Math.max(stripOpacityFar, stripOpacityNear - (rightProgress - 1) * 0.15);
+          zIndex = 10 - Math.floor(rightProgress);
+        }
+
+        // Enhanced entrance/exit stagger
+        const staggerDelay = isEntering ? i * 0.04 : 0;
+        const animDuration = isEntering ? 0.7 : 0.05; // Slightly more than 0.01 to allow minor easing
+
+        gsap.to(card, {
+          x: currentX,
           y: currentY,
+          z: currentZ,
           rotationY: currentRotationY,
-          transformOrigin: `50% 50% ${currentTZ}px`,
+          scale: currentScale,
+          transformOrigin: "50% 50% 0px",
           xPercent: -50,
           yPercent: -50,
           left: `${currentLeftPct}%`,
           top: "50%",
-          opacity: opacity,
-          zIndex:
-            Math.round(Math.cos(angle) * 100 * (1 - t)) +
-            (openRef.current ? 600 : 10),
+          opacity: isEntering ? 0 : opacity,
+          duration: animDuration,
+          delay: staggerDelay,
+          ease: isEntering ? "power3.out" : "none",
+          zIndex: openRef.current ? 600 + i : zIndex,
+          overwrite: "auto"
         });
       });
     };
@@ -452,12 +577,24 @@ const MenuSpiral: FC<SpiralBackgroundProps> = ({
     const container = containerRef.current;
 
     const handleWheel = (e: WheelEvent) => {
+      const isInsidePanel = openRef.current && sidePanelRef.current?.contains(e.target as Node);
+      if (isInsidePanel) return;
+
       e.preventDefault();
-      const newTargetScroll = targetScrollYRef.current - e.deltaY * 0.5;
-      targetScrollYRef.current = Math.max(
-        minScroll,
-        Math.min(maxScroll, newTargetScroll),
-      );
+      const newTargetScroll = targetScrollYRef.current - e.deltaY * 0.42;
+
+      if (openRef.current) {
+        // Use vertical list bounds when panel is open
+        const vertSpacing = isMobile ? 80 : 120;
+        const verticalRange = (total - 1) * vertSpacing;
+        const vMin = -verticalRange / 2;
+        const vMax = verticalRange / 2;
+        targetScrollYRef.current = Math.max(vMin, Math.min(vMax, newTargetScroll));
+      } else if (hasMoreThanSeven) {
+        targetScrollYRef.current = Math.max(0, Math.min(maxCylinderScroll, newTargetScroll));
+      } else {
+        targetScrollYRef.current = newTargetScroll;
+      }
     };
 
     let touchStartY = 0;
@@ -469,16 +606,28 @@ const MenuSpiral: FC<SpiralBackgroundProps> = ({
     };
 
     const handleTouchMove = (e: TouchEvent) => {
+      const isInsidePanel = openRef.current && sidePanelRef.current?.contains(e.target as Node);
+      if (isInsidePanel) return;
+
       e.preventDefault();
       const touchY = e.touches[0].clientY;
       const deltaY = touchLastY - touchY;
       touchLastY = touchY;
 
       const newTargetScroll = targetScrollYRef.current - deltaY * 2;
-      targetScrollYRef.current = Math.max(
-        minScroll,
-        Math.min(maxScroll, newTargetScroll),
-      );
+
+      if (openRef.current) {
+        // Use vertical list bounds when panel is open
+        const vertSpacing = isMobile ? 80 : 120;
+        const verticalRange = (total - 1) * vertSpacing;
+        const vMin = -verticalRange / 2;
+        const vMax = verticalRange / 2;
+        targetScrollYRef.current = Math.max(vMin, Math.min(vMax, newTargetScroll));
+      } else if (hasMoreThanSeven) {
+        targetScrollYRef.current = Math.max(0, Math.min(maxCylinderScroll, newTargetScroll));
+      } else {
+        targetScrollYRef.current = newTargetScroll;
+      }
     };
 
     const handleTouchEnd = () => {
@@ -496,8 +645,11 @@ const MenuSpiral: FC<SpiralBackgroundProps> = ({
     }
 
     const ticker = gsap.ticker.add(() => {
-      scrollYRef.current +=
-        (targetScrollYRef.current - scrollYRef.current) * 0.1;
+      const diff = targetScrollYRef.current - scrollYRef.current;
+      // Smoother scroll physics with exponential damping
+      const damping = openRef.current ? 0.08 : 0.072;
+      scrollYRef.current += diff * damping;
+      if (Math.abs(diff) < 0.1) scrollYRef.current = targetScrollYRef.current;
       updateCards();
     });
 
@@ -569,248 +721,130 @@ const MenuSpiral: FC<SpiralBackgroundProps> = ({
         }}
       />
 
-      {/* Conditional Rendering: Spiral vs Horizontal */}
-      {isSpiral ? (
-        // 3D Spiral Mode with interactive tilt cards
-        displayedItems.map((item, i) => (
-          <SpiralCard
-            key={item.id}
-            item={item}
-            index={i}
-            onSelect={() => {
-              setSelected(i);
-              setOpen(true);
-            }}
-            cardRef={(el) => {
-              cardsRef.current[i] = el;
-            }}
-          />
-        ))
-      ) : (
-        // Horizontal List Mode (for 1-2 items) — cinematic entrance
-        <Box
-          component={motion.div}
-          initial={{ opacity: 0 }}
-          animate={{
-            opacity: 1,
-            x: open && !isMobile ? "-30%" : "0%",
-            scale: open && !isMobile ? 0.88 : 1,
-          }}
-          transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-          sx={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            gap: { xs: 3, md: 6 },
-            width: "100%",
-            height: "100%",
-            flexDirection: { xs: "column", md: "row" },
-            px: 4,
-            zIndex: open ? 600 : 10,
-            position: "relative",
-          }}
-        >
-          {displayedItems.map((item, i) => (
-            <MotionBox
-              key={item.id}
-              initial={{ opacity: 0, y: 60, rotateX: 15 }}
-              animate={{ opacity: 1, y: 0, rotateX: 0 }}
-              transition={{
-                delay: i * 0.25,
-                duration: 0.8,
-                type: "spring",
-                stiffness: 80,
-                damping: 16,
-              }}
-              whileHover={{
-                scale: 1.05,
-                y: -12,
-                transition: { type: "spring", stiffness: 300, damping: 20 },
-              }}
-              onClick={() => {
-                setSelected(i);
-                setOpen(true);
-              }}
-              sx={{
-                width: "90%",
-                maxWidth: { xs: "300px", md: "380px" },
-                aspectRatio: "3/4",
-                borderRadius: "28px",
-                border: "1.5px solid rgba(255, 255, 255, 0.06)",
-                boxShadow: "0 40px 80px rgba(0,0,0,0.6)",
-                cursor: "pointer",
-                position: "relative",
-                overflow: "hidden",
-                filter:
-                  open && !isMobile ? "blur(3px) brightness(0.7)" : "none",
-                transition: "filter 0.5s ease, border-color 0.4s ease, box-shadow 0.5s ease",
-                "&:hover": {
-                  boxShadow:
-                    "0 0 50px rgba(59, 130, 246, 0.15), 0 50px 100px rgba(0,0,0,0.7)",
-                  borderColor: "rgba(59, 130, 246, 0.35)",
-                },
-              }}
-            >
-              {/* Background image with parallax zoom */}
-              <Box
-                component={motion.div}
-                whileHover={{ scale: 1.08 }}
-                transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-                sx={{
-                  position: "absolute",
-                  inset: 0,
-                  background: `url(${item.imageUrl}) center/cover no-repeat`,
-                  borderRadius: "28px",
+      {/* Conditional Rendering: Spiral vs Horizontal with Cross-fade */}
+      <AnimatePresence mode="wait">
+        {isSpiral ? (
+          <Box
+            key="spiral-container"
+            component={motion.div}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.5, ease: "easeInOut" }}
+            sx={{ position: "absolute", inset: 0 }}
+          >
+            {displayedItems.map((item, i) => (
+              <SpiralCard
+                key={item.id}
+                item={item}
+                index={i}
+                onSelect={() => {
+                  setSelected(i);
+                  setOpen(true);
+                }}
+                cardRef={(el) => {
+                  cardsRef.current[i] = el;
                 }}
               />
-              {/* Cinematic gradient overlay */}
-              <Box
-                sx={{
-                  position: "absolute",
-                  inset: 0,
-                  borderRadius: "28px",
-                  background:
-                    "linear-gradient(180deg, rgba(10,22,40,0) 0%, rgba(10,22,40,0.1) 30%, rgba(10,22,40,0.88) 100%)",
-                  pointerEvents: "none",
+            ))}
+          </Box>
+        ) : (
+          <Box
+            key="horizontal-container"
+            component={motion.div}
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{
+              opacity: 1,
+              scale: open && !isMobile ? 0.88 : 1,
+              x: open && !isMobile ? "-30%" : "0%",
+            }}
+            exit={{ opacity: 0, scale: 1.05 }}
+            transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              gap: { xs: 3, md: 6 },
+              width: "100%",
+              height: "100%",
+              flexDirection: { xs: "column", md: "row" },
+              px: 4,
+              zIndex: open ? 600 : 10,
+              position: "relative",
+            }}
+          >
+            {displayedItems.map((item, i) => (
+              <MotionBox
+                key={item.id}
+                initial={{ opacity: 0, y: 60, rotateX: 15 }}
+                animate={{ opacity: 1, y: 0, rotateX: 0 }}
+                transition={{
+                  delay: i * 0.15,
+                  duration: 0.8,
+                  type: "spring",
+                  stiffness: 80,
+                  damping: 16,
                 }}
-              />
-              {/* Shimmer sweep on hover */}
-              <Box
+                whileHover={{
+                  scale: 1.05,
+                  y: -12,
+                  transition: { type: "spring", stiffness: 300, damping: 20 },
+                }}
+                onClick={() => {
+                  setSelected(i);
+                  setOpen(true);
+                }}
                 sx={{
-                  position: "absolute",
-                  inset: 0,
+                  width: "90%",
+                  maxWidth: { xs: "300px", md: "380px" },
+                  aspectRatio: "3/4",
                   borderRadius: "28px",
+                  border: "1.5px solid rgba(255, 255, 255, 0.06)",
+                  boxShadow: "0 40px 80px rgba(0,0,0,0.6)",
+                  cursor: "pointer",
+                  position: "relative",
                   overflow: "hidden",
-                  pointerEvents: "none",
-                  "&::after": {
-                    content: '""',
-                    position: "absolute",
-                    top: 0,
-                    left: "-100%",
-                    width: "60%",
-                    height: "100%",
-                    background:
-                      "linear-gradient(90deg, transparent, rgba(255,255,255,0.06), transparent)",
-                    transform: "rotate(25deg)",
-                  },
-                  "*:hover > &::after": {
-                    animation: "shimmer-sweep 1.2s ease-out",
+                  filter: open && !isMobile ? "blur(3px) brightness(0.7)" : "none",
+                  transition: "filter 0.5s ease, border-color 0.4s ease, box-shadow 0.5s ease",
+                  "&:hover": {
+                    boxShadow: "0 0 50px rgba(59, 130, 246, 0.15), 0 50px 100px rgba(0,0,0,0.7)",
+                    borderColor: "rgba(59, 130, 246, 0.35)",
                   },
                 }}
-              />
-              {/* Number index badge */}
-              <Box
-                component={motion.div}
-                initial={{ opacity: 0, scale: 0.5 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ delay: 0.4 + i * 0.25, duration: 0.4 }}
-                sx={{
-                  position: "absolute",
-                  top: 16,
-                  left: 16,
-                  width: 36,
-                  height: 36,
-                  borderRadius: "10px",
-                  background: "rgba(0,0,0,0.35)",
-                  backdropFilter: "blur(10px)",
-                  border: "1px solid rgba(255,255,255,0.08)",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  zIndex: 3,
-                }}
               >
-                <Typography
-                  sx={{
-                    color: "rgba(255,255,255,0.6)",
-                    fontFamily: "'Inter', sans-serif",
-                    fontWeight: 700,
-                    fontSize: "0.7rem",
-                  }}
-                >
-                  {String(i + 1).padStart(2, "0")}
-                </Typography>
-              </Box>
-              {/* Dish count chip */}
-              <Box
-                component={motion.div}
-                initial={{ opacity: 0, y: -10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.5 + i * 0.25, duration: 0.4 }}
-                sx={{
-                  position: "absolute",
-                  top: 16,
-                  right: 16,
-                  zIndex: 3,
-                }}
-              >
-                <Chip
-                  icon={<LocalDiningIcon sx={{ fontSize: 12, color: "rgba(96,165,250,0.8) !important" }} />}
-                  label={`${item.subCategories.reduce((s, sc) => s + sc.items.length, 0)} dishes`}
-                  size="small"
-                  sx={{
-                    height: 26,
-                    bgcolor: "rgba(0,0,0,0.35)",
-                    backdropFilter: "blur(10px)",
-                    color: "rgba(255,255,255,0.75)",
-                    border: "1px solid rgba(59,130,246,0.12)",
-                    fontSize: "0.65rem",
-                    fontWeight: 600,
-                    fontFamily: "'Inter', sans-serif",
-                    "& .MuiChip-label": { px: 0.8 },
-                  }}
-                />
-              </Box>
-              {/* Bottom glass content area */}
-              <Box
-                sx={{
-                  position: "absolute",
-                  bottom: 0,
-                  left: 0,
-                  right: 0,
-                  p: 3,
-                  background: "linear-gradient(180deg, transparent 0%, rgba(10,22,40,0.95) 100%)",
-                  zIndex: 2,
-                  transition: "transform 0.4s cubic-bezier(0.4, 0, 0.2, 1)",
-                  "*:hover > &": { transform: "translateY(-4px)" },
-                }}
-              >
-                <Typography
-                  variant="h5"
-                  sx={{
-                    color: "#fff",
-                    fontFamily: "'Playfair Display', serif",
-                    fontWeight: 700,
-                    letterSpacing: "0.04em",
-                    textShadow: "0 2px 10px rgba(0,0,0,0.5)",
-                    mb: 0.5,
-                    textAlign: "center",
-                  }}
-                >
-                  {item.title}
-                </Typography>
-                {/* Accent line */}
                 <Box
+                  component={motion.div}
+                  whileHover={{ scale: 1.08 }}
+                  transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
                   sx={{
-                    width: "25%",
-                    height: "2px",
-                    background: "linear-gradient(90deg, #3B82F6, #60A5FA)",
-                    mx: "auto",
-                    borderRadius: 2,
-                    transition: "width 0.4s ease",
-                    "*:hover > * > &": { width: "60%" },
+                    position: "absolute",
+                    inset: 0,
+                    background: `url(${item.imageUrl}) center/cover no-repeat`,
+                    borderRadius: "28px",
                   }}
                 />
-              </Box>
-            </MotionBox>
-          ))}
-        </Box>
-      )}
+                <Box sx={{ position: "absolute", inset: 0, borderRadius: "28px", background: "linear-gradient(180deg, rgba(10,22,40,0) 0%, rgba(10,22,40,0.1) 30%, rgba(10,22,40,0.88) 100%)", pointerEvents: "none" }} />
+
+                {/* Number index badge */}
+                <Box sx={{ position: "absolute", top: 16, left: 16, width: 36, height: 36, borderRadius: "10px", background: "rgba(0,0,0,0.35)", backdropFilter: "blur(10px)", border: "1px solid rgba(255,255,255,0.08)", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 3 }}>
+                  <Typography sx={{ color: "rgba(255,255,255,0.6)", fontFamily: "'Inter', sans-serif", fontWeight: 700, fontSize: "0.7rem" }}>{String(i + 1).padStart(2, "0")}</Typography>
+                </Box>
+
+                <Box sx={{ position: "absolute", bottom: 0, left: 0, right: 0, p: 3, background: "linear-gradient(180deg, transparent 0%, rgba(10,22,40,0.95) 100%)", zIndex: 2 }}>
+                  <Typography sx={{ color: "#fff", fontFamily: "'Playfair Display', serif", fontWeight: 700, mb: 0.5, textAlign: "center" }}>{item.title}</Typography>
+                  <Box sx={{ width: "25%", height: "2px", background: "linear-gradient(90deg, #3B82F6, #60A5FA)", mx: "auto", borderRadius: 2 }} />
+                </Box>
+              </MotionBox>
+            ))}
+          </Box>
+        )}
+      </AnimatePresence>
 
       {/* ──── Side Panel Detail View ──── */}
       <AnimatePresence mode="wait">
         {open && (
           <Box
+            ref={sidePanelRef}
             component={motion.div}
             initial={{ x: "100%", opacity: 0.5 }}
             animate={{ x: 0, opacity: 1 }}
@@ -951,6 +985,7 @@ const MenuSpiral: FC<SpiralBackgroundProps> = ({
                 scrollbarWidth: "none",
                 msOverflowStyle: "none",
                 "&::-webkit-scrollbar": { display: "none" },
+                touchAction: "pan-y", // ensure touch scroll works inside the panel
               }}
             >
               {/* ── Category Hero Header ── */}
