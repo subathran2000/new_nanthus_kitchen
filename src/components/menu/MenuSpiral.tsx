@@ -408,7 +408,6 @@ const MenuSpiral: FC<SpiralBackgroundProps> = ({
     const maxCylinderScroll = hasMoreThanSeven ? (total - cylinderCards) * scrollStep : 0;
     const rotationFactor = 0.008;
 
-    const easeOutCubic = (s: number) => 1 - Math.pow(1 - s, 3);
     const easeInOutCubic = (s: number) => s < 0.5 ? 4 * s * s * s : 1 - Math.pow(-2 * s + 2, 3) / 2;
 
     const updateCards = () => {
@@ -443,7 +442,6 @@ const MenuSpiral: FC<SpiralBackgroundProps> = ({
           const opacity = t === 1 ? 1 : (inCylinderRing ? 1 : 0);
           // Enhanced entry stagger + exit fade
           const staggerDelay = isEntering ? i * 0.05 : 0;
-          const entryT = isEntering ? 0 : 1;
 
           gsap.to(card, {
             x: currentX,
@@ -469,10 +467,6 @@ const MenuSpiral: FC<SpiralBackgroundProps> = ({
 
       const rawScroll = Math.max(0, Math.min(maxCylinderScroll, scrollYRef.current));
       const scrollIndex = rawScroll / scrollStep;
-      const offset = Math.floor(scrollIndex);
-      const fraction = scrollIndex - offset;
-      const easedFraction = easeOutCubic(fraction);
-      const blendFraction = easeInOutCubic(fraction);
 
       const vw = typeof window !== "undefined" ? window.innerWidth / 100 : 10;
       const leftStripStart = -Math.min(400, vw * 36);

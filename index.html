@@ -8,6 +8,55 @@
   <meta name="theme-color" content="#0A1628" />
   <meta name="robots" content="index, follow" />
 
+  <!-- Preconnect to Google Fonts for faster font loading -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+  <!-- Preload critical fonts to prevent FOUT/layout shift -->
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;700&family=Inter:wght@400;700;900&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Raleway:wght@400;700;900&display=swap" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;700&family=Inter:wght@400;700;900&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Raleway:wght@400;700;900&display=swap" />
+
+  <!-- JSON-LD Structured Data for Restaurant SEO -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Restaurant",
+    "name": "New Nanthu's Kitchen",
+    "description": "Authentic Jaffna cuisine in Scarborough & Markham, Ontario. Traditional Sri Lankan dishes, catering, and online ordering.",
+    "url": "https://newnanthuskitchen.com",
+    "servesCuisine": ["Sri Lankan", "Jaffna", "Tamil", "South Asian"],
+    "priceRange": "$$",
+    "image": "https://newnanthuskitchen.com/logo.png",
+    "email": "newnanthuskitchen@gmail.com",
+    "sameAs": [
+      "https://www.instagram.com/newnanthuskitchen",
+      "https://www.facebook.com/newnanthuskitchen",
+      "https://www.tiktok.com/@newnanthuskitchen"
+    ],
+    "address": [
+      {
+        "@type": "PostalAddress",
+        "streetAddress": "72-30 Karachi Dr",
+        "addressLocality": "Markham",
+        "addressRegion": "ON",
+        "postalCode": "L3S 0B6",
+        "addressCountry": "CA"
+      },
+      {
+        "@type": "PostalAddress",
+        "streetAddress": "80 Nashdene Rd",
+        "addressLocality": "Scarborough",
+        "addressRegion": "ON",
+        "postalCode": "M1V 5E4",
+        "addressCountry": "CA"
+      }
+    ],
+    "telephone": ["+1-289-554-5999", "+1-416-299-1999"],
+    "hasMenu": "https://newnanthuskitchen.com/menu",
+    "acceptsReservations": "false"
+  }
+  </script>
+
   <!-- Open Graph -->
   <meta property="og:title" content="New Nanthu's Kitchen" />
   <meta property="og:description" content="Authentic Jaffna cuisine in Scarborough & Markham. Traditional Sri Lankan dishes, catering, and online ordering." />
