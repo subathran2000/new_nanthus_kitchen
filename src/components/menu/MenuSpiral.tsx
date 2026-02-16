@@ -130,13 +130,13 @@ const SpiralCard: FC<{
         flexDirection: "column",
         justifyContent: "flex-end",
         transformStyle: "preserve-3d",
-        border: "1.5px solid rgba(255, 255, 255, 0.06)",
-        boxShadow: "0 30px 80px rgba(0,0,0,0.5)",
-        transition: "border-color 0.5s ease, box-shadow 0.6s ease",
+        border: "1.5px solid rgba(255, 255, 255, 0.08)",
+        boxShadow: "0 20px 40px rgba(0,0,0,0.4), inset 0 0 0 1px rgba(255,255,255,0.05)",
+        transition: "all 0.6s cubic-bezier(0.16, 1, 0.3, 1)",
         ...(isHovered && {
-          borderColor: "rgba(59, 130, 246, 0.4)",
+          borderColor: "rgba(59, 130, 246, 0.5)",
           boxShadow:
-            "0 0 60px rgba(59, 130, 246, 0.12), 0 40px 80px rgba(0,0,0,0.7), inset 0 0 30px rgba(59, 130, 246, 0.04)",
+            "0 0 80px rgba(59, 130, 246, 0.2), 0 40px 80px rgba(0,0,0,0.8), inset 0 0 40px rgba(59, 130, 246, 0.08)",
         }),
       }}
     >
@@ -271,13 +271,14 @@ const SpiralCard: FC<{
           py: 2,
           borderRadius: "20px",
           background: isHovered
-            ? "rgba(10, 22, 40, 0.82)"
-            : "rgba(10, 22, 40, 0.55)",
-          backdropFilter: "blur(20px)",
-          WebkitBackdropFilter: "blur(20px)",
-          border: `1px solid ${isHovered ? "rgba(59, 130, 246, 0.2)" : "rgba(255, 255, 255, 0.06)"}`,
-          transition: "all 0.45s cubic-bezier(0.4, 0, 0.2, 1)",
-          transform: isHovered ? "translateY(-4px)" : "translateY(0)",
+            ? "rgba(10, 22, 40, 0.85)"
+            : "rgba(10, 22, 40, 0.58)",
+          backdropFilter: "blur(24px) saturate(140%)",
+          WebkitBackdropFilter: "blur(24px) saturate(140%)",
+          border: `1px solid ${isHovered ? "rgba(59, 130, 246, 0.3)" : "rgba(255, 255, 255, 0.08)"}`,
+          transition: "all 0.5s cubic-bezier(0.2, 0.8, 0.2, 1)",
+          transform: isHovered ? "translateY(-6px) translateZ(20px)" : "translateY(0) translateZ(0)",
+          boxShadow: isHovered ? "0 20px 40px rgba(0,0,0,0.4)" : "none",
         }}
       >
         {/* Accent line */}
@@ -363,6 +364,9 @@ const MenuSpiral: FC<SpiralBackgroundProps> = ({
   const openRef = useRef(open);
   openRef.current = open;
 
+  const mouseSpringX = useSpring(0, { stiffness: 100, damping: 30 });
+  const mouseSpringY = useSpring(0, { stiffness: 100, damping: 30 });
+
   useEffect(() => {
     onPanelOpenChange?.(open);
   }, [open, onPanelOpenChange]);
@@ -371,15 +375,25 @@ const MenuSpiral: FC<SpiralBackgroundProps> = ({
   const targetScrollYRef = useRef(0);
   const transitionRef = useRef(0);
 
-  // Reset scroll and trigger entrance animation when category changes
-  const [isEntering, setIsEntering] = useState(true);
+  // Ref-based entrance progress for high-performance staggered animation
+  const entranceRef = useRef({ val: 0 });
   useEffect(() => {
-    setIsEntering(true);
+    entranceRef.current.val = 0;
     scrollYRef.current = 0;
     targetScrollYRef.current = 0;
-    const timer = setTimeout(() => setIsEntering(false), 800);
-    return () => clearTimeout(timer);
+    gsap.to(entranceRef.current, {
+      val: 1,
+      duration: 1.4,
+      ease: "power2.out",
+      overwrite: "auto",
+    });
   }, [activeCategory]);
+
+  const handleMouseMove = useCallback((e: React.MouseEvent) => {
+    const { clientX, clientY } = e;
+    mouseSpringX.set(clientX);
+    mouseSpringY.set(clientY);
+  }, [mouseSpringX, mouseSpringY]);
 
   const getResponsiveValues = () => {
     // Cylinder radius: cards sit on a ring; slightly smaller on mobile
@@ -398,22 +412,23 @@ const MenuSpiral: FC<SpiralBackgroundProps> = ({
     document.documentElement.style.overflowX = "hidden";
 
     const cards = cardsRef.current;
-    const total = cards.length;
+    const total = displayedItems.length;
 
     const { radius, cylinderCards } = getResponsiveValues();
     // Card size: ~92% container, max 400px → strip gap proportional to card width
     const cardWidthPx = typeof window !== "undefined" ? Math.min(window.innerWidth * 0.38, 220) : 180;
     const hasMoreThanSeven = total > cylinderCards;
     const scrollStep = 160;
-    const maxCylinderScroll = hasMoreThanSeven ? (total - cylinderCards) * scrollStep : 0;
+    const maxCylinderScroll = (total - 1) * scrollStep;
     const rotationFactor = 0.008;
 
-    const easeInOutCubic = (s: number) => s < 0.5 ? 4 * s * s * s : 1 - Math.pow(-2 * s + 2, 3) / 2;
 
     const updateCards = () => {
       const targetTransition = openRef.current ? 1 : 0;
-      transitionRef.current += (targetTransition - transitionRef.current) * 0.06;
-      if (Math.abs(targetTransition - transitionRef.current) < 0.001) {
+      // Linear interpolation factor adjusted for higher refresh rates
+      const lerpFactor = 0.065;
+      transitionRef.current += (targetTransition - transitionRef.current) * lerpFactor;
+      if (Math.abs(targetTransition - transitionRef.current) < 0.0005) {
         transitionRef.current = targetTransition;
       }
       const t = transitionRef.current;
@@ -427,21 +442,23 @@ const MenuSpiral: FC<SpiralBackgroundProps> = ({
         cards.forEach((card, i) => {
           if (!card) return;
           const inCylinderRing = i < n;
-          const angle = (i % n) * angleStep + baseAngle;
+          const angle = (i % n) * angleStep + baseAngle + Math.PI;
           const cylinderX = radius * Math.sin(angle);
           const cylinderZ = -radius * Math.cos(angle);
-          const rotationYDeg = (angle * 180) / Math.PI;
+          const rotationYDeg = ((angle - Math.PI) * 180) / Math.PI;
           const vertY = (i - (total - 1) / 2) * vertSpacing;
           const currentLeftPct = 50 + (15 - 50) * t;
           const currentY = (vertY + scrollYRef.current) * t;
           const currentX = cylinderX * (1 - t);
           const currentZ = cylinderZ * (1 - t);
           const currentRotationY = rotationYDeg * (1 - t);
-          const depthScale = 0.6 + 0.4 * (Math.cos(angle) + 1) / 2;
+          const depthScale = 0.6 + 0.4 * (1 - Math.cos(angle)) / 2;
           const currentScale = t === 1 ? 1 : (inCylinderRing ? depthScale : 1);
-          const opacity = t === 1 ? 1 : (inCylinderRing ? 1 : 0);
-          // Enhanced entry stagger + exit fade
-          const staggerDelay = isEntering ? i * 0.05 : 0;
+
+          // Smoother opacity with entrance stagger
+          const entranceVal = entranceRef.current.val;
+          const staggerOpacity = Math.max(0, Math.min(1, (entranceVal * 3) - (i * 0.1)));
+          const opacityVal = t === 1 ? 1 : (inCylinderRing ? staggerOpacity : 0);
 
           gsap.to(card, {
             x: currentX,
@@ -454,11 +471,11 @@ const MenuSpiral: FC<SpiralBackgroundProps> = ({
             yPercent: -50,
             left: `${currentLeftPct}%`,
             top: "50%",
-            opacity: isEntering ? 0 : opacity,
-            duration: isEntering ? 0.6 : 0.01,
-            delay: staggerDelay,
+            opacity: opacityVal,
+            duration: 0.1, // Near-immediate follow in ticker
+            filter: `blur(${Math.max(0, (1 - depthScale) * 6 * (1 - t))}px)`,
             ease: "power2.out",
-            zIndex: Math.round(Math.cos(angle) * 100 * (1 - t)) + (openRef.current ? 600 : 10),
+            zIndex: Math.round(-Math.cos(angle) * 100 * (1 - t)) + (openRef.current ? 600 : 10),
             overwrite: "auto"
           });
         });
@@ -468,10 +485,7 @@ const MenuSpiral: FC<SpiralBackgroundProps> = ({
       const rawScroll = Math.max(0, Math.min(maxCylinderScroll, scrollYRef.current));
       const scrollIndex = rawScroll / scrollStep;
 
-      const vw = typeof window !== "undefined" ? window.innerWidth / 100 : 10;
-      const leftStripStart = -Math.min(400, vw * 36);
-      const rightStripStart = Math.min(400, vw * 36);
-      const horizontalGap = Math.max(100, cardWidthPx * 0.55);
+      const horizontalGap = Math.max(70, cardWidthPx * 0.35);
       const stripScaleNear = 0.58;
       const stripScaleFar = 0.36;
       const stripOpacityNear = 0.9;
@@ -480,8 +494,8 @@ const MenuSpiral: FC<SpiralBackgroundProps> = ({
       const getCylinderPos = (angle: number) => ({
         x: radius * Math.sin(angle),
         z: -radius * Math.cos(angle),
-        rot: (angle * 180) / Math.PI,
-        scale: 0.6 + 0.4 * (Math.cos(angle) + 1) / 2,
+        rot: ((angle - Math.PI) * 180) / Math.PI,
+        scale: 0.6 + 0.4 * (1 - Math.cos(angle)) / 2,
       });
 
       cards.forEach((card, i) => {
@@ -497,55 +511,47 @@ const MenuSpiral: FC<SpiralBackgroundProps> = ({
         let opacity: number;
         let zIndex: number;
 
-        // Unified slot logic for smoothness
+        // Consistent cylinder geometry: slot 0 is Front
         const slot = i - scrollIndex;
+        const angle = (slot * (2 * Math.PI) / cylinderCards) + Math.PI;
+        const cyl = getCylinderPos(angle);
 
-        if (slot < 0) {
-          // Left Strip (moving continuously)
-          const leftProgress = Math.abs(slot);
-          currentX = (leftStripStart + slot * horizontalGap) * (1 - t);
-          currentZ = slot * 6 * (1 - t);
+        const isInsideCyl = slot >= -0.1 && slot <= cylinderCards - 0.9;
+
+        if (slot < -0.1) {
+          // Left Strip
+          const leftProgress = Math.abs(slot + 0.1);
+          const cylEdge = getCylinderPos(Math.PI - 0.1 * (2 * Math.PI / cylinderCards));
+          currentX = (cylEdge.x - (leftProgress * horizontalGap)) * (1 - t);
+          currentZ = (cylEdge.z - leftProgress * 15) * (1 - t);
           currentRotationY = 0;
-          currentScale = t === 1 ? 1 : Math.max(stripScaleFar, stripScaleNear - leftProgress * 0.1);
-          opacity = t === 1 ? 1 : Math.max(stripOpacityFar, stripOpacityNear - leftProgress * 0.15);
-          zIndex = 10 - Math.floor(leftProgress);
-        } else if (slot < cylinderCards - 1) {
+          currentScale = t === 1 ? 1 : Math.max(stripScaleFar, stripScaleNear - leftProgress * 0.08);
+          opacity = t === 1 ? 1 : Math.max(stripOpacityFar, stripOpacityNear - leftProgress * 0.12);
+          zIndex = 10;
+        } else if (isInsideCyl) {
           // Inside Cylinder
-          const angle = slot * (2 * Math.PI) / cylinderCards;
-          const cyl = getCylinderPos(angle);
           currentX = cyl.x * (1 - t);
           currentZ = cyl.z * (1 - t);
           currentRotationY = cyl.rot * (1 - t);
           currentScale = t === 1 ? 1 : cyl.scale;
           opacity = 1;
-          zIndex = 20 + Math.round(Math.cos(angle) * 70 * (1 - t));
-        } else if (slot < cylinderCards) {
-          // Exit Cylinder to Right (blend)
-          const localFraction = slot - (cylinderCards - 1);
-          const localBlend = easeInOutCubic(localFraction);
-          const angle = slot * (2 * Math.PI) / cylinderCards;
-          const cyl = getCylinderPos(angle);
-          const rightX = rightStripStart;
-          currentX = (1 - localBlend) * cyl.x * (1 - t) + localBlend * rightX * (1 - t);
-          currentZ = (1 - localBlend) * cyl.z * (1 - t);
-          currentRotationY = (1 - localBlend) * cyl.rot * (1 - t);
-          currentScale = t === 1 ? 1 : (1 - localBlend) * cyl.scale + localBlend * stripScaleNear;
-          opacity = 1;
-          zIndex = 15;
+          zIndex = 20 + Math.round(-Math.cos(angle) * 70 * (1 - t));
         } else {
-          // Right Strip (moving continuously)
-          const rightProgress = slot - (cylinderCards - 1);
-          currentX = (rightStripStart + (rightProgress - 1) * horizontalGap) * (1 - t);
-          currentZ = -(rightProgress - 1) * 6 * (1 - t);
+          // Right Strip
+          const rightProgress = slot - (cylinderCards - 0.9);
+          const cylEdge = getCylinderPos(Math.PI + (cylinderCards - 0.9) * (2 * Math.PI / cylinderCards));
+          currentX = (cylEdge.x + (rightProgress * horizontalGap)) * (1 - t);
+          currentZ = (cylEdge.z - rightProgress * 15) * (1 - t);
           currentRotationY = 0;
-          currentScale = t === 1 ? 1 : Math.max(stripScaleFar, stripScaleNear - (rightProgress - 1) * 0.1);
-          opacity = t === 1 ? 1 : Math.max(stripOpacityFar, stripOpacityNear - (rightProgress - 1) * 0.15);
-          zIndex = 10 - Math.floor(rightProgress);
+          currentScale = t === 1 ? 1 : Math.max(stripScaleFar, stripScaleNear - rightProgress * 0.08);
+          opacity = t === 1 ? 1 : Math.max(stripOpacityFar, stripOpacityNear - rightProgress * 0.12);
+          zIndex = 10;
         }
 
-        // Enhanced entrance/exit stagger
-        const staggerDelay = isEntering ? i * 0.04 : 0;
-        const animDuration = isEntering ? 0.7 : 0.05; // Slightly more than 0.01 to allow minor easing
+        // Entrance stagger progress
+        const entranceVal = entranceRef.current.val;
+        const staggerOpacity = Math.max(0, Math.min(1, (entranceVal * 3) - (i * 0.1)));
+        const finalOpacity = opacity * staggerOpacity;
 
         gsap.to(card, {
           x: currentX,
@@ -558,10 +564,10 @@ const MenuSpiral: FC<SpiralBackgroundProps> = ({
           yPercent: -50,
           left: `${currentLeftPct}%`,
           top: "50%",
-          opacity: isEntering ? 0 : opacity,
-          duration: animDuration,
-          delay: staggerDelay,
-          ease: isEntering ? "power3.out" : "none",
+          opacity: finalOpacity,
+          duration: 0.1,
+          filter: `blur(${Math.max(0, (1 - currentScale) * 8 * (1 - t))}px)`,
+          ease: "power2.out",
           zIndex: openRef.current ? 600 + i : zIndex,
           overwrite: "auto"
         });
@@ -640,10 +646,14 @@ const MenuSpiral: FC<SpiralBackgroundProps> = ({
 
     const ticker = gsap.ticker.add(() => {
       const diff = targetScrollYRef.current - scrollYRef.current;
-      // Smoother scroll physics with exponential damping
-      const damping = openRef.current ? 0.08 : 0.072;
+      // Smoother scroll physics with exponential damping and a "springy" finish
+      const damping = openRef.current ? 0.09 : 0.08;
       scrollYRef.current += diff * damping;
-      if (Math.abs(diff) < 0.1) scrollYRef.current = targetScrollYRef.current;
+
+      if (Math.abs(diff) < 0.05) {
+        scrollYRef.current = targetScrollYRef.current;
+      }
+
       updateCards();
     });
 
@@ -665,8 +675,9 @@ const MenuSpiral: FC<SpiralBackgroundProps> = ({
   return (
     <Box
       ref={containerRef}
+      onMouseMove={handleMouseMove}
       sx={{
-        perspective: "1500px",
+        perspective: "2000px",
         width: "100%",
         height: "100vh",
         background: "transparent",
@@ -692,10 +703,32 @@ const MenuSpiral: FC<SpiralBackgroundProps> = ({
           right: 0,
           bottom: 0,
           background:
-            "radial-gradient(ellipse at 50% 40%, rgba(59, 130, 246, 0.06) 0%, transparent 70%)",
+            "radial-gradient(ellipse at 50% 40%, rgba(59, 130, 246, 0.08) 0%, transparent 70%)",
           pointerEvents: "none",
           zIndex: 1,
-          animation: "glow-breathe 6s ease-in-out infinite",
+          opacity: 0.6,
+          animation: "glow-breathe 8s ease-in-out infinite",
+        }}
+      />
+
+      {/* Dynamic Mouse Spotlight */}
+      <MotionBox
+        style={{
+          x: mouseSpringX,
+          y: mouseSpringY,
+        }}
+        sx={{
+          position: "fixed",
+          top: -300,
+          left: -300,
+          width: 600,
+          height: 600,
+          background: "radial-gradient(circle, rgba(59, 130, 246, 0.12) 0%, transparent 70%)",
+          pointerEvents: "none",
+          zIndex: 2,
+          mixBlendMode: "screen",
+          opacity: open ? 0.3 : 1,
+          transition: "opacity 0.8s ease",
         }}
       />
 
@@ -840,13 +873,15 @@ const MenuSpiral: FC<SpiralBackgroundProps> = ({
           <Box
             ref={sidePanelRef}
             component={motion.div}
-            initial={{ x: "100%", opacity: 0.5 }}
+            initial={{ x: "100%", opacity: 0 }}
             animate={{ x: 0, opacity: 1 }}
             exit={{ x: "100%", opacity: 0 }}
             transition={{
-              duration: 0.6,
-              ease: [0.22, 1, 0.36, 1],
-              opacity: { duration: 0.3 },
+              type: "spring",
+              stiffness: 100,
+              damping: 22,
+              mass: 0.8,
+              opacity: { duration: 0.4 },
             }}
             sx={{
               position: "fixed",
@@ -1166,14 +1201,14 @@ const MenuSpiral: FC<SpiralBackgroundProps> = ({
                       <ListItem
                         key={menuItem.id}
                         component={motion.li}
-                        initial={{ opacity: 0, x: 20, scale: 0.97 }}
+                        initial={{ opacity: 0, x: 30, scale: 0.95 }}
                         animate={{ opacity: 1, x: 0, scale: 1 }}
                         transition={{
-                          delay: 0.35 + idx * 0.1 + itemIdx * 0.05,
-                          duration: 0.4,
+                          delay: 0.2 + idx * 0.08 + itemIdx * 0.04,
+                          duration: 0.5,
                           type: "spring",
-                          stiffness: 120,
-                          damping: 18,
+                          stiffness: 110,
+                          damping: 15,
                         }}
                         sx={{
                           p: 0,

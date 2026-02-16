@@ -3,7 +3,7 @@ import type { MainCategory } from "../types";
 // Menu images
 import img1 from "../assets/images/restaurant.jpg";
 import img2 from "../assets/images/special_bg.png";
-import img3 from "../assets/images/bg4.jpg";
+import img3 from "../assets/images/restaurant.jpg";
 import img4 from "../assets/images/background.jpg";
 import img5 from "../assets/images/bg2.jpg";
 import img6 from "../assets/images/blue-paint-brush-stroke-effect.jpg";
@@ -15,7 +15,7 @@ export const menuData: MainCategory[] = [
   {
     id: 1,
     title: "Kothu",
-    imageUrl: img1,
+    imageUrl: "https://i.pinimg.com/736x/b6/8c/06/b68c06484ec6bafb30abb3fdf86fe207.jpg",
     mealType: ["Lunch", "Dinner"],
     subCategories: [
       {
@@ -26,7 +26,7 @@ export const menuData: MainCategory[] = [
             name: "Chicken Kothu",
             description: "Classic kothu with tender chicken pieces",
             price: "$12 | NS $14",
-            imageUrl: img1,
+            imageUrl: "https://i.pinimg.com/736x/32/0b/f4/320bf43e25193492dc880b05f3be9f00.jpg",
             popular: true,
           },
           {
@@ -34,56 +34,56 @@ export const menuData: MainCategory[] = [
             name: "Mutton Kothu",
             description: "Rich and flavorful mutton kothu",
             price: "$12 | NS $15",
-            imageUrl: img2,
+            imageUrl: "https://i.pinimg.com/736x/f1/04/c0/f104c0b3f66027c72fd0c7dd81f7d7c1.jpg",
           },
           {
             id: 103,
             name: "Beef Kothu",
             description: "Hearty beef kothu",
             price: "$12 | NS $15",
-            imageUrl: img3,
+            imageUrl: "https://i.pinimg.com/736x/ea/6a/64/ea6a64fce60d78212bdd50234e2b464e.jpg",
           },
           {
             id: 104,
             name: "Veggie Kothu",
             description: "Fresh vegetable kothu",
             price: "$10",
-            imageUrl: img4,
+            imageUrl: "https://i.pinimg.com/736x/31/33/28/313328a5a5e533db41783407a07ee818.jpg",
           },
           {
             id: 105,
             name: "Egg Kothu",
             description: "Kothu with scrambled eggs",
             price: "$10",
-            imageUrl: img5,
+            imageUrl: "https://i.pinimg.com/736x/3f/bf/f7/3fbff7df981ae9b506695e0d33689bc5.jpg",
           },
           {
             id: 106,
             name: "Dolphin Kothu",
             description: "Special dolphin fish kothu",
             price: "$14 | NS $16",
-            imageUrl: img6,
+            imageUrl: "https://i.pinimg.com/736x/ab/5e/d9/ab5ed92f4288b2630168b870ceb40eb2.jpg",
           },
           {
             id: 107,
             name: "Seafood Kothu",
             description: "Mixed seafood kothu",
             price: "$14 | NS $16",
-            imageUrl: img1,
+            imageUrl: "https://savoryspin.com/wp-content/uploads/2018/01/Easy-Shrimp-Kothu-Roti-500x500.jpg",
           },
           {
             id: 108,
             name: "Fish Kothu",
             description: "Fresh fish kothu",
             price: "$14 | NS $16",
-            imageUrl: img2,
+            imageUrl: "https://137191829.cdn6.editmysite.com/uploads/1/3/7/1/137191829/NRQGS3NCPPESNK3L55H73L3Q.jpeg?width=2400&optimize=medium",
           },
           {
             id: 109,
             name: "Cheese Kothu",
             description: "Kothu with melted cheese",
             price: "$15",
-            imageUrl: img3,
+            imageUrl: "https://i.pinimg.com/736x/a8/d4/4e/a8d44e5a61b3a4c91dde540707560df6.jpg",
             popular: true,
           },
         ],
@@ -93,7 +93,7 @@ export const menuData: MainCategory[] = [
   {
     id: 2,
     title: "Grilled",
-    imageUrl: img2,
+    imageUrl: "https://i.pinimg.com/736x/0a/e1/35/0ae1353357620ee73c70f9d6a2169cd1.jpg",
     mealType: ["Lunch", "Dinner"],
     subCategories: [
       {
@@ -104,28 +104,28 @@ export const menuData: MainCategory[] = [
             name: "Chicken Breast Skewer",
             description: "Grilled chicken breast on skewer",
             price: "$15",
-            imageUrl: img1,
+            imageUrl: "https://i.pinimg.com/736x/35/79/20/35792069c3c1661214cf7923c1aae105.jpg",
           },
           {
             id: 202,
             name: "Chicken Dark Skewer",
             description: "Tender dark meat skewer",
             price: "$15",
-            imageUrl: img2,
+            imageUrl: "https://i.pinimg.com/736x/87/9c/f9/879cf915765c859910c4ccf96f1ea7b9.jpg",
           },
           {
             id: 203,
             name: "Lamb Skewer",
             description: "Juicy lamb skewer",
             price: "$16",
-            imageUrl: img3,
+            imageUrl: "https://i.pinimg.com/736x/20/d4/72/20d472c26dc093fc87cadfe809e5e6a8.jpg",
           },
           {
             id: 204,
             name: "Lamb Chop (4pc)",
             description: "Four pieces of grilled lamb chops",
             price: "$18",
-            imageUrl: img4,
+            imageUrl: "https://i.pinimg.com/736x/b6/63/c0/b663c0e8c1e03d171dc2e64dfccb485a.jpg",
             popular: true,
           },
           {
@@ -133,21 +133,21 @@ export const menuData: MainCategory[] = [
             name: "Chicken Shawarma",
             description: "Middle Eastern style chicken shawarma",
             price: "$15",
-            imageUrl: img5,
+            imageUrl: "https://i.pinimg.com/736x/62/b0/d7/62b0d7ccd7dfafd122af054929e7a6fe.jpg",
           },
           {
             id: 206,
             name: "Beef Shawarma",
             description: "Savory beef shawarma",
             price: "$15",
-            imageUrl: img6,
+            imageUrl: "https://i.pinimg.com/736x/8d/ee/5a/8dee5ab52784bc7a4bd1e0a51eb09cfe.jpg",
           },
           {
             id: 207,
             name: "Beef Skewers",
             description: "Tender beef skewers",
             price: "$16",
-            imageUrl: img1,
+            imageUrl: "https://i.pinimg.com/736x/b7/da/de/b7dadeb9270b80b190d037586c79e33b.jpg",
           },
         ],
       },
@@ -156,7 +156,7 @@ export const menuData: MainCategory[] = [
   {
     id: 3,
     title: "Chicken Dishes",
-    imageUrl: img3,
+    imageUrl: "https://i.pinimg.com/736x/60/f8/50/60f85083e0679d1b29f39b0d00f82c0e.jpg",
     mealType: ["Lunch", "Dinner"],
     subCategories: [
       {
@@ -167,7 +167,7 @@ export const menuData: MainCategory[] = [
             name: "Chicken Devil",
             description: "Spicy Sri Lankan style chicken",
             price: "$15",
-            imageUrl: img1,
+            imageUrl: "https://i.pinimg.com/736x/43/0e/cf/430ecff9f735954292e24cab095a4431.jpg",
             popular: true,
           },
           {
@@ -175,7 +175,7 @@ export const menuData: MainCategory[] = [
             name: "Chicken 65",
             description: "Crispy fried chicken with spices",
             price: "$15",
-            imageUrl: img2,
+            imageUrl: "https://i.pinimg.com/736x/5f/9e/b4/5f9eb4ae594a2cd212a9dfc7511e8966.jpg",
             popular: true,
           },
           {
@@ -183,21 +183,21 @@ export const menuData: MainCategory[] = [
             name: "Chili Chicken",
             description: "Indo-Chinese chili chicken",
             price: "$15",
-            imageUrl: img3,
+            imageUrl: "https://i.pinimg.com/736x/a1/9b/2d/a19b2d2e59ab83485f3d4b914d84cc35.jpg",
           },
           {
             id: 304,
             name: "Tandoori Leg",
             description: "Marinated tandoori chicken leg",
             price: "$4",
-            imageUrl: img4,
+            imageUrl: "https://i.pinimg.com/736x/f9/b9/a3/f9b9a3669017d9932963da8edef4ddca.jpg",
           },
           {
             id: 305,
             name: "Butter Chicken",
             description: "Creamy tomato-based curry",
             price: "$16",
-            imageUrl: img5,
+            imageUrl: "https://i.pinimg.com/736x/8b/d3/a3/8bd3a3cb0f44fc14e30b42edfa63ff82.jpg",
             popular: true,
           },
           {
@@ -205,21 +205,21 @@ export const menuData: MainCategory[] = [
             name: "Chicken Curry",
             description: "Traditional chicken curry",
             price: "M $9 | L $15",
-            imageUrl: img6,
+            imageUrl: "https://i.pinimg.com/736x/2d/91/13/2d9113b94f0e87e3a40c2490c6f7a0f0.jpg",
           },
           {
             id: 307,
             name: "Chicken + Mix Veg",
             description: "Chicken with mixed vegetables",
             price: "$15",
-            imageUrl: img1,
+            imageUrl: "https://i.pinimg.com/736x/4d/82/47/4d824717f8bc5ad3888838984cb53532.jpg",
           },
           {
             id: 308,
             name: "Chicken Tikka Masala",
             description: "Classic tikka masala",
             price: "$15",
-            imageUrl: img2,
+            imageUrl: "https://i.pinimg.com/736x/8a/85/96/8a85965409e711424f6a19565927cbfa.jpg",
           },
           {
             id: 309,
@@ -235,7 +235,7 @@ export const menuData: MainCategory[] = [
   {
     id: 4,
     title: "Seafood Dishes",
-    imageUrl: img4,
+    imageUrl: "https://i.pinimg.com/736x/cd/aa/02/cdaa02b3b38afdfb135c6b044a389307.jpg",
     mealType: ["Lunch", "Dinner"],
     subCategories: [
       {
@@ -246,7 +246,7 @@ export const menuData: MainCategory[] = [
             name: "Mix Seafood Devil",
             description: "Spicy mixed seafood",
             price: "$18",
-            imageUrl: img1,
+            imageUrl: "https://i.pinimg.com/736x/2a/5c/cf/2a5ccfc188cad61ae32d2a2bdf121765.jpg",
             popular: true,
           },
           {
@@ -254,28 +254,28 @@ export const menuData: MainCategory[] = [
             name: "Shrimp Devil",
             description: "Spicy shrimp dish",
             price: "$17",
-            imageUrl: img2,
+            imageUrl: "https://i.pinimg.com/736x/8f/25/f7/8f25f707ac50afca80b1adfbb071e97b.jpg",
           },
           {
             id: 403,
             name: "Squid Devil",
             description: "Spicy squid dish",
             price: "$17",
-            imageUrl: img3,
+            imageUrl: "https://i.pinimg.com/736x/27/41/79/27417957307bb90b6a2811e9f771c189.jpg",
           },
           {
             id: 404,
             name: "Chili With Shrimp & Calamari",
             description: "Spicy shrimp and calamari",
             price: "$18",
-            imageUrl: img4,
+            imageUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ4aFMI1yfIrDHq4Nr6fX3li9rW8ySkNZ-ddQ&s",
           },
           {
             id: 405,
             name: "Fried Calamari",
             description: "Crispy fried calamari rings",
             price: "$16",
-            imageUrl: img5,
+            imageUrl: "https://i.pinimg.com/736x/ff/6c/3c/ff6c3c4dff115b5d008335b1867fc78c.jpg",
           },
         ],
       },
@@ -339,7 +339,7 @@ export const menuData: MainCategory[] = [
   {
     id: 6,
     title: "Biryani",
-    imageUrl: img6,
+    imageUrl: "https://i.pinimg.com/736x/ac/8e/76/ac8e76ddd843f47545a58e585b702a48.jpg",
     mealType: ["Lunch", "Dinner"],
     subCategories: [
       {
@@ -350,7 +350,7 @@ export const menuData: MainCategory[] = [
             name: "Chicken Biryani",
             description: "Fragrant rice with chicken",
             price: "$15",
-            imageUrl: img1,
+            imageUrl: "https://i.pinimg.com/736x/05/d6/74/05d6748264cb46de87f54834b0ac9dd1.jpg",
             popular: true,
           },
           {
@@ -358,28 +358,28 @@ export const menuData: MainCategory[] = [
             name: "Mutton Biryani",
             description: "Rich mutton biryani",
             price: "$16",
-            imageUrl: img2,
+            imageUrl: "https://i.pinimg.com/736x/05/0a/94/050a94b63f4516e3594446c094910627.jpg",
           },
           {
             id: 603,
             name: "Fish Biryani",
             description: "Flavorful fish biryani",
             price: "$17",
-            imageUrl: img3,
+            imageUrl: "https://i.pinimg.com/736x/6d/1e/51/6d1e51c72caa7fafe9dc48817c24cb59.jpg",
           },
           {
             id: 604,
             name: "Seafood Biryani",
             description: "Mixed seafood biryani",
             price: "$17",
-            imageUrl: img4,
+            imageUrl: "https://i.pinimg.com/736x/9c/57/ca/9c57cacf6d46f51e25b11ebb8f25152d.jpg",
           },
           {
             id: 605,
             name: "Veggie Biryani",
             description: "Vegetable biryani",
             price: "$14",
-            imageUrl: img5,
+            imageUrl: "https://i.pinimg.com/736x/fa/cb/26/facb26569f6d666dba2cb9db31bcc9ee.jpg",
           },
         ],
       },
@@ -388,7 +388,7 @@ export const menuData: MainCategory[] = [
   {
     id: 7,
     title: "Fried Rice & Noodles",
-    imageUrl: img1,
+    imageUrl: "https://i.pinimg.com/736x/41/9b/43/419b43c8ea9bb3e21dfb54703341b6cb.jpg",
     mealType: ["Lunch", "Dinner"],
     subCategories: [
       {
@@ -399,35 +399,35 @@ export const menuData: MainCategory[] = [
             name: "Chicken Fried Rice",
             description: "Classic chicken fried rice",
             price: "$15",
-            imageUrl: img1,
+            imageUrl: "https://i.pinimg.com/736x/cc/68/5c/cc685c34fa8a72fe23148a08f7d3bfb7.jpg",
           },
           {
             id: 702,
             name: "Beef Fried Rice",
             description: "Savory beef fried rice",
             price: "$16",
-            imageUrl: img2,
+            imageUrl: "https://i.pinimg.com/736x/7d/b5/42/7db542c9c79485c027245813b6e5fbc2.jpg",
           },
           {
             id: 703,
             name: "Seafood Fried Rice",
             description: "Mixed seafood fried rice",
             price: "$17",
-            imageUrl: img3,
+            imageUrl: "https://i.pinimg.com/736x/c2/59/21/c259215a45f27325ae8b9d8e2f1bdd17.jpg",
           },
           {
             id: 704,
             name: "Veggie Fried Rice",
             description: "Vegetable fried rice",
             price: "$13",
-            imageUrl: img4,
+            imageUrl: "https://i.pinimg.com/736x/1f/7e/a8/1f7ea8e1428dc52cc7825130dd548292.jpg",
           },
           {
             id: 705,
             name: "Shawarma Fried Rice",
             description: "Unique shawarma fried rice",
             price: "$15",
-            imageUrl: img5,
+            imageUrl: "https://i.pinimg.com/736x/1a/21/32/1a213238598503412f97af841df6050d.jpg",
             popular: true,
           },
           {
@@ -435,7 +435,7 @@ export const menuData: MainCategory[] = [
             name: "Nasi Goreng Fried Rice",
             description: "Indonesian style fried rice",
             price: "$15",
-            imageUrl: img6,
+            imageUrl: "https://i.pinimg.com/736x/1c/69/90/1c6990a506575a673f5bb4730934e117.jpg",
           },
         ],
       },

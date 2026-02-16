@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect, Suspense, useMemo, useCallback } from "react";
+import { useRef, useState, useEffect, Suspense, useMemo, useCallback, type FC, type ReactNode } from "react";
 import {
   Box,
   Button,
@@ -32,7 +32,7 @@ import SpecialOfferSection from "./SpecialOfferSection";
 import PickupSection from "./PickupSection";
 import CateringSection from "./CateringSection";
 import ContactSection from "./ContactSection";
-import Footer from "../footer/Footer";
+import Footer from "../Footer/Footer";
 import TypewriterText from "../common/TypewriterText";
 import { commonButtonStyle } from "../common/ButtonStyles";
 import SpecialsPopup from "./SpecialsPopup";
@@ -40,8 +40,8 @@ import HeroImageGrid from "./HeroImageGrid";
 import { CustomScrollbarUI, ScrollSync } from "../common/CustomScrollbar";
 import ThreeBackground from "./ThreeBackground";
 
-const Section: React.FC<{
-  children: React.ReactNode;
+const Section: FC<{
+  children: ReactNode;
   style?: React.CSSProperties;
   id?: string;
   className?: string;
@@ -71,7 +71,7 @@ const Section: React.FC<{
   </Box>
 );
 
-const LandingStatic: React.FC = () => {
+const LandingStatic: FC = () => {
   const navigate = useNavigate();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));

@@ -68,11 +68,11 @@ const HeroImageGrid: React.FC<HeroImageGridProps> = ({
 
   const allImages = [
     { src: logoReflect, alt: "Restaurant Interior" },
-    { src: img5, alt: "Culinary Art" },
-    { src: imgChef, alt: "Chef at Work" },
-    { src: imgDish, alt: "Signature Dish" },
-    { src: imgBg4, alt: "Ambience" },
-    { src: imgSpecial, alt: "Gourmet Experience" },
+    { src: "https://i.pinimg.com/736x/c4/10/06/c41006049b919e5dbbdbb2e972839e5f.jpg", alt: "Culinary Art" },
+    { src: "https://i.pinimg.com/736x/3f/c5/0e/3fc50e70eeef3f9b2a9ee033417adb8b.jpg", alt: "Chef at Work" },
+    { src: "https://i.pinimg.com/736x/f0/7c/5a/f07c5a46b6a3072e36a457b495bb827b.jpg", alt: "Signature Dish" },
+    { src: logoReflect, alt: "Ambience" },
+    { src: "https://i.pinimg.com/736x/0f/a7/be/0fa7be3c2818c8e1819e9f65727ca6dd.jpg", alt: "Gourmet Experience" },
   ];
 
   // --- CONFIGURATIONS ---
