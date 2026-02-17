@@ -46,11 +46,9 @@
     0 0 20px var(--primary-color) inset;
 
   animation: spin-out var(--duration) linear infinite;
-  background: radial-gradient(
-    circle,
-    transparent 40%,
-    rgba(59, 130, 246, 0.05) 100%
-  );
+  background: radial-gradient(circle,
+      transparent 40%,
+      rgba(59, 130, 246, 0.05) 100%);
 }
 
 /* ---------------- Items ---------------- */
@@ -75,10 +73,7 @@
   font-weight: 800;
   user-select: none;
 
-  offset: circle(
-      calc(var(--size) / (2 * sin(0.5turn / var(--total))) + var(--offset))
-    )
-    calc(100% * var(--index) / var(--total)) 0deg;
+  offset: circle(calc(var(--size) / (2 * sin(0.5turn / var(--total))) + var(--offset))) calc(100% * var(--index) / var(--total)) 0deg;
 
   /* Keep the element oriented upright while it follows the circular path */
   offset-rotate: 0deg;
@@ -155,11 +150,9 @@
   aspect-ratio: 1 / 1;
   transform: translate(-50%, -50%);
   border-radius: 2rem;
-  background: linear-gradient(
-    135deg,
-    var(--secondary-color),
-    var(--primary-color)
-  );
+  background: linear-gradient(135deg,
+      var(--secondary-color),
+      var(--primary-color));
   opacity: 0.8;
   box-shadow:
     0 0 30px var(--secondary-color),

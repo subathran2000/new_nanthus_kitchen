@@ -119,7 +119,7 @@ const SpiralCard: FC<{
       sx={{
         width: "92%",
         maxWidth: "400px",
-        aspectRatio: "3/4",
+        aspectRatio: "1/1",
         borderRadius: "28px",
         position: "absolute",
         opacity: 0,
@@ -395,15 +395,6 @@ const MenuSpiral: FC<SpiralBackgroundProps> = ({
     mouseSpringY.set(clientY);
   }, [mouseSpringX, mouseSpringY]);
 
-  const getResponsiveValues = () => {
-    // Cylinder radius: cards sit on a ring; slightly smaller on mobile
-    if (typeof window === "undefined") return { radius: 420, cylinderCards: 7 };
-    const width = window.innerWidth;
-    if (width < 480) return { radius: 200, cylinderCards: 7 };
-    if (width < 768) return { radius: 280, cylinderCards: 7 };
-    if (width < 1024) return { radius: 360, cylinderCards: 7 };
-    return { radius: 420, cylinderCards: 7 };
-  };
 
   useEffect(() => {
     if (!isSpiral) return;
@@ -414,161 +405,97 @@ const MenuSpiral: FC<SpiralBackgroundProps> = ({
     const cards = cardsRef.current;
     const total = displayedItems.length;
 
-    const { radius, cylinderCards } = getResponsiveValues();
-    // Card size: ~92% container, max 400px → strip gap proportional to card width
-    const cardWidthPx = typeof window !== "undefined" ? Math.min(window.innerWidth * 0.38, 220) : 180;
-    const hasMoreThanSeven = total > cylinderCards;
-    const scrollStep = 160;
-    const maxCylinderScroll = (total - 1) * scrollStep;
-    const rotationFactor = 0.008;
-
-
     const updateCards = () => {
       const targetTransition = openRef.current ? 1 : 0;
-      // Linear interpolation factor adjusted for higher refresh rates
-      const lerpFactor = 0.065;
+      const lerpFactor = 0.08;
       transitionRef.current += (targetTransition - transitionRef.current) * lerpFactor;
+
       if (Math.abs(targetTransition - transitionRef.current) < 0.0005) {
         transitionRef.current = targetTransition;
       }
+
       const t = transitionRef.current;
       const vertSpacing = isMobile ? 80 : 120;
 
-      if (!hasMoreThanSeven) {
-        const baseAngle = scrollYRef.current * rotationFactor;
-        const n = Math.min(total, cylinderCards);
-        const angleStep = (2 * Math.PI) / n;
+      // Adaptive Geometry constants
+      const vh = window.innerHeight;
+      const vw = window.innerWidth;
+      const isLandscape = vw > vh;
 
-        cards.forEach((card, i) => {
-          if (!card) return;
-          const inCylinderRing = i < n;
-          const angle = (i % n) * angleStep + baseAngle + Math.PI;
-          const cylinderX = radius * Math.sin(angle);
-          const cylinderZ = -radius * Math.cos(angle);
-          const rotationYDeg = ((angle - Math.PI) * 180) / Math.PI;
-          const vertY = (i - (total - 1) / 2) * vertSpacing;
-          const currentLeftPct = 50 + (15 - 50) * t;
-          const currentY = (vertY + scrollYRef.current) * t;
-          const currentX = cylinderX * (1 - t);
-          const currentZ = cylinderZ * (1 - t);
-          const currentRotationY = rotationYDeg * (1 - t);
-          const depthScale = 0.6 + 0.4 * (1 - Math.cos(angle)) / 2;
-          const currentScale = t === 1 ? 1 : (inCylinderRing ? depthScale : 1);
+      // Radius adapts to smallest dimension to ensure circle fits
+      const radius = isMobile
+        ? Math.min(vh * 0.5, vw * 0.8)
+        : Math.min(vh * 0.8, vw * 0.6);
 
-          // Smoother opacity with entrance stagger
-          const entranceVal = entranceRef.current.val;
-          const staggerOpacity = Math.max(0, Math.min(1, (entranceVal * 3) - (i * 0.1)));
-          const opacityVal = t === 1 ? 1 : (inCylinderRing ? staggerOpacity : 0);
+      const centerY = isMobile ? radius * 0.85 : radius * 0.75;
+      const adaptiveItemSpacing = isMobile ? (isLandscape ? 0.45 : 0.38) : 0.3;
 
-          gsap.to(card, {
-            x: currentX,
-            y: currentY,
-            z: currentZ,
-            rotationY: currentRotationY,
-            scale: currentScale,
-            transformOrigin: "50% 50% 0px",
-            xPercent: -50,
-            yPercent: -50,
-            left: `${currentLeftPct}%`,
-            top: "50%",
-            opacity: opacityVal,
-            duration: 0.1, // Near-immediate follow in ticker
-            filter: `blur(${Math.max(0, (1 - depthScale) * 6 * (1 - t))}px)`,
-            ease: "power2.out",
-            zIndex: Math.round(-Math.cos(angle) * 100 * (1 - t)) + (openRef.current ? 600 : 10),
-            overwrite: "auto"
-          });
-        });
-        return;
-      }
-
-      const rawScroll = Math.max(0, Math.min(maxCylinderScroll, scrollYRef.current));
-      const scrollIndex = rawScroll / scrollStep;
-
-      const horizontalGap = Math.max(70, cardWidthPx * 0.35);
-      const stripScaleNear = 0.58;
-      const stripScaleFar = 0.36;
-      const stripOpacityNear = 0.9;
-      const stripOpacityFar = 0.4;
-
-      const getCylinderPos = (angle: number) => ({
-        x: radius * Math.sin(angle),
-        z: -radius * Math.cos(angle),
-        rot: ((angle - Math.PI) * 180) / Math.PI,
-        scale: 0.6 + 0.4 * (1 - Math.cos(angle)) / 2,
-      });
+      const scrollVal = scrollYRef.current;
+      const entranceVal = entranceRef.current.val;
 
       cards.forEach((card, i) => {
         if (!card) return;
-        const vertY = (i - (total - 1) / 2) * vertSpacing;
+
+        // --- Layout 1: Half-Circle Rotary (When Menu is Closed) ---
+        const angle = (i * adaptiveItemSpacing) + (scrollVal * 0.0035);
+
+        const rotaryX = Math.sin(angle) * radius;
+        const rotaryY = -Math.cos(angle) * radius + centerY;
+        const rotaryZ = -Math.abs(Math.sin(angle)) * (radius * 0.5);
+
+        const absAngle = Math.abs(angle);
+        // Stays sharper for a wider field (divisor 1.8) and transitions smoothly (pow 1.5)
+        const distFactor = Math.pow(Math.min(1, absAngle / 1.8), 1.5);
+
+        const rotaryBlur = distFactor * 1.5;
+        const rotaryOpacity = Math.max(0.4, 1 - (distFactor * 0.5));
+        const rotaryScale = 1 - (distFactor * 0.15);
+
+        const rotaryRotationY = (angle * 180) / Math.PI * 0.6;
+        const rotaryRotationZ = (angle * 180) / Math.PI * 0.15;
+
+        // --- Layout 2: Vertical List (When Panel is Open) ---
+        const vertY = (i - (total - 1) / 2) * vertSpacing + scrollVal;
+        const vertX = 0;
+        const vertZ = 0;
+        const vertRotationY = 0;
+        const vertRotationZ = 0;
+        const vertScale = 1;
+        const vertOpacity = 1;
+
+        // --- Interpolate between Rotary and Vertical ---
         const currentLeftPct = 50 + (15 - 50) * t;
-        const currentY = (vertY + scrollYRef.current) * t;
+        const currentX = rotaryX * (1 - t) + vertX * t;
+        const currentY = rotaryY * (1 - t) + vertY * t;
+        const currentZ = rotaryZ * (1 - t) + vertZ * t;
+        const currentRotationY = rotaryRotationY * (1 - t) + vertRotationY * t;
+        const currentRotationZ = rotaryRotationZ * (1 - t) + vertRotationZ * t;
+        const currentScale = rotaryScale * (1 - t) + vertScale * t;
 
-        let currentX: number;
-        let currentZ: number;
-        let currentRotationY: number;
-        let currentScale: number;
-        let opacity: number;
-        let zIndex: number;
+        const staggerDelay = i * 0.1;
+        const entranceProgress = Math.max(0, Math.min(1, (entranceVal * 2) - staggerDelay));
 
-        // Consistent cylinder geometry: slot 0 is Front
-        const slot = i - scrollIndex;
-        const angle = (slot * (2 * Math.PI) / cylinderCards) + Math.PI;
-        const cyl = getCylinderPos(angle);
-
-        const isInsideCyl = slot >= -0.1 && slot <= cylinderCards - 0.9;
-
-        if (slot < -0.1) {
-          // Left Strip
-          const leftProgress = Math.abs(slot + 0.1);
-          const cylEdge = getCylinderPos(Math.PI - 0.1 * (2 * Math.PI / cylinderCards));
-          currentX = (cylEdge.x - (leftProgress * horizontalGap)) * (1 - t);
-          currentZ = (cylEdge.z - leftProgress * 15) * (1 - t);
-          currentRotationY = 0;
-          currentScale = t === 1 ? 1 : Math.max(stripScaleFar, stripScaleNear - leftProgress * 0.08);
-          opacity = t === 1 ? 1 : Math.max(stripOpacityFar, stripOpacityNear - leftProgress * 0.12);
-          zIndex = 10;
-        } else if (isInsideCyl) {
-          // Inside Cylinder
-          currentX = cyl.x * (1 - t);
-          currentZ = cyl.z * (1 - t);
-          currentRotationY = cyl.rot * (1 - t);
-          currentScale = t === 1 ? 1 : cyl.scale;
-          opacity = 1;
-          zIndex = 20 + Math.round(-Math.cos(angle) * 70 * (1 - t));
-        } else {
-          // Right Strip
-          const rightProgress = slot - (cylinderCards - 0.9);
-          const cylEdge = getCylinderPos(Math.PI + (cylinderCards - 0.9) * (2 * Math.PI / cylinderCards));
-          currentX = (cylEdge.x + (rightProgress * horizontalGap)) * (1 - t);
-          currentZ = (cylEdge.z - rightProgress * 15) * (1 - t);
-          currentRotationY = 0;
-          currentScale = t === 1 ? 1 : Math.max(stripScaleFar, stripScaleNear - rightProgress * 0.08);
-          opacity = t === 1 ? 1 : Math.max(stripOpacityFar, stripOpacityNear - rightProgress * 0.12);
-          zIndex = 10;
-        }
-
-        // Entrance stagger progress
-        const entranceVal = entranceRef.current.val;
-        const staggerOpacity = Math.max(0, Math.min(1, (entranceVal * 3) - (i * 0.1)));
-        const finalOpacity = opacity * staggerOpacity;
+        const baseOpacity = rotaryOpacity * (1 - t) + vertOpacity * t;
+        const finalOpacity = baseOpacity * entranceProgress;
+        const finalBlur = rotaryBlur * (1 - t);
 
         gsap.to(card, {
           x: currentX,
           y: currentY,
           z: currentZ,
           rotationY: currentRotationY,
+          rotationZ: currentRotationZ,
           scale: currentScale,
           transformOrigin: "50% 50% 0px",
           xPercent: -50,
           yPercent: -50,
           left: `${currentLeftPct}%`,
-          top: "50%",
+          top: "45%",
           opacity: finalOpacity,
-          duration: 0.1,
-          filter: `blur(${Math.max(0, (1 - currentScale) * 8 * (1 - t))}px)`,
-          ease: "power2.out",
-          zIndex: openRef.current ? 600 + i : zIndex,
+          filter: `blur(${finalBlur}px)`,
+          duration: 0.18,
+          ease: "sine.out",
+          zIndex: Math.round(currentZ) + 1000,
           overwrite: "auto"
         });
       });
@@ -581,7 +508,7 @@ const MenuSpiral: FC<SpiralBackgroundProps> = ({
       if (isInsidePanel) return;
 
       e.preventDefault();
-      const newTargetScroll = targetScrollYRef.current - e.deltaY * 0.42;
+      const newTargetScroll = targetScrollYRef.current - e.deltaY * 0.8;
 
       if (openRef.current) {
         // Use vertical list bounds when panel is open
@@ -590,19 +517,22 @@ const MenuSpiral: FC<SpiralBackgroundProps> = ({
         const vMin = -verticalRange / 2;
         const vMax = verticalRange / 2;
         targetScrollYRef.current = Math.max(vMin, Math.min(vMax, newTargetScroll));
-      } else if (hasMoreThanSeven) {
-        targetScrollYRef.current = Math.max(0, Math.min(maxCylinderScroll, newTargetScroll));
       } else {
-        targetScrollYRef.current = newTargetScroll;
+        // Horizontal rotary bounds - much wider to feel like a dial
+        const itemSpacing = isMobile ? 0.35 : 0.28;
+        const rotaryRange = (total - 1) * (itemSpacing / 0.0035);
+        const hMax = 200; // allow a bit of pull
+        const hMin = -rotaryRange - 200;
+        targetScrollYRef.current = Math.max(hMin, Math.min(hMax, newTargetScroll));
       }
     };
 
-    let touchStartY = 0;
-    let touchLastY = 0;
+    let touchStartX = 0;
+    let touchLastX = 0;
 
     const handleTouchStart = (e: TouchEvent) => {
-      touchStartY = e.touches[0].clientY;
-      touchLastY = touchStartY;
+      touchStartX = e.touches[0].clientX;
+      touchLastX = touchStartX;
     };
 
     const handleTouchMove = (e: TouchEvent) => {
@@ -610,11 +540,11 @@ const MenuSpiral: FC<SpiralBackgroundProps> = ({
       if (isInsidePanel) return;
 
       e.preventDefault();
-      const touchY = e.touches[0].clientY;
-      const deltaY = touchLastY - touchY;
-      touchLastY = touchY;
+      const touchX = e.touches[0].clientX;
+      const deltaX = touchLastX - touchX;
+      touchLastX = touchX;
 
-      const newTargetScroll = targetScrollYRef.current - deltaY * 2;
+      const newTargetScroll = targetScrollYRef.current - deltaX * 1.5;
 
       if (openRef.current) {
         // Use vertical list bounds when panel is open
@@ -623,16 +553,19 @@ const MenuSpiral: FC<SpiralBackgroundProps> = ({
         const vMin = -verticalRange / 2;
         const vMax = verticalRange / 2;
         targetScrollYRef.current = Math.max(vMin, Math.min(vMax, newTargetScroll));
-      } else if (hasMoreThanSeven) {
-        targetScrollYRef.current = Math.max(0, Math.min(maxCylinderScroll, newTargetScroll));
       } else {
-        targetScrollYRef.current = newTargetScroll;
+        // Horizontal rotary bounds - much wider to feel like a dial
+        const itemSpacing = isMobile ? 0.35 : 0.28;
+        const rotaryRange = (total - 1) * (itemSpacing / 0.0035);
+        const hMax = 200; // allow a bit of pull
+        const hMin = -rotaryRange - 200;
+        targetScrollYRef.current = Math.max(hMin, Math.min(hMax, newTargetScroll));
       }
     };
 
     const handleTouchEnd = () => {
-      touchStartY = 0;
-      touchLastY = 0;
+      touchStartX = 0;
+      touchLastX = 0;
     };
 
     // Scope listeners to the container element instead of window
@@ -824,7 +757,7 @@ const MenuSpiral: FC<SpiralBackgroundProps> = ({
                 sx={{
                   width: "90%",
                   maxWidth: { xs: "300px", md: "380px" },
-                  aspectRatio: "3/4",
+                  aspectRatio: "1/1",
                   borderRadius: "28px",
                   border: "1.5px solid rgba(255, 255, 255, 0.06)",
                   boxShadow: "0 40px 80px rgba(0,0,0,0.6)",
