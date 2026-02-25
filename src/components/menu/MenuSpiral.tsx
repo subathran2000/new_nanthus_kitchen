@@ -19,6 +19,10 @@ import StarIcon from "@mui/icons-material/Star";
 import { menuData } from "../../data/menuData";
 import type { MainCategory } from "../../types";
 
+const GOLD = "#C5A059";
+const GOLD_LIGHT = "#E2C284";
+const OBSIDIAN = "#050A14";
+
 interface SpiralBackgroundProps {
   activeCategory?: string;
   onPanelOpenChange?: (open: boolean) => void;
@@ -42,8 +46,8 @@ const shimmerKeyframes = `
   100% { transform: scale(0.95); opacity: 0.3; }
 }
 @keyframes glow-breathe {
-  0%, 100% { opacity: 0.03; }
-  50% { opacity: 0.07; }
+  0%, 100% { opacity: 0.05; }
+  50% { opacity: 0.12; }
 }
 `;
 
@@ -57,7 +61,7 @@ const FloatingDot: FC<{ delay: number; left: string; top: string }> = ({ delay, 
       width: 4,
       height: 4,
       borderRadius: "50%",
-      background: "rgba(59, 130, 246, 0.7)",
+      background: `${GOLD}88`,
       animation: `float-particle 3s ease-in-out ${delay}s infinite`,
       pointerEvents: "none",
       zIndex: 4,
@@ -130,14 +134,12 @@ const SpiralCard: FC<{
         flexDirection: "column",
         justifyContent: "flex-end",
         transformStyle: "preserve-3d",
-        border: "1.5px solid rgba(255, 255, 255, 0.08)",
-        boxShadow: "0 20px 40px rgba(0,0,0,0.4), inset 0 0 0 1px rgba(255,255,255,0.05)",
-        transition: "all 0.6s cubic-bezier(0.16, 1, 0.3, 1)",
-        ...(isHovered && {
-          borderColor: "rgba(59, 130, 246, 0.5)",
-          boxShadow:
-            "0 0 80px rgba(59, 130, 246, 0.2), 0 40px 80px rgba(0,0,0,0.8), inset 0 0 40px rgba(59, 130, 246, 0.08)",
-        }),
+        border: `1.5px solid ${isHovered ? `${GOLD}66` : "rgba(255, 255, 255, 0.08)"}`,
+        boxShadow: isHovered
+          ? `0 40px 80px rgba(0,0,0,0.8), 0 0 50px ${GOLD}15`
+          : "0 20px 40px rgba(0,0,0,0.4), inset 0 0 0 1px rgba(255,255,255,0.05)",
+        transition: "all 0.8s cubic-bezier(0.16, 1, 0.3, 1)",
+        willChange: "transform, opacity, filter",
       }}
     >
       {/* Parallax background image with tilt */}
@@ -161,7 +163,7 @@ const SpiralCard: FC<{
           inset: 0,
           borderRadius: "28px",
           background:
-            "linear-gradient(180deg, rgba(10,22,40,0) 0%, rgba(10,22,40,0.1) 30%, rgba(10,22,40,0.65) 60%, rgba(10,22,40,0.95) 100%)",
+            `linear-gradient(180deg, rgba(5,10,20,0) 0%, rgba(5,10,20,0.1) 30%, rgba(5,10,20,0.65) 60%, ${OBSIDIAN}F5 100%)`,
           zIndex: 1,
           pointerEvents: "none",
         }}
@@ -184,7 +186,7 @@ const SpiralCard: FC<{
             width: "50%",
             height: "100%",
             background:
-              "linear-gradient(90deg, transparent, rgba(255,255,255,0.06), transparent)",
+              `linear-gradient(90deg, transparent, ${GOLD}33, transparent)`,
             transform: "translateX(-100%) rotate(25deg)",
             animation: isHovered ? "shimmer-sweep 1.5s ease-in-out" : "none",
           },
@@ -203,28 +205,30 @@ const SpiralCard: FC<{
 
       {/* Dish count badge with scale entrance */}
       <Chip
-        icon={<LocalDiningIcon sx={{ fontSize: 13, color: "#F5A623 !important" }} />}
-        label={`${totalItems} dishes`}
+        icon={<LocalDiningIcon sx={{ fontSize: 13, color: `${GOLD} !important` }} />}
+        label={`${totalItems} Signature Dishes`}
         size="small"
         sx={{
           position: "absolute",
           top: 16,
           right: 16,
           zIndex: 5,
-          bgcolor: "rgba(10, 22, 40, 0.65)",
+          bgcolor: "rgba(5, 10, 20, 0.75)",
           color: "rgba(255,255,255,0.85)",
           backdropFilter: "blur(14px)",
-          border: "1px solid rgba(255,255,255,0.08)",
+          border: `1px solid ${GOLD}22`,
           fontFamily: "'Inter', sans-serif",
-          fontWeight: 600,
-          fontSize: "0.68rem",
-          letterSpacing: "0.04em",
-          height: 26,
-          transition: "all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)",
-          transform: isHovered ? "scale(1.08)" : "scale(1)",
+          fontWeight: 700,
+          fontSize: "0.62rem",
+          letterSpacing: "0.08em",
+          textTransform: "uppercase",
+          height: 24,
+          transition: "all 0.5s cubic-bezier(0.16, 1, 0.3, 1)",
+          transform: isHovered ? "translateX(-4px) scale(1.05)" : "translateX(0) scale(1)",
           ...(isHovered && {
-            bgcolor: "rgba(59, 130, 246, 0.15)",
-            borderColor: "rgba(59, 130, 246, 0.35)",
+            bgcolor: "rgba(197, 160, 89, 0.15)",
+            borderColor: `${GOLD}66`,
+            color: GOLD_LIGHT,
           }),
           "& .MuiChip-icon": { ml: 0.5 },
         }}
@@ -250,10 +254,11 @@ const SpiralCard: FC<{
           fontFamily: "'Inter', sans-serif",
           fontSize: "0.75rem",
           fontWeight: 700,
-          transition: "all 0.4s ease",
+          transition: "all 0.5s cubic-bezier(0.16, 1, 0.3, 1)",
           ...(isHovered && {
-            color: "#3B82F6",
-            borderColor: "rgba(59,130,246,0.3)",
+            color: GOLD_LIGHT,
+            borderColor: `${GOLD}44`,
+            bgcolor: "rgba(197, 160, 89, 0.1)",
           }),
         }}
       >
@@ -265,20 +270,22 @@ const SpiralCard: FC<{
         sx={{
           position: "relative",
           zIndex: 3,
-          mx: 2,
-          mb: 2,
-          px: 2.5,
+          mx: 1.5,
+          mb: 1.5,
+          px: 2,
           py: 2,
           borderRadius: "20px",
           background: isHovered
-            ? "rgba(10, 22, 40, 0.85)"
-            : "rgba(10, 22, 40, 0.58)",
-          backdropFilter: "blur(24px) saturate(140%)",
-          WebkitBackdropFilter: "blur(24px) saturate(140%)",
-          border: `1px solid ${isHovered ? "rgba(59, 130, 246, 0.3)" : "rgba(255, 255, 255, 0.08)"}`,
-          transition: "all 0.5s cubic-bezier(0.2, 0.8, 0.2, 1)",
-          transform: isHovered ? "translateY(-6px) translateZ(20px)" : "translateY(0) translateZ(0)",
-          boxShadow: isHovered ? "0 20px 40px rgba(0,0,0,0.4)" : "none",
+            ? "rgba(5, 10, 20, 0.96)"
+            : "rgba(5, 10, 20, 0.75)",
+          backdropFilter: "blur(44px) saturate(220%)",
+          WebkitBackdropFilter: "blur(44px) saturate(220%)",
+          border: `1px solid ${isHovered ? `${GOLD}99` : "rgba(255, 255, 255, 0.15)"}`,
+          transition: "all 0.8s cubic-bezier(0.16, 1, 0.3, 1)",
+          transform: isHovered ? "translateY(-18px) translateZ(80px) scale(1.03)" : "translateY(0) translateZ(0) scale(1)",
+          boxShadow: isHovered
+            ? `0 45px 90px rgba(0,0,0,0.85), inset 0 0 35px ${GOLD}20`
+            : "0 15px 45px rgba(0,0,0,0.45)",
         }}
       >
         {/* Accent line */}
@@ -292,9 +299,9 @@ const SpiralCard: FC<{
             height: "2px",
             borderRadius: 1,
             background:
-              "linear-gradient(90deg, transparent, #3B82F6 30%, #60A5FA 70%, transparent)",
+              `linear-gradient(90deg, transparent, ${GOLD} 30%, ${GOLD_LIGHT} 70%, transparent)`,
             opacity: isHovered ? 0.9 : 0.4,
-            transition: "all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1)",
+            transition: "all 0.8s cubic-bezier(0.16, 1, 0.3, 1)",
           }}
         />
 
@@ -304,17 +311,17 @@ const SpiralCard: FC<{
             display: "block",
             fontFamily: "'Playfair Display', serif",
             fontWeight: 700,
-            fontSize: { xs: "1.15rem", sm: "1.35rem", md: "1.5rem" },
-            letterSpacing: "0.06em",
+            fontSize: { xs: "1.25rem", sm: "1.5rem", md: "1.85rem" },
+            letterSpacing: "0.15em",
             textTransform: "uppercase",
-            color: "#fff",
+            color: isHovered ? GOLD_LIGHT : "#fff",
             textShadow: isHovered
-              ? "0 2px 20px rgba(59,130,246,0.3)"
-              : "0 2px 12px rgba(0,0,0,0.5)",
-            lineHeight: 1.25,
+              ? `0 4px 30px ${GOLD}88, 0 0 15px rgba(255,255,255,0.4)`
+              : "0 2px 20px rgba(0,0,0,0.9)",
+            lineHeight: 1,
             textAlign: "center",
-            mb: 0.5,
-            transition: "text-shadow 0.5s ease",
+            mb: 1,
+            transition: "all 0.6s cubic-bezier(0.16, 1, 0.3, 1)",
           }}
         >
           {item.title}
@@ -324,16 +331,17 @@ const SpiralCard: FC<{
           sx={{
             display: "block",
             textAlign: "center",
-            fontFamily: "'Inter', sans-serif",
-            fontSize: "0.7rem",
-            letterSpacing: "0.15em",
+            fontFamily: "'Montserrat', sans-serif",
+            fontSize: "0.6rem",
+            letterSpacing: "0.3em",
             textTransform: "uppercase",
-            color: isHovered ? "rgba(96, 165, 250, 0.8)" : "rgba(255,255,255,0.35)",
-            fontWeight: 500,
-            transition: "color 0.4s ease",
+            color: isHovered ? GOLD : "rgba(255,255,255,0.25)",
+            fontWeight: 700,
+            transition: "all 0.5s ease",
+            opacity: isHovered ? 1 : 0.6,
           }}
         >
-          Tap to explore
+          Discover Collection
         </Typography>
       </Box>
     </Box>
@@ -427,8 +435,8 @@ const MenuSpiral: FC<SpiralBackgroundProps> = ({
         ? Math.min(vh * 0.5, vw * 0.8)
         : Math.min(vh * 0.8, vw * 0.6);
 
-      const centerY = isMobile ? radius * 0.85 : radius * 0.75;
-      const adaptiveItemSpacing = isMobile ? (isLandscape ? 0.45 : 0.38) : 0.3;
+      const centerY = radius * 0.65; // Push center down for a top-centered rainbow arc
+      const adaptiveItemSpacing = isMobile ? (isLandscape ? 0.45 : 0.38) : 0.35; // 180 degree spacing
 
       const scrollVal = scrollYRef.current;
       const entranceVal = entranceRef.current.val;
@@ -436,7 +444,8 @@ const MenuSpiral: FC<SpiralBackgroundProps> = ({
       cards.forEach((card, i) => {
         if (!card) return;
 
-        // --- Layout 1: Half-Circle Rotary (When Menu is Closed) ---
+        // --- Layout 1: Improved Rainbow Arc (Peak at Top-Center) ---
+        // Peak is at 0 rad (top center). Ends are at -0.5PI (left) and 0.5PI (right).
         const angle = (i * adaptiveItemSpacing) + (scrollVal * 0.0035);
 
         const rotaryX = Math.sin(angle) * radius;
@@ -444,12 +453,11 @@ const MenuSpiral: FC<SpiralBackgroundProps> = ({
         const rotaryZ = -Math.abs(Math.sin(angle)) * (radius * 0.5);
 
         const absAngle = Math.abs(angle);
-        // Stays sharper for a wider field (divisor 1.8) and transitions smoothly (pow 1.5)
-        const distFactor = Math.pow(Math.min(1, absAngle / 1.8), 1.5);
-
-        const rotaryBlur = distFactor * 1.5;
-        const rotaryOpacity = Math.max(0.4, 1 - (distFactor * 0.5));
-        const rotaryScale = 1 - (distFactor * 0.15);
+        // Fade out sharply beyond the 180-degree sweep
+        const fadeProgress = Math.min(1, absAngle / (Math.PI * 0.6));
+        const rotaryOpacity = Math.max(0, 1 - Math.pow(fadeProgress, 2));
+        const rotaryBlur = Math.pow(fadeProgress, 2) * 2;
+        const rotaryScale = 1 - (Math.pow(fadeProgress, 2) * 0.15);
 
         const rotaryRotationY = (angle * 180) / Math.PI * 0.6;
         const rotaryRotationZ = (angle * 180) / Math.PI * 0.15;
@@ -479,7 +487,7 @@ const MenuSpiral: FC<SpiralBackgroundProps> = ({
         const finalOpacity = baseOpacity * entranceProgress;
         const finalBlur = rotaryBlur * (1 - t);
 
-        gsap.to(card, {
+        gsap.set(card, {
           x: currentX,
           y: currentY,
           z: currentZ,
@@ -490,13 +498,10 @@ const MenuSpiral: FC<SpiralBackgroundProps> = ({
           xPercent: -50,
           yPercent: -50,
           left: `${currentLeftPct}%`,
-          top: "45%",
+          top: "55%",
           opacity: finalOpacity,
-          filter: `blur(${finalBlur}px)`,
-          duration: 0.18,
-          ease: "sine.out",
+          filter: finalBlur > 0.1 ? `blur(${finalBlur}px)` : "none",
           zIndex: Math.round(currentZ) + 1000,
-          overwrite: "auto"
         });
       });
     };
@@ -518,11 +523,12 @@ const MenuSpiral: FC<SpiralBackgroundProps> = ({
         const vMax = verticalRange / 2;
         targetScrollYRef.current = Math.max(vMin, Math.min(vMax, newTargetScroll));
       } else {
-        // Horizontal rotary bounds - much wider to feel like a dial
-        const itemSpacing = isMobile ? 0.35 : 0.28;
+        // Horizontal rotary bounds - hard boundaries for first and last item centered
+        const isLandscape = window.innerWidth > window.innerHeight;
+        const itemSpacing = isMobile ? (isLandscape ? 0.45 : 0.38) : 0.35;
         const rotaryRange = (total - 1) * (itemSpacing / 0.0035);
-        const hMax = 200; // allow a bit of pull
-        const hMin = -rotaryRange - 200;
+        const hMax = 0; // lock first item at center
+        const hMin = -rotaryRange; // lock last item at center
         targetScrollYRef.current = Math.max(hMin, Math.min(hMax, newTargetScroll));
       }
     };
@@ -544,7 +550,8 @@ const MenuSpiral: FC<SpiralBackgroundProps> = ({
       const deltaX = touchLastX - touchX;
       touchLastX = touchX;
 
-      const newTargetScroll = targetScrollYRef.current - deltaX * 1.5;
+      const friction = isMobile ? 1.2 : 1.5;
+      const newTargetScroll = targetScrollYRef.current - deltaX * friction;
 
       if (openRef.current) {
         // Use vertical list bounds when panel is open
@@ -554,11 +561,12 @@ const MenuSpiral: FC<SpiralBackgroundProps> = ({
         const vMax = verticalRange / 2;
         targetScrollYRef.current = Math.max(vMin, Math.min(vMax, newTargetScroll));
       } else {
-        // Horizontal rotary bounds - much wider to feel like a dial
-        const itemSpacing = isMobile ? 0.35 : 0.28;
+        // Horizontal rotary bounds - hard boundaries for first and last item centered
+        const isLandscape = window.innerWidth > window.innerHeight;
+        const itemSpacing = isMobile ? (isLandscape ? 0.45 : 0.38) : 0.35;
         const rotaryRange = (total - 1) * (itemSpacing / 0.0035);
-        const hMax = 200; // allow a bit of pull
-        const hMin = -rotaryRange - 200;
+        const hMax = 0; // lock first item at center
+        const hMin = -rotaryRange; // lock last item at center
         targetScrollYRef.current = Math.max(hMin, Math.min(hMax, newTargetScroll));
       }
     };
@@ -636,10 +644,10 @@ const MenuSpiral: FC<SpiralBackgroundProps> = ({
           right: 0,
           bottom: 0,
           background:
-            "radial-gradient(ellipse at 50% 40%, rgba(59, 130, 246, 0.08) 0%, transparent 70%)",
+            `radial-gradient(ellipse at 50% 40%, ${GOLD}15 0%, transparent 70%)`,
           pointerEvents: "none",
           zIndex: 1,
-          opacity: 0.6,
+          opacity: 0.8,
           animation: "glow-breathe 8s ease-in-out infinite",
         }}
       />
@@ -656,7 +664,7 @@ const MenuSpiral: FC<SpiralBackgroundProps> = ({
           left: -300,
           width: 600,
           height: 600,
-          background: "radial-gradient(circle, rgba(59, 130, 246, 0.12) 0%, transparent 70%)",
+          background: `radial-gradient(circle, ${GOLD}12 0%, transparent 70%)`,
           pointerEvents: "none",
           zIndex: 2,
           mixBlendMode: "screen",
@@ -672,7 +680,7 @@ const MenuSpiral: FC<SpiralBackgroundProps> = ({
           position: "absolute",
           inset: 0,
           background:
-            "linear-gradient(to right, rgba(10,22,40,0.6) 0%, rgba(10,22,40,0.2) 50%, rgba(0,0,0,0) 100%)",
+            `linear-gradient(to right, ${OBSIDIAN}CC 0%, ${OBSIDIAN}33 50%, transparent 100%)`,
           opacity: open ? 1 : 0,
           pointerEvents: open ? "auto" : "none",
           zIndex: 500,
@@ -759,7 +767,7 @@ const MenuSpiral: FC<SpiralBackgroundProps> = ({
                   maxWidth: { xs: "300px", md: "380px" },
                   aspectRatio: "1/1",
                   borderRadius: "28px",
-                  border: "1.5px solid rgba(255, 255, 255, 0.06)",
+                  border: `1.5px solid ${GOLD}22`,
                   boxShadow: "0 40px 80px rgba(0,0,0,0.6)",
                   cursor: "pointer",
                   position: "relative",
@@ -767,8 +775,8 @@ const MenuSpiral: FC<SpiralBackgroundProps> = ({
                   filter: open && !isMobile ? "blur(3px) brightness(0.7)" : "none",
                   transition: "filter 0.5s ease, border-color 0.4s ease, box-shadow 0.5s ease",
                   "&:hover": {
-                    boxShadow: "0 0 50px rgba(59, 130, 246, 0.15), 0 50px 100px rgba(0,0,0,0.7)",
-                    borderColor: "rgba(59, 130, 246, 0.35)",
+                    boxShadow: `0 0 50px ${GOLD}15, 0 50px 100px rgba(0,0,0,0.7)`,
+                    borderColor: `${GOLD}66`,
                   },
                 }}
               >
@@ -783,16 +791,16 @@ const MenuSpiral: FC<SpiralBackgroundProps> = ({
                     borderRadius: "28px",
                   }}
                 />
-                <Box sx={{ position: "absolute", inset: 0, borderRadius: "28px", background: "linear-gradient(180deg, rgba(10,22,40,0) 0%, rgba(10,22,40,0.1) 30%, rgba(10,22,40,0.88) 100%)", pointerEvents: "none" }} />
+                <Box sx={{ position: "absolute", inset: 0, borderRadius: "28px", background: `linear-gradient(180deg, rgba(5,10,20,0) 0%, rgba(5,10,20,0.1) 30%, ${OBSIDIAN}E6 100%)`, pointerEvents: "none" }} />
 
                 {/* Number index badge */}
-                <Box sx={{ position: "absolute", top: 16, left: 16, width: 36, height: 36, borderRadius: "10px", background: "rgba(0,0,0,0.35)", backdropFilter: "blur(10px)", border: "1px solid rgba(255,255,255,0.08)", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 3 }}>
-                  <Typography sx={{ color: "rgba(255,255,255,0.6)", fontFamily: "'Inter', sans-serif", fontWeight: 700, fontSize: "0.7rem" }}>{String(i + 1).padStart(2, "0")}</Typography>
+                <Box sx={{ position: "absolute", top: 16, left: 16, width: 36, height: 36, borderRadius: "10px", background: "rgba(0,0,0,0.35)", backdropFilter: "blur(10px)", border: `1px solid ${GOLD}22`, display: "flex", alignItems: "center", justifyContent: "center", zIndex: 3 }}>
+                  <Typography sx={{ color: GOLD_LIGHT, fontFamily: "'Inter', sans-serif", fontWeight: 700, fontSize: "0.7rem" }}>{String(i + 1).padStart(2, "0")}</Typography>
                 </Box>
 
-                <Box sx={{ position: "absolute", bottom: 0, left: 0, right: 0, p: 3, background: "linear-gradient(180deg, transparent 0%, rgba(10,22,40,0.95) 100%)", zIndex: 2 }}>
-                  <Typography sx={{ color: "#fff", fontFamily: "'Playfair Display', serif", fontWeight: 700, mb: 0.5, textAlign: "center" }}>{item.title}</Typography>
-                  <Box sx={{ width: "25%", height: "2px", background: "linear-gradient(90deg, #3B82F6, #60A5FA)", mx: "auto", borderRadius: 2 }} />
+                <Box sx={{ position: "absolute", bottom: 0, left: 0, right: 0, p: 3, background: `linear-gradient(180deg, transparent 0%, ${OBSIDIAN}F2 100%)`, zIndex: 2 }}>
+                  <Typography sx={{ color: "#fff", fontFamily: "'Playfair Display', serif", fontWeight: 700, mb: 0.5, textAlign: "center", letterSpacing: '0.1em' }}>{item.title}</Typography>
+                  <Box sx={{ width: "25%", height: "2px", background: `linear-gradient(90deg, ${GOLD}, ${GOLD_LIGHT})`, mx: "auto", borderRadius: 2 }} />
                 </Box>
               </MotionBox>
             ))}
@@ -825,11 +833,11 @@ const MenuSpiral: FC<SpiralBackgroundProps> = ({
               maxWidth: "100%",
               boxSizing: "border-box",
               background:
-                "linear-gradient(160deg, rgba(10, 22, 40, 0.98) 0%, rgba(6, 14, 26, 0.99) 100%)",
-              backdropFilter: "blur(60px) saturate(160%)",
-              WebkitBackdropFilter: "blur(60px) saturate(160%)",
-              borderLeft: "1px solid rgba(59, 130, 246, 0.08)",
-              boxShadow: "-80px 0 160px rgba(0,0,0,0.7)",
+                `linear-gradient(165deg, ${OBSIDIAN}FC 0%, #000 100%)`,
+              backdropFilter: "blur(100px) saturate(220%)",
+              WebkitBackdropFilter: "blur(100px) saturate(220%)",
+              borderLeft: `1px solid ${GOLD}15`,
+              boxShadow: `-150px 0 300px rgba(0,0,0,0.9), inset 60px 0 120px ${GOLD}05`,
               zIndex: 1000,
               display: "flex",
               flexDirection: "column",
@@ -850,7 +858,7 @@ const MenuSpiral: FC<SpiralBackgroundProps> = ({
                 right: 0,
                 height: "2px",
                 background:
-                  "linear-gradient(90deg, transparent 0%, #3B82F6 30%, #60A5FA 50%, #3B82F6 70%, transparent 100%)",
+                  `linear-gradient(90deg, transparent 0%, ${GOLD} 30%, ${GOLD_LIGHT} 50%, ${GOLD} 70%, transparent 100%)`,
                 transformOrigin: "left",
                 zIndex: 10,
               }}
@@ -880,18 +888,18 @@ const MenuSpiral: FC<SpiralBackgroundProps> = ({
                 whileHover={{ scale: 1.1, x: -3 }}
                 whileTap={{ scale: 0.9 }}
                 sx={{
-                  color: "rgba(255,255,255,0.6)",
-                  bgcolor: "rgba(255,255,255,0.03)",
-                  border: "1px solid rgba(255,255,255,0.05)",
+                  color: "rgba(255,255,255,0.7)",
+                  bgcolor: "rgba(255,255,255,0.04)",
+                  border: `1px solid ${GOLD}22`,
                   width: 42,
                   height: 42,
                   borderRadius: "12px",
                   "&:hover": {
-                    bgcolor: "rgba(59, 130, 246, 0.1)",
-                    borderColor: "rgba(59, 130, 246, 0.2)",
-                    color: "#60A5FA",
+                    bgcolor: `${GOLD}15`,
+                    borderColor: `${GOLD}66`,
+                    color: GOLD_LIGHT,
                   },
-                  transition: "all 0.3s ease",
+                  transition: "all 0.4s cubic-bezier(0.16, 1, 0.3, 1)",
                 }}
               >
                 <ArrowBackIcon sx={{ fontSize: 19 }} />
@@ -903,7 +911,7 @@ const MenuSpiral: FC<SpiralBackgroundProps> = ({
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ delay: 0.35, duration: 0.4 }}
                 sx={{
-                  color: "rgba(255,255,255,0.3)",
+                  color: GOLD,
                   fontFamily: "'Inter', sans-serif",
                   fontWeight: 600,
                   letterSpacing: "0.25em",
@@ -911,7 +919,7 @@ const MenuSpiral: FC<SpiralBackgroundProps> = ({
                   fontSize: "0.6rem",
                 }}
               >
-                Menu
+                Culinary Collection
               </Typography>
 
               <IconButton
@@ -921,15 +929,15 @@ const MenuSpiral: FC<SpiralBackgroundProps> = ({
                 whileHover={{ scale: 1.1, rotate: 90 }}
                 whileTap={{ scale: 0.9 }}
                 sx={{
-                  color: "rgba(255,255,255,0.4)",
+                  color: "rgba(255,255,255,0.45)",
                   width: 42,
                   height: 42,
                   borderRadius: "12px",
                   "&:hover": {
-                    color: "#fff",
-                    bgcolor: "rgba(255,255,255,0.05)",
+                    color: GOLD_LIGHT,
+                    bgcolor: `${GOLD}10`,
                   },
-                  transition: "all 0.3s ease",
+                  transition: "all 0.4s cubic-bezier(0.16, 1, 0.3, 1)",
                 }}
               >
                 <CloseIcon sx={{ fontSize: 17 }} />
@@ -983,16 +991,16 @@ const MenuSpiral: FC<SpiralBackgroundProps> = ({
                       mx: "auto",
                       mb: 2.5,
                       background: `url(${selectedCategory.imageUrl}) center/cover no-repeat`,
-                      border: "2px solid rgba(59, 130, 246, 0.12)",
+                      border: `2px solid ${GOLD}33`,
                       boxShadow:
-                        "0 16px 50px rgba(0,0,0,0.5), 0 0 30px rgba(59,130,246,0.08)",
+                        `0 16px 50px rgba(0,0,0,0.5), 0 0 30px ${GOLD}15`,
                       position: "relative",
                       "&::after": {
                         content: '""',
                         position: "absolute",
                         inset: -4,
                         borderRadius: "32px",
-                        border: "1px solid rgba(59,130,246,0.06)",
+                        border: `1px solid ${GOLD}22`,
                         animation: "pulse-ring 3s ease-in-out infinite",
                       },
                     }}
@@ -1023,19 +1031,22 @@ const MenuSpiral: FC<SpiralBackgroundProps> = ({
                   animate={{ opacity: 1 }}
                   transition={{ delay: 0.55, duration: 0.4 }}
                   sx={{
-                    color: "rgba(96, 165, 250, 0.5)",
                     fontFamily: "'Inter', sans-serif",
                     fontWeight: 500,
-                    letterSpacing: "0.2em",
+                    letterSpacing: "0.35em",
                     textTransform: "uppercase",
-                    fontSize: "0.63rem",
+                    fontSize: "0.75rem",
+                    opacity: 0.9,
+                    color: GOLD_LIGHT,
                   }}
                 >
-                  {selectedCategory?.subCategories.reduce(
-                    (sum, sub) => sum + sub.items.length,
-                    0,
-                  )}{" "}
-                  items available
+                  <Box component="span" sx={{ color: GOLD, fontWeight: 900 }}>
+                    {selectedCategory?.subCategories.reduce(
+                      (sum, sub) => sum + sub.items.length,
+                      0,
+                    )}
+                  </Box>{" "}
+                  Masterpieces
                 </Typography>
                 {/* Expanding accent line */}
                 <Box
@@ -1045,9 +1056,9 @@ const MenuSpiral: FC<SpiralBackgroundProps> = ({
                   transition={{ delay: 0.6, duration: 0.5, ease: [0.34, 1.56, 0.64, 1] }}
                   sx={{
                     height: "2px",
-                    background: "linear-gradient(90deg, #3B82F6, #60A5FA)",
+                    background: `linear-gradient(90deg, ${GOLD}, ${GOLD_LIGHT})`,
                     mx: "auto",
-                    mt: 2.5,
+                    mt: 3,
                     borderRadius: 2,
                   }}
                 />
@@ -1089,7 +1100,7 @@ const MenuSpiral: FC<SpiralBackgroundProps> = ({
                         sx={{
                           width: 3,
                           borderRadius: 4,
-                          background: "linear-gradient(180deg, #3B82F6, #60A5FA)",
+                          background: `linear-gradient(180deg, ${GOLD}, ${GOLD_LIGHT})`,
                         }}
                       />
                       <Typography
@@ -1111,9 +1122,9 @@ const MenuSpiral: FC<SpiralBackgroundProps> = ({
                       sx={{
                         height: 22,
                         minWidth: 28,
-                        bgcolor: "rgba(59,130,246,0.06)",
-                        color: "rgba(96,165,250,0.7)",
-                        border: "1px solid rgba(59,130,246,0.08)",
+                        bgcolor: "rgba(197,160,89,0.1)",
+                        color: GOLD_LIGHT,
+                        border: `1px solid ${GOLD}33`,
                         fontSize: "0.65rem",
                         fontWeight: 700,
                         fontFamily: "'Inter', sans-serif",
@@ -1137,46 +1148,28 @@ const MenuSpiral: FC<SpiralBackgroundProps> = ({
                         initial={{ opacity: 0, x: 30, scale: 0.95 }}
                         animate={{ opacity: 1, x: 0, scale: 1 }}
                         transition={{
-                          delay: 0.2 + idx * 0.08 + itemIdx * 0.04,
-                          duration: 0.5,
+                          delay: 0.4 + idx * 0.12 + itemIdx * 0.05,
+                          duration: 0.55,
                           type: "spring",
-                          stiffness: 110,
-                          damping: 15,
+                          stiffness: 100,
+                          damping: 18,
                         }}
+                        disablePadding
                         sx={{
-                          p: 0,
                           borderRadius: "16px",
-                          background: "rgba(255, 255, 255, 0.015)",
-                          border: "1px solid transparent",
-                          position: "relative",
                           overflow: "hidden",
-                          transition: "all 0.35s cubic-bezier(0.4, 0, 0.2, 1)",
-                          "&::before": {
-                            content: '""',
-                            position: "absolute",
-                            top: "15%",
-                            bottom: "15%",
-                            left: 0,
-                            width: "3px",
-                            borderRadius: "0 4px 4px 0",
-                            background: "linear-gradient(180deg, #3B82F6, #60A5FA)",
-                            opacity: 0,
-                            transition: "opacity 0.35s ease",
-                          },
+                          transition: "all 0.4s cubic-bezier(0.16, 1, 0.3, 1)",
                           "&:hover": {
-                            background: "rgba(59, 130, 246, 0.04)",
-                            borderColor: "rgba(59, 130, 246, 0.1)",
-                            transform: "translateX(4px)",
-                            "&::before": { opacity: 1 },
+                            bgcolor: "rgba(255,255,255,0.02)",
+                            transform: "translateX(8px)",
                             "& .item-image": {
-                              transform: "scale(1.06)",
-                              borderColor: "rgba(59, 130, 246, 0.25)",
-                              boxShadow: "0 0 16px rgba(59, 130, 246, 0.15)",
+                              transform: "scale(1.08)",
+                              borderColor: `${GOLD}44`,
                             },
                             "& .price-pill": {
-                              bgcolor: "#F5A623",
-                              color: "#0A1628",
-                              borderColor: "#F5A623",
+                              bgcolor: GOLD,
+                              color: OBSIDIAN,
+                              borderColor: GOLD,
                               transform: "scale(1.05)",
                             },
                           },
@@ -1245,20 +1238,20 @@ const MenuSpiral: FC<SpiralBackgroundProps> = ({
                                     <StarIcon
                                       sx={{
                                         fontSize: 11,
-                                        color: "#F5A623 !important",
+                                        color: `${GOLD} !important`,
                                       }}
                                     />
                                   }
-                                  label="POPULAR"
+                                  label="CHEF'S CHOICE"
                                   size="small"
                                   sx={{
                                     height: 20,
-                                    bgcolor: "rgba(245,166,35,0.08)",
-                                    color: "#F5A623",
+                                    bgcolor: "rgba(197,160,89,0.1)",
+                                    color: GOLD_LIGHT,
                                     fontSize: "0.58rem",
-                                    fontWeight: 700,
-                                    letterSpacing: "0.08em",
-                                    border: "1px solid rgba(245,166,35,0.15)",
+                                    fontWeight: 800,
+                                    letterSpacing: "0.12em",
+                                    border: `1px solid ${GOLD}33`,
                                     "& .MuiChip-label": { px: 0.5, pr: 1 },
                                     "& .MuiChip-icon": { ml: 0.5 },
                                   }}
@@ -1296,17 +1289,17 @@ const MenuSpiral: FC<SpiralBackgroundProps> = ({
                               className="price-pill"
                               sx={{
                                 bgcolor: "transparent",
-                                color: "#F5A623",
-                                border: "1px solid rgba(255,255,255,0.06)",
+                                color: GOLD,
+                                border: `1px solid ${GOLD}33`,
                                 px: 1.8,
                                 py: 0.5,
-                                borderRadius: "10px",
-                                fontWeight: 700,
-                                fontSize: "0.82rem",
-                                fontFamily: "'Inter', sans-serif",
+                                borderRadius: "8px",
+                                fontWeight: 800,
+                                fontSize: "0.85rem",
+                                fontFamily: "'Playfair Display', serif",
                                 transition:
-                                  "all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1)",
-                                letterSpacing: "0.03em",
+                                  "all 0.4s cubic-bezier(0.16, 1, 0.3, 1)",
+                                letterSpacing: "0.05em",
                                 whiteSpace: "nowrap",
                               }}
                             >
