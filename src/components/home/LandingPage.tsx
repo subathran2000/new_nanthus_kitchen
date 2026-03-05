@@ -201,7 +201,7 @@ const LandingStatic: FC = () => {
 
         <ScrollControls
           key="landing-scroll-controls"
-          pages={isMobile ? 12 : 11}
+          pages={isMobile ? 8.7 : 8.5}//scroll size based on content height, adjusted for mobile and desktop differences
           damping={0.15}
         >
           {/* Internal components can access useScroll now */}

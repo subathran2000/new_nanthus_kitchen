@@ -65,8 +65,8 @@ const AboutCard: React.FC<{ item: AboutItem; index: number }> = ({
     >
       <Box
         sx={{
-          width: { xs: "95%", sm: "85%", md: "550px" },
-          mb: { xs: "2.5rem", sm: "3rem", md: "6rem" },
+          width: { xs: "95%", sm: "85%", md: "950px" }, //about us card width
+          mb: { xs: "2.5rem", sm: "3rem", md: "3rem" }, //space between the cards
           position: "relative",
           background:
             "linear-gradient(135deg, rgba(255, 255, 255, 0.03) 0%, rgba(255, 255, 255, 0.01) 100%)",

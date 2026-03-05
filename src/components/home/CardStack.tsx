@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
-import { motion } from 'framer-motion';
+import React, { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import type { PanInfo } from 'framer-motion';
 import { Box, IconButton } from '@mui/material';
-import { ChevronLeft, ChevronRight } from '@mui/icons-material';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 import type { SpecialItem } from "../../types";
 
 interface CardStackProps {
@@ -12,56 +12,34 @@ interface CardStackProps {
 
 const CardStack: React.FC<CardStackProps> = ({ items, onCenterCardChange }) => {
     const [activeIndex, setActiveIndex] = useState(0);
-    const [exitX, setExitX] = useState<number>(0);
+    const [direction, setDirection] = useState(0);
     const [isPaused, setIsPaused] = useState(false);
 
-    const activeItem = items[activeIndex];
-
     const handleNext = () => {
-      if (exitX !== 0) return;
-      setExitX(300);
-      setTimeout(() => {
-        setActiveIndex((prev) => (prev + 1) % items.length);
-        setExitX(0);
-      }, 200);
+      setDirection(1);
+      setActiveIndex((prev) => (prev + 1) % items.length);
     };
 
     const handlePrev = () => {
-      if (exitX !== 0) return;
-      setExitX(-300);
-      setTimeout(() => {
-        setActiveIndex((prev) => (prev - 1 + items.length) % items.length);
-        setExitX(0);
-      }, 200);
+      setDirection(-1);
+      setActiveIndex((prev) => (prev - 1 + items.length) % items.length);
     };
 
-    // Autoplay — pauses on hover/focus (WCAG 2.2.2)
-    React.useEffect(() => {
+    useEffect(() => {
       if (isPaused) return;
-      const interval = setInterval(() => {
-        handleNext();
-      }, 5000);
-
+      const interval = setInterval(handleNext, 5000);
       return () => clearInterval(interval);
-    }, [activeIndex, exitX, isPaused]);
+    }, [isPaused]);
 
-    // Detect change and notify parent (optional)
-    React.useEffect(() => {
-      if (onCenterCardChange && activeItem) {
-        onCenterCardChange(activeItem);
+    useEffect(() => {
+      if (onCenterCardChange) {
+        onCenterCardChange(items[activeIndex]);
       }
     }, [activeIndex, items, onCenterCardChange]);
 
-    const handleDragEnd = (
-      _event: MouseEvent | TouchEvent | PointerEvent,
-      info: PanInfo,
-    ) => {
-      const threshold = 100;
-      if (info.offset.x > threshold) {
-        handleNext();
-      } else if (info.offset.x < -threshold) {
-        handlePrev();
-      }
+    const handleDragEnd = (_: any, info: PanInfo) => {
+      if (info.offset.x > 100) handlePrev();
+      else if (info.offset.x < -100) handleNext();
     };
 
     return (
@@ -76,130 +54,146 @@ const CardStack: React.FC<CardStackProps> = ({ items, onCenterCardChange }) => {
         }}
         onMouseEnter={() => setIsPaused(true)}
         onMouseLeave={() => setIsPaused(false)}
-        onFocus={() => setIsPaused(true)}
-        onBlur={() => setIsPaused(false)}
         role="region"
         aria-label="Special offers carousel"
         aria-roledescription="carousel"
       >
-        {/* Arrows */}
-        <IconButton
-          onClick={handlePrev}
-          aria-label="Previous special offer"
-          sx={{
-            position: "absolute",
-            left: { xs: "10px", md: "-60px" },
-            zIndex: 10,
-            color: "#F5A623",
-            bgcolor: "rgba(10, 22, 40, 0.7)",
-            border: "1px solid rgba(59, 130, 246, 0.2)",
-            backdropFilter: "blur(4px)",
-            "&:hover": { bgcolor: "rgba(59, 130, 246, 0.1)" },
-          }}
-        >
-          <ChevronLeft />
-        </IconButton>
+        {/* Navigation Controls */}
+        <Box sx={{ position: 'absolute', bottom: -60, display: 'flex', gap: 2, zIndex: 10 }}>
+            <IconButton 
+                onClick={handlePrev}
+                aria-label="Previous special offer"
+                sx={{ 
+                    color: 'white', 
+                    border: '1px solid rgba(255,255,255,0.1)',
+                    '&:hover': { bgcolor: 'rgba(255,255,255,0.05)' }
+                }}
+            >
+                <ChevronLeft size={20} />
+            </IconButton>
+            <IconButton 
+                onClick={handleNext}
+                aria-label="Next special offer"
+                sx={{ 
+                    color: 'white', 
+                    border: '1px solid rgba(255,255,255,0.1)',
+                    '&:hover': { bgcolor: 'rgba(255,255,255,0.05)' }
+                }}
+            >
+                <ChevronRight size={20} />
+            </IconButton>
+        </Box>
 
-        <IconButton
-          onClick={handleNext}
-          aria-label="Next special offer"
-          sx={{
-            position: "absolute",
-            right: { xs: "10px", md: "-60px" },
-            zIndex: 10,
-            color: "#F5A623",
-            bgcolor: "rgba(10, 22, 40, 0.7)",
-            border: "1px solid rgba(59, 130, 246, 0.2)",
-            backdropFilter: "blur(4px)",
-            "&:hover": { bgcolor: "rgba(59, 130, 246, 0.1)" },
-          }}
-        >
-          <ChevronRight />
-        </IconButton>
+        <Box sx={{ position: 'relative', width: '100%', height: '100%', perspective: '1200px' }}>
+            <AnimatePresence initial={false} custom={direction}>
+                {items.map((item, index) => {
+                    const isCenter = index === activeIndex;
+                    const isNext = index === (activeIndex + 1) % items.length;
+                    const isPrev = index === (activeIndex - 1 + items.length) % items.length;
 
-        {/* 
-               Better approach for "Stack":
-               Render the "Active" card on top (draggable).
-               Render the "Next" cards underneath (static/animated into place).
-            */}
+                    if (!isCenter && !isNext && !isPrev) return null;
 
-        {/* Background Cards (Decorations) */}
-        <Box
-          key={`card-${(activeIndex + 2) % items.length}`}
-          sx={{
-            position: "absolute",
-            width: "85%",
-            height: "90%",
-            borderRadius: "16px",
-            bgcolor: "rgba(0,0,0,0.5)",
-            transform: "scale(0.9) translateY(40px)",
-            zIndex: 0,
-            opacity: 0.5,
-            backgroundImage: `url(${items[(activeIndex + 2) % items.length]?.src})`,
-            backgroundSize: "contain",
-            backgroundRepeat: "no-repeat",
-            backgroundPosition: "center",
-          }}
-        />
-        <Box
-          key={`card-${(activeIndex + 1) % items.length}`}
-          sx={{
-            position: "absolute",
-            width: "90%",
-            height: "95%",
-            borderRadius: "16px",
-            bgcolor: "rgba(0,0,0,0.5)",
-            transform: "scale(0.95) translateY(20px)",
-            zIndex: 1,
-            opacity: 0.8,
-            backgroundImage: `url(${items[(activeIndex + 1) % items.length]?.src})`,
-            backgroundSize: "contain",
-            backgroundRepeat: "no-repeat",
-            backgroundPosition: "center",
-            transition: "all 0.3s ease",
-          }}
-        />
+                    let x = 0;
+                    let scale = 0.8;
+                    let zIndex = 0;
+                    let opacity = 0;
+                    let rotateY = 0;
 
-        {/* Active Draggable Card */}
-        <motion.div
-          key={activeIndex}
-          style={{
-            width: "100%",
-            height: "100%",
-            position: "absolute",
-            zIndex: 2,
-            cursor: "grab",
-            x: 0,
-            opacity: 1,
-            scale: 1,
-          }}
-          drag="x"
-          dragConstraints={{ left: 0, right: 0 }}
-          dragElastic={0.7}
-          onDragEnd={handleDragEnd}
-          animate={{
-            x: exitX !== 0 ? (exitX > 0 ? 500 : -500) : 0,
-            opacity: exitX !== 0 ? 0 : 1,
-            rotate: exitX !== 0 ? (exitX > 0 ? 20 : -20) : 0,
-          }}
-          transition={{ duration: 0.3 }}
-          whileTap={{ cursor: "grabbing", scale: 1.05 }}
-        >
-          <Box
-            component="img"
-            src={activeItem.src}
-            alt={activeItem.alt}
-            sx={{
-              width: "100%",
-              height: "100%",
-              objectFit: "contain",
-              borderRadius: "16px",
-              boxShadow: "0 20px 50px rgba(0,0,0,0.5)",
-              pointerEvents: "none",
-              bgcolor: "rgba(0,0,0,0.2)", // Subtle background for contain fit
-            }}
-          />
-        </motion.div>
+                    if (isCenter) {
+                        x = 0;
+                        scale = 1;
+                        zIndex = 5;
+                        opacity = 1;
+                        rotateY = 0;
+                    } else if (isNext) {
+                        x = 120;
+                        scale = 0.85;
+                        zIndex = 3;
+                        opacity = 0.4;
+                        rotateY = -25;
+                    } else if (isPrev) {
+                        x = -120;
+                        scale = 0.85;
+                        zIndex = 3;
+                        opacity = 0.4;
+                        rotateY = 25;
+                    }
+
+                    return (
+                        <motion.div
+                            key={index}
+                            custom={direction}
+                            initial={{ opacity: 0, scale: 0.5, x: direction * 200 }}
+                            animate={{ 
+                                x, 
+                                scale, 
+                                zIndex, 
+                                opacity,
+                                rotateY,
+                                filter: isCenter ? 'blur(0px)' : 'blur(2px)'
+                            }}
+                            exit={{ opacity: 0, scale: 0.5, x: -direction * 200 }}
+                            transition={{
+                                type: "spring",
+                                stiffness: 300,
+                                damping: 30
+                            }}
+                            drag={isCenter ? "x" : false}
+                            dragConstraints={{ left: 0, right: 0 }}
+                            onDragEnd={handleDragEnd}
+                            style={{
+                                position: 'absolute',
+                                width: '100%',
+                                height: '100%',
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                cursor: isCenter ? 'grab' : 'default',
+                                transformStyle: 'preserve-3d'
+                            }}
+                        >
+                            <Box
+                                sx={{
+                                    width: '100%',
+                                    height: '100%',
+                                    borderRadius: '24px',
+                                    overflow: 'hidden',
+                                    boxShadow: isCenter ? '0 30px 60px rgba(0,0,0,0.5)' : '0 10px 20px rgba(0,0,0,0.3)',
+                                    border: '1px solid rgba(255,255,255,0.1)',
+                                    bgcolor: '#111'
+                                }}
+                            >
+                                <img 
+                                    src={item.src} 
+                                    alt={item.alt}
+                                    referrerPolicy="no-referrer"
+                                    style={{
+                                        width: '100%',
+                                        height: '100%',
+                                        objectFit: 'cover'
+                                    }}
+                                />
+                                {isCenter && (
+                                    <Box 
+                                        sx={{ 
+                                            position: 'absolute', 
+                                            bottom: 0, 
+                                            left: 0, 
+                                            right: 0, 
+                                            p: 3, 
+                                            background: 'linear-gradient(to top, rgba(0,0,0,0.8), transparent)',
+                                            display: { xs: 'block', md: 'none' }
+                                        }}
+                                    >
+                                        <div className="text-white font-medium">{item.title}</div>
+                                    </Box>
+                                )}
+                            </Box>
+                        </motion.div>
+                    );
+                })}
+            </AnimatePresence>
+        </Box>
       </Box>
     );
 };

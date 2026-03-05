@@ -423,90 +423,72 @@ const MenuSpiral: FC<SpiralBackgroundProps> = ({
       }
 
       const t = transitionRef.current;
-      const vertSpacing = isMobile ? 80 : 120;
-
-      // Adaptive Geometry constants
-      const vh = window.innerHeight;
-      const vw = window.innerWidth;
-      const isLandscape = vw > vh;
-
-      // Radius adapts to smallest dimension to ensure circle fits
-      const radius = isMobile
-        ? Math.min(vh * 0.5, vw * 0.8)
-        : Math.min(vh * 0.8, vw * 0.6);
-
-      const centerY = radius * 0.65; // Push center down for a top-centered rainbow arc
-      const adaptiveItemSpacing = isMobile ? (isLandscape ? 0.45 : 0.38) : 0.35; // 180 degree spacing
-
       const scrollVal = scrollYRef.current;
       const entranceVal = entranceRef.current.val;
+
+      // --- Responsive Grid Constants ---
+      // 1 column on mobile is much cleaner; 3 on desktop
+      const columns = isMobile ? 1 : 3;
+      const totalRows = Math.ceil(total / columns);
+      
+      // Card sizes optimized for clear "air" around them
+      const cardSize = isMobile ? 220 : 300; 
+      const gap = isMobile ? 30 : 120;
+      
+      const vertSpacing = isMobile ? 120 : 160;
 
       cards.forEach((card, i) => {
         if (!card) return;
 
-        // --- Layout 1: Improved Rainbow Arc (Peak at Top-Center) ---
-        // Peak is at 0 rad (top center). Ends are at -0.5PI (left) and 0.5PI (right).
-        const angle = (i * adaptiveItemSpacing) + (scrollVal * 0.0035);
+        // --- Layout 1: Grid (Panel CLOSED) ---
+        const row = Math.floor(i / columns);
+        const col = i % columns;
 
-        const rotaryX = Math.sin(angle) * radius;
-        const rotaryY = -Math.cos(angle) * radius + centerY;
-        const rotaryZ = -Math.abs(Math.sin(angle)) * (radius * 0.5);
+        // gridX: Centers the cards horizontally
+        const gridX = (col - (columns - 1) / 2) * (cardSize + gap);
+        
+        // gridY Fix: Subtracting ((totalRows - 1) / 2) perfectly centers the 
+        // starting items so there is no "extra space" at the top.
+        const gridY = (row - (totalRows - 1) / 2) * (cardSize + gap) + scrollVal;
 
-        const absAngle = Math.abs(angle);
-        // Fade out sharply beyond the 180-degree sweep
-        const fadeProgress = Math.min(1, absAngle / (Math.PI * 0.6));
-        const rotaryOpacity = Math.max(0, 1 - Math.pow(fadeProgress, 2));
-        const rotaryBlur = Math.pow(fadeProgress, 2) * 2;
-        const rotaryScale = 1 - (Math.pow(fadeProgress, 2) * 0.15);
+        // Opacity falloff: Smoother for mobile
+        const distFromCenter = Math.abs(gridY);
+        const fadeRange = isMobile ? window.innerHeight * 0.4 : window.innerHeight * 0.7;
+        const gridOpacity = Math.max(0, 1 - (distFromCenter / fadeRange));
 
-        const rotaryRotationY = (angle * 180) / Math.PI * 0.6;
-        const rotaryRotationZ = (angle * 180) / Math.PI * 0.15;
-
-        // --- Layout 2: Vertical List (When Panel is Open) ---
+        // --- Layout 2: Vertical List (Panel OPEN) ---
         const vertY = (i - (total - 1) / 2) * vertSpacing + scrollVal;
         const vertX = 0;
-        const vertZ = 0;
-        const vertRotationY = 0;
-        const vertRotationZ = 0;
-        const vertScale = 1;
-        const vertOpacity = 1;
 
-        // --- Interpolate between Rotary and Vertical ---
+        // --- Interpolation ---
         const currentLeftPct = 50 + (15 - 50) * t;
-        const currentX = rotaryX * (1 - t) + vertX * t;
-        const currentY = rotaryY * (1 - t) + vertY * t;
-        const currentZ = rotaryZ * (1 - t) + vertZ * t;
-        const currentRotationY = rotaryRotationY * (1 - t) + vertRotationY * t;
-        const currentRotationZ = rotaryRotationZ * (1 - t) + vertRotationZ * t;
-        const currentScale = rotaryScale * (1 - t) + vertScale * t;
+        const currentX = gridX * (1 - t) + vertX * t;
+        const currentY = gridY * (1 - t) + vertY * t;
+        
+        // Scale: Mobile gets a "focus" effect
+        const currentScale = (isMobile ? 0.85 : 0.95) * (1 - t) + 1 * t;
 
-        const staggerDelay = i * 0.1;
+        const staggerDelay = i * 0.05;
         const entranceProgress = Math.max(0, Math.min(1, (entranceVal * 2) - staggerDelay));
-
-        const baseOpacity = rotaryOpacity * (1 - t) + vertOpacity * t;
-        const finalOpacity = baseOpacity * entranceProgress;
-        const finalBlur = rotaryBlur * (1 - t);
 
         gsap.set(card, {
           x: currentX,
           y: currentY,
-          z: currentZ,
-          rotationY: currentRotationY,
-          rotationZ: currentRotationZ,
+          z: 0,
           scale: currentScale,
-          transformOrigin: "50% 50% 0px",
           xPercent: -50,
           yPercent: -50,
           left: `${currentLeftPct}%`,
-          top: "55%",
-          opacity: finalOpacity,
-          filter: finalBlur > 0.1 ? `blur(${finalBlur}px)` : "none",
-          zIndex: Math.round(currentZ) + 1000,
+          top: "50%",
+          opacity: (gridOpacity * (1 - t) + 1 * t) * entranceProgress,
+          zIndex: 1000 - i,
+          // Extra fix: remove blur that might cause card overlapping "ghosting"
+          filter: "none", 
         });
       });
     };
 
-    const container = containerRef.current;
+   const container = containerRef.current;
 
     const handleWheel = (e: WheelEvent) => {
       const isInsidePanel = openRef.current && sidePanelRef.current?.contains(e.target as Node);
@@ -515,22 +497,12 @@ const MenuSpiral: FC<SpiralBackgroundProps> = ({
       e.preventDefault();
       const newTargetScroll = targetScrollYRef.current - e.deltaY * 0.8;
 
-      if (openRef.current) {
-        // Use vertical list bounds when panel is open
-        const vertSpacing = isMobile ? 80 : 120;
-        const verticalRange = (total - 1) * vertSpacing;
-        const vMin = -verticalRange / 2;
-        const vMax = verticalRange / 2;
-        targetScrollYRef.current = Math.max(vMin, Math.min(vMax, newTargetScroll));
-      } else {
-        // Horizontal rotary bounds - hard boundaries for first and last item centered
-        const isLandscape = window.innerWidth > window.innerHeight;
-        const itemSpacing = isMobile ? (isLandscape ? 0.45 : 0.38) : 0.35;
-        const rotaryRange = (total - 1) * (itemSpacing / 0.0035);
-        const hMax = 0; // lock first item at center
-        const hMin = -rotaryRange; // lock last item at center
-        targetScrollYRef.current = Math.max(hMin, Math.min(hMax, newTargetScroll));
-      }
+      // Vertical range calculation based on rows
+      const rows = Math.ceil(total / 3);
+      const rowHeight = isMobile ? 180 : 320;
+      const range = (rows - 1) * (rowHeight + (isMobile ? 15 : 30));
+      
+      targetScrollYRef.current = Math.max(-range, Math.min(range, newTargetScroll));
     };
 
     let touchStartX = 0;
