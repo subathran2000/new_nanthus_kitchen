@@ -413,80 +413,69 @@ const MenuSpiral: FC<SpiralBackgroundProps> = ({
     const cards = cardsRef.current;
     const total = displayedItems.length;
 
+    // Inside MenuSpiral.tsx -> updateCards function
+
+
     const updateCards = () => {
-      const targetTransition = openRef.current ? 1 : 0;
-      const lerpFactor = 0.08;
-      transitionRef.current += (targetTransition - transitionRef.current) * lerpFactor;
+          const targetTransition = openRef.current ? 1 : 0;
+          const lerpFactor = 0.08;
+          transitionRef.current += (targetTransition - transitionRef.current) * lerpFactor;
 
-      if (Math.abs(targetTransition - transitionRef.current) < 0.0005) {
-        transitionRef.current = targetTransition;
-      }
+          if (Math.abs(targetTransition - transitionRef.current) < 0.0005) {
+            transitionRef.current = targetTransition;
+          }
 
-      const t = transitionRef.current;
-      const scrollVal = scrollYRef.current;
-      const entranceVal = entranceRef.current.val;
+          const t = transitionRef.current;
+          const scrollVal = scrollYRef.current;
+          const entranceVal = entranceRef.current.val;
 
-      // --- Responsive Grid Constants ---
-      // 1 column on mobile is much cleaner; 3 on desktop
-      const columns = isMobile ? 1 : 3;
-      const totalRows = Math.ceil(total / columns);
-      
-      // Card sizes optimized for clear "air" around them
-      const cardSize = isMobile ? 220 : 300; 
-      const gap = isMobile ? 30 : 120;
-      
-      const vertSpacing = isMobile ? 120 : 160;
+          // Grid Constants
+          const columns = isMobile ? 1 : 3;
+          const totalRows = Math.ceil(total / columns);
+          const cardSize = isMobile ? 280 : 300; 
+          const gap = isMobile ? 40 : 120;
 
-      cards.forEach((card, i) => {
-        if (!card) return;
+          cards.forEach((card, i) => {
+            if (!card) return;
 
-        // --- Layout 1: Grid (Panel CLOSED) ---
-        const row = Math.floor(i / columns);
-        const col = i % columns;
+            const row = Math.floor(i / columns);
+            const col = i % columns;
+            
+            // 1. Position within the grid
+            const gridX = (col - (columns - 1) / 2) * (cardSize + gap);
+            const gridY = (row - (totalRows - 1) / 2) * (cardSize + gap) + scrollVal;
 
-        // gridX: Centers the cards horizontally
-        const gridX = (col - (columns - 1) / 2) * (cardSize + gap);
-        
-        // gridY Fix: Subtracting ((totalRows - 1) / 2) perfectly centers the 
-        // starting items so there is no "extra space" at the top.
-        const gridY = (row - (totalRows - 1) / 2) * (cardSize + gap) + scrollVal;
+            // 2. Movement logic (Desktop shifts, Mobile stays 0)
+            const dockX = isMobile ? 0 : window.innerWidth * 0.4; 
+            const dockY = isMobile ? 0 : window.innerHeight * 0.2;
 
-        // Opacity falloff: Smoother for mobile
-        const distFromCenter = Math.abs(gridY);
-        const fadeRange = isMobile ? window.innerHeight * 0.4 : window.innerHeight * 0.7;
-        const gridOpacity = Math.max(0, 1 - (distFromCenter / fadeRange));
+            const finalX = gridX + (dockX * t);
+            const finalY = gridY + (dockY * t);
 
-        // --- Layout 2: Vertical List (Panel OPEN) ---
-        const vertY = (i - (total - 1) / 2) * vertSpacing + scrollVal;
-        const vertX = 0;
+            const staggerDelay = i * 0.05;
+            const entranceProgress = Math.max(0, Math.min(1, (entranceVal * 2) - staggerDelay));
 
-        // --- Interpolation ---
-        const currentLeftPct = 50 + (15 - 50) * t;
-        const currentX = gridX * (1 - t) + vertX * t;
-        const currentY = gridY * (1 - t) + vertY * t;
-        
-        // Scale: Mobile gets a "focus" effect
-        const currentScale = (isMobile ? 0.85 : 0.95) * (1 - t) + 1 * t;
+            gsap.set(card, {
+              // COORDINATES
+              x: finalX, 
+              y: finalY,
+              // TRANSFORM PERCENT (This is what actually centers the cards)
+              xPercent: -50, 
+              yPercent: -50,
+              
+              // ANCHORING
+              left: "50%", 
+              top: "50%",
+              position: "absolute",
 
-        const staggerDelay = i * 0.05;
-        const entranceProgress = Math.max(0, Math.min(1, (entranceVal * 2) - staggerDelay));
-
-        gsap.set(card, {
-          x: currentX,
-          y: currentY,
-          z: 0,
-          scale: currentScale,
-          xPercent: -50,
-          yPercent: -50,
-          left: `${currentLeftPct}%`,
-          top: "50%",
-          opacity: (gridOpacity * (1 - t) + 1 * t) * entranceProgress,
-          zIndex: 1000 - i,
-          // Extra fix: remove blur that might cause card overlapping "ghosting"
-          filter: "none", 
-        });
-      });
-    };
+              // VISUALS
+              scale: isMobile ? 0.85 : 0.95,
+              opacity: (1 - (t * (isMobile ? 0.85 : 0.6))) * entranceProgress, 
+              filter: t > 0 ? `blur(${t * 12}px) brightness(${1 - t * 0.3})` : "none",
+              zIndex: 2000,
+            });
+          });
+      };
 
    const container = containerRef.current;
 
@@ -498,10 +487,9 @@ const MenuSpiral: FC<SpiralBackgroundProps> = ({
       const newTargetScroll = targetScrollYRef.current - e.deltaY * 0.8;
 
       // Vertical range calculation based on rows
-      const rows = Math.ceil(total / 3);
-      const rowHeight = isMobile ? 180 : 320;
+      const rows = Math.ceil(total / (isMobile ? 1 : 3));
+      const rowHeight = isMobile ? 320 : 320;
       const range = (rows - 1) * (rowHeight + (isMobile ? 15 : 30));
-      
       targetScrollYRef.current = Math.max(-range, Math.min(range, newTargetScroll));
     };
 
@@ -690,14 +678,14 @@ const MenuSpiral: FC<SpiralBackgroundProps> = ({
           </Box>
         ) : (
           <Box
-            key="horizontal-container"
-            component={motion.div}
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{
-              opacity: 1,
-              scale: open && !isMobile ? 0.88 : 1,
-              x: open && !isMobile ? "-30%" : "0%",
-            }}
+              key="horizontal-container"
+              component={motion.div}
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{
+                opacity: 1,
+                scale: 1, // Removed the scale down
+                x: "0%",   // Forces it to stay centered instead of "-30%"
+              }}
             exit={{ opacity: 0, scale: 1.05 }}
             transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
             sx={{
@@ -783,38 +771,34 @@ const MenuSpiral: FC<SpiralBackgroundProps> = ({
       {/* ──── Side Panel Detail View ──── */}
       <AnimatePresence mode="wait">
         {open && (
-          <Box
-            ref={sidePanelRef}
-            component={motion.div}
-            initial={{ x: "100%", opacity: 0 }}
-            animate={{ x: 0, opacity: 1 }}
-            exit={{ x: "100%", opacity: 0 }}
-            transition={{
-              type: "spring",
-              stiffness: 100,
-              damping: 22,
-              mass: 0.8,
-              opacity: { duration: 0.4 },
-            }}
+            <Box
+              ref={sidePanelRef}
+              component={motion.div}
+              // Curtain entry: Stays centered but slides in/out from the left
+              initial={{ x: "-100%" }} 
+              animate={{ x: 0 }}
+              exit={{ x: "-100%" }}
+              transition={{ 
+                type: "spring", 
+                stiffness: 60, 
+                damping: 20,
+                mass: 1.2
+              }}
             sx={{
               position: "fixed",
               top: 0,
-              right: 0,
-              bottom: 0,
-              width: { xs: "100%", sm: "100%", md: "70%", lg: "65%" },
-              maxWidth: "100%",
-              boxSizing: "border-box",
-              background:
-                `linear-gradient(165deg, ${OBSIDIAN}FC 0%, #000 100%)`,
-              backdropFilter: "blur(100px) saturate(220%)",
-              WebkitBackdropFilter: "blur(100px) saturate(220%)",
-              borderLeft: `1px solid ${GOLD}15`,
-              boxShadow: `-150px 0 300px rgba(0,0,0,0.9), inset 60px 0 120px ${GOLD}05`,
-              zIndex: 1000,
+              left: 0, // Changed from right: 0 to left: 0
+              width: { xs: "100%", md: "65%" }, 
+              height: "100vh",
+              bgcolor: "rgba(5, 10, 20, 0.98)",
+              backdropFilter: "blur(20px)",
+              zIndex: 2000,
+              // Border is now on the right side to separate it from the grid
+              borderRight: `1px solid ${GOLD}33`, 
+              boxShadow: "20px 0 50px rgba(0,0,0,0.5)",
+              overflowY: "auto",
               display: "flex",
-              flexDirection: "column",
-              p: 0,
-              overflow: "hidden",
+              flexDirection: "column"
             }}
           >
             {/* ── Decorative top edge glow ── */}
@@ -1109,8 +1093,10 @@ const MenuSpiral: FC<SpiralBackgroundProps> = ({
                     sx={{
                       p: 0,
                       display: "flex",
-                      flexDirection: "column",
-                      gap: 0.75,
+                      flexDirection: { xs: "column", md: "row" }, // Column on mobile, Row on desktop
+                      flexWrap: "wrap", // Allows items to wrap to the next line
+                      gap: { xs: 1, md: 2 }, // Spacing between cards
+                      justifyContent: "flex-start",
                     }}
                   >
                     {sub.items.map((menuItem, itemIdx) => (
@@ -1128,48 +1114,35 @@ const MenuSpiral: FC<SpiralBackgroundProps> = ({
                         }}
                         disablePadding
                         sx={{
-                          borderRadius: "16px",
+                          // Desktop: ~3 items per row | Mobile: 100% width
+                          width: { xs: "100%", md: "calc(33.33% - 14px)" }, 
+                          borderRadius: "20px",
                           overflow: "hidden",
                           transition: "all 0.4s cubic-bezier(0.16, 1, 0.3, 1)",
+                          border: "1px solid rgba(255,255,255,0.05)",
+                          background: "rgba(255,255,255,0.02)",
                           "&:hover": {
-                            bgcolor: "rgba(255,255,255,0.02)",
-                            transform: "translateX(8px)",
-                            "& .item-image": {
-                              transform: "scale(1.08)",
-                              borderColor: `${GOLD}44`,
-                            },
-                            "& .price-pill": {
-                              bgcolor: GOLD,
-                              color: OBSIDIAN,
-                              borderColor: GOLD,
-                              transform: "scale(1.05)",
-                            },
+                            bgcolor: "rgba(255,255,255,0.05)",
+                            transform: "translateY(-5px)", // Lift up on hover for premium feel
+                            borderColor: `${GOLD}44`,
                           },
                         }}
                       >
                         <Box
                           sx={{
                             display: "flex",
-                            flexDirection: { xs: "column", sm: "row" },
+                            flexDirection: "column", // Vertical stack for the "Gallery" look
                             width: "100%",
-                            alignItems: { xs: "stretch", sm: "center" },
-                            gap: { xs: 0, sm: 2 },
                           }}
                         >
                           <Box
                             className="item-image"
                             sx={{
-                              width: { xs: "100%", sm: "76px" },
-                              height: { xs: "130px", sm: "76px" },
-                              minWidth: { xs: "auto", sm: "76px" },
+                              width: "100%",
+                              aspectRatio: "16/10", // Consistent image ratio
                               background: `url(${menuItem.imageUrl}) center/cover no-repeat`,
-                              m: { xs: 0, sm: 1.5 },
-                              borderRadius: {
-                                xs: "16px 16px 0 0",
-                                sm: "12px",
-                              },
-                              transition: "all 0.4s cubic-bezier(0.4, 0, 0.2, 1)",
-                              border: "1px solid rgba(255,255,255,0.04)",
+                              borderRadius: "16px 16px 0 0",
+                              transition: "transform 0.6s ease",
                             }}
                           />
 
