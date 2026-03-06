@@ -32,7 +32,7 @@ import SpecialOfferSection from "./SpecialOfferSection";
 import PickupSection from "./PickupSection";
 import CateringSection from "./CateringSection";
 import ContactSection from "./ContactSection";
-import Footer from "../Footer/Footer";
+import Footer from "../footer/Footer";
 import TypewriterText from "../common/TypewriterText";
 import { commonButtonStyle } from "../common/ButtonStyles";
 import SpecialsPopup from "./SpecialsPopup";

@@ -3,11 +3,6 @@ import { Box } from "@mui/material";
 import SplineImageCard from "./SplineImageCard";
 import type { SplineImageCardHandle } from "./SplineImageCard";
 import logoReflect from "../../assets/images/restaurant.jpg";
-import img5 from "../../assets/images/5.jpeg";
-import imgChef from "../../assets/images/5451355.jpg";
-import imgBg4 from "../../assets/images/bg4.jpg";
-import imgDish from "../../assets/images/signature_dish_orb.png";
-import imgSpecial from "../../assets/images/special_bg.png";
 
 interface HeroImageGridProps {
   variant?: "desktop" | "mobile-top" | "mobile-bottom";
