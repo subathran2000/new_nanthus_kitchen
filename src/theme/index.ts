@@ -4,25 +4,25 @@ import { createTheme } from "@mui/material/styles";
 // Based on the New Nanthu's Kitchen logo: blue, golden yellow, white
 export const colors = {
   primary: {
-    main: "#F5A623",
-    light: "#FFD166",
-    dark: "#D4880C",
-    contrastText: "#0A1628",
+    main: "#C5A059",      // Metallic Champagne Gold
+    light: "#E2C68E",     // Light Gold highlight
+    dark: "#8E6F3E",      // Deep Bronze
+    contrastText: "#05070A",
   },
   secondary: {
-    main: "#3B82F6",
-    light: "#60A5FA",
-    dark: "#1D4ED8",
+    main: "#1A1D23",      // Deep Graphite (Replaces the bright blue)
+    light: "#2C313A",
+    dark: "#05070A",
     contrastText: "#FFFFFF",
   },
   background: {
-    default: "#0A1628",
-    paper: "rgba(10, 22, 40, 0.95)",
-    light: "#0F1D32",
+    default: "#05070A",   // Obsidian Black (The main background)
+    paper: "#0F1218",     // Charcoal Gray (For cards and sections)
+    light: "#161A21",
   },
   text: {
     primary: "#FFFFFF",
-    secondary: "rgba(180, 210, 255, 0.7)",
+    secondary: "rgba(197, 160, 89, 0.7)",
     disabled: "rgba(180, 210, 255, 0.35)",
   },
   error: {

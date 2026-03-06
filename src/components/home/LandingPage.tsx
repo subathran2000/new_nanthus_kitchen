@@ -107,7 +107,7 @@ const LandingStatic: FC = () => {
       sx={{
         width: "100%",
         height: "100vh", // Fixed height for Canvas
-        bgcolor: "#0A1628", // Warm dark base
+        bgcolor: "#05070A", // Warm dark base
         color: "#fff",
         overflow: "hidden", // Hide native scroll
         position: "relative",
@@ -196,8 +196,8 @@ const LandingStatic: FC = () => {
         onCreated={handleCanvasCreated}
         style={{ width: "100%", height: "100%" }}
       >
-        <color attach="background" args={["#0A1628"]} />
-        <fog attach="fog" args={["#060E1A", 8, 30]} />
+        <color attach="background" args={["#05070A"]} />
+        <fog attach="fog" args={["#000000", 8, 30]} />
 
         <ScrollControls
           key="landing-scroll-controls"
