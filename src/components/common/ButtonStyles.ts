@@ -7,7 +7,7 @@ import type { SxProps, Theme } from '@mui/material';
 export const commonButtonStyle: SxProps<Theme> = {
   backgroundColor: "rgba(0,0,0,0.4)",
   border: "1px solid rgba(59, 130, 246, 0.2)",
-  color: "#F5A623",
+  color: "#C5A059",
   borderRadius: "0px",
   px: { xs: 3, sm: 5, md: 6 },
   py: { xs: 1.5, md: 2 },

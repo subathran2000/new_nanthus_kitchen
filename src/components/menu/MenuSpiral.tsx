@@ -309,7 +309,7 @@ const SpiralCard: FC<{
           component="span"
           sx={{
             display: "block",
-            fontFamily: "'Playfair Display', serif",
+            fontFamily: "'Your-New-Font', serif",
             fontWeight: 700,
             fontSize: { xs: "1.25rem", sm: "1.5rem", md: "1.85rem" },
             letterSpacing: "0.15em",
