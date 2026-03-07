@@ -5,25 +5,24 @@ import HomeIcon from "@mui/icons-material/Home";
 const navButtonSx = {
   position: "fixed" as const,
   top: { xs: "20px", md: "30px" },
-  bgcolor: "rgba(15, 29, 50, 0.6)",
-  border: "1px solid rgba(59, 130, 246, 0.3)",
-  color: "#fff",
+  bgcolor: "rgba(0, 0, 0, 0.7)", // Darker for premium feel
+  border: "1px solid rgba(197, 160, 89, 0.4)", // Muted gold border
+  color: "#C5A059", // Gold icons
   width: { xs: "48px", md: "56px" },
   height: { xs: "48px", md: "56px" },
   backdropFilter: "blur(12px)",
   WebkitBackdropFilter: "blur(12px)",
   borderRadius: "50%",
-  boxShadow:
-    "0 8px 32px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.05)",
+  boxShadow: "0 8px 32px rgba(0, 0, 0, 0.4)",
   zIndex: 2000,
-  transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
+  transition: "all 0.4s ease",
+  
   "&:hover": {
-    bgcolor: "rgba(59, 130, 246, 0.2)",
-    transform: "scale(1.08) translateY(-2px)",
-    boxShadow:
-      "0 12px 40px rgba(59, 130, 246, 0.25), 0 0 20px rgba(59, 130, 246, 0.15)",
-    borderColor: "rgba(59, 130, 246, 0.6)",
-    color: "#F5A623",
+    bgcolor: "#C5A059",
+    color: "#000",
+    transform: "scale(1.1) rotate(5deg)", // Added a slight elegant rotation
+    boxShadow: "0 0 25px rgba(197, 160, 89, 0.4)",
+    borderColor: "#D4AF37",
   },
   "&:active": {
     transform: "scale(0.95)",

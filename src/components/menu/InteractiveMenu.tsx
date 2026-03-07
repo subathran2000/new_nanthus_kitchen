@@ -184,15 +184,17 @@ export default function InteractiveMenu({
                 cursor: "pointer",
                 aspectRatio: { xs: "16/10", sm: "4/5" },
                 minHeight: { xs: 220, sm: 360 },
-                background: `url(${getCategoryImage(type)}) center/cover no-repeat`,
+                background: `linear-gradient(rgba(17, 17, 17, 0.5), rgba(17, 17, 17, 0.5)), url(${getCategoryImage(type)}) center/cover no-repeat`,
+                border: "1px solid rgba(255, 255, 255, 0.1)",
                 boxShadow: "0 20px 60px rgba(0,0,0,0.5)",
                 transition: "all 0.4s cubic-bezier(0.4, 0, 0.2, 1)",
                 "&:hover": {
+                  borderColor: "#F5A623",
                   boxShadow:
-                    "0 30px 80px rgba(0,0,0,0.7), 0 0 40px rgba(59, 130, 246, 0.15)",
+                    "0 0 30px rgba(245, 166, 35, 0.2), 0 30px 80px rgba(0,0,0,0.7)",
                   "& .card-overlay": {
-                    background:
-                      "linear-gradient(to top, rgba(10,22,40,0.95) 0%, rgba(10,22,40,0.4) 50%, rgba(10,22,40,0.1) 100%)",
+                    background: 
+                      "linear-gradient(to top, #111 0%, rgba(17, 17, 17, 0.4) 50%, transparent 100%)",
                   },
                   "& .card-accent-line": {
                     width: "80%",
@@ -231,7 +233,7 @@ export default function InteractiveMenu({
                   position: "absolute",
                   inset: 0,
                   background:
-                    "linear-gradient(to top, rgba(10,22,40,0.9) 0%, rgba(10,22,40,0.3) 40%, rgba(10,22,40,0.05) 100%)",
+                     "linear-gradient(to top, #111 10%, rgba(17, 17, 17, 0.2) 50%, transparent 100%)",
                   transition: "background 0.5s ease",
                   zIndex: 2,
                 }}

@@ -20,29 +20,32 @@ const OrderButton: React.FC<OrderButtonProps> = ({ onClick }) => {
         onClick={onClick}
         startIcon={<ShoppingCartIcon sx={{ fontSize: { xs: 16, md: 18 } }} />}
         sx={{
-          background: "linear-gradient(135deg, #F5A623 0%, #D4880C 100%)",
-          color: "#fff",
-          borderRadius: "4px",
-          px: { xs: 2, sm: 3, md: 4 },
-          py: { xs: 1, sm: 1.25, md: 1.5 },
-          minHeight: { xs: 40, md: 44 },
-          fontWeight: 600,
+          // Royal Obsidian & Gold Aesthetic
+          background: "linear-gradient(135deg, #1a1a1a 0%, #000000 100%)",
+          color: "#C5A059", // Premium Gold
+          border: "1px solid #C5A059",
+          borderRadius: "2px", // Sharper, more tailored corners
+          px: { xs: 3, sm: 4, md: 5 },
+          py: { xs: 1.5, md: 2 },
+          fontWeight: 500,
           textTransform: "uppercase",
-          fontSize: { xs: "0.65rem", sm: "0.7rem", md: "0.8rem" },
-          letterSpacing: "0.15em",
-          boxShadow: "0 4px 20px rgba(59, 130, 246, 0.3)",
-          fontFamily: "'Inter', sans-serif",
-          border: "none",
+          fontSize: { xs: "0.75rem", md: "0.85rem" },
+          letterSpacing: "0.3em", // Luxury spacing
+          fontFamily: "'Outfit', sans-serif",
+          boxShadow: "0 10px 30px rgba(0, 0, 0, 0.5)",
           whiteSpace: "nowrap",
+          transition: "all 0.4s cubic-bezier(0.19, 1, 0.22, 1)",
+          
           "&:hover": {
-            background: "linear-gradient(135deg, #FFB84D 0%, #F5A623 100%)",
-            boxShadow: "0 6px 30px rgba(59, 130, 246, 0.4)",
-            transform: "translateY(-2px)",
+            background: "#C5A059",
+            color: "#000",
+            borderColor: "#D4AF37",
+            transform: "translateY(-4px)",
+            boxShadow: "0 15px 35px rgba(197, 160, 89, 0.3)",
           },
           "&:active": {
-            transform: "translateY(0)",
+            transform: "translateY(-1px)",
           },
-          transition: "all 0.3s ease",
         }}
       >
         Order Online

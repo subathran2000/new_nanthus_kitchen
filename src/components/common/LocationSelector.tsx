@@ -202,7 +202,7 @@ const LocationSelector: React.FC<LocationSelectorProps> = ({
               display: "flex",
               flexDirection: "column",
               justifyContent: "center",
-              bgcolor: "rgba(10, 22, 40, 0.5)",
+              bgcolor: "#111",
               backdropFilter: "blur(20px)",
               borderLeft: { md: "1px solid rgba(59, 130, 246, 0.1)" },
             }}
@@ -235,15 +235,18 @@ const LocationSelector: React.FC<LocationSelectorProps> = ({
                     sx={{
                       p: 3,
                       borderRadius: "16px",
-                      background: "rgba(59, 130, 246, 0.03)",
-                      border: "1px solid rgba(59, 130, 246, 0.1)",
-                      transition: "all 0.3s ease",
+                      background: "#111",
+                      backdropFilter: "blur(12px)",
+                      border: "1px solid rgba(255, 255, 255, 0.1)",
+                      transition: "all 0.5s cubic-bezier(0.19, 1, 0.22, 1)",
                       cursor: "pointer",
+                      position: "relative",
+                      overflow: "hidden",
                       "&:hover": {
-                        background: "rgba(59, 130, 246, 0.08)",
-                        borderColor: "rgba(59, 130, 246, 0.3)",
-                        transform: "translateY(-3px)",
-                        boxShadow: "0 10px 30px rgba(59, 130, 246, 0.1)",
+                        background: "rgba(17, 17, 17, 0.8)",
+                        borderColor: "#F5A623",
+                        transform: "translateY(-8px)",
+                        boxShadow: "0 30px 60px rgba(0,0,0,0.5)",
                       },
                       "&:focus-visible": {
                         outline: "2px solid #F5A623",
@@ -270,7 +273,7 @@ const LocationSelector: React.FC<LocationSelectorProps> = ({
                         sx={{
                           p: 1.5,
                           borderRadius: "12px",
-                          bgcolor: "rgba(59, 130, 246, 0.1)",
+                          bgcolor: "rgba(255, 255, 255, 0.05)",
                           display: "flex",
                           alignItems: "center",
                           justifyContent: "center",
@@ -290,7 +293,7 @@ const LocationSelector: React.FC<LocationSelectorProps> = ({
                         </Typography>
                         <Typography
                           variant="body2"
-                          sx={{ color: "rgba(255,255,255,0.5)" }}
+                          sx={{ color: "rgba(255,255,255,0.7)" }}
                         >
                           {location.address}
                         </Typography>
@@ -329,11 +332,11 @@ const LocationSelector: React.FC<LocationSelectorProps> = ({
                         py: 1.5,
                         background: "linear-gradient(90deg, #F5A623, #3B82F6)",
                         border: "none",
-                        borderRadius: "12px",
+                        borderRadius: "8px",
                         color: "#fff",
                         fontWeight: "bold",
                         fontSize: "0.85rem",
-                        letterSpacing: "1px",
+                        letterSpacing: "0.2em",
                         textTransform: "uppercase",
                         boxShadow: "0 5px 15px rgba(59, 130, 246, 0.15)",
                         transition: "all 0.3s ease",
