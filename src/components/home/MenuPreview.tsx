@@ -5,7 +5,7 @@ import { motion } from 'framer-motion';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import { useNavigate } from "react-router-dom";
 
-import mainImage from "../../assets/images/restaurant.jpg";
+import mainImage from "../../assets/images/kozhi-pukkai.png";
 
 const MenuPreview: React.FC = () => {
   const navigate = useNavigate();
@@ -44,11 +44,11 @@ const MenuPreview: React.FC = () => {
             mb: 1.5,
           }}
         >
-          <Box sx={{ width: 24, height: 1, bgcolor: "#F5A623" }} />
+          <Box sx={{ width: 24, height: 1, bgcolor: "#C5A059" }} />
           <Typography
             variant="overline"
             sx={{
-              color: "#F5A623",
+              color: "#C5A059",
               letterSpacing: "0.5em",
               fontSize: "0.8rem",
               fontWeight: 500,
@@ -56,17 +56,17 @@ const MenuPreview: React.FC = () => {
           >
             KITCHEN MAGIC
           </Typography>
-          <Box sx={{ width: 24, height: 1, bgcolor: "#F5A623" }} />
+          <Box sx={{ width: 24, height: 1, bgcolor: "#C5A059" }} />
         </Box>
         <Typography
           variant="h2"
           sx={{
-            fontFamily: "'Libre Caslon Display', serif",
+            fontFamily: "'Playfair Display', serif",
             fontWeight: 300,
             textTransform: "uppercase",
             letterSpacing: { xs: "0.25em", md: "0.45em" },
             color: "#fff",
-            fontSize: { xs: "1.75rem", md: "3.25rem" },
+            fontSize: { xs: "1.5rem", md: "2.5rem" },
           }}
         >
           OUR MENU
@@ -102,7 +102,7 @@ const MenuPreview: React.FC = () => {
           <Box
             sx={{
               width: isMobile ? "100%" : "82%",
-              height: { xs: "280px", sm: "420px", md: "520px" },
+              height: { xs: "220px", sm: "320px", md: "400px" },
               background: `url(${mainImage}) center/cover no-repeat`,
               borderRadius: { xs: "20px", md: "32px" },
               border: "1px solid rgba(255, 255, 255, 0.08)",
@@ -116,7 +116,7 @@ const MenuPreview: React.FC = () => {
                 position: "absolute",
                 inset: 0,
                 background:
-                  "linear-gradient(160deg, rgba(10, 22, 40, 0.15), transparent 50%)",
+                  "linear-gradient(160deg, rgba(5, 7, 10, 0.15), transparent 50%)",
               }}
             />
           </Box>
@@ -139,7 +139,7 @@ const MenuPreview: React.FC = () => {
               padding: { xs: "1rem 0", md: "1.5rem 0" },
               borderLeft: {
                 xs: "none",
-                md: "3px solid rgba(59, 130, 246, 0.5)",
+                md: "3px solid rgba(197, 160, 89, 0.5)",
               },
               pl: { md: 2 },
               display: "flex",
@@ -152,7 +152,7 @@ const MenuPreview: React.FC = () => {
             <Typography
               variant="overline"
               sx={{
-                color: "rgba(245, 166, 35, 0.95)",
+                color: "rgba(197, 160, 89, 0.95)",
                 letterSpacing: "0.35em",
                 fontSize: "0.7rem",
                 fontWeight: 600,
@@ -166,11 +166,11 @@ const MenuPreview: React.FC = () => {
               sx={{
                 fontFamily: "'Inter', sans-serif",
                 fontWeight: 700,
-                fontSize: { xs: "1.65rem", md: "2.5rem" },
+                fontSize: { xs: "1.4rem", md: "2rem" },
                 color: "#fff",
                 lineHeight: 1.2,
                 "& span": {
-                  color: "#F5A623",
+                  color: "#C5A059",
                   mx: 0.5,
                 },
               }}

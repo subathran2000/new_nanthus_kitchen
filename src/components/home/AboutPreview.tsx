@@ -7,6 +7,8 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import StarIcon from "@mui/icons-material/Star";
 
+import restaurantImage from "../../assets/images/restaurant.jpg";
+
 interface AboutItem {
   title: string;
   description: string;
@@ -43,247 +45,213 @@ const aboutData: AboutItem[] = [
 const AboutCard: React.FC<{ item: AboutItem; index: number }> = ({
   item,
   index,
-}) => {
-  const isEven = index % 2 === 0;
-
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 50, scale: 0.95 }}
-      whileInView={{ opacity: 1, y: 0, scale: 1 }}
-      viewport={{ once: true, margin: "-100px" }}
-      transition={{
-        duration: 1,
-        delay: index * 0.1,
-        ease: [0.16, 1, 0.3, 1],
-      }}
-      style={{
-        width: "100%",
-        display: "flex",
-        justifyContent: isEven ? "flex-end" : "flex-start",
+}) => (
+  <motion.div
+    initial={{ opacity: 0, y: 40 }}
+    whileInView={{ opacity: 1, y: 0 }}
+    viewport={{ once: true, margin: "-60px" }}
+    transition={{
+      duration: 0.7,
+      delay: index * 0.1,
+      ease: [0.16, 1, 0.3, 1],
+    }}
+  >
+    <Box
+      sx={{
         position: "relative",
+        background:
+          "linear-gradient(135deg, rgba(255, 255, 255, 0.03) 0%, rgba(255, 255, 255, 0.01) 100%)",
+        backdropFilter: "blur(20px)",
+        borderRadius: "16px",
+        padding: { xs: "1.5rem", md: "2rem" },
+        border: "1px solid rgba(255, 255, 255, 0.05)",
+        transition: "all 0.4s ease",
+        height: "100%",
+        "&:hover": {
+          transform: "translateY(-6px)",
+          border: "1px solid rgba(197, 160, 89, 0.2)",
+          boxShadow: "0 20px 50px rgba(0, 0, 0, 0.3)",
+        },
       }}
     >
+      {/* Icon */}
       <Box
         sx={{
-          width: { xs: "95%", sm: "85%", md: "950px" }, //about us card width
-          mb: { xs: "2.5rem", sm: "3rem", md: "3rem" }, //space between the cards
-          position: "relative",
-          background:
-            "linear-gradient(135deg, rgba(255, 255, 255, 0.03) 0%, rgba(255, 255, 255, 0.01) 100%)",
-          backdropFilter: "blur(30px) saturate(200%)",
-          borderRadius: { xs: "16px", md: "24px" },
-          padding: {
-            xs: "2rem 1.25rem",
-            sm: "2.5rem 1.5rem",
-            md: "3.5rem 3rem",
-          },
-          border: "1px solid rgba(255, 255, 255, 0.05)",
-          boxShadow: "0 40px 100px rgba(0, 0, 0, 0.4)",
-          transition: "all 0.6s cubic-bezier(0.16, 1, 0.3, 1)",
-          overflow: "visible",
-          "&:hover": {
-            transform: "translateY(-15px) scale(1.02)",
-            background:
-              "linear-gradient(135deg, rgba(255, 255, 255, 0.06) 0%, rgba(255, 255, 255, 0.02) 100%)",
-            border: isEven
-              ? "1px solid rgba(59, 130, 246, 0.3)"
-              : "1px solid rgba(59, 130, 246, 0.2)",
-            boxShadow: isEven
-              ? "0 40px 80px rgba(59, 130, 246, 0.15)"
-              : "0 40px 80px rgba(59, 130, 246, 0.1)",
-          },
-          "&::before": {
-            content: '""',
-            position: "absolute",
-            inset: 0,
-            borderRadius: "24px",
-            padding: "1px",
-            background: isEven
-              ? "linear-gradient(135deg, rgba(59, 130, 246, 0.5), transparent, rgba(59, 130, 246, 0.1))"
-              : "linear-gradient(135deg, rgba(59, 130, 246, 0.4), transparent, rgba(59, 130, 246, 0.1))",
-            mask: "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
-            maskComposite: "exclude",
-            WebkitMaskComposite: "destination-out",
-            pointerEvents: "none",
-          },
+          width: 48,
+          height: 48,
+          borderRadius: "14px",
+          background: "linear-gradient(135deg, rgba(197, 160, 89, 0.15), rgba(197, 160, 89, 0.05))",
+          border: "1px solid rgba(197, 160, 89, 0.2)",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          mb: 2,
         }}
       >
-        {/* Decorative Accent */}
-        <Box
-          sx={{
-            position: "absolute",
-            top: 0,
-            [isEven ? "right" : "left"]: 0,
-            width: "100px",
-            height: "100px",
-            background: isEven
-              ? "radial-gradient(circle at top right, rgba(59, 130, 246, 0.15), transparent 70%)"
-              : "radial-gradient(circle at top left, rgba(59, 130, 246, 0.1), transparent 70%)",
-            borderRadius: "24px",
-            pointerEvents: "none",
-          }}
-        />
-
-        {/* Icon Circle */}
-        <Box
-          sx={{
-            position: "absolute",
-            top: "-32px",
-            [isEven ? "right" : "left"]: { xs: "20px", sm: "40px" },
-            width: "74px",
-            height: "74px",
-            borderRadius: "22px", // Squircle shape for elegance
-            background: isEven
-              ? "linear-gradient(135deg, #000000 0%, #1a1a1a 100%)"
-              : "linear-gradient(135deg, #000000 0%, #0A1628 100%)",
-            border: `2px solid ${isEven ? "rgba(59, 130, 246, 0.5)" : "rgba(59, 130, 246, 0.4)"}`,
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            boxShadow: "0 10px 25px rgba(0, 0, 0, 0.4)",
-            zIndex: 2,
-            transition: "transform 0.3s ease",
-            "&:hover": {
-              transform: "rotate(10deg) scale(1.1)",
-            },
-          }}
-        >
-          <Box sx={{ filter: "drop-shadow(0 0 8px rgba(255,255,255,0.4))" }}>
-            {React.cloneElement(
-              item.icon as React.ReactElement<{ sx?: object }>,
-              {
-                sx: {
-                  fontSize: "2.5rem",
-                  color: "#F5A623",
-                },
-              },
-            )}
-          </Box>
-        </Box>
-
-        <Typography
-          variant="h5"
-          sx={{
-            fontFamily: "'Raleway', sans-serif",
-            fontWeight: 700,
-            color: "#F5A623",
-            mb: 2,
-            fontSize: { xs: "1.25rem", md: "1.6rem" },
-            letterSpacing: "0.01em",
-            textTransform: "uppercase",
-          }}
-        >
-          {item.title}
-        </Typography>
-
-        <Typography
-          variant="body1"
-          sx={{
-            color: "rgba(255, 255, 255, 0.85)",
-            lineHeight: 1.8,
-            fontSize: { xs: "0.95rem", md: "1.05rem" },
-            fontFamily: "'Inter', sans-serif",
-            fontWeight: 300,
-            letterSpacing: "0.01em",
-          }}
-        >
-          {item.description}
-        </Typography>
-
-        {/* Number Indicator */}
-        <Typography
-          sx={{
-            position: "absolute",
-            bottom: "15px",
-            [isEven ? "left" : "right"]: "25px",
-            fontSize: "3rem",
-            fontWeight: 900,
-            color: "rgba(255, 255, 255, 0.03)",
-            userSelect: "none",
-            zIndex: -1,
-            fontFamily: "'Inter', sans-serif",
-          }}
-        >
-          0{index + 1}
-        </Typography>
+        {React.cloneElement(
+          item.icon as React.ReactElement<{ sx?: object }>,
+          { sx: { fontSize: "1.3rem", color: "#C5A059" } },
+        )}
       </Box>
-    </motion.div>
-  );
-};
+
+      <Typography
+        variant="h6"
+        sx={{
+          fontFamily: "'Playfair Display', serif",
+          fontWeight: 700,
+          color: "#fff",
+          mb: 1.5,
+          fontSize: { xs: "1.05rem", md: "1.15rem" },
+        }}
+      >
+        {item.title}
+      </Typography>
+
+      <Typography
+        variant="body2"
+        sx={{
+          color: "rgba(255, 255, 255, 0.6)",
+          lineHeight: 1.7,
+          fontSize: "0.88rem",
+          fontFamily: "'Inter', sans-serif",
+          fontWeight: 300,
+        }}
+      >
+        {item.description}
+      </Typography>
+    </Box>
+  </motion.div>
+);
 
 const AboutPreview: React.FC = () => {
   return (
     <Box
       sx={{
         width: "100%",
-        maxWidth: "1300px",
-        margin: "2rem auto 3rem",
+        maxWidth: "1100px",
+        margin: "1rem auto 2rem",
         padding: { xs: "0 1.25rem", sm: "0 2rem" },
         position: "relative",
         zIndex: 10,
       }}
     >
-      <Box sx={{ textAlign: "center", mb: 8 }}>
-        <Typography variant="overline" className="overline-text" sx={{ mb: 2 }}>
-          THE STORY BEHIND
-        </Typography>
-        <Typography
-          variant="h2"
-          className="section-title"
-          sx={{
-            textTransform: "uppercase",
-            color: "#fff",
-            fontSize: { xs: "3rem", md: "5rem" },
-            textShadow: "0 0 20px rgba(255, 255, 255, 0.1)",
-            lineHeight: 1,
-            fontFamily: "'Libre Caslon Display', serif",
-          }}
+      {/* Header with restaurant image */}
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: { xs: "column", md: "row" },
+          alignItems: "center",
+          gap: { xs: 3, md: 6 },
+          mb: { xs: 5, md: 6 },
+        }}
+      >
+        {/* Restaurant image */}
+        <motion.div
+          initial={{ opacity: 0, x: -30 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8 }}
+          style={{ flex: 1, width: "100%" }}
         >
-          Who We Are
-        </Typography>
+          <Box
+            sx={{
+              width: "100%",
+              height: { xs: 200, sm: 240, md: 280 },
+              borderRadius: "20px",
+              overflow: "hidden",
+              position: "relative",
+              border: "1px solid rgba(255, 255, 255, 0.06)",
+            }}
+          >
+            <Box
+              component="img"
+              src={restaurantImage}
+              alt="New Nanthu's Kitchen restaurant"
+              sx={{
+                width: "100%",
+                height: "100%",
+                objectFit: "cover",
+                display: "block",
+              }}
+            />
+            <Box
+              sx={{
+                position: "absolute",
+                inset: 0,
+                background: "linear-gradient(to top, rgba(5,7,10,0.6) 0%, transparent 60%)",
+              }}
+            />
+          </Box>
+        </motion.div>
+
+        {/* Title + intro */}
+        <motion.div
+          initial={{ opacity: 0, x: 30 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8, delay: 0.2 }}
+          style={{ flex: 1 }}
+        >
+          <Box sx={{ textAlign: { xs: "center", md: "left" } }}>
+            <Typography
+              variant="overline"
+              className="overline-text"
+              sx={{ mb: 1.5, display: "block" }}
+            >
+              THE STORY BEHIND
+            </Typography>
+            <Typography
+              variant="h2"
+              sx={{
+                textTransform: "uppercase",
+                color: "#fff",
+                fontSize: { xs: "2rem", md: "2.5rem" },
+                lineHeight: 1.1,
+                fontFamily: "'Playfair Display', serif",
+                fontWeight: 700,
+                mb: 2,
+              }}
+            >
+              Who We Are
+            </Typography>
+            <Typography
+              sx={{
+                color: "rgba(255,255,255,0.55)",
+                fontSize: "0.95rem",
+                lineHeight: 1.75,
+                fontWeight: 300,
+                fontFamily: "'Inter', sans-serif",
+                maxWidth: { md: "400px" },
+              }}
+            >
+              Two locations. One mission. Serving the GTA with the most authentic
+              Jaffna cuisine, crafted with generational recipes and the freshest ingredients.
+            </Typography>
+          </Box>
+        </motion.div>
       </Box>
 
-      <Box sx={{ position: "relative" }}>
-        {/* Artistic Path Line */}
-        <Box
-          sx={{
-            position: "absolute",
-            top: 0,
-            bottom: 0,
-            left: "50%",
-            width: "1px",
-            background:
-              "linear-gradient(to bottom, transparent, rgba(245, 166, 35, 0.4), rgba(59, 130, 246, 0.4), transparent)",
-            display: { xs: "none", md: "block" },
-            transform: "translateX(-50%)",
-            zIndex: -1,
-            "&::before": {
-              content: '""',
-              position: "absolute",
-              top: 0,
-              left: "50%",
-              width: "4px",
-              height: "4px",
-              background: "#F5A623",
-              borderRadius: "50%",
-              transform: "translateX(-50%)",
-              boxShadow: "0 0 15px #F5A623",
-            },
-          }}
-        />
-
+      {/* Cards grid - 2x2 on desktop, stacked on mobile */}
+      <Box
+        sx={{
+          display: "grid",
+          gridTemplateColumns: { xs: "1fr", sm: "1fr 1fr" },
+          gap: { xs: 2, md: 3 },
+          mb: 4,
+        }}
+      >
         {aboutData.map((item, index) => (
           <AboutCard key={index} item={item} index={index} />
         ))}
       </Box>
 
       {/* Explore More Button */}
-      <Box sx={{ display: "flex", justifyContent: "center", mt: 4 }}>
+      <Box sx={{ display: "flex", justifyContent: "center", mt: 2 }}>
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ delay: 0.5 }}
+          transition={{ delay: 0.3 }}
         >
           <Button
             component="a"

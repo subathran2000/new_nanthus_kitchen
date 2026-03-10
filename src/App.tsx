@@ -19,10 +19,10 @@ const PageLoader = () => (
       justifyContent: "center",
       alignItems: "center",
       height: "100vh",
-      bgcolor: "#0A1628",
+      bgcolor: "#05070A",
     }}
   >
-    <CircularProgress sx={{ color: "#F5A623" }} />
+    <CircularProgress sx={{ color: "#C5A059" }} />
   </Box>
 );
 

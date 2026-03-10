@@ -7,7 +7,7 @@
   font-weight: 700;
   font-style: italic;
   color: #D4AF37; /*  Royal Gold */
-  font-size: clamp(1.8rem, 5vw, 4.5rem);
+  font-size: clamp(1.5rem, 4vw, 3rem);
   z-index: 11;
   pointer-events: none;
   text-shadow:
@@ -23,7 +23,7 @@
 .main-title {
   font-family: "Playfair Display", serif !important;
   font-weight: 600 !important;
-  font-size: clamp(2.5rem, 8vw, 9.5rem) !important;
+  font-size: clamp(2.5rem, 7vw, 7rem) !important;
   letter-spacing: -0.02em !important;
   color: white !important;
   margin: 0 !important;
@@ -49,7 +49,7 @@
 
 .subtitle-tagline {
   font-family: "Inter", sans-serif;
-  color: #bb950b;
+  color: #C5A059;
   font-size: clamp(0.7rem, 2vw, 1.5rem);
   letter-spacing: 0.8em;
   margin-right: -0.8em;

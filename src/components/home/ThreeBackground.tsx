@@ -1,8 +1,7 @@
 import React, { useRef, useMemo } from 'react'
 import { useFrame, useThree } from '@react-three/fiber'
-import { useScroll, Float, Sparkles, Cloud, useTexture, Environment } from '@react-three/drei'
+import { Float, Sparkles, Cloud, Environment } from '@react-three/drei'
 import * as THREE from 'three'
-import logoReflect from "../../assets/images/restaurant.jpg"
 
 /* Floating Spice Particle — warm-toned, organic shapes drifting gently */
 const FloatingSpice = ({ position, color, speed, scale }: {
@@ -62,7 +61,7 @@ const SteamWisp = ({ position, delay }: {
     <mesh ref={meshRef} position={position}>
       <sphereGeometry args={[0.8, 8, 8]} />
       <meshStandardMaterial
-        color="#F5A623"
+        color="#C5A059"
         transparent
         opacity={0.08}
         depthWrite={false}
@@ -72,18 +71,14 @@ const SteamWisp = ({ position, delay }: {
 }
 
 const ThreeBackground: React.FC = () => {
-  const scroll = useScroll()
   const groupRef = useRef<THREE.Group>(null)
   const { viewport } = useThree()
   const isMobile = viewport.width < 6
 
-  const texture = useTexture(logoReflect)
-  texture.mapping = THREE.EquirectangularReflectionMapping
-
   // Generate spice positions once
   const spiceParticles = useMemo(() => {
     const particles: { pos: [number, number, number]; color: string; speed: number; scale: number }[] = []
-    const colors = ['#F5A623', '#1D4ED8', '#60A5FA', '#2563EB', '#3B82F6', '#FFD166']
+    const colors = ['#C5A059', '#8E6F3E', '#E2C68E', '#D4AF37', '#C5A059', '#FFD166']
     const count = isMobile ? 6 : 12
     for (let i = 0; i < count; i++) {
       particles.push({
@@ -100,21 +95,10 @@ const ThreeBackground: React.FC = () => {
     return particles
   }, [isMobile])
 
+  // Gentle continuous rotation instead of scroll-based
   useFrame((_state, delta) => {
     if (groupRef.current) {
-      const scrollOffset = scroll ? scroll.offset : 0
-      groupRef.current.rotation.y = THREE.MathUtils.damp(
-        groupRef.current.rotation.y,
-        -scrollOffset * Math.PI * 0.5,
-        4,
-        delta
-      )
-      groupRef.current.position.z = THREE.MathUtils.damp(
-        groupRef.current.position.z,
-        scrollOffset * 3,
-        4,
-        delta
-      )
+      groupRef.current.rotation.y += delta * 0.02
     }
   })
 
@@ -127,7 +111,7 @@ const ThreeBackground: React.FC = () => {
         size={3}
         speed={0.4}
         opacity={0.5}
-        color="#F5A623"
+        color="#C5A059"
       />
       <Sparkles
         count={isMobile ? 40 : 80}
@@ -135,7 +119,7 @@ const ThreeBackground: React.FC = () => {
         size={2}
         speed={0.3}
         opacity={0.3}
-        color="#FFD166"
+        color="#E2C68E"
       />
       {!isMobile && (
         <Sparkles
@@ -155,14 +139,14 @@ const ThreeBackground: React.FC = () => {
           speed={0.08}
           segments={10}
           position={[0, -4, -8]}
-          color="#60A5FA"
+          color="#E2C68E"
         />
         <Cloud
           opacity={0.05}
           speed={0.05}
           segments={8}
           position={[3, 2, -12]}
-          color="#3B82F6"
+          color="#8E6F3E"
         />
 
         {/* Floating spice particles */}
@@ -180,20 +164,20 @@ const ThreeBackground: React.FC = () => {
         )}
 
         {/* Warm restaurant lighting */}
-        <ambientLight intensity={0.4} color="#0A1628" />
+        <ambientLight intensity={0.4} color="#05070A" />
         <spotLight
           position={[0, 15, 5]}
           intensity={1.5}
           angle={0.6}
           penumbra={1}
-          color="#F5A623"
+          color="#C5A059"
         />
-        <pointLight position={[-5, 8, 5]} intensity={0.6} color="#60A5FA" />
+        <pointLight position={[-5, 8, 5]} intensity={0.6} color="#E2C68E" />
         <pointLight position={[5, 5, -5]} intensity={0.4} color="#FFD166" />
-        <pointLight position={[0, -5, 0]} intensity={0.3} color="#3B82F6" />
+        <pointLight position={[0, -5, 0]} intensity={0.3} color="#8E6F3E" />
 
         {/* Environment for reflections */}
-        <Environment map={texture} blur={1} />
+        <Environment preset="city" blur={1} />
       </group>
     </>
   )

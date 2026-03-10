@@ -141,11 +141,11 @@ const SpecialsPopup: React.FC<SpecialsPopupProps> = ({ open, onClose }) => {
                 style={{ width: '100%' }}
             >
                 <Box sx={{ display: "flex", alignItems: "center", mb: 3, gap: 1.5 }}>
-                    <UtensilsCrossed size={16} color="#F5A623" />
+                    <UtensilsCrossed size={16} color="#C5A059" />
                     <Typography
                         variant="overline"
                         sx={{
-                            color: "#F5A623",
+                            color: "#C5A059",
                             letterSpacing: "4px",
                             fontSize: "0.75rem",
                             fontWeight: 700,
@@ -195,16 +195,16 @@ const SpecialsPopup: React.FC<SpecialsPopupProps> = ({ open, onClose }) => {
                         sx={{
                             py: 1.8,
                             px: 4.5,
-                            borderColor: "rgba(245, 166, 35, 0.5)",
-                            color: "#F5A623",
-                            borderRadius: "100px",
+                            borderColor: "rgba(197, 160, 89, 0.5)",
+                            color: "#C5A059",
+                            borderRadius: "4px",
                             textTransform: "none",
                             fontWeight: 500,
                             fontSize: "0.95rem",
                             letterSpacing: '0.5px',
                             "&:hover": {
-                                borderColor: "#F5A623",
-                                bgcolor: "rgba(245, 166, 35, 0.08)",
+                                borderColor: "#C5A059",
+                                bgcolor: "rgba(197, 160, 89, 0.08)",
                                 transform: "translateY(-2px)",
                                 boxShadow: "0 10px 20px rgba(0,0,0,0.2)"
                             },

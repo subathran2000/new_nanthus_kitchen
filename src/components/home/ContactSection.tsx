@@ -22,7 +22,7 @@ const ContactSection = () => {
     >
       <Box
         sx={{
-          mb: { xs: 5, md: 8 },
+          mb: { xs: 3, md: 5 },
           position: "relative",
           display: "flex",
           flexDirection: "column",
@@ -38,9 +38,9 @@ const ContactSection = () => {
           className="section-title"
           sx={{
             color: "#fff",
-            fontSize: { xs: "3rem", md: "5rem" },
+            fontSize: { xs: "2rem", md: "3rem" },
             lineHeight: 1,
-            fontFamily: "'Libre Caslon Display', serif",
+            fontFamily: "'Playfair Display', serif",
           }}
         >
           REACH US
@@ -121,14 +121,14 @@ const ContactSection = () => {
                       width: "100%",
                     }}
                   >
-                    <PhoneIcon sx={{ color: "#F5A623", fontSize: 18 }} />
+                    <PhoneIcon sx={{ color: "#C5A059", fontSize: 18 }} />
                     <Typography
                       component="a"
                       href={`tel:${phone.replace(/\./g, "")}`}
                       sx={{
                         color: "#fff",
                         textDecoration: "none",
-                        "&:hover": { color: "#F5A623" },
+                        "&:hover": { color: "#C5A059" },
                       }}
                     >
                       {phone}
@@ -139,6 +139,7 @@ const ContactSection = () => {
             </Box>
           ))}
 
+          {/* Email Section */}
           <Box
             sx={{
               gridColumn: { xs: "span 1", sm: "span 2" },
@@ -170,7 +171,7 @@ const ContactSection = () => {
                 width: "100%",
               }}
             >
-              <EmailIcon sx={{ color: "#F5A623", fontSize: 18 }} />
+              <EmailIcon sx={{ color: "#C5A059", fontSize: 18 }} />
               <Typography
                 component="a"
                 href={`mailto:${CONTACT.email}`}
@@ -178,7 +179,7 @@ const ContactSection = () => {
                   color: "#fff",
                   fontSize: "1.1rem",
                   textDecoration: "none",
-                  "&:hover": { color: "#F5A623" },
+                  "&:hover": { color: "#C5A059" },
                 }}
               >
                 {CONTACT.email}
@@ -196,7 +197,7 @@ const ContactSection = () => {
             gap: 5,
             p: { xs: 3, md: 6 },
             bgcolor: "rgba(255, 255, 255, 0.02)",
-            border: "1px solid rgba(59, 130, 246, 0.12)",
+            border: "1px solid rgba(197, 160, 89, 0.1)",
             borderRadius: "16px",
             textAlign: { xs: "center", md: "left" },
             alignItems: { xs: "center", md: "flex-start" },
@@ -211,7 +212,7 @@ const ContactSection = () => {
               right: 0,
               height: "2px",
               background:
-                "linear-gradient(90deg, transparent, rgba(59, 130, 246, 0.5), transparent)",
+                "linear-gradient(90deg, transparent, rgba(197, 160, 89, 0.4), transparent)",
             },
           }}
         >
@@ -219,7 +220,7 @@ const ContactSection = () => {
             variant="h5"
             sx={{
               color: "#fff",
-              fontFamily: "'Raleway', sans-serif",
+              fontFamily: "'Playfair Display', serif",
               fontWeight: 700,
             }}
           >
@@ -253,8 +254,8 @@ const ContactSection = () => {
             borderRadius: "16px",
             background: "rgba(0, 0, 0, 0.95)",
             backdropFilter: "blur(30px)",
-            border: "1px solid rgba(59, 130, 246, 0.15)",
-            boxShadow: "0 0 50px rgba(59, 130, 246, 0.15)",
+            border: "1px solid rgba(197, 160, 89, 0.12)",
+            boxShadow: "0 0 50px rgba(197, 160, 89, 0.08)",
           },
         }}
         slotProps={{
@@ -274,10 +275,10 @@ const ContactSection = () => {
               right: 20,
               top: 20,
               zIndex: 100,
-              color: "#F5A623",
-              bgcolor: "rgba(59, 130, 246, 0.1)",
+              color: "#C5A059",
+              bgcolor: "rgba(197, 160, 89, 0.08)",
               "&:hover": {
-                bgcolor: "rgba(59, 130, 246, 0.15)",
+                bgcolor: "rgba(197, 160, 89, 0.15)",
                 transform: "rotate(90deg)",
               },
               transition: "all 0.3s ease",

@@ -4,19 +4,8 @@ import type {
   CateringFormData,
 } from "../types";
 
-/**
- * Email validation regex pattern
- */
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-/**
- * Phone number validation regex (basic)
- */
-const PHONE_REGEX = /^\d{7,}$/;
-
-/**
- * Validates contact form data
- */
 export const validateContactForm = (
   data: ContactFormData,
 ): ValidationResult => {
@@ -101,37 +90,4 @@ export const validateCateringForm = (
     isValid: Object.keys(errors).length === 0,
     errors,
   };
-};
-
-/**
- * Sanitizes input to prevent XSS
- */
-export const sanitizeInput = (input: string): string => {
-  return input
-    .replace(/[<>]/g, "") // Remove angle brackets
-    .trim();
-};
-
-/**
- * Validates if a string is a valid email
- */
-export const isValidEmail = (email: string): boolean => {
-  return EMAIL_REGEX.test(email);
-};
-
-/**
- * Validates if a string is a valid phone number
- */
-export const isValidPhone = (phone: string): boolean => {
-  return PHONE_REGEX.test(phone);
-};
-
-/**
- * Validates if a date is in the future
- */
-export const isFutureDate = (dateString: string): boolean => {
-  const inputDate = new Date(dateString);
-  const today = new Date();
-  today.setHours(0, 0, 0, 0);
-  return inputDate > today;
 };

@@ -62,13 +62,13 @@ const ContactForm = () => {
       transition: "all 0.3s ease",
       fontSize: "0.9rem",
       "& fieldset": {
-        borderColor: "rgba(59, 130, 246, 0.15)",
+        borderColor: "rgba(197, 160, 89, 0.12)",
       },
       "&:hover fieldset": {
-        borderColor: "rgba(59, 130, 246, 0.3)",
+        borderColor: "rgba(197, 160, 89, 0.3)",
       },
       "&.Mui-focused fieldset": {
-        borderColor: "#F5A623",
+        borderColor: "#C5A059",
       },
       "& input": {
         color: "#fff",
@@ -82,14 +82,14 @@ const ContactForm = () => {
       color: "rgba(255, 255, 255, 0.4)",
       fontSize: "0.85rem",
       "&.Mui-focused": {
-        color: "#F5A623",
+        color: "#C5A059",
       },
     },
     "& .MuiInputAdornment-root svg": {
-      color: "rgba(59, 130, 246, 0.3)",
+      color: "rgba(197, 160, 89, 0.3)",
     },
     "& .Mui-focused .MuiInputAdornment-root svg": {
-      color: "#F5A623",
+      color: "#C5A059",
     },
   };
 
@@ -143,11 +143,11 @@ const ContactForm = () => {
           style={{ position: "relative", zIndex: 1 }}
         >
           <Box sx={{ display: "flex", alignItems: "center", mb: 2, gap: 1.5 }}>
-            <EmailOutlinedIcon sx={{ color: "#F5A623", fontSize: "2rem" }} />
+            <EmailOutlinedIcon sx={{ color: "#C5A059", fontSize: "2rem" }} />
             <Typography
               variant="overline"
               sx={{
-                color: "#F5A623",
+                color: "#C5A059",
                 letterSpacing: "4px",
                 fontSize: "0.9rem",
                 fontWeight: "bold",
@@ -170,7 +170,7 @@ const ContactForm = () => {
             }}
           >
             We'd Love to <br />
-            <span style={{ color: "#F5A623" }}>Hear</span> From <br />
+            <span style={{ color: "#C5A059" }}>Hear</span> From <br />
             You
           </Typography>
 
@@ -199,10 +199,10 @@ const ContactForm = () => {
           display: "flex",
           flexDirection: "column",
           justifyContent: "center",
-          bgcolor: "rgba(10, 22, 40, 0.5)",
+          bgcolor: "rgba(15, 18, 24, 0.5)",
           backdropFilter: "blur(20px)",
           position: "relative",
-          borderLeft: { md: "1px solid rgba(59, 130, 246, 0.1)" },
+          borderLeft: { md: "1px solid rgba(197, 160, 89, 0.1)" },
         }}
       >
         <AnimatePresence mode="wait">
@@ -326,7 +326,7 @@ const ContactForm = () => {
                     aria-label="Send message"
                     sx={{
                       py: 2,
-                      background: "linear-gradient(90deg, #F5A623, #3B82F6)",
+                      background: "linear-gradient(90deg, #C5A059, #8E6F3E)",
                       border: "none",
                       borderRadius: "12px",
                       color: "#fff",
@@ -334,16 +334,16 @@ const ContactForm = () => {
                       fontSize: "0.9rem",
                       letterSpacing: "2px",
                       textTransform: "uppercase",
-                      boxShadow: "0 10px 25px rgba(59, 130, 246, 0.3)",
+                      boxShadow: "0 10px 25px rgba(197, 160, 89, 0.3)",
                       transition: "all 0.3s ease",
                       "&:hover": {
                         transform: "translateY(-3px)",
-                        boxShadow: "0 15px 35px rgba(59, 130, 246, 0.3)",
+                        boxShadow: "0 15px 35px rgba(197, 160, 89, 0.3)",
                         filter: "brightness(1.1)",
-                        background: "linear-gradient(90deg, #F5A623, #3B82F6)",
+                        background: "linear-gradient(90deg, #C5A059, #8E6F3E)",
                       },
                       "&:focus-visible": {
-                        outline: "2px solid #F5A623",
+                        outline: "2px solid #C5A059",
                         outlineOffset: "2px",
                       },
                     }}
@@ -364,7 +364,7 @@ const ContactForm = () => {
                 <Typography
                   variant="h4"
                   sx={{
-                    color: "#F5A623",
+                    color: "#C5A059",
                     fontFamily: "'Playfair Display', serif",
                     mb: 2,
                     fontWeight: 700,
@@ -391,8 +391,8 @@ const ContactForm = () => {
                     px: 4,
                     textTransform: "none",
                     "&:hover": {
-                      borderColor: "#F5A623",
-                      color: "#F5A623",
+                      borderColor: "#C5A059",
+                      color: "#C5A059",
                     },
                   }}
                 >

@@ -237,7 +237,7 @@ const SpecialsPage: React.FC = () => {
                             fontWeight: 700,
                             color: '#fff',
                             textAlign: 'center',
-                            textShadow: '0 0 20px rgba(59, 130, 246, 0.4)',
+                            textShadow: '0 0 20px rgba(197, 160, 89, 0.4)',
                             animation: 'fadeIn 0.6s forwards',
                             maxWidth: '90%',
                             overflow: 'hidden',
@@ -316,13 +316,13 @@ const SpecialsPage: React.FC = () => {
                                         height: '100%',
                                         borderRadius: '10px',
                                         boxShadow: index === currentIndex
-                                            ? '0 40px 80px rgba(59, 130, 246, 0.4), 0 0 60px rgba(59, 130, 246, 0.3), 0 0 100px rgba(59, 130, 246, 0.15)'
+                                            ? '0 40px 80px rgba(197, 160, 89, 0.4), 0 0 60px rgba(197, 160, 89, 0.3), 0 0 100px rgba(197, 160, 89, 0.15)'
                                             : '0 30px 60px rgba(0, 0, 0, 0.9), 0 10px 30px rgba(0, 0, 0, 0.7)',
                                         position: 'relative',
                                         overflow: 'hidden',
                                         transformStyle: 'preserve-3d',
-                                        bgcolor: '#0A1628',
-                                        border: index === currentIndex ? '2px solid rgba(59, 130, 246, 0.4)' : '2px solid rgba(255, 255, 255, 0.1)',
+                                        bgcolor: '#05070A',
+                                        border: index === currentIndex ? '2px solid rgba(197, 160, 89, 0.4)' : '2px solid rgba(255, 255, 255, 0.1)',
                                     }}
                                 >
                                     <Box
@@ -384,18 +384,18 @@ const SpecialsPage: React.FC = () => {
                             top: '50%',
                             left: { xs: '20px', md: '120px' },
                             transform: 'translateY(-50%)',
-                            bgcolor: 'rgba(59, 130, 246, 0.1)',
-                            border: '2px solid rgba(59, 130, 246, 0.2)',
-                            color: '#F5A623',
+                            bgcolor: 'rgba(197, 160, 89, 0.1)',
+                            border: '2px solid rgba(197, 160, 89, 0.2)',
+                            color: '#C5A059',
                             width: { xs: '45px', md: '40px' },
                             height: { xs: '45px', md: '40px' },
                             backdropFilter: 'blur(10px)',
-                            boxShadow: '0 8px 32px rgba(59, 130, 246, 0.2), 0 0 20px rgba(59, 130, 246, 0.15)',
+                            boxShadow: '0 8px 32px rgba(197, 160, 89, 0.2), 0 0 20px rgba(197, 160, 89, 0.15)',
                             zIndex: 1001,
                             '&:hover': {
-                                bgcolor: 'rgba(59, 130, 246, 0.15)',
+                                bgcolor: 'rgba(197, 160, 89, 0.15)',
                                 transform: 'translateY(-50%) scale(1.1)',
-                                boxShadow: '0 0 30px rgba(59, 130, 246, 0.5), 0 0 60px rgba(59, 130, 246, 0.3)',
+                                boxShadow: '0 0 30px rgba(197, 160, 89, 0.5), 0 0 60px rgba(197, 160, 89, 0.3)',
                             },
                         }}
                     >
@@ -412,18 +412,18 @@ const SpecialsPage: React.FC = () => {
                             top: '50%',
                             right: { xs: '20px', md: '120px' },
                             transform: 'translateY(-50%)',
-                            bgcolor: 'rgba(59, 130, 246, 0.1)',
-                            border: '2px solid rgba(59, 130, 246, 0.2)',
-                            color: '#F5A623',
+                            bgcolor: 'rgba(197, 160, 89, 0.1)',
+                            border: '2px solid rgba(197, 160, 89, 0.2)',
+                            color: '#C5A059',
                             width: { xs: '45px', md: '40px' },
                             height: { xs: '45px', md: '40px' },
                             backdropFilter: 'blur(10px)',
-                            boxShadow: '0 8px 32px rgba(59, 130, 246, 0.2), 0 0 20px rgba(59, 130, 246, 0.15)',
+                            boxShadow: '0 8px 32px rgba(197, 160, 89, 0.2), 0 0 20px rgba(197, 160, 89, 0.15)',
                             zIndex: 1001,
                             '&:hover': {
-                                bgcolor: 'rgba(59, 130, 246, 0.15)',
+                                bgcolor: 'rgba(197, 160, 89, 0.15)',
                                 transform: 'translateY(-50%) scale(1.1)',
-                                boxShadow: '0 0 30px rgba(59, 130, 246, 0.5), 0 0 60px rgba(59, 130, 246, 0.3)',
+                                boxShadow: '0 0 30px rgba(197, 160, 89, 0.5), 0 0 60px rgba(197, 160, 89, 0.3)',
                             },
                         }}
                     >
@@ -475,12 +475,12 @@ const SpecialsPage: React.FC = () => {
                                         width: '10px',
                                         height: '10px',
                                         borderRadius: '50%',
-                                        bgcolor: offset === 0 ? '#F5A623' : 'rgba(245, 166, 35, 0.8)',
+                                        bgcolor: offset === 0 ? '#C5A059' : 'rgba(197, 160, 89, 0.8)',
                                         cursor: 'pointer',
                                         transition: 'all 0.3s ease',
                                         transform: `scale(${scale})`,
                                         opacity,
-                                        boxShadow: offset === 0 ? '0 0 10px rgba(245, 166, 35, 0.8)' : 'none',
+                                        boxShadow: offset === 0 ? '0 0 10px rgba(197, 160, 89, 0.8)' : 'none',
                                         '&:hover': {
                                             opacity: 1,
                                             transform: `scale(${scale * 1.2})`,

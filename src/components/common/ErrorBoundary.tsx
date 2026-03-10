@@ -50,7 +50,7 @@ class ErrorBoundary extends Component<Props, State> {
             textAlign: "center",
           }}
         >
-          <Typography variant="h6" sx={{ color: "#F5A623", mb: 2 }}>
+          <Typography variant="h6" sx={{ color: "#C5A059", mb: 2 }}>
             Something went wrong
           </Typography>
           <Typography
@@ -63,11 +63,11 @@ class ErrorBoundary extends Component<Props, State> {
             variant="outlined"
             onClick={this.handleReset}
             sx={{
-              color: "#F5A623",
-              borderColor: "#F5A623",
+              color: "#C5A059",
+              borderColor: "#C5A059",
               "&:hover": {
-                borderColor: "#FFB84D",
-                bgcolor: "rgba(59, 130, 246, 0.1)",
+                borderColor: "#E2C68E",
+                bgcolor: "rgba(197, 160, 89, 0.1)",
               },
             }}
           >

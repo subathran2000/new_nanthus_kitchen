@@ -74,10 +74,10 @@ const LocationSelector: React.FC<LocationSelectorProps> = ({
             maxWidth: "1000px",
             height: { xs: "auto", md: "600px" },
             maxHeight: { xs: "90vh", md: "600px" },
-            bgcolor: "rgba(10, 22, 40, 0.98)",
-            border: "1px solid rgba(59, 130, 246, 0.2)",
+            bgcolor: "rgba(15, 18, 24, 0.98)",
+            border: "1px solid rgba(197, 160, 89, 0.2)",
             borderRadius: "16px",
-            boxShadow: "0 0 50px rgba(59, 130, 246, 0.15)",
+            boxShadow: "0 0 50px rgba(197, 160, 89, 0.15)",
             p: 0,
             outline: "none",
             overflow: "hidden",
@@ -93,10 +93,10 @@ const LocationSelector: React.FC<LocationSelectorProps> = ({
               top: 15,
               right: 15,
               zIndex: 100,
-              color: "#F5A623",
-              bgcolor: "rgba(59, 130, 246, 0.1)",
+              color: "#C5A059",
+              bgcolor: "rgba(197, 160, 89, 0.1)",
               "&:hover": {
-                bgcolor: "rgba(59, 130, 246, 0.15)",
+                bgcolor: "rgba(197, 160, 89, 0.15)",
                 transform: "rotate(90deg)",
               },
               transition: "all 0.3s ease",
@@ -146,11 +146,11 @@ const LocationSelector: React.FC<LocationSelectorProps> = ({
               <Box
                 sx={{ display: "flex", alignItems: "center", mb: 2, gap: 1.5 }}
               >
-                <RestaurantIcon sx={{ color: "#F5A623", fontSize: "2rem" }} />
+                <RestaurantIcon sx={{ color: "#C5A059", fontSize: "2rem" }} />
                 <Typography
                   variant="overline"
                   sx={{
-                    color: "#F5A623",
+                    color: "#C5A059",
                     letterSpacing: "4px",
                     fontSize: "0.9rem",
                     fontWeight: "bold",
@@ -166,14 +166,14 @@ const LocationSelector: React.FC<LocationSelectorProps> = ({
                   color: "#fff",
                   fontFamily: "'Playfair Display', serif",
                   mb: 3,
-                  textShadow: "0 0 20px rgba(59, 130, 246, 0.2)",
+                  textShadow: "0 0 20px rgba(197, 160, 89, 0.2)",
                   fontSize: { xs: "2rem", md: "3rem" },
                   fontWeight: 700,
                   lineHeight: 1.1,
                 }}
               >
                 Freshly <br />
-                <span style={{ color: "#F5A623" }}>Prepared</span> <br />
+                <span style={{ color: "#C5A059" }}>Prepared</span> <br />
                 For You
               </Typography>
 
@@ -204,7 +204,7 @@ const LocationSelector: React.FC<LocationSelectorProps> = ({
               justifyContent: "center",
               bgcolor: "#111",
               backdropFilter: "blur(20px)",
-              borderLeft: { md: "1px solid rgba(59, 130, 246, 0.1)" },
+              borderLeft: { md: "1px solid rgba(197, 160, 89, 0.1)" },
             }}
           >
             <Typography
@@ -244,12 +244,12 @@ const LocationSelector: React.FC<LocationSelectorProps> = ({
                       overflow: "hidden",
                       "&:hover": {
                         background: "rgba(17, 17, 17, 0.8)",
-                        borderColor: "#F5A623",
+                        borderColor: "#C5A059",
                         transform: "translateY(-8px)",
                         boxShadow: "0 30px 60px rgba(0,0,0,0.5)",
                       },
                       "&:focus-visible": {
-                        outline: "2px solid #F5A623",
+                        outline: "2px solid #C5A059",
                         outlineOffset: "2px",
                       },
                     }}
@@ -279,7 +279,7 @@ const LocationSelector: React.FC<LocationSelectorProps> = ({
                           justifyContent: "center",
                         }}
                       >
-                        <LocationOnIcon sx={{ color: "#F5A623" }} />
+                        <LocationOnIcon sx={{ color: "#C5A059" }} />
                       </Box>
                       <Box>
                         <Typography
@@ -311,7 +311,7 @@ const LocationSelector: React.FC<LocationSelectorProps> = ({
                     >
                       <PhoneIcon
                         sx={{
-                          color: "rgba(59, 130, 246, 0.5)",
+                          color: "rgba(197, 160, 89, 0.5)",
                           fontSize: "0.9rem",
                         }}
                       />
@@ -330,7 +330,7 @@ const LocationSelector: React.FC<LocationSelectorProps> = ({
                       onClick={() => onSelectLocation(location.name)}
                       sx={{
                         py: 1.5,
-                        background: "linear-gradient(90deg, #F5A623, #3B82F6)",
+                        background: "linear-gradient(90deg, #C5A059, #8E6F3E)",
                         border: "none",
                         borderRadius: "8px",
                         color: "#fff",
@@ -338,16 +338,16 @@ const LocationSelector: React.FC<LocationSelectorProps> = ({
                         fontSize: "0.85rem",
                         letterSpacing: "0.2em",
                         textTransform: "uppercase",
-                        boxShadow: "0 5px 15px rgba(59, 130, 246, 0.15)",
+                        boxShadow: "0 5px 15px rgba(197, 160, 89, 0.15)",
                         transition: "all 0.3s ease",
                         "&:hover": {
                           filter: "brightness(1.1)",
-                          boxShadow: "0 8px 20px rgba(59, 130, 246, 0.2)",
+                          boxShadow: "0 8px 20px rgba(197, 160, 89, 0.2)",
                           background:
-                            "linear-gradient(90deg, #F5A623, #3B82F6)",
+                            "linear-gradient(90deg, #C5A059, #8E6F3E)",
                         },
                         "&:focus-visible": {
-                          outline: "2px solid #F5A623",
+                          outline: "2px solid #C5A059",
                           outlineOffset: "2px",
                         },
                       }}

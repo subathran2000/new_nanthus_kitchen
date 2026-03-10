@@ -24,7 +24,7 @@ const MenuNew = () => {
       sx={{
         position: "relative",
         minHeight: "100vh",
-        bgcolor: "#0A1628",
+        bgcolor: "#05070A",
         overflow: "hidden",
       }}
     >

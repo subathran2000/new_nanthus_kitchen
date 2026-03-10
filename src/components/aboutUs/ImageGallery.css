@@ -472,12 +472,12 @@ video.gallery__image {
 .gallery__image-wrapper:hover .text-content-card {
     background: linear-gradient(135deg,
             rgba(217, 167, 86, 0.3) 0%,
-            rgba(10, 22, 40, 0.95) 50%,
-            rgba(59, 130, 246, 0.25) 100%);
+            rgba(5, 7, 10, 0.95) 50%,
+            rgba(197, 160, 89, 0.25) 100%);
 }
 
 .gallery__image-wrapper--selected .text-card-title {
-    background: linear-gradient(135deg, #ff9f1a 0%, #F5A623 50%, #F5A623 100%);
+    background: linear-gradient(135deg, #C5A059 0%, #E2C68E 50%, #C5A059 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;

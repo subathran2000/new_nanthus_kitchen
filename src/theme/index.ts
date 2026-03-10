@@ -4,20 +4,20 @@ import { createTheme } from "@mui/material/styles";
 // Based on the New Nanthu's Kitchen logo: blue, golden yellow, white
 export const colors = {
   primary: {
-    main: "#C5A059",      // Metallic Champagne Gold
-    light: "#E2C68E",     // Light Gold highlight
-    dark: "#8E6F3E",      // Deep Bronze
+    main: "#C5A059", // Metallic Champagne Gold
+    light: "#E2C68E", // Light Gold highlight
+    dark: "#8E6F3E", // Deep Bronze
     contrastText: "#05070A",
   },
   secondary: {
-    main: "#1A1D23",      // Deep Graphite (Replaces the bright blue)
+    main: "#1A1D23", // Deep Graphite (Replaces the bright blue)
     light: "#2C313A",
     dark: "#05070A",
     contrastText: "#FFFFFF",
   },
   background: {
-    default: "#05070A",   // Obsidian Black (The main background)
-    paper: "#0F1218",     // Charcoal Gray (For cards and sections)
+    default: "#05070A", // Obsidian Black (The main background)
+    paper: "#0F1218", // Charcoal Gray (For cards and sections)
     light: "#161A21",
   },
   text: {
@@ -31,18 +31,7 @@ export const colors = {
   success: {
     main: "#4CAF50",
   },
-  divider: "rgba(59, 130, 246, 0.12)",
-};
-
-// CSS custom properties for use in CSS files
-export const cssVariables = {
-  "--color-primary": colors.primary.main,
-  "--color-primary-light": colors.primary.light,
-  "--color-secondary": colors.secondary.main,
-  "--color-background": colors.background.default,
-  "--color-background-paper": colors.background.paper,
-  "--color-text-primary": colors.text.primary,
-  "--color-text-secondary": colors.text.secondary,
+  divider: "rgba(197, 160, 89, 0.12)",
 };
 
 // Create and export the theme
@@ -117,15 +106,15 @@ export const theme = createTheme({
           transition: "all 0.4s cubic-bezier(0.4, 0, 0.2, 1)",
         },
         contained: {
-          background: `linear-gradient(90deg, ${colors.primary.main}, ${colors.primary.light})`,
-          boxShadow: `0 5px 15px rgba(59, 130, 246, 0.3)`,
+          background: `linear-gradient(135deg, ${colors.primary.main}, ${colors.primary.light})`,
+          boxShadow: `0 5px 15px rgba(197, 160, 89, 0.25)`,
           "&:hover": {
-            boxShadow: `0 8px 25px rgba(59, 130, 246, 0.4)`,
+            boxShadow: `0 8px 25px rgba(197, 160, 89, 0.35)`,
             transform: "translateY(-2px)",
           },
         },
         outlined: {
-          borderColor: "rgba(59, 130, 246, 0.3)",
+          borderColor: "rgba(197, 160, 89, 0.3)",
           color: colors.primary.main,
           backdropFilter: "blur(10px)",
           "&:hover": {
@@ -143,10 +132,10 @@ export const theme = createTheme({
             borderRadius: "12px",
             background: "rgba(255, 255, 255, 0.03)",
             "& fieldset": {
-              borderColor: "rgba(59, 130, 246, 0.2)",
+              borderColor: "rgba(197, 160, 89, 0.15)",
             },
             "&:hover fieldset": {
-              borderColor: "rgba(59, 130, 246, 0.4)",
+              borderColor: "rgba(197, 160, 89, 0.35)",
             },
             "&.Mui-focused fieldset": {
               borderColor: colors.primary.main,
@@ -174,9 +163,9 @@ export const theme = createTheme({
     MuiCard: {
       styleOverrides: {
         root: {
-          background: "rgba(15, 29, 50, 0.6)",
+          background: "rgba(15, 18, 24, 0.7)",
           backdropFilter: "blur(20px)",
-          border: "1px solid rgba(59, 130, 246, 0.12)",
+          border: "1px solid rgba(197, 160, 89, 0.1)",
           boxShadow: "0 30px 60px rgba(0, 0, 0, 0.5)",
         },
       },

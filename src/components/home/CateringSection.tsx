@@ -16,7 +16,7 @@ const CateringSection: React.FC = () => {
         maxWidth: "1400px",
         margin: "2rem auto 2rem",
         position: "relative",
-        minHeight: { xs: "auto", md: "80vh" },
+        minHeight: { xs: "auto", md: "auto" },
         display: "flex",
         flexDirection: "column",
         justifyContent: "center",
@@ -29,7 +29,7 @@ const CateringSection: React.FC = () => {
           flexDirection: "column",
           alignItems: "center",
           textAlign: "center",
-          mb: { xs: 5, md: 10 },
+          mb: { xs: 3, md: 5 },
           position: "relative",
         }}
       >
@@ -42,9 +42,9 @@ const CateringSection: React.FC = () => {
           className="section-title"
           sx={{
             color: "#fff",
-            fontSize: { xs: "3rem", md: "5rem" },
+            fontSize: { xs: "2rem", md: "3rem" },
             lineHeight: 1,
-            fontFamily: "'Libre Caslon Display', serif",
+            fontFamily: "'Playfair Display', serif",
           }}
         >
           PREMIUM CATERING
@@ -76,8 +76,8 @@ const CateringSection: React.FC = () => {
             <Typography
               variant="h1"
               sx={{
-                fontSize: "12rem",
-                fontFamily: "'Raleway', sans-serif",
+                fontSize: "8rem",
+                fontFamily: "'Inter', sans-serif",
                 fontWeight: 900,
                 lineHeight: 0.8,
                 ml: -6,
@@ -91,14 +91,14 @@ const CateringSection: React.FC = () => {
             variant="h3"
             sx={{
               color: "#fff",
-              fontSize: { xs: "1.8rem", md: "2.8rem" },
-              fontFamily: "'Raleway', sans-serif",
+              fontSize: { xs: "1.5rem", md: "2.2rem" },
+              fontFamily: "'Playfair Display', serif",
               fontWeight: 700,
-              mb: 4,
+              mb: 3,
               lineHeight: 1.2,
             }}
           >
-            Events With <span style={{ color: "#F5A623" }}>Distinction</span>
+            Events With <span style={{ color: "#C5A059" }}>Distinction</span>
           </Typography>
 
           <Typography
@@ -133,7 +133,7 @@ const CateringSection: React.FC = () => {
           sx={{
             position: "relative",
             width: { xs: "100%", md: "55%" },
-            height: { xs: "250px", sm: "350px", md: "650px" },
+            height: { xs: "200px", sm: "280px", md: "450px" },
             flexShrink: 0,
           }}
         >
@@ -141,7 +141,7 @@ const CateringSection: React.FC = () => {
             sx={{
               position: "absolute",
               inset: { xs: -8, md: -20 },
-              border: "1px solid rgba(59, 130, 246, 0.15)",
+              border: "1px solid rgba(197, 160, 89, 0.12)",
               borderRadius: { xs: "24px", md: "40px" },
               zIndex: 0,
               "&::before": {
@@ -151,7 +151,7 @@ const CateringSection: React.FC = () => {
                 borderRadius: { xs: "24px", md: "40px" },
                 padding: "1px",
                 background:
-                  "linear-gradient(135deg, rgba(59, 130, 246, 0.2), transparent, rgba(59, 130, 246, 0.1))",
+                  "linear-gradient(135deg, rgba(197, 160, 89, 0.15), transparent, rgba(197, 160, 89, 0.06))",
                 mask: "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
               },
             }}
@@ -180,8 +180,8 @@ const CateringSection: React.FC = () => {
           sx: {
             borderRadius: "16px",
             background: "rgba(0, 0, 0, 0.95)",
-            border: "1px solid rgba(59, 130, 246, 0.15)",
-            boxShadow: "0 0 50px rgba(59, 130, 246, 0.15)",
+            border: "1px solid rgba(197, 160, 89, 0.12)",
+            boxShadow: "0 0 50px rgba(197, 160, 89, 0.08)",
             overflow: "hidden",
             outline: "none",
           },
@@ -202,11 +202,11 @@ const CateringSection: React.FC = () => {
               position: "absolute",
               right: 15,
               top: 15,
-              color: "#F5A623",
-              bgcolor: "rgba(59, 130, 246, 0.1)",
+              color: "#C5A059",
+              bgcolor: "rgba(197, 160, 89, 0.08)",
               zIndex: 100,
               "&:hover": {
-                bgcolor: "rgba(59, 130, 246, 0.15)",
+                bgcolor: "rgba(197, 160, 89, 0.15)",
                 transform: "rotate(90deg)",
               },
               transition: "all 0.3s ease",
@@ -222,7 +222,7 @@ const CateringSection: React.FC = () => {
               "&::-webkit-scrollbar": { width: "4px" },
               "&::-webkit-scrollbar-track": { background: "transparent" },
               "&::-webkit-scrollbar-thumb": {
-                background: "#F5A623",
+                background: "#C5A059",
                 borderRadius: "4px",
               },
             }}

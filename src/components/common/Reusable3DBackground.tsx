@@ -15,7 +15,7 @@ const BackgroundScene: React.FC<{ isMobile: boolean }> = ({ isMobile }) => {
         size={3}
         speed={0.4}
         opacity={0.5}
-        color="#F5A623"
+        color="#C5A059"
       />
       {!isMobile && (
         <Sparkles
@@ -24,7 +24,7 @@ const BackgroundScene: React.FC<{ isMobile: boolean }> = ({ isMobile }) => {
           size={5}
           speed={0.15}
           opacity={0.15}
-          color="#FFD166"
+          color="#E2C68E"
         />
       )}
 
@@ -34,17 +34,17 @@ const BackgroundScene: React.FC<{ isMobile: boolean }> = ({ isMobile }) => {
         speed={0.08}
         segments={isMobile ? 5 : 10}
         position={[0, -5, -10]}
-        color="#60A5FA"
+        color="#E2C68E"
       />
 
       {/* Warm lighting */}
-      <ambientLight intensity={0.4} color="#0A1628" />
+      <ambientLight intensity={0.4} color="#05070A" />
       <spotLight
         position={[0, 15, 5]}
         intensity={1.5}
         angle={0.6}
         penumbra={1}
-        color="#F5A623"
+        color="#C5A059"
       />
       <pointLight position={[8, 8, 8]} intensity={0.5} color="#FFD166" />
 
@@ -84,7 +84,7 @@ const Reusable3DBackground: React.FC = () => {
           height: "100%",
           zIndex: 0,
           background:
-            "radial-gradient(ellipse at center, #0F1D32 0%, #0A1628 100%)",
+            "radial-gradient(ellipse at center, #0F1218 0%, #05070A 100%)",
         }}
       />
     );
@@ -112,8 +112,8 @@ const Reusable3DBackground: React.FC = () => {
         }}
         onCreated={handleCreated}
       >
-        <color attach="background" args={["#0A1628"]} />
-        <fog attach="fog" args={["#0A1628", 8, 30]} />
+        <color attach="background" args={["#05070A"]} />
+        <fog attach="fog" args={["#05070A", 8, 30]} />
         <Suspense fallback={null}>
           <BackgroundScene isMobile={isMobile} />
         </Suspense>

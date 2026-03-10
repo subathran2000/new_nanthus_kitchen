@@ -1,20 +1,20 @@
-import { useEffect, useRef, useState, useCallback, type FC } from "react";
-import { gsap } from "gsap";
-import { motion, AnimatePresence, useMotionValue, useTransform, useSpring } from "framer-motion";
+﻿import { useState, useRef, useEffect, type FC } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import {
   Box,
-  useTheme,
-  useMediaQuery,
   IconButton,
   Typography,
   List,
   ListItem,
   Chip,
+  Tabs,
+  Tab,
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import LocalDiningIcon from "@mui/icons-material/LocalDining";
 import StarIcon from "@mui/icons-material/Star";
+import WhatshotIcon from "@mui/icons-material/Whatshot";
 
 import { menuData } from "../../data/menuData";
 import type { MainCategory } from "../../types";
@@ -23,158 +23,116 @@ const GOLD = "#C5A059";
 const GOLD_LIGHT = "#E2C284";
 const OBSIDIAN = "#050A14";
 
-interface SpiralBackgroundProps {
+interface MenuSpiralProps {
   activeCategory?: string;
   onPanelOpenChange?: (open: boolean) => void;
 }
 
 const MotionBox = motion.create(Box);
 
-/* ──────── Shimmer keyframe for cards ──────── */
-const shimmerKeyframes = `
+const keyframes = `
 @keyframes shimmer-sweep {
   0% { transform: translateX(-100%) rotate(25deg); }
   100% { transform: translateX(200%) rotate(25deg); }
 }
-@keyframes float-particle {
-  0%, 100% { transform: translateY(0) scale(1); opacity: 0.6; }
-  50% { transform: translateY(-8px) scale(1.3); opacity: 1; }
-}
-@keyframes pulse-ring {
-  0% { transform: scale(0.95); opacity: 0.3; }
-  50% { transform: scale(1.02); opacity: 0.6; }
-  100% { transform: scale(0.95); opacity: 0.3; }
-}
 @keyframes glow-breathe {
-  0%, 100% { opacity: 0.05; }
-  50% { opacity: 0.12; }
+  0%, 100% { opacity: 0.04; }
+  50% { opacity: 0.1; }
+}
+@keyframes border-pulse {
+  0%, 100% { opacity: 0.2; }
+  50% { opacity: 0.5; }
 }
 `;
 
-/* ──────── Floating Particle Dot component ──────── */
-const FloatingDot: FC<{ delay: number; left: string; top: string }> = ({ delay, left, top }) => (
-  <Box
-    sx={{
-      position: "absolute",
-      left,
-      top,
-      width: 4,
-      height: 4,
-      borderRadius: "50%",
-      background: `${GOLD}88`,
-      animation: `float-particle 3s ease-in-out ${delay}s infinite`,
-      pointerEvents: "none",
-      zIndex: 4,
-    }}
-  />
-);
-
-/* ──────── Interactive Card with tilt + parallax ──────── */
-const SpiralCard: FC<{
+/* 
+   Category Card  used inside the floating window
+    */
+const CategoryCard: FC<{
   item: MainCategory;
   index: number;
   onSelect: () => void;
-  cardRef: (el: HTMLDivElement | null) => void;
-}> = ({ item, index, onSelect, cardRef }) => {
-  const cardElRef = useRef<HTMLDivElement>(null);
-  const mouseX = useMotionValue(0);
-  const mouseY = useMotionValue(0);
-  const rotateX = useSpring(useTransform(mouseY, [-0.5, 0.5], [8, -8]), { stiffness: 200, damping: 20 });
-  const rotateY_tilt = useSpring(useTransform(mouseX, [-0.5, 0.5], [-8, 8]), { stiffness: 200, damping: 20 });
-  const imgScale = useSpring(1, { stiffness: 300, damping: 25 });
-  const [isHovered, setIsHovered] = useState(false);
+}> = ({ item, index, onSelect }) => {
+  const [hovered, setHovered] = useState(false);
 
   const totalItems = item.subCategories.reduce(
     (sum, sub) => sum + sub.items.length,
     0,
   );
-
-  const handleMouseMove = useCallback((e: React.MouseEvent) => {
-    const el = cardElRef.current;
-    if (!el) return;
-    const rect = el.getBoundingClientRect();
-    mouseX.set((e.clientX - rect.left) / rect.width - 0.5);
-    mouseY.set((e.clientY - rect.top) / rect.height - 0.5);
-  }, [mouseX, mouseY]);
-
-  const handleMouseEnter = useCallback(() => {
-    setIsHovered(true);
-    imgScale.set(1.08);
-  }, [imgScale]);
-
-  const handleMouseLeave = useCallback(() => {
-    setIsHovered(false);
-    mouseX.set(0);
-    mouseY.set(0);
-    imgScale.set(1);
-  }, [mouseX, mouseY, imgScale]);
+  const popularItems = item.subCategories.reduce(
+    (sum, sub) => sum + sub.items.filter((i) => i.popular).length,
+    0,
+  );
 
   return (
-    <Box
-      ref={(el: HTMLDivElement | null) => {
-        cardRef(el);
-        (cardElRef as React.MutableRefObject<HTMLDivElement | null>).current = el;
+    <MotionBox
+      initial={{ opacity: 0, y: 25, scale: 0.96 }}
+      animate={{ opacity: 1, y: 0, scale: 1 }}
+      transition={{
+        delay: index * 0.06 + 0.15,
+        duration: 0.5,
+        type: "spring",
+        stiffness: 100,
+        damping: 18,
       }}
+      whileHover={{
+        y: -6,
+        transition: { type: "spring", stiffness: 350, damping: 22 },
+      }}
+      whileTap={{ scale: 0.97 }}
       onClick={onSelect}
-      onMouseMove={handleMouseMove}
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
-      className="spiral-card"
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
       sx={{
-        width: "92%",
-        maxWidth: "400px",
-        aspectRatio: "1/1",
-        borderRadius: "28px",
-        position: "absolute",
-        opacity: 0,
-        cursor: "pointer",
-        userSelect: "none",
+        position: "relative",
+        borderRadius: "20px",
         overflow: "hidden",
+        cursor: "pointer",
+        aspectRatio: "3/4",
         display: "flex",
         flexDirection: "column",
         justifyContent: "flex-end",
-        transformStyle: "preserve-3d",
-        border: `1.5px solid ${isHovered ? `${GOLD}66` : "rgba(255, 255, 255, 0.08)"}`,
-        boxShadow: isHovered
-          ? `0 40px 80px rgba(0,0,0,0.8), 0 0 50px ${GOLD}15`
-          : "0 20px 40px rgba(0,0,0,0.4), inset 0 0 0 1px rgba(255,255,255,0.05)",
-        transition: "all 0.8s cubic-bezier(0.16, 1, 0.3, 1)",
-        willChange: "transform, opacity, filter",
+        border: `1.5px solid ${hovered ? `${GOLD}44` : "rgba(255,255,255,0.06)"}`,
+        boxShadow: hovered
+          ? `0 0 30px ${GOLD}10, 0 25px 60px rgba(0,0,0,0.5)`
+          : "0 12px 35px rgba(0,0,0,0.35)",
+        transition: "border-color 0.5s ease, box-shadow 0.6s ease",
       }}
     >
-      {/* Parallax background image with tilt */}
-      <MotionBox
-        style={{ scale: imgScale, rotateX, rotateY: rotateY_tilt }}
-        sx={{
-          position: "absolute",
-          inset: -10,
-          background: `url(${item.imageUrl}) center/cover no-repeat`,
-          borderRadius: "28px",
-          zIndex: 0,
-          transition: "filter 0.5s ease",
-          filter: isHovered ? "brightness(1.1) saturate(1.2)" : "brightness(1) saturate(1)",
-        }}
-      />
-
-      {/* Cinematic gradient overlay */}
+      {/* Background image */}
       <Box
         sx={{
           position: "absolute",
           inset: 0,
-          borderRadius: "28px",
-          background:
-            `linear-gradient(180deg, rgba(5,10,20,0) 0%, rgba(5,10,20,0.1) 30%, rgba(5,10,20,0.65) 60%, ${OBSIDIAN}F5 100%)`,
+          background: `url(${item.imageUrl}) center/cover no-repeat`,
+          transition:
+            "transform 0.7s cubic-bezier(0.16, 1, 0.3, 1), filter 0.5s ease",
+          transform: hovered ? "scale(1.08)" : "scale(1)",
+          filter: hovered
+            ? "brightness(1.1) saturate(1.2)"
+            : "brightness(0.9) saturate(1)",
+        }}
+      />
+
+      {/* Gradient overlay */}
+      <Box
+        sx={{
+          position: "absolute",
+          inset: 0,
+          background: hovered
+            ? `linear-gradient(180deg, rgba(5,10,20,0) 0%, rgba(5,10,20,0.2) 30%, rgba(5,10,20,0.75) 60%, ${OBSIDIAN}FA 100%)`
+            : `linear-gradient(180deg, rgba(5,10,20,0) 0%, rgba(5,10,20,0.1) 35%, rgba(5,10,20,0.65) 60%, ${OBSIDIAN}F2 100%)`,
           zIndex: 1,
           pointerEvents: "none",
+          transition: "background 0.5s ease",
         }}
       />
 
-      {/* Shimmer sweep on hover */}
+      {/* Shimmer sweep */}
       <Box
         sx={{
           position: "absolute",
           inset: 0,
-          borderRadius: "28px",
           overflow: "hidden",
           zIndex: 2,
           pointerEvents: "none",
@@ -185,170 +143,987 @@ const SpiralCard: FC<{
             left: 0,
             width: "50%",
             height: "100%",
-            background:
-              `linear-gradient(90deg, transparent, ${GOLD}33, transparent)`,
+            background: `linear-gradient(90deg, transparent, ${GOLD}22, transparent)`,
             transform: "translateX(-100%) rotate(25deg)",
-            animation: isHovered ? "shimmer-sweep 1.5s ease-in-out" : "none",
+            animation: hovered ? "shimmer-sweep 1.5s ease-in-out" : "none",
           },
         }}
       />
 
-      {/* Floating particle dots */}
-      {isHovered && (
-        <>
-          <FloatingDot delay={0} left="15%" top="20%" />
-          <FloatingDot delay={0.5} left="80%" top="15%" />
-          <FloatingDot delay={1} left="75%" top="45%" />
-          <FloatingDot delay={0.3} left="20%" top="55%" />
-        </>
-      )}
-
-      {/* Dish count badge with scale entrance */}
-      <Chip
-        icon={<LocalDiningIcon sx={{ fontSize: 13, color: `${GOLD} !important` }} />}
-        label={`${totalItems} Signature Dishes`}
-        size="small"
-        sx={{
-          position: "absolute",
-          top: 16,
-          right: 16,
-          zIndex: 5,
-          bgcolor: "rgba(5, 10, 20, 0.75)",
-          color: "rgba(255,255,255,0.85)",
-          backdropFilter: "blur(14px)",
-          border: `1px solid ${GOLD}22`,
-          fontFamily: "'Inter', sans-serif",
-          fontWeight: 700,
-          fontSize: "0.62rem",
-          letterSpacing: "0.08em",
-          textTransform: "uppercase",
-          height: 24,
-          transition: "all 0.5s cubic-bezier(0.16, 1, 0.3, 1)",
-          transform: isHovered ? "translateX(-4px) scale(1.05)" : "translateX(0) scale(1)",
-          ...(isHovered && {
-            bgcolor: "rgba(197, 160, 89, 0.15)",
-            borderColor: `${GOLD}66`,
-            color: GOLD_LIGHT,
-          }),
-          "& .MuiChip-icon": { ml: 0.5 },
-        }}
-      />
-
-      {/* Number index badge — top left */}
+      {/* Index badge  top left */}
       <Box
         sx={{
           position: "absolute",
-          top: 16,
-          left: 16,
+          top: 12,
+          left: 12,
           zIndex: 5,
-          width: 32,
-          height: 32,
+          width: 30,
+          height: 30,
           borderRadius: "10px",
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          bgcolor: "rgba(10, 22, 40, 0.5)",
+          bgcolor: "rgba(5,10,20,0.5)",
           backdropFilter: "blur(12px)",
-          border: "1px solid rgba(255,255,255,0.06)",
-          color: "rgba(255,255,255,0.5)",
-          fontFamily: "'Inter', sans-serif",
-          fontSize: "0.75rem",
-          fontWeight: 700,
-          transition: "all 0.5s cubic-bezier(0.16, 1, 0.3, 1)",
-          ...(isHovered && {
-            color: GOLD_LIGHT,
-            borderColor: `${GOLD}44`,
-            bgcolor: "rgba(197, 160, 89, 0.1)",
-          }),
+          border: `1px solid ${hovered ? `${GOLD}44` : "rgba(255,255,255,0.06)"}`,
+          transition: "all 0.4s ease",
         }}
       >
-        {String(index + 1).padStart(2, "0")}
+        <Typography
+          sx={{
+            fontFamily: "'Inter', sans-serif",
+            fontWeight: 700,
+            fontSize: "0.65rem",
+            color: hovered ? GOLD_LIGHT : "rgba(255,255,255,0.4)",
+            transition: "color 0.3s ease",
+          }}
+        >
+          {String(index + 1).padStart(2, "0")}
+        </Typography>
       </Box>
 
-      {/* Bottom glass content area */}
+      {/* Dish count  top right */}
+      <Chip
+        icon={
+          <LocalDiningIcon
+            sx={{ fontSize: 12, color: `${GOLD} !important` }}
+          />
+        }
+        label={`${totalItems}`}
+        size="small"
+        sx={{
+          position: "absolute",
+          top: 12,
+          right: 12,
+          zIndex: 5,
+          bgcolor: "rgba(5,10,20,0.55)",
+          color: "rgba(255,255,255,0.8)",
+          backdropFilter: "blur(12px)",
+          border: `1px solid ${hovered ? `${GOLD}33` : "rgba(255,255,255,0.06)"}`,
+          fontFamily: "'Inter', sans-serif",
+          fontWeight: 700,
+          fontSize: "0.6rem",
+          letterSpacing: "0.06em",
+          height: 24,
+          transition: "all 0.4s ease",
+          "& .MuiChip-icon": { ml: 0.5 },
+        }}
+      />
+
+      {/* Bottom glass content */}
       <Box
         sx={{
           position: "relative",
           zIndex: 3,
-          mx: 1.5,
-          mb: 1.5,
-          px: 2,
-          py: 2,
-          borderRadius: "20px",
-          background: isHovered
-            ? "rgba(5, 10, 20, 0.96)"
-            : "rgba(5, 10, 20, 0.75)",
-          backdropFilter: "blur(44px) saturate(220%)",
-          WebkitBackdropFilter: "blur(44px) saturate(220%)",
-          border: `1px solid ${isHovered ? `${GOLD}99` : "rgba(255, 255, 255, 0.15)"}`,
-          transition: "all 0.8s cubic-bezier(0.16, 1, 0.3, 1)",
-          transform: isHovered ? "translateY(-18px) translateZ(80px) scale(1.03)" : "translateY(0) translateZ(0) scale(1)",
-          boxShadow: isHovered
-            ? `0 45px 90px rgba(0,0,0,0.85), inset 0 0 35px ${GOLD}20`
-            : "0 15px 45px rgba(0,0,0,0.45)",
+          mx: 1,
+          mb: 1,
+          px: { xs: 1.5, sm: 2 },
+          py: { xs: 1.2, sm: 1.5 },
+          borderRadius: "14px",
+          background: hovered ? "rgba(5,10,20,0.95)" : "rgba(5,10,20,0.75)",
+          backdropFilter: "blur(30px) saturate(180%)",
+          WebkitBackdropFilter: "blur(30px) saturate(180%)",
+          border: `1px solid ${hovered ? `${GOLD}55` : "rgba(255,255,255,0.08)"}`,
+          transition: "all 0.5s cubic-bezier(0.16, 1, 0.3, 1)",
+          transform: hovered ? "translateY(-8px)" : "translateY(0)",
+          boxShadow: hovered
+            ? `0 20px 50px rgba(0,0,0,0.6), inset 0 0 15px ${GOLD}08`
+            : "0 8px 25px rgba(0,0,0,0.3)",
         }}
       >
-        {/* Accent line */}
+        {/* Gold accent line */}
         <Box
           sx={{
             position: "absolute",
             top: -1,
             left: "50%",
             transform: "translateX(-50%)",
-            width: isHovered ? "80%" : "25%",
+            width: hovered ? "60%" : "18%",
             height: "2px",
             borderRadius: 1,
-            background:
-              `linear-gradient(90deg, transparent, ${GOLD} 30%, ${GOLD_LIGHT} 70%, transparent)`,
-            opacity: isHovered ? 0.9 : 0.4,
-            transition: "all 0.8s cubic-bezier(0.16, 1, 0.3, 1)",
+            background: `linear-gradient(90deg, transparent, ${GOLD} 30%, ${GOLD_LIGHT} 70%, transparent)`,
+            opacity: hovered ? 0.8 : 0.3,
+            transition: "all 0.6s cubic-bezier(0.16, 1, 0.3, 1)",
           }}
         />
 
+        {/* Title */}
         <Typography
-          component="span"
           sx={{
-            display: "block",
-            fontFamily: "'Your-New-Font', serif",
+            fontFamily: "'Playfair Display', serif",
             fontWeight: 700,
-            fontSize: { xs: "1.25rem", sm: "1.5rem", md: "1.85rem" },
-            letterSpacing: "0.15em",
+            fontSize: { xs: "0.95rem", sm: "1.1rem" },
+            letterSpacing: "0.06em",
             textTransform: "uppercase",
-            color: isHovered ? GOLD_LIGHT : "#fff",
-            textShadow: isHovered
-              ? `0 4px 30px ${GOLD}88, 0 0 15px rgba(255,255,255,0.4)`
-              : "0 2px 20px rgba(0,0,0,0.9)",
-            lineHeight: 1,
+            color: hovered ? GOLD_LIGHT : "#fff",
+            textShadow: hovered
+              ? `0 2px 15px ${GOLD}55`
+              : "0 2px 10px rgba(0,0,0,0.6)",
             textAlign: "center",
-            mb: 1,
-            transition: "all 0.6s cubic-bezier(0.16, 1, 0.3, 1)",
+            lineHeight: 1.15,
+            mb: 0.6,
+            transition: "all 0.4s ease",
           }}
         >
           {item.title}
         </Typography>
 
-        <Typography
+        {/* Subcategory chips */}
+        <Box
           sx={{
-            display: "block",
-            textAlign: "center",
-            fontFamily: "'Montserrat', sans-serif",
-            fontSize: "0.6rem",
-            letterSpacing: "0.3em",
-            textTransform: "uppercase",
-            color: isHovered ? GOLD : "rgba(255,255,255,0.25)",
-            fontWeight: 700,
-            transition: "all 0.5s ease",
-            opacity: isHovered ? 1 : 0.6,
+            display: "flex",
+            justifyContent: "center",
+            flexWrap: "wrap",
+            gap: 0.4,
+            mb: 0.6,
           }}
         >
-          Discover Collection
-        </Typography>
+          {item.subCategories.slice(0, 2).map((sub, sIdx) => (
+            <Chip
+              key={sIdx}
+              label={sub.title}
+              size="small"
+              sx={{
+                height: 18,
+                bgcolor: hovered ? `${GOLD}12` : "rgba(255,255,255,0.04)",
+                color: hovered ? GOLD_LIGHT : "rgba(255,255,255,0.35)",
+                fontSize: "0.5rem",
+                fontWeight: 600,
+                fontFamily: "'Inter', sans-serif",
+                border: `1px solid ${hovered ? `${GOLD}28` : "rgba(255,255,255,0.05)"}`,
+                transition: "all 0.3s ease",
+                "& .MuiChip-label": { px: 0.6 },
+              }}
+            />
+          ))}
+          {item.subCategories.length > 2 && (
+            <Chip
+              label={`+${item.subCategories.length - 2}`}
+              size="small"
+              sx={{
+                height: 18,
+                bgcolor: "rgba(255,255,255,0.03)",
+                color: "rgba(255,255,255,0.25)",
+                fontSize: "0.5rem",
+                fontWeight: 700,
+                border: "1px solid rgba(255,255,255,0.04)",
+                "& .MuiChip-label": { px: 0.5 },
+              }}
+            />
+          )}
+        </Box>
+
+        {/* Stats row */}
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            gap: 1,
+          }}
+        >
+          <Typography
+            sx={{
+              color: hovered ? "rgba(255,255,255,0.5)" : "rgba(255,255,255,0.25)",
+              fontFamily: "'Inter', sans-serif",
+              fontSize: "0.52rem",
+              fontWeight: 500,
+              letterSpacing: "0.04em",
+              transition: "color 0.3s ease",
+            }}
+          >
+            {item.subCategories.length}{" "}
+            {item.subCategories.length === 1 ? "category" : "categories"}
+          </Typography>
+          {popularItems > 0 && (
+            <>
+              <Box
+                sx={{
+                  width: 2.5,
+                  height: 2.5,
+                  borderRadius: "50%",
+                  bgcolor: `${GOLD}44`,
+                }}
+              />
+              <Typography
+                sx={{
+                  color: hovered ? GOLD : "rgba(197,160,89,0.4)",
+                  fontFamily: "'Inter', sans-serif",
+                  fontSize: "0.52rem",
+                  fontWeight: 600,
+                  letterSpacing: "0.04em",
+                  transition: "color 0.3s ease",
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 0.3,
+                }}
+              >
+                <StarIcon sx={{ fontSize: 9 }} />
+                {popularItems} popular
+              </Typography>
+            </>
+          )}
+        </Box>
+      </Box>
+    </MotionBox>
+  );
+};
+
+/* 
+   Food Item Card
+    */
+const FoodItemCard: FC<{
+  menuItem: {
+    id: number;
+    name: string;
+    description: string;
+    price: string;
+    imageUrl: string;
+    popular?: boolean;
+  };
+  itemIdx: number;
+  baseDelay: number;
+}> = ({ menuItem, itemIdx, baseDelay }) => {
+  const [isItemHovered, setIsItemHovered] = useState(false);
+
+  return (
+    <ListItem
+      component={motion.li}
+      initial={{ opacity: 0, y: 30, scale: 0.95 }}
+      animate={{ opacity: 1, y: 0, scale: 1 }}
+      transition={{
+        delay: baseDelay + itemIdx * 0.05,
+        duration: 0.6,
+        type: "spring",
+        stiffness: 90,
+        damping: 16,
+      }}
+      disablePadding
+      onMouseEnter={() => setIsItemHovered(true)}
+      onMouseLeave={() => setIsItemHovered(false)}
+      sx={{
+        width: "100%",
+        borderRadius: "20px",
+        overflow: "hidden",
+        transition: "all 0.45s cubic-bezier(0.16, 1, 0.3, 1)",
+        border: `1px solid ${isItemHovered ? `${GOLD}55` : "rgba(255,255,255,0.06)"}`,
+        background: isItemHovered
+          ? `linear-gradient(135deg, rgba(197,160,89,0.06) 0%, rgba(5,10,20,0.95) 100%)`
+          : "rgba(255,255,255,0.015)",
+        "&:hover": {
+          transform: "translateY(-6px) scale(1.01)",
+          boxShadow: `0 20px 50px rgba(0,0,0,0.4), 0 0 30px ${GOLD}0A`,
+        },
+      }}
+    >
+      <Box sx={{ display: "flex", flexDirection: "column", width: "100%" }}>
+        {/* Image with overlay */}
+        <Box
+          sx={{
+            position: "relative",
+            width: "100%",
+            aspectRatio: "4/3",
+            overflow: "hidden",
+            borderRadius: "20px 20px 0 0",
+          }}
+        >
+          <Box
+            sx={{
+              position: "absolute",
+              inset: 0,
+              background: `url(${menuItem.imageUrl}) center/cover no-repeat`,
+              transition:
+                "transform 0.7s cubic-bezier(0.16, 1, 0.3, 1), filter 0.5s ease",
+              transform: isItemHovered ? "scale(1.1)" : "scale(1)",
+              filter: isItemHovered
+                ? "brightness(1.1) saturate(1.15)"
+                : "brightness(0.95)",
+            }}
+          />
+          <Box
+            sx={{
+              position: "absolute",
+              inset: 0,
+              background: `linear-gradient(180deg, transparent 40%, ${OBSIDIAN}E8 100%)`,
+              pointerEvents: "none",
+            }}
+          />
+          {menuItem.popular && (
+            <Box
+              component={motion.div}
+              initial={{ scale: 0 }}
+              animate={{ scale: 1 }}
+              transition={{
+                delay: baseDelay + itemIdx * 0.05 + 0.3,
+                type: "spring",
+                stiffness: 200,
+              }}
+              sx={{ position: "absolute", top: 12, left: 12, zIndex: 3 }}
+            >
+              <Chip
+                icon={
+                  <WhatshotIcon
+                    sx={{ fontSize: 13, color: "#FF6B35 !important" }}
+                  />
+                }
+                label="POPULAR"
+                size="small"
+                sx={{
+                  height: 26,
+                  bgcolor: "rgba(255, 107, 53, 0.15)",
+                  color: "#FF9A6C",
+                  fontSize: "0.6rem",
+                  fontWeight: 800,
+                  letterSpacing: "0.15em",
+                  border: "1px solid rgba(255, 107, 53, 0.3)",
+                  backdropFilter: "blur(12px)",
+                  "& .MuiChip-label": { px: 0.8, pr: 1 },
+                  "& .MuiChip-icon": { ml: 0.5 },
+                }}
+              />
+            </Box>
+          )}
+          <Box
+            sx={{
+              position: "absolute",
+              bottom: 12,
+              right: 12,
+              zIndex: 3,
+              bgcolor: "rgba(5, 10, 20, 0.85)",
+              backdropFilter: "blur(16px)",
+              color: GOLD_LIGHT,
+              border: `1px solid ${GOLD}44`,
+              px: 1.8,
+              py: 0.6,
+              borderRadius: "12px",
+              fontWeight: 800,
+              fontSize: "0.88rem",
+              fontFamily: "'Playfair Display', serif",
+              letterSpacing: "0.03em",
+              transition: "all 0.4s ease",
+              boxShadow: isItemHovered
+                ? `0 4px 20px ${GOLD}25`
+                : "0 4px 15px rgba(0,0,0,0.4)",
+            }}
+          >
+            {menuItem.price}
+          </Box>
+        </Box>
+        <Box sx={{ px: 2, py: 1.8 }}>
+          <Box sx={{ display: "flex", alignItems: "center", gap: 1, mb: 0.5 }}>
+            <Typography
+              sx={{
+                color: isItemHovered ? GOLD_LIGHT : "#fff",
+                fontWeight: 700,
+                fontSize: { xs: "1rem", md: "1.05rem" },
+                fontFamily: "'Inter', sans-serif",
+                letterSpacing: "0.01em",
+                transition: "color 0.3s ease",
+                flex: 1,
+              }}
+            >
+              {menuItem.name}
+            </Typography>
+            {menuItem.popular && (
+              <StarIcon sx={{ fontSize: 16, color: GOLD, flexShrink: 0 }} />
+            )}
+          </Box>
+          <Typography
+            sx={{
+              color: "rgba(255, 255, 255, 0.4)",
+              fontSize: "0.82rem",
+              lineHeight: 1.55,
+              fontFamily: "'Inter', sans-serif",
+              fontWeight: 300,
+              overflow: "hidden",
+              textOverflow: "ellipsis",
+              display: "-webkit-box",
+              WebkitLineClamp: 2,
+              WebkitBoxOrient: "vertical",
+            }}
+          >
+            {menuItem.description}
+          </Typography>
+        </Box>
+      </Box>
+    </ListItem>
+  );
+};
+
+/* 
+   Side Panel  shows food items for a category
+    */
+const SidePanel: FC<{
+  sidePanelRef: React.RefObject<HTMLDivElement | null>;
+  selectedCategory: MainCategory | null;
+  onClose: () => void;
+}> = ({ sidePanelRef, selectedCategory, onClose }) => {
+  const [activeTab, setActiveTab] = useState(0);
+  const subCategories = selectedCategory?.subCategories || [];
+  const hasMultipleSubs = subCategories.length > 1;
+  const currentItems = hasMultipleSubs
+    ? subCategories[activeTab]?.items || []
+    : subCategories[0]?.items || [];
+  const allItems = subCategories.flatMap((sub) => sub.items);
+  const totalItems = allItems.length;
+  const popularCount = allItems.filter((item) => item.popular).length;
+
+  return (
+    <Box
+      ref={sidePanelRef}
+      component={motion.div}
+      initial={{ x: "-100%", opacity: 0.8 }}
+      animate={{ x: 0, opacity: 1 }}
+      exit={{ x: "-100%", opacity: 0 }}
+      transition={{ type: "spring", stiffness: 55, damping: 18, mass: 1 }}
+      sx={{
+        position: "fixed",
+        top: 0,
+        left: 0,
+        width: { xs: "100%", md: "70%" },
+        height: "100vh",
+        bgcolor: "rgba(5, 8, 16, 0.98)",
+        backdropFilter: "blur(30px)",
+        zIndex: 2000,
+        borderRight: `1px solid ${GOLD}25`,
+        boxShadow: `30px 0 80px rgba(0,0,0,0.6), 0 0 60px ${GOLD}08`,
+        overflowY: "auto",
+        overflowX: "hidden",
+        display: "flex",
+        flexDirection: "column",
+        scrollbarWidth: "none",
+        msOverflowStyle: "none",
+        "&::-webkit-scrollbar": { display: "none" },
+      }}
+    >
+      {/* Top glow line */}
+      <Box
+        component={motion.div}
+        initial={{ scaleX: 0 }}
+        animate={{ scaleX: 1 }}
+        transition={{ delay: 0.3, duration: 1, ease: [0.34, 1.56, 0.64, 1] }}
+        sx={{
+          position: "sticky",
+          top: 0,
+          left: 0,
+          right: 0,
+          height: "2px",
+          background: `linear-gradient(90deg, transparent 0%, ${GOLD} 20%, ${GOLD_LIGHT} 50%, ${GOLD} 80%, transparent 100%)`,
+          transformOrigin: "left",
+          zIndex: 20,
+          flexShrink: 0,
+        }}
+      />
+
+      {/* Hero Banner */}
+      {selectedCategory && (
+        <Box
+          component={motion.div}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.6 }}
+          sx={{
+            position: "relative",
+            width: "100%",
+            height: { xs: 220, sm: 260, md: 300 },
+            overflow: "hidden",
+            flexShrink: 0,
+          }}
+        >
+          <Box
+            component={motion.div}
+            initial={{ scale: 1.15 }}
+            animate={{ scale: 1 }}
+            transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
+            sx={{
+              position: "absolute",
+              inset: -20,
+              background: `url(${selectedCategory.imageUrl}) center/cover no-repeat`,
+              filter: "brightness(0.5) saturate(1.3)",
+            }}
+          />
+          <Box
+            sx={{
+              position: "absolute",
+              inset: 0,
+              background: `linear-gradient(180deg, ${OBSIDIAN}88 0%, transparent 30%, ${OBSIDIAN}CC 70%, ${OBSIDIAN}F8 100%)`,
+            }}
+          />
+          <Box
+            sx={{
+              position: "absolute",
+              inset: 0,
+              background: `linear-gradient(90deg, ${OBSIDIAN}DD 0%, transparent 50%, ${OBSIDIAN}44 100%)`,
+            }}
+          />
+
+          {/* Back button */}
+          <Box
+            component={motion.div}
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.2, duration: 0.4 }}
+            sx={{
+              position: "absolute",
+              top: { xs: 16, md: 24 },
+              left: { xs: 16, md: 28 },
+              zIndex: 10,
+            }}
+          >
+            <IconButton
+              onClick={onClose}
+              aria-label="Back"
+              component={motion.button as React.ElementType}
+              whileHover={{ scale: 1.1, x: -3 }}
+              whileTap={{ scale: 0.9 }}
+              sx={{
+                color: "#fff",
+                bgcolor: "rgba(5,10,20,0.5)",
+                backdropFilter: "blur(16px)",
+                border: `1px solid ${GOLD}33`,
+                width: 44,
+                height: 44,
+                borderRadius: "14px",
+                "&:hover": { bgcolor: `${GOLD}20`, borderColor: `${GOLD}88` },
+                transition: "all 0.3s ease",
+              }}
+            >
+              <ArrowBackIcon sx={{ fontSize: 20 }} />
+            </IconButton>
+          </Box>
+
+          {/* Close button */}
+          <Box
+            component={motion.div}
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.2, duration: 0.4 }}
+            sx={{
+              position: "absolute",
+              top: { xs: 16, md: 24 },
+              right: { xs: 16, md: 28 },
+              zIndex: 10,
+            }}
+          >
+            <IconButton
+              onClick={onClose}
+              aria-label="Close"
+              component={motion.button as React.ElementType}
+              whileHover={{ scale: 1.1, rotate: 90 }}
+              whileTap={{ scale: 0.9 }}
+              sx={{
+                color: "rgba(255,255,255,0.6)",
+                bgcolor: "rgba(5,10,20,0.5)",
+                backdropFilter: "blur(16px)",
+                border: "1px solid rgba(255,255,255,0.1)",
+                width: 44,
+                height: 44,
+                borderRadius: "14px",
+                "&:hover": { color: GOLD_LIGHT, bgcolor: `${GOLD}15` },
+                transition: "all 0.3s ease",
+              }}
+            >
+              <CloseIcon sx={{ fontSize: 18 }} />
+            </IconButton>
+          </Box>
+
+          {/* Hero content */}
+          <Box
+            sx={{
+              position: "absolute",
+              bottom: 0,
+              left: 0,
+              right: 0,
+              px: { xs: 3, md: 5 },
+              pb: { xs: 2.5, md: 3 },
+              zIndex: 5,
+            }}
+          >
+            <Box
+              component={motion.div}
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{
+                delay: 0.3,
+                duration: 0.6,
+                type: "spring",
+                stiffness: 80,
+              }}
+            >
+              <Typography
+                component={motion.span}
+                initial={{ opacity: 0, x: -10 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.4, duration: 0.3 }}
+                sx={{
+                  color: GOLD,
+                  fontFamily: "'Inter', sans-serif",
+                  fontWeight: 600,
+                  letterSpacing: "0.3em",
+                  textTransform: "uppercase",
+                  fontSize: "0.65rem",
+                  display: "block",
+                  mb: 1,
+                }}
+              >
+                Culinary Collection
+              </Typography>
+              <Typography
+                variant="h3"
+                component={motion.h3}
+                initial={{ opacity: 0, y: 15 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.45, duration: 0.5 }}
+                sx={{
+                  color: "#fff",
+                  fontFamily: "'Playfair Display', serif",
+                  fontWeight: 700,
+                  fontSize: { xs: "2rem", sm: "2.4rem", md: "2.8rem" },
+                  lineHeight: 1.1,
+                  letterSpacing: "0.02em",
+                  mb: 1.5,
+                  textShadow: "0 4px 30px rgba(0,0,0,0.8)",
+                }}
+              >
+                {selectedCategory.title}
+              </Typography>
+              <Box
+                component={motion.div}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.6, duration: 0.4 }}
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 2,
+                  flexWrap: "wrap",
+                }}
+              >
+                <Chip
+                  icon={
+                    <LocalDiningIcon
+                      sx={{ fontSize: 14, color: `${GOLD} !important` }}
+                    />
+                  }
+                  label={`${totalItems} Dishes`}
+                  size="small"
+                  sx={{
+                    height: 28,
+                    bgcolor: "rgba(5,10,20,0.6)",
+                    color: "rgba(255,255,255,0.8)",
+                    backdropFilter: "blur(12px)",
+                    border: `1px solid ${GOLD}33`,
+                    fontFamily: "'Inter', sans-serif",
+                    fontWeight: 600,
+                    fontSize: "0.7rem",
+                    letterSpacing: "0.05em",
+                    "& .MuiChip-icon": { ml: 0.5 },
+                  }}
+                />
+                {popularCount > 0 && (
+                  <Chip
+                    icon={
+                      <StarIcon
+                        sx={{ fontSize: 13, color: `${GOLD} !important` }}
+                      />
+                    }
+                    label={`${popularCount} Popular`}
+                    size="small"
+                    sx={{
+                      height: 28,
+                      bgcolor: "rgba(197,160,89,0.1)",
+                      color: GOLD_LIGHT,
+                      backdropFilter: "blur(12px)",
+                      border: `1px solid ${GOLD}33`,
+                      fontFamily: "'Inter', sans-serif",
+                      fontWeight: 600,
+                      fontSize: "0.7rem",
+                      letterSpacing: "0.05em",
+                      "& .MuiChip-icon": { ml: 0.5 },
+                    }}
+                  />
+                )}
+                <Chip
+                  label={`${subCategories.length} ${subCategories.length === 1 ? "Category" : "Categories"}`}
+                  size="small"
+                  sx={{
+                    height: 28,
+                    bgcolor: "rgba(5,10,20,0.6)",
+                    color: "rgba(255,255,255,0.6)",
+                    backdropFilter: "blur(12px)",
+                    border: "1px solid rgba(255,255,255,0.08)",
+                    fontFamily: "'Inter', sans-serif",
+                    fontWeight: 500,
+                    fontSize: "0.7rem",
+                    letterSpacing: "0.05em",
+                  }}
+                />
+              </Box>
+            </Box>
+          </Box>
+        </Box>
+      )}
+
+      {/* Subcategory Tabs */}
+      {hasMultipleSubs && (
+        <Box
+          component={motion.div}
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.5, duration: 0.4 }}
+          sx={{
+            position: "sticky",
+            top: 2,
+            zIndex: 15,
+            bgcolor: "rgba(5, 8, 16, 0.95)",
+            backdropFilter: "blur(20px)",
+            borderBottom: "1px solid rgba(255,255,255,0.04)",
+            px: { xs: 1, md: 3 },
+            flexShrink: 0,
+          }}
+        >
+          <Tabs
+            value={activeTab}
+            onChange={(_, newVal) => setActiveTab(newVal)}
+            variant="scrollable"
+            scrollButtons="auto"
+            sx={{
+              minHeight: 52,
+              "& .MuiTabs-indicator": {
+                height: 2,
+                borderRadius: 2,
+                background: `linear-gradient(90deg, ${GOLD}, ${GOLD_LIGHT})`,
+              },
+              "& .MuiTabs-scrollButtons": {
+                color: "rgba(255,255,255,0.3)",
+                "&.Mui-disabled": { opacity: 0.15 },
+              },
+              "& .MuiTab-root": {
+                minHeight: 52,
+                color: "rgba(255,255,255,0.4)",
+                fontFamily: "'Inter', sans-serif",
+                fontWeight: 500,
+                fontSize: "0.78rem",
+                letterSpacing: "0.05em",
+                textTransform: "none",
+                px: { xs: 1.5, md: 2.5 },
+                transition: "all 0.3s ease",
+                "&.Mui-selected": { color: GOLD_LIGHT, fontWeight: 700 },
+                "&:hover": {
+                  color: "rgba(255,255,255,0.7)",
+                  backgroundColor: "rgba(197,160,89,0.05)",
+                },
+              },
+            }}
+          >
+            {subCategories.map((sub, idx) => (
+              <Tab
+                key={idx}
+                label={
+                  <Box
+                    sx={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: 1,
+                    }}
+                  >
+                    <span>{sub.title}</span>
+                    <Chip
+                      label={sub.items.length}
+                      size="small"
+                      sx={{
+                        height: 18,
+                        minWidth: 18,
+                        bgcolor:
+                          activeTab === idx
+                            ? `${GOLD}20`
+                            : "rgba(255,255,255,0.05)",
+                        color:
+                          activeTab === idx
+                            ? GOLD_LIGHT
+                            : "rgba(255,255,255,0.3)",
+                        fontSize: "0.6rem",
+                        fontWeight: 700,
+                        border:
+                          activeTab === idx
+                            ? `1px solid ${GOLD}44`
+                            : "1px solid transparent",
+                        transition: "all 0.3s ease",
+                        "& .MuiChip-label": { px: 0.6 },
+                      }}
+                    />
+                  </Box>
+                }
+              />
+            ))}
+          </Tabs>
+        </Box>
+      )}
+
+      {/* Food Items Grid */}
+      <Box
+        sx={{
+          flex: 1,
+          overflowY: "auto",
+          overflowX: "hidden",
+          px: { xs: 2, sm: 3, md: 4 },
+          py: { xs: 2.5, md: 3 },
+          scrollbarWidth: "none",
+          msOverflowStyle: "none",
+          "&::-webkit-scrollbar": { display: "none" },
+          touchAction: "pan-y",
+        }}
+      >
+        {!hasMultipleSubs && subCategories[0] && (
+          <Box
+            component={motion.div}
+            initial={{ opacity: 0, x: -15 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.4, duration: 0.4 }}
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              gap: 1.5,
+              mb: 3,
+              pb: 1.5,
+              borderBottom: "1px solid rgba(255,255,255,0.05)",
+            }}
+          >
+            <Box
+              component={motion.div}
+              initial={{ height: 0 }}
+              animate={{ height: 28 }}
+              transition={{ delay: 0.5, duration: 0.4 }}
+              sx={{
+                width: 3,
+                borderRadius: 4,
+                background: `linear-gradient(180deg, ${GOLD}, ${GOLD_LIGHT})`,
+              }}
+            />
+            <Typography
+              variant="h6"
+              sx={{
+                color: "#fff",
+                fontWeight: 600,
+                fontFamily: "'Inter', sans-serif",
+                letterSpacing: "0.02em",
+                fontSize: { xs: "1.1rem", md: "1.2rem" },
+                flex: 1,
+              }}
+            >
+              {subCategories[0].title}
+            </Typography>
+            <Chip
+              label={`${subCategories[0].items.length} items`}
+              size="small"
+              sx={{
+                height: 24,
+                bgcolor: "rgba(197,160,89,0.08)",
+                color: GOLD_LIGHT,
+                border: `1px solid ${GOLD}25`,
+                fontSize: "0.65rem",
+                fontWeight: 600,
+                fontFamily: "'Inter', sans-serif",
+                "& .MuiChip-label": { px: 1.2 },
+              }}
+            />
+          </Box>
+        )}
+
+        {hasMultipleSubs && subCategories[activeTab] && (
+          <Box
+            component={motion.div}
+            key={activeTab}
+            initial={{ opacity: 0, x: -15 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.3 }}
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              gap: 1.5,
+              mb: 3,
+              pb: 1.5,
+              borderBottom: "1px solid rgba(255,255,255,0.05)",
+            }}
+          >
+            <Box
+              sx={{
+                width: 3,
+                height: 28,
+                borderRadius: 4,
+                background: `linear-gradient(180deg, ${GOLD}, ${GOLD_LIGHT})`,
+              }}
+            />
+            <Typography
+              variant="h6"
+              sx={{
+                color: "#fff",
+                fontWeight: 600,
+                fontFamily: "'Inter', sans-serif",
+                letterSpacing: "0.02em",
+                fontSize: { xs: "1.1rem", md: "1.2rem" },
+                flex: 1,
+              }}
+            >
+              {subCategories[activeTab].title}
+            </Typography>
+            <Chip
+              label={`${subCategories[activeTab].items.length} items`}
+              size="small"
+              sx={{
+                height: 24,
+                bgcolor: "rgba(197,160,89,0.08)",
+                color: GOLD_LIGHT,
+                border: `1px solid ${GOLD}25`,
+                fontSize: "0.65rem",
+                fontWeight: 600,
+                fontFamily: "'Inter', sans-serif",
+                "& .MuiChip-label": { px: 1.2 },
+              }}
+            />
+          </Box>
+        )}
+
+        <AnimatePresence mode="wait">
+          <List
+            key={hasMultipleSubs ? activeTab : "all"}
+            component={motion.ul}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.35 }}
+            sx={{
+              p: 0,
+              display: "grid",
+              gridTemplateColumns: {
+                xs: "1fr",
+                sm: "1fr 1fr",
+                md: "repeat(3, 1fr)",
+              },
+              gap: { xs: 2, sm: 2.5, md: 2.5 },
+            }}
+          >
+            {currentItems.map((menuItem, itemIdx) => (
+              <FoodItemCard
+                key={menuItem.id}
+                menuItem={menuItem}
+                itemIdx={itemIdx}
+                baseDelay={0.15}
+              />
+            ))}
+          </List>
+        </AnimatePresence>
+
+        <Box sx={{ height: 40 }} />
       </Box>
     </Box>
   );
 };
 
-const MenuSpiral: FC<SpiralBackgroundProps> = ({
+/* 
+   MenuSpiral  Floating Window Category Selector
+    */
+const MenuSpiral: FC<MenuSpiralProps> = ({
   activeCategory = "Lunch",
   onPanelOpenChange,
 }) => {
@@ -357,279 +1132,49 @@ const MenuSpiral: FC<SpiralBackgroundProps> = ({
       activeCategory as "Lunch" | "Dinner" | "Breakfast" | "Dessert",
     ),
   );
-  const itemsToUse = filteredItems.length > 0 ? filteredItems : menuData;
-  const spiralItems = itemsToUse;
-  const displayedItems = spiralItems;
-  const isSpiral = displayedItems.length > 2;
+  const displayedItems =
+    filteredItems.length > 0 ? filteredItems : menuData;
 
-  const containerRef = useRef<HTMLDivElement>(null);
   const sidePanelRef = useRef<HTMLDivElement>(null);
-  const cardsRef = useRef<(HTMLDivElement | null)[]>([]);
   const [open, setOpen] = useState(false);
   const [selected, setSelected] = useState<number | null>(null);
-  const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
-  const openRef = useRef(open);
-  openRef.current = open;
-
-  const mouseSpringX = useSpring(0, { stiffness: 100, damping: 30 });
-  const mouseSpringY = useSpring(0, { stiffness: 100, damping: 30 });
 
   useEffect(() => {
     onPanelOpenChange?.(open);
   }, [open, onPanelOpenChange]);
 
-  const scrollYRef = useRef(0);
-  const targetScrollYRef = useRef(0);
-  const transitionRef = useRef(0);
-
-  // Ref-based entrance progress for high-performance staggered animation
-  const entranceRef = useRef({ val: 0 });
-  useEffect(() => {
-    entranceRef.current.val = 0;
-    scrollYRef.current = 0;
-    targetScrollYRef.current = 0;
-    gsap.to(entranceRef.current, {
-      val: 1,
-      duration: 1.4,
-      ease: "power2.out",
-      overwrite: "auto",
-    });
-  }, [activeCategory]);
-
-  const handleMouseMove = useCallback((e: React.MouseEvent) => {
-    const { clientX, clientY } = e;
-    mouseSpringX.set(clientX);
-    mouseSpringY.set(clientY);
-  }, [mouseSpringX, mouseSpringY]);
-
-
-  useEffect(() => {
-    if (!isSpiral) return;
-
-    const prevOverflowX = document.documentElement.style.overflowX;
-    document.documentElement.style.overflowX = "hidden";
-
-    const cards = cardsRef.current;
-    const total = displayedItems.length;
-
-    // Inside MenuSpiral.tsx -> updateCards function
-
-
-    const updateCards = () => {
-          const targetTransition = openRef.current ? 1 : 0;
-          const lerpFactor = 0.08;
-          transitionRef.current += (targetTransition - transitionRef.current) * lerpFactor;
-
-          if (Math.abs(targetTransition - transitionRef.current) < 0.0005) {
-            transitionRef.current = targetTransition;
-          }
-
-          const t = transitionRef.current;
-          const scrollVal = scrollYRef.current;
-          const entranceVal = entranceRef.current.val;
-
-          // Grid Constants
-          const columns = isMobile ? 1 : 3;
-          const totalRows = Math.ceil(total / columns);
-          const cardSize = isMobile ? 280 : 300; 
-          const gap = isMobile ? 40 : 120;
-
-          cards.forEach((card, i) => {
-            if (!card) return;
-
-            const row = Math.floor(i / columns);
-            const col = i % columns;
-            
-            // 1. Position within the grid
-            const gridX = (col - (columns - 1) / 2) * (cardSize + gap);
-            const gridY = (row - (totalRows - 1) / 2) * (cardSize + gap) + scrollVal;
-
-            // 2. Movement logic (Desktop shifts, Mobile stays 0)
-            const dockX = isMobile ? 0 : window.innerWidth * 0.4; 
-            const dockY = isMobile ? 0 : window.innerHeight * 0.2;
-
-            const finalX = gridX + (dockX * t);
-            const finalY = gridY + (dockY * t);
-
-            const staggerDelay = i * 0.05;
-            const entranceProgress = Math.max(0, Math.min(1, (entranceVal * 2) - staggerDelay));
-
-            gsap.set(card, {
-              // COORDINATES
-              x: finalX, 
-              y: finalY,
-              // TRANSFORM PERCENT (This is what actually centers the cards)
-              xPercent: -50, 
-              yPercent: -50,
-              
-              // ANCHORING
-              left: "50%", 
-              top: "50%",
-              position: "absolute",
-
-              // VISUALS
-              scale: isMobile ? 0.85 : 0.95,
-              opacity: (1 - (t * (isMobile ? 0.85 : 0.6))) * entranceProgress, 
-              filter: t > 0 ? `blur(${t * 12}px) brightness(${1 - t * 0.3})` : "none",
-              zIndex: 2000,
-            });
-          });
-      };
-
-   const container = containerRef.current;
-
-    const handleWheel = (e: WheelEvent) => {
-      const isInsidePanel = openRef.current && sidePanelRef.current?.contains(e.target as Node);
-      if (isInsidePanel) return;
-
-      e.preventDefault();
-      const newTargetScroll = targetScrollYRef.current - e.deltaY * 0.8;
-
-      // Vertical range calculation based on rows
-      const rows = Math.ceil(total / (isMobile ? 1 : 3));
-      const rowHeight = isMobile ? 320 : 320;
-      const range = (rows - 1) * (rowHeight + (isMobile ? 15 : 30));
-      targetScrollYRef.current = Math.max(-range, Math.min(range, newTargetScroll));
-    };
-
-    let touchStartX = 0;
-    let touchLastX = 0;
-
-    const handleTouchStart = (e: TouchEvent) => {
-      touchStartX = e.touches[0].clientX;
-      touchLastX = touchStartX;
-    };
-
-    const handleTouchMove = (e: TouchEvent) => {
-      const isInsidePanel = openRef.current && sidePanelRef.current?.contains(e.target as Node);
-      if (isInsidePanel) return;
-
-      e.preventDefault();
-      const touchX = e.touches[0].clientX;
-      const deltaX = touchLastX - touchX;
-      touchLastX = touchX;
-
-      const friction = isMobile ? 1.2 : 1.5;
-      const newTargetScroll = targetScrollYRef.current - deltaX * friction;
-
-      if (openRef.current) {
-        // Use vertical list bounds when panel is open
-        const vertSpacing = isMobile ? 80 : 120;
-        const verticalRange = (total - 1) * vertSpacing;
-        const vMin = -verticalRange / 2;
-        const vMax = verticalRange / 2;
-        targetScrollYRef.current = Math.max(vMin, Math.min(vMax, newTargetScroll));
-      } else {
-        // Horizontal rotary bounds - hard boundaries for first and last item centered
-        const isLandscape = window.innerWidth > window.innerHeight;
-        const itemSpacing = isMobile ? (isLandscape ? 0.45 : 0.38) : 0.35;
-        const rotaryRange = (total - 1) * (itemSpacing / 0.0035);
-        const hMax = 0; // lock first item at center
-        const hMin = -rotaryRange; // lock last item at center
-        targetScrollYRef.current = Math.max(hMin, Math.min(hMax, newTargetScroll));
-      }
-    };
-
-    const handleTouchEnd = () => {
-      touchStartX = 0;
-      touchLastX = 0;
-    };
-
-    // Scope listeners to the container element instead of window
-    // to avoid blocking page-level scroll on mobile
-    if (container) {
-      container.addEventListener("wheel", handleWheel, { passive: false });
-      container.addEventListener("touchstart", handleTouchStart, { passive: true });
-      container.addEventListener("touchmove", handleTouchMove, { passive: false });
-      container.addEventListener("touchend", handleTouchEnd);
-    }
-
-    const ticker = gsap.ticker.add(() => {
-      const diff = targetScrollYRef.current - scrollYRef.current;
-      // Smoother scroll physics with exponential damping and a "springy" finish
-      const damping = openRef.current ? 0.09 : 0.08;
-      scrollYRef.current += diff * damping;
-
-      if (Math.abs(diff) < 0.05) {
-        scrollYRef.current = targetScrollYRef.current;
-      }
-
-      updateCards();
-    });
-
-    return () => {
-      if (container) {
-        container.removeEventListener("wheel", handleWheel);
-        container.removeEventListener("touchstart", handleTouchStart);
-        container.removeEventListener("touchmove", handleTouchMove);
-        container.removeEventListener("touchend", handleTouchEnd);
-      }
-      gsap.ticker.remove(ticker);
-      document.documentElement.style.overflowX = prevOverflowX;
-    };
-  }, [spiralItems, isMobile, activeCategory, isSpiral]);
-
   const selectedCategory: MainCategory | null =
-    selected !== null ? displayedItems[selected % displayedItems.length] : null;
+    selected !== null
+      ? displayedItems[selected % displayedItems.length]
+      : null;
 
   return (
     <Box
-      ref={containerRef}
-      onMouseMove={handleMouseMove}
       sx={{
-        perspective: "2000px",
         width: "100%",
-        height: "100vh",
+        minHeight: "100vh",
         background: "transparent",
-        overflow: "hidden",
         position: "relative",
-        transform: "translateZ(0)",
-        WebkitBackfaceVisibility: "hidden",
-        backfaceVisibility: "hidden",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
         fontFamily: "'Inter', sans-serif",
         color: "rgba(255, 255, 255, 0.7)",
-        touchAction: "none", // prevent browser scroll on this container
+        px: { xs: 1.5, sm: 2, md: 3 },
+        py: { xs: 3, md: 4 },
       }}
     >
-      {/* Inject keyframes */}
-      <style>{shimmerKeyframes}</style>
+      <style>{keyframes}</style>
 
-      {/* Breathing ambient glow */}
+      {/* Ambient glow */}
       <Box
         sx={{
           position: "absolute",
-          top: 0,
-          left: 0,
-          right: 0,
-          bottom: 0,
-          background:
-            `radial-gradient(ellipse at 50% 40%, ${GOLD}15 0%, transparent 70%)`,
+          inset: 0,
+          background: `radial-gradient(ellipse at 50% 35%, ${GOLD}12 0%, transparent 65%)`,
           pointerEvents: "none",
           zIndex: 1,
-          opacity: 0.8,
           animation: "glow-breathe 8s ease-in-out infinite",
-        }}
-      />
-
-      {/* Dynamic Mouse Spotlight */}
-      <MotionBox
-        style={{
-          x: mouseSpringX,
-          y: mouseSpringY,
-        }}
-        sx={{
-          position: "fixed",
-          top: -300,
-          left: -300,
-          width: 600,
-          height: 600,
-          background: `radial-gradient(circle, ${GOLD}12 0%, transparent 70%)`,
-          pointerEvents: "none",
-          zIndex: 2,
-          mixBlendMode: "screen",
-          opacity: open ? 0.3 : 1,
-          transition: "opacity 0.8s ease",
         }}
       />
 
@@ -637,32 +1182,204 @@ const MenuSpiral: FC<SpiralBackgroundProps> = ({
       <Box
         onClick={() => setOpen(false)}
         sx={{
-          position: "absolute",
+          position: "fixed",
           inset: 0,
-          background:
-            `linear-gradient(to right, ${OBSIDIAN}CC 0%, ${OBSIDIAN}33 50%, transparent 100%)`,
+          bgcolor: "rgba(0,0,0,0.6)",
           opacity: open ? 1 : 0,
           pointerEvents: open ? "auto" : "none",
           zIndex: 500,
-          transition: "opacity 0.5s ease",
+          transition: "opacity 0.4s ease",
           cursor: "pointer",
         }}
       />
 
-      {/* Conditional Rendering: Spiral vs Horizontal with Cross-fade */}
-      <AnimatePresence mode="wait">
-        {isSpiral ? (
+      {/*  Floating Window  */}
+      <Box
+        component={motion.div}
+        initial={{ opacity: 0, y: 30, scale: 0.96 }}
+        animate={{
+          opacity: open ? 0.3 : 1,
+          y: 0,
+          scale: open ? 0.95 : 1,
+          filter: open ? "blur(4px)" : "blur(0px)",
+        }}
+        transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+        sx={{
+          position: "relative",
+          zIndex: 10,
+          width: "100%",
+          maxWidth: 1000,
+          borderRadius: "28px",
+          background: "rgba(5, 10, 20, 0.6)",
+          backdropFilter: "blur(40px) saturate(160%)",
+          WebkitBackdropFilter: "blur(40px) saturate(160%)",
+          border: `1px solid rgba(255,255,255,0.07)`,
+          boxShadow: `0 30px 80px rgba(0,0,0,0.45), inset 0 1px 0 rgba(255,255,255,0.05)`,
+          overflow: "hidden",
+          pointerEvents: open ? "none" : "auto",
+          transition: "opacity 0.5s ease, filter 0.5s ease",
+        }}
+      >
+        {/* Top gold accent */}
+        <Box
+          component={motion.div}
+          initial={{ scaleX: 0 }}
+          animate={{ scaleX: 1 }}
+          transition={{ delay: 0.2, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+          sx={{
+            height: "2px",
+            background: `linear-gradient(90deg, transparent, ${GOLD} 25%, ${GOLD_LIGHT} 50%, ${GOLD} 75%, transparent)`,
+            transformOrigin: "center",
+          }}
+        />
+
+        {/* Pulsing border overlay */}
+        <Box
+          sx={{
+            position: "absolute",
+            inset: 0,
+            borderRadius: "28px",
+            border: `1px solid ${GOLD}`,
+            opacity: 0.08,
+            animation: "border-pulse 4s ease-in-out infinite",
+            pointerEvents: "none",
+          }}
+        />
+
+        {/* Window Header */}
+        <Box
+          sx={{
+            px: { xs: 2.5, md: 4 },
+            pt: { xs: 2.5, md: 3.5 },
+            pb: { xs: 1.5, md: 2 },
+            textAlign: "center",
+          }}
+        >
+          {/* Decorative line with diamond */}
           <Box
-            key="spiral-container"
             component={motion.div}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.5, ease: "easeInOut" }}
-            sx={{ position: "absolute", inset: 0 }}
+            transition={{ delay: 0.3, duration: 0.5 }}
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              gap: 1.2,
+              mb: 1.5,
+            }}
+          >
+            <Box
+              sx={{
+                width: 40,
+                height: "1px",
+                background: `linear-gradient(90deg, transparent, ${GOLD}88)`,
+              }}
+            />
+            <LocalDiningIcon
+              sx={{ fontSize: 14, color: GOLD, opacity: 0.7 }}
+            />
+            <Typography
+              sx={{
+                color: GOLD,
+                fontFamily: "'Inter', sans-serif",
+                fontWeight: 700,
+                letterSpacing: "0.3em",
+                textTransform: "uppercase",
+                fontSize: { xs: "0.55rem", md: "0.65rem" },
+              }}
+            >
+              {activeCategory} Menu
+            </Typography>
+            <LocalDiningIcon
+              sx={{ fontSize: 14, color: GOLD, opacity: 0.7 }}
+            />
+            <Box
+              sx={{
+                width: 40,
+                height: "1px",
+                background: `linear-gradient(90deg, ${GOLD}88, transparent)`,
+              }}
+            />
+          </Box>
+
+          {/* Title */}
+          <Typography
+            component={motion.div}
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.35, duration: 0.5 }}
+            sx={{
+              fontFamily: "'Playfair Display', serif",
+              fontWeight: 700,
+              fontSize: { xs: "1.4rem", md: "1.9rem" },
+              color: "#fff",
+              letterSpacing: "0.03em",
+              lineHeight: 1.2,
+              mb: 0.8,
+            }}
+          >
+            Select a Category
+          </Typography>
+
+          {/* Subtitle with count */}
+          <Typography
+            component={motion.div}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.45, duration: 0.4 }}
+            sx={{
+              color: "rgba(255,255,255,0.35)",
+              fontFamily: "'Inter', sans-serif",
+              fontSize: { xs: "0.72rem", md: "0.8rem" },
+              fontWeight: 300,
+            }}
+          >
+            {displayedItems.length} collections available
+          </Typography>
+
+          {/* Bottom separator */}
+          <Box
+            component={motion.div}
+            initial={{ width: 0 }}
+            animate={{ width: 50 }}
+            transition={{ delay: 0.5, duration: 0.6, ease: "easeOut" }}
+            sx={{
+              height: "1.5px",
+              background: `linear-gradient(90deg, transparent, ${GOLD}, transparent)`,
+              mx: "auto",
+              mt: 1.5,
+              borderRadius: 1,
+            }}
+          />
+        </Box>
+
+        {/* Category Cards Grid */}
+        <Box
+          sx={{
+            px: { xs: 1.5, sm: 2.5, md: 3.5 },
+            pb: { xs: 2.5, md: 3.5 },
+            maxHeight: { xs: "60vh", md: "65vh" },
+            overflowY: "auto",
+            overflowX: "hidden",
+            scrollbarWidth: "none",
+            msOverflowStyle: "none",
+            "&::-webkit-scrollbar": { display: "none" },
+          }}
+        >
+          <Box
+            sx={{
+              display: "grid",
+              gridTemplateColumns: {
+                xs: "repeat(2, 1fr)",
+                sm: "repeat(3, 1fr)",
+                md: "repeat(4, 1fr)",
+              },
+              gap: { xs: 1.2, sm: 1.5, md: 2 },
+            }}
           >
             {displayedItems.map((item, i) => (
-              <SpiralCard
+              <CategoryCard
                 key={item.id}
                 item={item}
                 index={i}
@@ -670,604 +1387,30 @@ const MenuSpiral: FC<SpiralBackgroundProps> = ({
                   setSelected(i);
                   setOpen(true);
                 }}
-                cardRef={(el) => {
-                  cardsRef.current[i] = el;
-                }}
               />
             ))}
           </Box>
-        ) : (
-          <Box
-              key="horizontal-container"
-              component={motion.div}
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{
-                opacity: 1,
-                scale: 1, // Removed the scale down
-                x: "0%",   // Forces it to stay centered instead of "-30%"
-              }}
-            exit={{ opacity: 0, scale: 1.05 }}
-            transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-            sx={{
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              gap: { xs: 3, md: 6 },
-              width: "100%",
-              height: "100%",
-              flexDirection: { xs: "column", md: "row" },
-              px: 4,
-              zIndex: open ? 600 : 10,
-              position: "relative",
-            }}
-          >
-            {displayedItems.map((item, i) => (
-              <MotionBox
-                key={item.id}
-                initial={{ opacity: 0, y: 60, rotateX: 15 }}
-                animate={{ opacity: 1, y: 0, rotateX: 0 }}
-                transition={{
-                  delay: i * 0.15,
-                  duration: 0.8,
-                  type: "spring",
-                  stiffness: 80,
-                  damping: 16,
-                }}
-                whileHover={{
-                  scale: 1.05,
-                  y: -12,
-                  transition: { type: "spring", stiffness: 300, damping: 20 },
-                }}
-                onClick={() => {
-                  setSelected(i);
-                  setOpen(true);
-                }}
-                sx={{
-                  width: "90%",
-                  maxWidth: { xs: "300px", md: "380px" },
-                  aspectRatio: "1/1",
-                  borderRadius: "28px",
-                  border: `1.5px solid ${GOLD}22`,
-                  boxShadow: "0 40px 80px rgba(0,0,0,0.6)",
-                  cursor: "pointer",
-                  position: "relative",
-                  overflow: "hidden",
-                  filter: open && !isMobile ? "blur(3px) brightness(0.7)" : "none",
-                  transition: "filter 0.5s ease, border-color 0.4s ease, box-shadow 0.5s ease",
-                  "&:hover": {
-                    boxShadow: `0 0 50px ${GOLD}15, 0 50px 100px rgba(0,0,0,0.7)`,
-                    borderColor: `${GOLD}66`,
-                  },
-                }}
-              >
-                <Box
-                  component={motion.div}
-                  whileHover={{ scale: 1.08 }}
-                  transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-                  sx={{
-                    position: "absolute",
-                    inset: 0,
-                    background: `url(${item.imageUrl}) center/cover no-repeat`,
-                    borderRadius: "28px",
-                  }}
-                />
-                <Box sx={{ position: "absolute", inset: 0, borderRadius: "28px", background: `linear-gradient(180deg, rgba(5,10,20,0) 0%, rgba(5,10,20,0.1) 30%, ${OBSIDIAN}E6 100%)`, pointerEvents: "none" }} />
+        </Box>
 
-                {/* Number index badge */}
-                <Box sx={{ position: "absolute", top: 16, left: 16, width: 36, height: 36, borderRadius: "10px", background: "rgba(0,0,0,0.35)", backdropFilter: "blur(10px)", border: `1px solid ${GOLD}22`, display: "flex", alignItems: "center", justifyContent: "center", zIndex: 3 }}>
-                  <Typography sx={{ color: GOLD_LIGHT, fontFamily: "'Inter', sans-serif", fontWeight: 700, fontSize: "0.7rem" }}>{String(i + 1).padStart(2, "0")}</Typography>
-                </Box>
+        {/* Bottom gold accent */}
+        <Box
+          sx={{
+            height: "1px",
+            background: `linear-gradient(90deg, transparent, ${GOLD}33 30%, ${GOLD}33 70%, transparent)`,
+          }}
+        />
+      </Box>
 
-                <Box sx={{ position: "absolute", bottom: 0, left: 0, right: 0, p: 3, background: `linear-gradient(180deg, transparent 0%, ${OBSIDIAN}F2 100%)`, zIndex: 2 }}>
-                  <Typography sx={{ color: "#fff", fontFamily: "'Playfair Display', serif", fontWeight: 700, mb: 0.5, textAlign: "center", letterSpacing: '0.1em' }}>{item.title}</Typography>
-                  <Box sx={{ width: "25%", height: "2px", background: `linear-gradient(90deg, ${GOLD}, ${GOLD_LIGHT})`, mx: "auto", borderRadius: 2 }} />
-                </Box>
-              </MotionBox>
-            ))}
-          </Box>
-        )}
-      </AnimatePresence>
-
-      {/* ──── Side Panel Detail View ──── */}
+      {/* Side Panel */}
       <AnimatePresence mode="wait">
         {open && (
-            <Box
-              ref={sidePanelRef}
-              component={motion.div}
-              // Curtain entry: Stays centered but slides in/out from the left
-              initial={{ x: "-100%" }} 
-              animate={{ x: 0 }}
-              exit={{ x: "-100%" }}
-              transition={{ 
-                type: "spring", 
-                stiffness: 60, 
-                damping: 20,
-                mass: 1.2
-              }}
-            sx={{
-              position: "fixed",
-              top: 0,
-              left: 0, // Changed from right: 0 to left: 0
-              width: { xs: "100%", md: "65%" }, 
-              height: "100vh",
-              bgcolor: "rgba(5, 10, 20, 0.98)",
-              backdropFilter: "blur(20px)",
-              zIndex: 2000,
-              // Border is now on the right side to separate it from the grid
-              borderRight: `1px solid ${GOLD}33`, 
-              boxShadow: "20px 0 50px rgba(0,0,0,0.5)",
-              overflowY: "auto",
-              display: "flex",
-              flexDirection: "column"
-            }}
-          >
-            {/* ── Decorative top edge glow ── */}
-            <Box
-              component={motion.div}
-              initial={{ scaleX: 0 }}
-              animate={{ scaleX: 1 }}
-              transition={{ delay: 0.4, duration: 0.8, ease: [0.34, 1.56, 0.64, 1] }}
-              sx={{
-                position: "absolute",
-                top: 0,
-                left: 0,
-                right: 0,
-                height: "2px",
-                background:
-                  `linear-gradient(90deg, transparent 0%, ${GOLD} 30%, ${GOLD_LIGHT} 50%, ${GOLD} 70%, transparent 100%)`,
-                transformOrigin: "left",
-                zIndex: 10,
-              }}
-            />
-
-            {/* ── Panel top bar ── */}
-            <Box
-              component={motion.div}
-              initial={{ opacity: 0, y: -10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.25, duration: 0.4 }}
-              sx={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "space-between",
-                px: { xs: 2.5, md: 4 },
-                pt: { xs: 2.5, md: 3 },
-                pb: 2,
-                borderBottom: "1px solid rgba(255,255,255,0.04)",
-                flexShrink: 0,
-              }}
-            >
-              <IconButton
-                onClick={() => setOpen(false)}
-                aria-label="Back"
-                component={motion.button as React.ElementType}
-                whileHover={{ scale: 1.1, x: -3 }}
-                whileTap={{ scale: 0.9 }}
-                sx={{
-                  color: "rgba(255,255,255,0.7)",
-                  bgcolor: "rgba(255,255,255,0.04)",
-                  border: `1px solid ${GOLD}22`,
-                  width: 42,
-                  height: 42,
-                  borderRadius: "12px",
-                  "&:hover": {
-                    bgcolor: `${GOLD}15`,
-                    borderColor: `${GOLD}66`,
-                    color: GOLD_LIGHT,
-                  },
-                  transition: "all 0.4s cubic-bezier(0.16, 1, 0.3, 1)",
-                }}
-              >
-                <ArrowBackIcon sx={{ fontSize: 19 }} />
-              </IconButton>
-
-              <Typography
-                component={motion.span}
-                initial={{ opacity: 0, scale: 0.8 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ delay: 0.35, duration: 0.4 }}
-                sx={{
-                  color: GOLD,
-                  fontFamily: "'Inter', sans-serif",
-                  fontWeight: 600,
-                  letterSpacing: "0.25em",
-                  textTransform: "uppercase",
-                  fontSize: "0.6rem",
-                }}
-              >
-                Culinary Collection
-              </Typography>
-
-              <IconButton
-                onClick={() => setOpen(false)}
-                aria-label="Close"
-                component={motion.button as React.ElementType}
-                whileHover={{ scale: 1.1, rotate: 90 }}
-                whileTap={{ scale: 0.9 }}
-                sx={{
-                  color: "rgba(255,255,255,0.45)",
-                  width: 42,
-                  height: 42,
-                  borderRadius: "12px",
-                  "&:hover": {
-                    color: GOLD_LIGHT,
-                    bgcolor: `${GOLD}10`,
-                  },
-                  transition: "all 0.4s cubic-bezier(0.16, 1, 0.3, 1)",
-                }}
-              >
-                <CloseIcon sx={{ fontSize: 17 }} />
-              </IconButton>
-            </Box>
-
-            {/* ── Scrollable content ── */}
-            <Box
-              sx={{
-                flex: 1,
-                overflowY: "auto",
-                overflowX: "hidden",
-                px: { xs: 2.5, md: 5 },
-                py: { xs: 3, md: 4 },
-                scrollbarWidth: "none",
-                msOverflowStyle: "none",
-                "&::-webkit-scrollbar": { display: "none" },
-                touchAction: "pan-y", // ensure touch scroll works inside the panel
-              }}
-            >
-              {/* ── Category Hero Header ── */}
-              <Box
-                component={motion.div}
-                initial={{ opacity: 0, y: 30, scale: 0.95 }}
-                animate={{ opacity: 1, y: 0, scale: 1 }}
-                transition={{
-                  delay: 0.2,
-                  duration: 0.6,
-                  type: "spring",
-                  stiffness: 100,
-                  damping: 18,
-                }}
-                sx={{ textAlign: "center", mb: 5 }}
-              >
-                {selectedCategory && (
-                  <Box
-                    component={motion.div}
-                    initial={{ scale: 0, rotate: -30, opacity: 0 }}
-                    animate={{ scale: 1, rotate: 0, opacity: 1 }}
-                    transition={{
-                      delay: 0.3,
-                      duration: 0.7,
-                      type: "spring",
-                      stiffness: 120,
-                      damping: 14,
-                    }}
-                    sx={{
-                      width: { xs: 90, md: 110 },
-                      height: { xs: 90, md: 110 },
-                      borderRadius: "28px",
-                      mx: "auto",
-                      mb: 2.5,
-                      background: `url(${selectedCategory.imageUrl}) center/cover no-repeat`,
-                      border: `2px solid ${GOLD}33`,
-                      boxShadow:
-                        `0 16px 50px rgba(0,0,0,0.5), 0 0 30px ${GOLD}15`,
-                      position: "relative",
-                      "&::after": {
-                        content: '""',
-                        position: "absolute",
-                        inset: -4,
-                        borderRadius: "32px",
-                        border: `1px solid ${GOLD}22`,
-                        animation: "pulse-ring 3s ease-in-out infinite",
-                      },
-                    }}
-                  />
-                )}
-                <Typography
-                  component={motion.h3}
-                  initial={{ opacity: 0, y: 15 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.45, duration: 0.5 }}
-                  variant="h3"
-                  sx={{
-                    color: "#fff",
-                    fontFamily: "'Playfair Display', serif",
-                    fontWeight: 700,
-                    textTransform: "capitalize",
-                    letterSpacing: "0.03em",
-                    fontSize: { xs: "1.8rem", md: "2.4rem" },
-                    lineHeight: 1.15,
-                    mb: 1,
-                  }}
-                >
-                  {selectedCategory?.title}
-                </Typography>
-                <Typography
-                  component={motion.p}
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: 0.55, duration: 0.4 }}
-                  sx={{
-                    fontFamily: "'Inter', sans-serif",
-                    fontWeight: 500,
-                    letterSpacing: "0.35em",
-                    textTransform: "uppercase",
-                    fontSize: "0.75rem",
-                    opacity: 0.9,
-                    color: GOLD_LIGHT,
-                  }}
-                >
-                  <Box component="span" sx={{ color: GOLD, fontWeight: 900 }}>
-                    {selectedCategory?.subCategories.reduce(
-                      (sum, sub) => sum + sub.items.length,
-                      0,
-                    )}
-                  </Box>{" "}
-                  Masterpieces
-                </Typography>
-                {/* Expanding accent line */}
-                <Box
-                  component={motion.div}
-                  initial={{ width: 0 }}
-                  animate={{ width: 50 }}
-                  transition={{ delay: 0.6, duration: 0.5, ease: [0.34, 1.56, 0.64, 1] }}
-                  sx={{
-                    height: "2px",
-                    background: `linear-gradient(90deg, ${GOLD}, ${GOLD_LIGHT})`,
-                    mx: "auto",
-                    mt: 3,
-                    borderRadius: 2,
-                  }}
-                />
-              </Box>
-
-              {/* ── Menu Content — staggered subcategory sections ── */}
-              {selectedCategory?.subCategories.map((sub, idx) => (
-                <Box
-                  key={idx}
-                  component={motion.div}
-                  initial={{ opacity: 0, y: 40 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{
-                    delay: 0.3 + idx * 0.12,
-                    duration: 0.55,
-                    type: "spring",
-                    stiffness: 90,
-                    damping: 16,
-                  }}
-                  sx={{ mb: 5 }}
-                >
-                  {/* Sub-category header */}
-                  <Box
-                    sx={{
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "space-between",
-                      mb: 2.5,
-                      pb: 1.5,
-                      borderBottom: "1px solid rgba(255,255,255,0.03)",
-                    }}
-                  >
-                    <Box sx={{ display: "flex", alignItems: "center", gap: 1.5 }}>
-                      <Box
-                        component={motion.div}
-                        initial={{ height: 0 }}
-                        animate={{ height: 24 }}
-                        transition={{ delay: 0.4 + idx * 0.12, duration: 0.4 }}
-                        sx={{
-                          width: 3,
-                          borderRadius: 4,
-                          background: `linear-gradient(180deg, ${GOLD}, ${GOLD_LIGHT})`,
-                        }}
-                      />
-                      <Typography
-                        variant="h6"
-                        sx={{
-                          color: "#fff",
-                          fontWeight: 600,
-                          fontFamily: "'Inter', sans-serif",
-                          letterSpacing: "0.02em",
-                          fontSize: { xs: "1.05rem", md: "1.15rem" },
-                        }}
-                      >
-                        {sub.title}
-                      </Typography>
-                    </Box>
-                    <Chip
-                      label={`${sub.items.length}`}
-                      size="small"
-                      sx={{
-                        height: 22,
-                        minWidth: 28,
-                        bgcolor: "rgba(197,160,89,0.1)",
-                        color: GOLD_LIGHT,
-                        border: `1px solid ${GOLD}33`,
-                        fontSize: "0.65rem",
-                        fontWeight: 700,
-                        fontFamily: "'Inter', sans-serif",
-                        "& .MuiChip-label": { px: 1 },
-                      }}
-                    />
-                  </Box>
-
-                  <List
-                    sx={{
-                      p: 0,
-                      display: "flex",
-                      flexDirection: { xs: "column", md: "row" }, // Column on mobile, Row on desktop
-                      flexWrap: "wrap", // Allows items to wrap to the next line
-                      gap: { xs: 1, md: 2 }, // Spacing between cards
-                      justifyContent: "flex-start",
-                    }}
-                  >
-                    {sub.items.map((menuItem, itemIdx) => (
-                      <ListItem
-                        key={menuItem.id}
-                        component={motion.li}
-                        initial={{ opacity: 0, x: 30, scale: 0.95 }}
-                        animate={{ opacity: 1, x: 0, scale: 1 }}
-                        transition={{
-                          delay: 0.4 + idx * 0.12 + itemIdx * 0.05,
-                          duration: 0.55,
-                          type: "spring",
-                          stiffness: 100,
-                          damping: 18,
-                        }}
-                        disablePadding
-                        sx={{
-                          // Desktop: ~3 items per row | Mobile: 100% width
-                          width: { xs: "100%", md: "calc(33.33% - 14px)" }, 
-                          borderRadius: "20px",
-                          overflow: "hidden",
-                          transition: "all 0.4s cubic-bezier(0.16, 1, 0.3, 1)",
-                          border: "1px solid rgba(255,255,255,0.05)",
-                          background: "rgba(255,255,255,0.02)",
-                          "&:hover": {
-                            bgcolor: "rgba(255,255,255,0.05)",
-                            transform: "translateY(-5px)", // Lift up on hover for premium feel
-                            borderColor: `${GOLD}44`,
-                          },
-                        }}
-                      >
-                        <Box
-                          sx={{
-                            display: "flex",
-                            flexDirection: "column", // Vertical stack for the "Gallery" look
-                            width: "100%",
-                          }}
-                        >
-                          <Box
-                            className="item-image"
-                            sx={{
-                              width: "100%",
-                              aspectRatio: "16/10", // Consistent image ratio
-                              background: `url(${menuItem.imageUrl}) center/cover no-repeat`,
-                              borderRadius: "16px 16px 0 0",
-                              transition: "transform 0.6s ease",
-                            }}
-                          />
-
-                          <Box
-                            sx={{
-                              flex: 1,
-                              px: { xs: 2, sm: 0.5 },
-                              py: { xs: 1.5, sm: 1.2 },
-                              minWidth: 0,
-                            }}
-                          >
-                            <Box
-                              sx={{
-                                display: "flex",
-                                justifyContent: "space-between",
-                                alignItems: "center",
-                                mb: 0.3,
-                                gap: 1,
-                              }}
-                            >
-                              <Typography
-                                sx={{
-                                  color: "#fff",
-                                  fontWeight: 600,
-                                  fontSize: { xs: "0.92rem", md: "0.97rem" },
-                                  fontFamily: "'Inter', sans-serif",
-                                  letterSpacing: "0.01em",
-                                  whiteSpace: "nowrap",
-                                  overflow: "hidden",
-                                  textOverflow: "ellipsis",
-                                }}
-                              >
-                                {menuItem.name}
-                              </Typography>
-                              {menuItem.popular && (
-                                <Chip
-                                  icon={
-                                    <StarIcon
-                                      sx={{
-                                        fontSize: 11,
-                                        color: `${GOLD} !important`,
-                                      }}
-                                    />
-                                  }
-                                  label="CHEF'S CHOICE"
-                                  size="small"
-                                  sx={{
-                                    height: 20,
-                                    bgcolor: "rgba(197,160,89,0.1)",
-                                    color: GOLD_LIGHT,
-                                    fontSize: "0.58rem",
-                                    fontWeight: 800,
-                                    letterSpacing: "0.12em",
-                                    border: `1px solid ${GOLD}33`,
-                                    "& .MuiChip-label": { px: 0.5, pr: 1 },
-                                    "& .MuiChip-icon": { ml: 0.5 },
-                                  }}
-                                />
-                              )}
-                            </Box>
-
-                            <Typography
-                              sx={{
-                                color: "rgba(255, 255, 255, 0.35)",
-                                fontSize: "0.78rem",
-                                lineHeight: 1.45,
-                                fontFamily: "'Inter', sans-serif",
-                                overflow: "hidden",
-                                textOverflow: "ellipsis",
-                                display: "-webkit-box",
-                                WebkitLineClamp: 2,
-                                WebkitBoxOrient: "vertical",
-                              }}
-                            >
-                              {menuItem.description}
-                            </Typography>
-                          </Box>
-
-                          <Box
-                            sx={{
-                              pr: { xs: 2, sm: 2.5 },
-                              pb: { xs: 1.5, sm: 0 },
-                              display: "flex",
-                              alignItems: "center",
-                              flexShrink: 0,
-                            }}
-                          >
-                            <Box
-                              className="price-pill"
-                              sx={{
-                                bgcolor: "transparent",
-                                color: GOLD,
-                                border: `1px solid ${GOLD}33`,
-                                px: 1.8,
-                                py: 0.5,
-                                borderRadius: "8px",
-                                fontWeight: 800,
-                                fontSize: "0.85rem",
-                                fontFamily: "'Playfair Display', serif",
-                                transition:
-                                  "all 0.4s cubic-bezier(0.16, 1, 0.3, 1)",
-                                letterSpacing: "0.05em",
-                                whiteSpace: "nowrap",
-                              }}
-                            >
-                              {menuItem.price}
-                            </Box>
-                          </Box>
-                        </Box>
-                      </ListItem>
-                    ))}
-                  </List>
-                </Box>
-              ))}
-            </Box>
-          </Box>
+          <SidePanel
+            sidePanelRef={sidePanelRef}
+            selectedCategory={selectedCategory}
+            onClose={() => setOpen(false)}
+          />
         )}
       </AnimatePresence>
-
-      <style>{`
-        @media (max-width: 1024px) { .spiral-card { max-width: 360px; } }
-        @media (max-width: 768px) { .spiral-card { max-width: 300px; } }
-        @media (max-width: 480px) { .spiral-card { max-width: 260px; } }
-        @media (max-width: 375px) { .spiral-card { max-width: 220px; } }
-      `}</style>
     </Box>
   );
 };

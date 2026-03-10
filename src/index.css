@@ -6,56 +6,66 @@
 }
 
 :root {
-    --gold: #F5A623;
-    --gold-glow: rgba(245, 166, 35, 0.4);
-    --navy: #0A1628;
-    --navy-light: #0F1D32;
-    --blue: #3B82F6;
-    --blue-glow: rgba(59, 130, 246, 0.4);
-    --glass: rgba(15, 29, 50, 0.6);
-    --glass-border: rgba(59, 130, 246, 0.12);
+    /* Primary Gold Palette */
+    --gold: #C5A059;
+    --gold-light: #E2C68E;
+    --gold-dark: #8E6F3E;
+    --gold-glow: rgba(197, 160, 89, 0.4);
+    
+    /* Background Palette */
+    --bg-deep: #05070A;
+    --bg-card: #0F1218;
+    --bg-elevated: #161A21;
+    
+    /* Legacy aliases */
+    --navy: #05070A;
+    --navy-light: #0F1218;
+    
+    /* Glass / Surface */
+    --glass: rgba(15, 18, 24, 0.7);
+    --glass-border: rgba(197, 160, 89, 0.1);
     --masterpiece-shadow: 0 30px 60px rgba(0, 0, 0, 0.5);
-    --accent-cyan: #3B82F6;
+    
+    /* Accent */
+    --accent: #C5A059;
 }
 
 .masterpiece-glass {
-    background: rgba(15, 29, 50, 0.6);
+    background: var(--glass);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
-    border: 1px solid rgba(59, 130, 246, 0.12);
+    border: 1px solid var(--glass-border);
     box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
 }
 
 .section-title {
-    font-family: 'Raleway', sans-serif;
+    font-family: 'Playfair Display', serif;
     font-weight: 700;
     letter-spacing: -0.02em;
 }
 
 .overline-text {
     color: var(--gold);
-    letter-spacing: 0.8em;
+    letter-spacing: 0.35em;
     text-transform: uppercase;
     font-size: 0.75rem;
-    font-weight: 500;
+    font-weight: 600;
     display: block;
     margin-bottom: 1rem;
+    font-family: 'Inter', sans-serif;
 }
 
 body {
-    font-family: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
         'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
         sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    background-color: var(--navy);
+    background-color: var(--bg-deep);
     color: white;
     overflow-x: hidden;
-    /* Hide scrollbar for all browsers */
     scrollbar-width: none;
-    /* Firefox */
     -ms-overflow-style: none;
-    /* IE and Edge */
 }
 
 /* Cinematic Noise Overlay */
@@ -101,10 +111,6 @@ code {
     box-shadow: var(--masterpiece-shadow);
 }
 
-.text-glow {
-    text-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
-}
-
 /* ── Responsive helpers ─────────────────────────────────── */
 
 /* Minimum touch-target size on mobile */
@@ -116,11 +122,11 @@ code {
     }
 
     .section-title {
-        font-size: clamp(2rem, 8vw, 3.5rem) !important;
+        font-size: clamp(1.5rem, 6vw, 2.5rem) !important;
     }
 
     .overline-text {
-        letter-spacing: 0.5em;
+        letter-spacing: 0.25em;
         font-size: 0.65rem;
     }
 }

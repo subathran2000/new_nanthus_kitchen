@@ -50,7 +50,7 @@ const Footer = () => {
           width: "80%",
           height: "300px",
           background:
-            "radial-gradient(ellipse at center, rgba(59, 130, 246, 0.05) 0%, transparent 70%)",
+            "radial-gradient(ellipse at center, rgba(197, 160, 89, 0.04) 0%, transparent 70%)",
           pointerEvents: "none",
           zIndex: 0,
         }}
@@ -77,7 +77,7 @@ const Footer = () => {
               background: "rgba(255, 255, 255, 0.03)",
               backdropFilter: "blur(20px)",
               borderRadius: { xs: "16px", md: "24px" },
-              border: "1px solid rgba(59, 130, 246, 0.12)",
+              border: "1px solid rgba(197, 160, 89, 0.12)",
               p: { xs: 3, sm: 4, md: 8 },
               display: "flex",
               flexDirection: { xs: "column", md: "row" },
@@ -97,7 +97,7 @@ const Footer = () => {
                 width: "200px",
                 height: "2px",
                 background:
-                  "linear-gradient(90deg, transparent, #F5A623, transparent)",
+                  "linear-gradient(90deg, transparent, #C5A059, transparent)",
                 animation: "moveLine 4s infinite linear",
               }}
             />
@@ -109,9 +109,9 @@ const Footer = () => {
                   fontFamily: "'Inter', sans-serif",
                   fontWeight: 700,
                   mb: 2,
-                  fontSize: { xs: "1.5rem", sm: "2rem", md: "3.5rem" },
+                  fontSize: { xs: "1.25rem", sm: "1.5rem", md: "2.5rem" },
                   lineHeight: 1.1,
-                  textShadow: '0 0 20px rgba(59, 130, 246, 0.15)',
+                  textShadow: '0 0 20px rgba(197, 160, 89, 0.1)',
                 }}
               >
                 Join Our <span className="footer-secret-text">Secret</span>{" "}
@@ -151,15 +151,15 @@ const Footer = () => {
                           borderRadius: "12px",
                           px: 2,
                           py: 1.5,
-                          border: "1px solid rgba(59, 130, 246, 0.12)",
+                          border: "1px solid rgba(197, 160, 89, 0.1)",
                           fontSize: "0.95rem",
                           transition: "all 0.3s ease",
                           "&:hover": {
-                            border: "1px solid rgba(59, 130, 246, 0.3)",
+                            border: "1px solid rgba(197, 160, 89, 0.3)",
                           },
                           "&:focus-within": {
-                            border: "1px solid #F5A623",
-                            boxShadow: "0 0 20px rgba(59, 130, 246, 0.1)",
+                            border: "1px solid #C5A059",
+                            boxShadow: "0 0 20px rgba(197, 160, 89, 0.08)",
                             bgcolor: "rgba(255, 255, 255, 0.05)",
                           },
                         },
@@ -189,7 +189,7 @@ const Footer = () => {
                         animate={{ opacity: 1, y: 0 }}
                         sx={{ textAlign: "center" }}
                       >
-                        <Typography sx={{ color: "#F5A623", fontWeight: 600 }}>
+                        <Typography sx={{ color: "#C5A059", fontWeight: 600 }}>
                           Welcome to the Circle! Check your inbox soon.
                         </Typography>
                       </Box>
@@ -263,10 +263,10 @@ const Footer = () => {
                 rel="noopener noreferrer"
                 aria-label={label}
                 sx={{
-                  color: "#F5A623",
-                  bgcolor: "rgba(59, 130, 246, 0.05)",
-                  border: "1px solid rgba(59, 130, 246, 0.1)",
-                  "&:hover": { bgcolor: "rgba(59, 130, 246, 0.15)", color: "#fff", transform: "translateY(-5px)" },
+                  color: "#C5A059",
+                  bgcolor: "rgba(197, 160, 89, 0.05)",
+                  border: "1px solid rgba(197, 160, 89, 0.1)",
+                  "&:hover": { bgcolor: "rgba(197, 160, 89, 0.12)", color: "#fff", transform: "translateY(-5px)" },
                   transition: "all 0.3s ease",
                 }}
               >

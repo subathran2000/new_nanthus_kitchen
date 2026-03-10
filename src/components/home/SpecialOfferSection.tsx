@@ -14,7 +14,7 @@ const SpecialOfferSection: React.FC = () => {
         maxWidth: "1400px",
         margin: "2rem auto 0",
         position: "relative",
-        minHeight: { xs: "auto", md: "80vh" },
+        minHeight: { xs: "auto", md: "auto" },
         display: "flex",
         flexDirection: "column",
         justifyContent: "center",
@@ -27,7 +27,7 @@ const SpecialOfferSection: React.FC = () => {
           flexDirection: "column",
           alignItems: "center",
           textAlign: "center",
-          mb: { xs: 5, md: 10 },
+          mb: { xs: 3, md: 5 },
           position: "relative",
         }}
       >
@@ -40,9 +40,9 @@ const SpecialOfferSection: React.FC = () => {
           className="section-title"
           sx={{
             color: "#fff",
-            fontSize: { xs: "3rem", md: "5rem" },
+            fontSize: { xs: "2rem", md: "3rem" },
             lineHeight: 1,
-            fontFamily: "'Libre Caslon Display', serif",
+            fontFamily: "'Playfair Display', serif",
           }}
         >
           CHEF'S SELECT
@@ -62,7 +62,7 @@ const SpecialOfferSection: React.FC = () => {
           sx={{
             position: "relative",
             width: { xs: "100%", md: "55%" },
-            height: { xs: "250px", sm: "350px", md: "650px" },
+            height: { xs: "200px", sm: "280px", md: "450px" },
             flexShrink: 0,
           }}
         >
@@ -70,7 +70,7 @@ const SpecialOfferSection: React.FC = () => {
             sx={{
               position: "absolute",
               inset: { xs: -8, md: -20 },
-              border: "1px solid rgba(59, 130, 246, 0.15)",
+              border: "1px solid rgba(197, 160, 89, 0.12)",
               borderRadius: { xs: "24px", md: "40px" },
               zIndex: 0,
               "&::before": {
@@ -80,7 +80,7 @@ const SpecialOfferSection: React.FC = () => {
                 borderRadius: { xs: "24px", md: "40px" },
                 padding: "1px",
                 background:
-                  "linear-gradient(135deg, rgba(59, 130, 246, 0.2), transparent, rgba(59, 130, 246, 0.08))",
+                  "linear-gradient(135deg, rgba(197, 160, 89, 0.15), transparent, rgba(197, 160, 89, 0.06))",
               },
             }}
           />
@@ -114,8 +114,8 @@ const SpecialOfferSection: React.FC = () => {
             <Typography
               variant="h1"
               sx={{
-                fontSize: "12rem",
-                fontFamily: "'Raleway', sans-serif",
+                fontSize: "8rem",
+                fontFamily: "'Inter', sans-serif",
                 fontWeight: 900,
                 lineHeight: 0.8,
                 ml: -6,
@@ -129,14 +129,14 @@ const SpecialOfferSection: React.FC = () => {
             variant="h3"
             sx={{
               color: "#fff",
-              fontSize: { xs: "1.8rem", md: "2.8rem" },
-              fontFamily: "'Raleway', sans-serif",
+              fontSize: { xs: "1.5rem", md: "2.2rem" },
+              fontFamily: "'Playfair Display', serif",
               fontWeight: 700,
-              mb: 4,
+              mb: 3,
               lineHeight: 1.2,
             }}
           >
-            Fusion <span style={{ color: "#F5A623" }}>Mastery</span>
+            Fusion <span style={{ color: "#C5A059" }}>Mastery</span>
             <br />
             In Every Plate
           </Typography>
