@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { lazy, Suspense } from "react";
 import { Box, CircularProgress } from "@mui/material";
 import ErrorBoundary from "./components/common/ErrorBoundary";
+import { ROUTES } from "./constants/routes";
 
 // Eagerly load the main landing page
 import LandingPage from "./components/home/LandingPage";
@@ -32,10 +33,10 @@ function App() {
       <ErrorBoundary>
         <Suspense fallback={<PageLoader />}>
           <Routes>
-            <Route path="/" element={<LandingPage />} />
-            <Route path="/special" element={<SpecialsPage />} />
-            <Route path="/about" element={<AboutPage />} />
-            <Route path="/menu" element={<MenuPage />} />
+            <Route path={ROUTES.HOME} element={<LandingPage />} />
+            <Route path={ROUTES.SPECIAL} element={<SpecialsPage />} />
+            <Route path={ROUTES.ABOUT} element={<AboutPage />} />
+            <Route path={ROUTES.MENU} element={<MenuPage />} />
             {/* 404 fallback */}
             <Route path="*" element={<LandingPage />} />
           </Routes>

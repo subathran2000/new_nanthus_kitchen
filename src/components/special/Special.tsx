@@ -4,6 +4,7 @@ import { ChevronLeft, ChevronRight } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
 import Reusable3DBackground from '../common/Reusable3DBackground';
 import NavButtons from '../common/NavButtons';
+import { ROUTES } from '../../constants/routes';
 
 
 import { specialItems } from '../../data/specialItems';
@@ -168,10 +169,10 @@ const SpecialsPage: React.FC = () => {
 
         const spacing = isSmall ? 250 : isMobile ? 300 : 400;
         let translateX = offset * spacing;
-        let translateZ = -absOffset * (isSmall ? 200 : 300);
-        let rotateY = -sign * Math.min(absOffset * 60, 60);
+        const translateZ = -absOffset * (isSmall ? 200 : 300);
+        const rotateY = -sign * Math.min(absOffset * 60, 60);
         let opacity = 1 - absOffset * 0.2;
-        let scale = 1 - absOffset * 0.1;
+        const scale = 1 - absOffset * 0.1;
 
         if (absOffset > 3) {
             opacity = 0;
@@ -212,7 +213,7 @@ const SpecialsPage: React.FC = () => {
                     overflow: 'hidden',
                 }}
             >
-                <NavButtons onHome={() => routerNavigate('/')} />
+                <NavButtons onHome={() => routerNavigate(ROUTES.HOME)} />
 
                 {/* Heading: own band so it never touches the cards */}
                 <Box

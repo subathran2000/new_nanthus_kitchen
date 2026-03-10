@@ -309,7 +309,7 @@ const SpiralCard: FC<{
           component="span"
           sx={{
             display: "block",
-            fontFamily: "'Your-New-Font', serif",
+            fontFamily: "'Playfair Display', serif",
             fontWeight: 700,
             fontSize: { xs: "1.25rem", sm: "1.5rem", md: "1.85rem" },
             letterSpacing: "0.15em",
@@ -370,7 +370,9 @@ const MenuSpiral: FC<SpiralBackgroundProps> = ({
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
   const openRef = useRef(open);
-  openRef.current = open;
+  useEffect(() => {
+    openRef.current = open;
+  }, [open]);
 
   const mouseSpringX = useSpring(0, { stiffness: 100, damping: 30 });
   const mouseSpringY = useSpring(0, { stiffness: 100, damping: 30 });

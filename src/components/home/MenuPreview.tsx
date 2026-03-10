@@ -4,6 +4,7 @@ import { commonButtonStyle } from '../common/ButtonStyles';
 import { motion } from 'framer-motion';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import { useNavigate } from "react-router-dom";
+import { ROUTES } from "../../constants/routes";
 
 import mainImage from "../../assets/images/restaurant.jpg";
 
@@ -196,7 +197,7 @@ const MenuPreview: React.FC = () => {
 
             <Button
               variant="outlined"
-              onClick={() => navigate("/menu")}
+              onClick={() => navigate(ROUTES.MENU)}
               endIcon={<ArrowForwardIcon />}
               sx={commonButtonStyle}
             >

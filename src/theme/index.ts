@@ -34,17 +34,6 @@ export const colors = {
   divider: "rgba(59, 130, 246, 0.12)",
 };
 
-// CSS custom properties for use in CSS files
-export const cssVariables = {
-  "--color-primary": colors.primary.main,
-  "--color-primary-light": colors.primary.light,
-  "--color-secondary": colors.secondary.main,
-  "--color-background": colors.background.default,
-  "--color-background-paper": colors.background.paper,
-  "--color-text-primary": colors.text.primary,
-  "--color-text-secondary": colors.text.secondary,
-};
-
 // Create and export the theme
 export const theme = createTheme({
   palette: {

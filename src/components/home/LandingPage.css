@@ -11,9 +11,6 @@
   z-index: 11;
   pointer-events: none;
   text-shadow:
-    /*0 0 10px rgba(245, 166, 35, 0.6),
-    0 0 20px rgba(59, 130, 246, 0.3),
-    0 0 30px rgba(59, 130, 246, 0.15);*/
     0 0 15px rgba(212, 175, 55, 0.3),
     0 0 30px rgba(212, 175, 55, 0.1);
   white-space: nowrap;
@@ -79,13 +76,10 @@
   .main-title {
     white-space: normal !important;
     font-size: clamp(2.2rem, 12vw, 4.5rem) !important;
-    letter-spacing: 0.02em !important;
-    white-space: normal !important;
-    line-height: 1.1;
-    text-align: center !important; /* Ensure it's centered */
+    letter-spacing: 0.05em !important;
+    line-height: 0.9;
+    text-align: center !important;
     margin: 0 !important;
-    line-height: 0.9; /* Tightens the vertical space between the words */
-    letter-spacing: 0.05em;
     }
 
   .subtitle-tagline {

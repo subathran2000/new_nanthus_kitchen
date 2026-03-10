@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
+import { ROUTES } from "../../constants/routes";
 import ImageGallery from "./ImageGallery";
 import Reusable3DBackground from "../common/Reusable3DBackground";
 import NavButtons from "../common/NavButtons";
@@ -36,7 +37,7 @@ const AboutUs = () => {
     >
       <Reusable3DBackground />
 
-      <NavButtons onHome={() => navigate("/")} />
+      <NavButtons onHome={() => navigate(ROUTES.HOME)} />
 
       {/* Hero / Header — editorial, warm */}
       <motion.div
@@ -105,7 +106,8 @@ const AboutUs = () => {
             style={{
               width: "40px",
               height: "1px",
-              background: "linear-gradient(90deg, transparent, rgba(255, 180, 100, 0.6))",
+              background:
+                "linear-gradient(90deg, transparent, rgba(255, 180, 100, 0.6))",
             }}
           />
           <span
@@ -135,7 +137,8 @@ const AboutUs = () => {
             style={{
               width: "40px",
               height: "1px",
-              background: "linear-gradient(90deg, rgba(255, 180, 100, 0.6), transparent)",
+              background:
+                "linear-gradient(90deg, rgba(255, 180, 100, 0.6), transparent)",
             }}
           />
         </motion.div>
@@ -152,7 +155,8 @@ const AboutUs = () => {
             fontWeight: 400,
           }}
         >
-          A peek into our kitchen, our people, and the little things that make every visit feel like home.
+          A peek into our kitchen, our people, and the little things that make
+          every visit feel like home.
         </motion.p>
       </motion.div>
 
@@ -161,7 +165,13 @@ const AboutUs = () => {
         initial={{ opacity: 0, y: 24 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8, delay: 0.35, ease: [0.22, 1, 0.36, 1] }}
-        style={{ position: "relative", zIndex: 1, width: "100%", display: "flex", justifyContent: "center" }}
+        style={{
+          position: "relative",
+          zIndex: 1,
+          width: "100%",
+          display: "flex",
+          justifyContent: "center",
+        }}
       >
         <ImageGallery />
       </motion.div>

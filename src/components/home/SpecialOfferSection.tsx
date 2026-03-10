@@ -1,12 +1,16 @@
 import React from 'react';
 import { Box, Typography, Button } from '@mui/material';
 import { commonButtonStyle } from "../common/ButtonStyles";
+import { useNavigate } from 'react-router-dom';
+import { ROUTES } from '../../constants/routes';
 import LocalOfferIcon from "@mui/icons-material/LocalOffer";
 
 import specialImage from "../../assets/images/special_bg.png";
 import AccordionFoldImage from "./AccordionFoldImage";
 
 const SpecialOfferSection: React.FC = () => {
+  const navigate = useNavigate();
+
   return (
     <Box
       sx={{
@@ -161,9 +165,8 @@ const SpecialOfferSection: React.FC = () => {
           </Typography>
 
           <Button
-            component="a"
-            href="/special"
             variant="outlined"
+            onClick={() => navigate(ROUTES.SPECIAL)}
             startIcon={<LocalOfferIcon />}
             sx={commonButtonStyle}
           >

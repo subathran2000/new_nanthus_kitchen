@@ -1,26 +1,39 @@
-import React, { useRef, useMemo } from 'react'
-import { useFrame, useThree } from '@react-three/fiber'
-import { useScroll, Float, Sparkles, Cloud, useTexture, Environment } from '@react-three/drei'
-import * as THREE from 'three'
-import logoReflect from "../../assets/images/restaurant.jpg"
+import React, { useRef, useState, useEffect } from "react";
+import type { RefObject } from "react";
+import { useFrame, useThree } from "@react-three/fiber";
+import {
+  Float,
+  Sparkles,
+  Cloud,
+  useTexture,
+  Environment,
+} from "@react-three/drei";
+import * as THREE from "three";
+import logoReflect from "../../assets/images/restaurant.jpg";
 
 /* Floating Spice Particle — warm-toned, organic shapes drifting gently */
-const FloatingSpice = ({ position, color, speed, scale }: {
+const FloatingSpice = ({
+  position,
+  color,
+  speed,
+  scale,
+}: {
   position: [number, number, number];
   color: string;
   speed: number;
   scale: number;
 }) => {
-  const meshRef = useRef<THREE.Mesh>(null)
-  const initialY = position[1]
+  const meshRef = useRef<THREE.Mesh>(null);
+  const initialY = position[1];
 
   useFrame((state, delta) => {
     if (meshRef.current) {
-      meshRef.current.rotation.x += delta * 0.15
-      meshRef.current.rotation.z += delta * 0.1
-      meshRef.current.position.y = initialY + Math.sin(state.clock.elapsedTime * speed) * 0.3
+      meshRef.current.rotation.x += delta * 0.15;
+      meshRef.current.rotation.z += delta * 0.1;
+      meshRef.current.position.y =
+        initialY + Math.sin(state.clock.elapsedTime * speed) * 0.3;
     }
-  })
+  });
 
   return (
     <Float speed={speed} rotationIntensity={0.3} floatIntensity={0.5}>
@@ -37,26 +50,29 @@ const FloatingSpice = ({ position, color, speed, scale }: {
         />
       </mesh>
     </Float>
-  )
-}
+  );
+};
 
 /* Warm steam wisps rising gently */
-const SteamWisp = ({ position, delay }: {
+const SteamWisp = ({
+  position,
+  delay,
+}: {
   position: [number, number, number];
   delay: number;
 }) => {
-  const meshRef = useRef<THREE.Mesh>(null)
+  const meshRef = useRef<THREE.Mesh>(null);
 
   useFrame((state) => {
     if (meshRef.current) {
-      const t = (state.clock.elapsedTime + delay) * 0.3
-      meshRef.current.position.y = position[1] + (t % 4) * 1.5
-      meshRef.current.position.x = position[0] + Math.sin(t * 2) * 0.3
-      meshRef.current.scale.setScalar(0.5 + Math.sin(t) * 0.2)
-      const mat = meshRef.current.material as THREE.MeshStandardMaterial
-      mat.opacity = Math.max(0, 0.08 - ((t % 4) / 4) * 0.08)
+      const t = (state.clock.elapsedTime + delay) * 0.3;
+      meshRef.current.position.y = position[1] + (t % 4) * 1.5;
+      meshRef.current.position.x = position[0] + Math.sin(t * 2) * 0.3;
+      meshRef.current.scale.setScalar(0.5 + Math.sin(t) * 0.2);
+      const mat = meshRef.current.material as THREE.MeshStandardMaterial;
+      mat.opacity = Math.max(0, 0.08 - ((t % 4) / 4) * 0.08);
     }
-  })
+  });
 
   return (
     <mesh ref={meshRef} position={position}>
@@ -68,55 +84,73 @@ const SteamWisp = ({ position, delay }: {
         depthWrite={false}
       />
     </mesh>
-  )
+  );
+};
+
+interface ThreeBackgroundProps {
+  scrollProgressRef: RefObject<number>;
 }
 
-const ThreeBackground: React.FC = () => {
-  const scroll = useScroll()
-  const groupRef = useRef<THREE.Group>(null)
-  const { viewport } = useThree()
-  const isMobile = viewport.width < 6
+const ThreeBackground: React.FC<ThreeBackgroundProps> = ({ scrollProgressRef }) => {
+  const groupRef = useRef<THREE.Group>(null);
+  const { viewport } = useThree();
+  const isMobile = viewport.width < 6;
 
-  const texture = useTexture(logoReflect)
-  texture.mapping = THREE.EquirectangularReflectionMapping
+  const texture = useTexture(logoReflect);
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/immutability
+    texture.mapping = THREE.EquirectangularReflectionMapping;
+  }, [texture]);
 
   // Generate spice positions once
-  const spiceParticles = useMemo(() => {
-    const particles: { pos: [number, number, number]; color: string; speed: number; scale: number }[] = []
-    const colors = ['#F5A623', '#1D4ED8', '#60A5FA', '#2563EB', '#3B82F6', '#FFD166']
-    const count = isMobile ? 6 : 12
+  const [spiceParticles] = useState(() => {
+    const particles: {
+      pos: [number, number, number];
+      color: string;
+      speed: number;
+      scale: number;
+    }[] = [];
+    const colors = [
+      "#F5A623",
+      "#1D4ED8",
+      "#60A5FA",
+      "#2563EB",
+      "#3B82F6",
+      "#FFD166",
+    ];
+    const count = isMobile ? 6 : 12;
     for (let i = 0; i < count; i++) {
       particles.push({
         pos: [
           (Math.random() - 0.5) * 14,
           (Math.random() - 0.5) * 10,
-          (Math.random() - 0.5) * 8 - 2
+          (Math.random() - 0.5) * 8 - 2,
         ],
         color: colors[i % colors.length],
         speed: 0.5 + Math.random() * 1.5,
         scale: 0.6 + Math.random() * 1.2,
-      })
+      });
     }
-    return particles
-  }, [isMobile])
+    return particles;
+  });
 
   useFrame((_state, delta) => {
     if (groupRef.current) {
-      const scrollOffset = scroll ? scroll.offset : 0
+      const scrollOffset = scrollProgressRef.current ?? 0;
       groupRef.current.rotation.y = THREE.MathUtils.damp(
         groupRef.current.rotation.y,
         -scrollOffset * Math.PI * 0.5,
         4,
-        delta
-      )
+        delta,
+      );
       groupRef.current.position.z = THREE.MathUtils.damp(
         groupRef.current.position.z,
         scrollOffset * 3,
         4,
-        delta
-      )
+        delta,
+      );
     }
-  })
+  });
 
   return (
     <>
@@ -167,7 +201,13 @@ const ThreeBackground: React.FC = () => {
 
         {/* Floating spice particles */}
         {spiceParticles.map((p, i) => (
-          <FloatingSpice key={i} position={p.pos} color={p.color} speed={p.speed} scale={p.scale} />
+          <FloatingSpice
+            key={i}
+            position={p.pos}
+            color={p.color}
+            speed={p.speed}
+            scale={p.scale}
+          />
         ))}
 
         {/* Rising steam wisps */}
@@ -196,7 +236,7 @@ const ThreeBackground: React.FC = () => {
         <Environment map={texture} blur={1} />
       </group>
     </>
-  )
-}
+  );
+};
 
-export default ThreeBackground
+export default ThreeBackground;

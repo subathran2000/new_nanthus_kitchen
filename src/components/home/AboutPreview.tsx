@@ -2,6 +2,8 @@ import React from "react";
 import { Box, Typography, Button } from "@mui/material";
 import { commonButtonStyle } from "../common/ButtonStyles";
 import { motion } from "framer-motion";
+import { useNavigate } from "react-router-dom";
+import { ROUTES } from "../../constants/routes";
 import HistoryIcon from "@mui/icons-material/History";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import VisibilityIcon from "@mui/icons-material/Visibility";
@@ -212,6 +214,8 @@ const AboutCard: React.FC<{ item: AboutItem; index: number }> = ({
 };
 
 const AboutPreview: React.FC = () => {
+  const navigate = useNavigate();
+
   return (
     <Box
       sx={{
@@ -286,9 +290,8 @@ const AboutPreview: React.FC = () => {
           transition={{ delay: 0.5 }}
         >
           <Button
-            component="a"
-            href="/about"
             variant="outlined"
+            onClick={() => navigate(ROUTES.ABOUT)}
             sx={commonButtonStyle}
           >
             EXPLORE MORE

@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { ROUTES } from "../../constants/routes";
 import "./MenuPage.css";
 import MenuSpiral from "./MenuSpiral";
 import { Box } from "@mui/material";
@@ -35,15 +36,15 @@ const MenuNew = () => {
         {view === "gallery" ? (
           <InteractiveMenu
             onSelectCategory={handleClick}
-            onBack={() => navigate("/")}
-            onHome={() => navigate("/")}
+            onBack={() => navigate(ROUTES.HOME)}
+            onHome={() => navigate(ROUTES.HOME)}
           />
         ) : (
           <>
             {!panelOpen && (
               <NavButtons
                 onBack={() => setView("gallery")}
-                onHome={() => navigate("/")}
+                onHome={() => navigate(ROUTES.HOME)}
               />
             )}
             <MenuSpiral

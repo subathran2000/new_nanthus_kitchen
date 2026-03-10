@@ -10,11 +10,6 @@ import type {
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 /**
- * Phone number validation regex (basic)
- */
-const PHONE_REGEX = /^\d{7,}$/;
-
-/**
  * Validates contact form data
  */
 export const validateContactForm = (
@@ -117,13 +112,6 @@ export const sanitizeInput = (input: string): string => {
  */
 export const isValidEmail = (email: string): boolean => {
   return EMAIL_REGEX.test(email);
-};
-
-/**
- * Validates if a string is a valid phone number
- */
-export const isValidPhone = (phone: string): boolean => {
-  return PHONE_REGEX.test(phone);
 };
 
 /**

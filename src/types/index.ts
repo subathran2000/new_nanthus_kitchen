@@ -93,19 +93,6 @@ export interface ValidationResult {
 }
 
 /**
- * Event type options for catering
- */
-export const EventType = {
-  WEDDING: "wedding",
-  CORPORATE: "corporate",
-  BIRTHDAY: "birthday",
-  ANNIVERSARY: "anniversary",
-  OTHER: "other",
-} as const;
-
-export type EventTypeValue = (typeof EventType)[keyof typeof EventType];
-
-/**
  * Menu category type
  */
 export type MealType = "Lunch" | "Dinner" | "Breakfast" | "Dessert";
@@ -125,44 +112,4 @@ export interface SpecialItem {
   price?: string;
 }
 
-/**
- * Navigation route type
- */
-export type RouteType = "home" | "menu" | "special" | "about" | "contact";
 
-/**
- * API Response wrapper
- */
-export interface ApiResponse<T> {
-  success: boolean;
-  data?: T;
-  error?: string;
-  message?: string;
-}
-
-/**
- * Form submission status
- */
-export const FormStatus = {
-  IDLE: "idle",
-  LOADING: "loading",
-  SUCCESS: "success",
-  ERROR: "error",
-} as const;
-
-export type FormStatusType = (typeof FormStatus)[keyof typeof FormStatus];
-
-/**
- * Location data
- */
-export interface Location {
-  id: string;
-  name: string;
-  address: string;
-  phone: string;
-  hours: string;
-  coordinates?: {
-    latitude: number;
-    longitude: number;
-  };
-}

@@ -1,4 +1,4 @@
-import { useEffect, useMemo, type FC } from "react";
+import { useEffect, useState, type FC } from "react";
 import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
 import { useMediaQuery } from "@mui/material";
 
@@ -53,7 +53,9 @@ const Star: FC<{
 
 const Sparkles: FC = () => {
   const isMobile = useMediaQuery("(max-width:900px)");
-  const prefersReducedMotion = useMediaQuery("(prefers-reduced-motion: reduce)");
+  const prefersReducedMotion = useMediaQuery(
+    "(prefers-reduced-motion: reduce)",
+  );
   const isTouchDevice = useMediaQuery("(pointer: coarse)");
 
   const mouseX = useMotionValue(0);
@@ -78,19 +80,17 @@ const Sparkles: FC = () => {
 
   const count = isMobile ? SPARKLE_COUNT_MOBILE : SPARKLE_COUNT_DESKTOP;
 
-  // Generate star config once — memoized to prevent re-creating on every render
-  const stars = useMemo(
-    () =>
-      Array.from({ length: count }, (_, i) => ({
-        id: i,
-        x: Math.random() * 100,
-        y: Math.random() * 100,
-        size: Math.random() * 4 + 0.5,
-        duration: Math.random() * 4 + 2,
-        delay: Math.random() * 3,
-        depth: Math.random() * 0.08 + 0.01,
-      })),
-    [count],
+  // Generate star config once — stable across re-renders
+  const [stars] = useState(() =>
+    Array.from({ length: count }, (_, i) => ({
+      id: i,
+      x: Math.random() * 100,
+      y: Math.random() * 100,
+      size: Math.random() * 4 + 0.5,
+      duration: Math.random() * 4 + 2,
+      delay: Math.random() * 3,
+      depth: Math.random() * 0.08 + 0.01,
+    })),
   );
 
   // Respect prefers-reduced-motion — skip the sparkles entirely

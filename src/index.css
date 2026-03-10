@@ -81,11 +81,6 @@ body::after {
     }
 }
 
-code {
-    font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-        monospace;
-}
-
 /* Custom Scrollbar - Made hidden as requested */
 ::-webkit-scrollbar {
     width: 0px;
