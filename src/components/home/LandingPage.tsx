@@ -39,12 +39,14 @@ import SpecialsPopup from "./SpecialsPopup";
 import { CustomScrollbarUI } from "../common/CustomScrollbar";
 import ThreeBackground from "./ThreeBackground";
 
-const Section: FC<{
+/** Wrapper for light content sections below the hero */
+const LightSection: FC<{
   children: ReactNode;
   style?: React.CSSProperties;
   id?: string;
   className?: string;
-}> = ({ children, style, id, className }) => (
+  alternate?: boolean;
+}> = ({ children, style, id, className, alternate }) => (
   <Box
     id={id}
     className={className}
@@ -63,6 +65,35 @@ const Section: FC<{
       alignItems: "center",
       overflow: "visible",
       py: { xs: 6, sm: 8, md: 10 },
+      bgcolor: alternate ? "background.default" : "background.paper",
+      ...style,
+    }}
+  >
+    {children}
+  </Box>
+);
+
+/** Hero section wrapper (stays dark for the 3D background) */
+const HeroSection: FC<{
+  children: ReactNode;
+  style?: React.CSSProperties;
+}> = ({ children, style }) => (
+  <Box
+    component={motion.section}
+    initial={{ opacity: 0 }}
+    animate={{ opacity: 1 }}
+    transition={{ duration: 1 }}
+    sx={{
+      width: "100%",
+      position: "relative",
+      zIndex: 10,
+      display: "flex",
+      flexDirection: "column",
+      justifyContent: "center",
+      alignItems: "center",
+      overflow: "visible",
+      minHeight: "100vh",
+      height: "100vh",
       ...style,
     }}
   >
@@ -119,8 +150,8 @@ const LandingStatic: FC = () => {
       sx={{
         width: "100%",
         height: "100vh",
-        bgcolor: "#05070A",
-        color: "#fff",
+        bgcolor: "#FFFFFF",
+        color: "#1A1D23",
         overflow: "hidden",
         position: "relative",
       }}
@@ -162,11 +193,9 @@ const LandingStatic: FC = () => {
           sx={{
             width: { xs: 48, md: 150 },
             cursor: "pointer",
-            filter: "drop-shadow(0 0 15px rgba(59, 130, 246, 0.2))",
-            transition: "all 0.4s cubic-bezier(0.16, 1, 0.3, 1)",
+            transition: "all 0.3s ease",
             "&:hover": {
               transform: "scale(1.05)",
-              filter: "drop-shadow(0 0 25px rgba(59, 130, 246, 0.4))",
             },
           }}
           onClick={() => {
@@ -179,7 +208,7 @@ const LandingStatic: FC = () => {
         <OrderButton onClick={() => setLocationSelectorOpen(true)} />
       </Box>
 
-      {/* Fixed 3D Background */}
+      {/* Fixed 3D Background - only covers hero viewport */}
       {prefersReducedMotion ? (
         <Box
           sx={{
@@ -187,10 +216,10 @@ const LandingStatic: FC = () => {
             top: 0,
             left: 0,
             width: "100%",
-            height: "100%",
+            height: "100vh",
             zIndex: 0,
             background:
-              "radial-gradient(ellipse at center, #0F1218 0%, #05070A 100%)",
+              "linear-gradient(135deg, #1A1D23 0%, #2B3A4E 100%)",
           }}
         />
       ) : (
@@ -200,7 +229,7 @@ const LandingStatic: FC = () => {
             top: 0,
             left: 0,
             width: "100%",
-            height: "100%",
+            height: "100vh",
             zIndex: 0,
           }}
         >
@@ -219,7 +248,7 @@ const LandingStatic: FC = () => {
               onCreated={handleCanvasCreated}
               style={{ width: "100%", height: "100%" }}
             >
-              <color attach="background" args={["#05070A"]} />
+              <color attach="background" args={["#1A1D23"]} />
               <fog attach="fog" args={["#000000", 8, 30]} />
               <Suspense fallback={null}>
                 <ThreeBackground scrollProgressRef={scrollProgressRef} />
@@ -251,18 +280,10 @@ const LandingStatic: FC = () => {
           height: "100vh",
           overflowY: "auto",
           overflowX: "hidden",
-          scrollbarWidth: "none",
-          "&::-webkit-scrollbar": { display: "none" },
         }}
       >
-            {/* 1. Hero Section - Centered with Interaction */}
-            <Section
-              style={{
-                minHeight: "100vh",
-                height: "100vh",
-                justifyContent: "center",
-              }}
-            >
+            {/* 1. Hero Section - Dark with 3D background */}
+            <HeroSection>
               <Box
                 component={motion.div}
                 initial="initial"
@@ -296,7 +317,6 @@ const LandingStatic: FC = () => {
                   />
                 </motion.div>
 
-                {/* This container handles the interaction between the two main words */}
                 <Box
                   sx={{
                     position: "relative",
@@ -326,16 +346,16 @@ const LandingStatic: FC = () => {
                       animate: { x: 0, opacity: 1 },
                     }}
                     transition={{ duration: 0.8, ease: "easeOut" }}
-                    style={{ marginTop: "20px" }} // Pulls them closer together
+                    style={{ marginTop: "20px" }}
                   >
                     <TypewriterText
                       text="KITCHEN"
                       as="h2"
                       className="main-title"
                       style={{
-                        color: "#D4AF37",
+                        color: "#F5A623",
                         background: "none",
-                        WebkitTextFillColor: "#D4AF37",
+                        WebkitTextFillColor: "#F5A623",
                       }}
                       delay={1.8}
                     />
@@ -372,31 +392,49 @@ const LandingStatic: FC = () => {
                       });
                     }
                   }}
-                  sx={{ mt: { xs: 3, md: 5 }, ...commonButtonStyle }}
+                  sx={{
+                    mt: { xs: 3, md: 5 },
+                    borderRadius: "8px",
+                    px: { xs: 4, md: 5 },
+                    py: { xs: 1.5, md: 1.75 },
+                    bgcolor: "transparent",
+                    border: "2px solid rgba(255,255,255,0.8)",
+                    color: "#fff",
+                    fontSize: { xs: "0.8rem", md: "0.85rem" },
+                    fontWeight: 600,
+                    textTransform: "uppercase",
+                    letterSpacing: "0.15em",
+                    fontFamily: "'Inter', sans-serif",
+                    transition: "all 0.3s ease",
+                    "&:hover": {
+                      bgcolor: "#fff",
+                      color: "#1A1D23",
+                      borderColor: "#fff",
+                      transform: "translateY(-2px)",
+                    },
+                  }}
                 >
                   DIVE IN
                 </Button>
               </Box>
-            </Section>
+            </HeroSection>
 
-            {/* 2. About Us */}
-            <Section
-              style={{ paddingTop: 0, paddingBottom: 0, minHeight: "auto" }}
-            >
+            {/* 2. About Us - Light */}
+            <LightSection>
               <AboutPreview />
-            </Section>
+            </LightSection>
 
-            {/* 3. Menu Preview */}
-            <Section
+            {/* 3. Menu Preview - Alternate Light */}
+            <LightSection
               id="menu-preview-section"
-              style={{ paddingTop: 0, paddingBottom: 0, minHeight: "auto" }}
+              alternate
             >
               <Box
                 sx={{
                   width: "100%",
                   maxWidth: 1200,
                   mx: "auto",
-                  py: { xs: "3rem", md: "4rem" },
+                  py: { xs: "2rem", md: "3rem" },
                   display: "flex",
                   flexDirection: "column",
                   alignItems: "center",
@@ -404,14 +442,21 @@ const LandingStatic: FC = () => {
                 }}
               >
                 <Typography
+                  variant="overline"
+                  className="overline-text"
+                >
+                  DISCOVER
+                </Typography>
+                <Typography
                   variant="h2"
                   className="section-title"
                   sx={{
-                    color: "white",
-                    fontFamily: "'Libre Caslon Display', serif",
+                    color: "#1A1D23",
+                    fontFamily: "'Playfair Display', Georgia, serif",
+                    fontSize: { xs: "2.5rem", md: "3.5rem" },
                   }}
                 >
-                  OUR MENU
+                  Our Menu
                 </Typography>
                 <Button
                   variant="outlined"
@@ -422,34 +467,24 @@ const LandingStatic: FC = () => {
                   EXPLORE MENU
                 </Button>
               </Box>
-            </Section>
+            </LightSection>
 
-            {/* 4. Other Sections (Fixed Errors: No longer empty/unused) */}
-            <Section
-              style={{ paddingTop: 0, paddingBottom: 0, minHeight: "auto" }}
-            >
+            {/* 4. Sections */}
+            <LightSection>
               <SpecialOfferSection />
-            </Section>
-            <Section
-              style={{ paddingTop: 0, paddingBottom: 0, minHeight: "auto" }}
-            >
+            </LightSection>
+            <LightSection alternate>
               <PickupSection />
-            </Section>
-            <Section
-              style={{ paddingTop: 0, paddingBottom: 0, minHeight: "auto" }}
-            >
+            </LightSection>
+            <LightSection>
               <CateringSection />
-            </Section>
-            <Section
-              style={{ paddingTop: 0, paddingBottom: 0, minHeight: "auto" }}
-            >
+            </LightSection>
+            <LightSection alternate>
               <ContactSection />
-            </Section>
-            <Section
-              style={{ paddingTop: 0, paddingBottom: 0, minHeight: "auto" }}
-            >
+            </LightSection>
+            <LightSection style={{ paddingTop: 0, paddingBottom: 0 }}>
               <Footer />
-            </Section>
+            </LightSection>
       </Box>
 
       <LocationSelector

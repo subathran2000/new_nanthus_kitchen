@@ -5,7 +5,6 @@ import "./MenuPage.css";
 import MenuSpiral from "./MenuSpiral";
 import { Box } from "@mui/material";
 import InteractiveMenu from "./InteractiveMenu";
-import Reusable3DBackground from "../common/Reusable3DBackground";
 import NavButtons from "../common/NavButtons";
 
 const MenuNew = () => {
@@ -25,12 +24,10 @@ const MenuNew = () => {
       sx={{
         position: "relative",
         minHeight: "100vh",
-        bgcolor: "#0A1628",
+        bgcolor: "#F5F7FA",
         overflow: "hidden",
       }}
     >
-      <Reusable3DBackground />
-
       {/* Content Layer */}
       <Box sx={{ position: "relative", zIndex: 10 }}>
         {view === "gallery" ? (

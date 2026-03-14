@@ -32,7 +32,6 @@ const ContactForm = () => {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
-    // Clear field error on change
     if (errors[name]) {
       setErrors((prev) => {
         const next = { ...prev };
@@ -54,42 +53,41 @@ const ContactForm = () => {
     setTimeout(() => setSubmitted(false), 5000);
   };
 
-  /* 🌿 Specials-Style Input Style */
   const inputStyle = {
     "& .MuiOutlinedInput-root": {
-      borderRadius: "12px",
-      background: "rgba(255, 255, 255, 0.03)",
+      borderRadius: "10px",
+      background: "#F5F7FA",
       transition: "all 0.3s ease",
       fontSize: "0.9rem",
       "& fieldset": {
-        borderColor: "rgba(59, 130, 246, 0.15)",
+        borderColor: "#E2E6ED",
       },
       "&:hover fieldset": {
-        borderColor: "rgba(59, 130, 246, 0.3)",
+        borderColor: "#2B7DE9",
       },
       "&.Mui-focused fieldset": {
-        borderColor: "#F5A623",
+        borderColor: "#2B7DE9",
       },
       "& input": {
-        color: "#fff",
+        color: "#1A1D23",
         padding: "12px 14px",
       },
       "& textarea": {
-        color: "#fff",
+        color: "#1A1D23",
       },
     },
     "& .MuiInputLabel-root": {
-      color: "rgba(255, 255, 255, 0.4)",
+      color: "#A0A8B8",
       fontSize: "0.85rem",
       "&.Mui-focused": {
-        color: "#F5A623",
+        color: "#2B7DE9",
       },
     },
     "& .MuiInputAdornment-root svg": {
-      color: "rgba(59, 130, 246, 0.3)",
+      color: "#A0A8B8",
     },
     "& .Mui-focused .MuiInputAdornment-root svg": {
-      color: "#F5A623",
+      color: "#2B7DE9",
     },
   };
 
@@ -100,10 +98,10 @@ const ContactForm = () => {
         height: "100%",
         display: "flex",
         flexDirection: { xs: "column", md: "row" },
-        bgcolor: "transparent",
+        bgcolor: "#FFFFFF",
       }}
     >
-      {/* Left Column: Visual/Branding (Specials Style) */}
+      {/* Left Column: Visual/Branding */}
       <Box
         sx={{
           flex: 1,
@@ -117,7 +115,6 @@ const ContactForm = () => {
           minHeight: { xs: "250px", md: "auto" },
         }}
       >
-        {/* Background Image with Overlay */}
         <Box
           sx={{
             position: "absolute",
@@ -131,7 +128,7 @@ const ContactForm = () => {
               position: "absolute",
               inset: 0,
               background:
-                "linear-gradient(135deg, rgba(10, 22, 40, 0.9), rgba(8, 16, 32, 0.7))",
+                "linear-gradient(135deg, rgba(26, 29, 35, 0.88), rgba(26, 29, 35, 0.75))",
             },
           }}
         />
@@ -149,8 +146,8 @@ const ContactForm = () => {
               sx={{
                 color: "#F5A623",
                 letterSpacing: "4px",
-                fontSize: "0.9rem",
-                fontWeight: "bold",
+                fontSize: "0.85rem",
+                fontWeight: 700,
               }}
             >
               CONNECT WITH US
@@ -161,12 +158,11 @@ const ContactForm = () => {
             variant="h3"
             sx={{
               color: "#fff",
-              fontFamily: "'Playfair Display', serif",
+              fontFamily: "'Playfair Display', Georgia, serif",
               mb: 3,
-              textShadow: "0 0 20px rgba(245, 166, 35, 0.3)",
-              fontSize: { xs: "2.2rem", md: "3.2rem" },
+              fontSize: { xs: "2rem", md: "2.5rem" },
               fontWeight: 700,
-              lineHeight: 1.1,
+              lineHeight: 1.2,
             }}
           >
             We'd Love to <br />
@@ -177,12 +173,11 @@ const ContactForm = () => {
           <Typography
             variant="body1"
             sx={{
-              color: "rgba(180, 210, 255, 0.7)",
+              color: "rgba(255, 255, 255, 0.8)",
               lineHeight: 1.7,
               fontSize: "1rem",
               maxWidth: "350px",
-              fontWeight: 300,
-              opacity: 0.9,
+              fontWeight: 400,
             }}
           >
             Whether you have a question about our menu, events, or just want to
@@ -191,7 +186,7 @@ const ContactForm = () => {
         </motion.div>
       </Box>
 
-      {/* Right Column: Form (Glassmorphic) */}
+      {/* Right Column: Form */}
       <Box
         sx={{
           flex: 1.2,
@@ -199,10 +194,9 @@ const ContactForm = () => {
           display: "flex",
           flexDirection: "column",
           justifyContent: "center",
-          bgcolor: "rgba(10, 22, 40, 0.5)",
-          backdropFilter: "blur(20px)",
+          bgcolor: "#FFFFFF",
           position: "relative",
-          borderLeft: { md: "1px solid rgba(59, 130, 246, 0.1)" },
+          borderLeft: { md: "1px solid #E2E6ED" },
         }}
       >
         <AnimatePresence mode="wait">
@@ -228,6 +222,7 @@ const ContactForm = () => {
                     label="YOUR NAME"
                     name="name"
                     required
+                    autoComplete="name"
                     error={!!errors.name}
                     helperText={errors.name}
                     sx={inputStyle}
@@ -249,6 +244,7 @@ const ContactForm = () => {
                     name="email"
                     type="email"
                     required
+                    autoComplete="email"
                     error={!!errors.email}
                     helperText={errors.email}
                     sx={inputStyle}
@@ -325,30 +321,29 @@ const ContactForm = () => {
                     fullWidth
                     aria-label="Send message"
                     sx={{
-                      py: 2,
-                      background: "linear-gradient(90deg, #F5A623, #3B82F6)",
+                      py: 1.75,
+                      background: "#2B7DE9",
                       border: "none",
-                      borderRadius: "12px",
+                      borderRadius: "10px",
                       color: "#fff",
-                      fontWeight: "bold",
+                      fontWeight: 600,
                       fontSize: "0.9rem",
-                      letterSpacing: "2px",
+                      letterSpacing: "0.1em",
                       textTransform: "uppercase",
-                      boxShadow: "0 10px 25px rgba(59, 130, 246, 0.3)",
+                      boxShadow: "0 2px 8px rgba(43, 125, 233, 0.25)",
                       transition: "all 0.3s ease",
                       "&:hover": {
-                        transform: "translateY(-3px)",
-                        boxShadow: "0 15px 35px rgba(59, 130, 246, 0.3)",
-                        filter: "brightness(1.1)",
-                        background: "linear-gradient(90deg, #F5A623, #3B82F6)",
+                        transform: "translateY(-2px)",
+                        boxShadow: "0 4px 16px rgba(43, 125, 233, 0.35)",
+                        background: "#1B5FB5",
                       },
                       "&:focus-visible": {
-                        outline: "2px solid #F5A623",
+                        outline: "2px solid #2B7DE9",
                         outlineOffset: "2px",
                       },
                     }}
                   >
-                    Send Message <span style={{ marginLeft: "10px" }}>→</span>
+                    Send Message
                   </Button>
                 </Box>
               </Box>
@@ -364,8 +359,8 @@ const ContactForm = () => {
                 <Typography
                   variant="h4"
                   sx={{
-                    color: "#F5A623",
-                    fontFamily: "'Playfair Display', serif",
+                    color: "#2B7DE9",
+                    fontFamily: "'Playfair Display', Georgia, serif",
                     mb: 2,
                     fontWeight: 700,
                   }}
@@ -374,8 +369,8 @@ const ContactForm = () => {
                 </Typography>
                 <Typography
                   sx={{
-                    color: "rgba(180, 210, 255, 0.7)",
-                    fontSize: "1.1rem",
+                    color: "#5A6177",
+                    fontSize: "1.05rem",
                     mb: 4,
                   }}
                 >
@@ -385,14 +380,14 @@ const ContactForm = () => {
                 <Button
                   onClick={() => setSubmitted(false)}
                   sx={{
-                    color: "#fff",
-                    border: "1px solid rgba(255,255,255,0.2)",
-                    borderRadius: "50px",
+                    color: "#1A1D23",
+                    border: "1px solid #E2E6ED",
+                    borderRadius: "8px",
                     px: 4,
                     textTransform: "none",
                     "&:hover": {
-                      borderColor: "#F5A623",
-                      color: "#F5A623",
+                      borderColor: "#2B7DE9",
+                      color: "#2B7DE9",
                     },
                   }}
                 >

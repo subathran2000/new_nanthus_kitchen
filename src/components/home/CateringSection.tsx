@@ -13,14 +13,13 @@ const CateringSection: React.FC = () => {
     <Box
       sx={{
         width: "100%",
-        maxWidth: "1400px",
-        margin: "2rem auto 2rem",
+        maxWidth: "1200px",
+        margin: "0 auto",
         position: "relative",
-        minHeight: { xs: "auto", md: "80vh" },
         display: "flex",
         flexDirection: "column",
         justifyContent: "center",
-        padding: { xs: "1.5rem 1.25rem", sm: "2rem", md: "0 80px" },
+        padding: { xs: "1.5rem 1.25rem", sm: "2rem", md: "0 2rem" },
       }}
     >
       <Box
@@ -29,25 +28,23 @@ const CateringSection: React.FC = () => {
           flexDirection: "column",
           alignItems: "center",
           textAlign: "center",
-          mb: { xs: 5, md: 10 },
-          position: "relative",
+          mb: { xs: 4, md: 6 },
         }}
       >
         <Typography variant="overline" className="overline-text">
           EVENTS & CATERING
         </Typography>
-
         <Typography
           variant="h2"
           className="section-title"
           sx={{
-            color: "#fff",
-            fontSize: { xs: "3rem", md: "5rem" },
-            lineHeight: 1,
-            fontFamily: "'Libre Caslon Display', serif",
+            color: "#1A1D23",
+            fontSize: { xs: "2.5rem", md: "3.5rem" },
+            lineHeight: 1.1,
+            fontFamily: "'Playfair Display', Georgia, serif",
           }}
         >
-          PREMIUM CATERING
+          Premium Catering
         </Typography>
       </Box>
 
@@ -56,7 +53,7 @@ const CateringSection: React.FC = () => {
           display: "flex",
           flexDirection: { xs: "column-reverse", md: "row" },
           alignItems: "center",
-          gap: { xs: 4, md: 10 },
+          gap: { xs: 4, md: 8 },
           width: "100%",
         }}
       >
@@ -64,38 +61,20 @@ const CateringSection: React.FC = () => {
           sx={{
             flex: 1,
             textAlign: { xs: "center", md: "left" },
-            position: "relative",
             display: "flex",
             flexDirection: "column",
             alignItems: { xs: "center", md: "flex-start" },
           }}
         >
-          <Box
-            sx={{ mb: 4, opacity: 0.08, display: { xs: "none", md: "block" } }}
-          >
-            <Typography
-              variant="h1"
-              sx={{
-                fontSize: "12rem",
-                fontFamily: "'Raleway', sans-serif",
-                fontWeight: 900,
-                lineHeight: 0.8,
-                ml: -6,
-              }}
-            >
-              02
-            </Typography>
-          </Box>
-
           <Typography
             variant="h3"
             sx={{
-              color: "#fff",
-              fontSize: { xs: "1.8rem", md: "2.8rem" },
-              fontFamily: "'Raleway', sans-serif",
+              color: "#1A1D23",
+              fontSize: { xs: "1.6rem", md: "2.2rem" },
+              fontFamily: "'Playfair Display', Georgia, serif",
               fontWeight: 700,
-              mb: 4,
-              lineHeight: 1.2,
+              mb: 3,
+              lineHeight: 1.3,
             }}
           >
             Events With <span style={{ color: "#F5A623" }}>Distinction</span>
@@ -104,11 +83,11 @@ const CateringSection: React.FC = () => {
           <Typography
             variant="body1"
             sx={{
-              color: "rgba(255, 255, 255, 0.6)",
-              fontSize: "1.1rem",
-              lineHeight: 1.9,
-              mb: 5,
-              fontWeight: 300,
+              color: "#5A6177",
+              fontSize: "1rem",
+              lineHeight: 1.8,
+              mb: 4,
+              fontWeight: 400,
               fontFamily: "'Inter', sans-serif",
               maxWidth: "450px",
               mx: { xs: "auto", md: 0 },
@@ -133,27 +112,17 @@ const CateringSection: React.FC = () => {
           sx={{
             position: "relative",
             width: { xs: "100%", md: "55%" },
-            height: { xs: "250px", sm: "350px", md: "650px" },
+            height: { xs: "250px", sm: "350px", md: "500px" },
             flexShrink: 0,
           }}
         >
           <Box
             sx={{
               position: "absolute",
-              inset: { xs: -8, md: -20 },
-              border: "1px solid rgba(59, 130, 246, 0.15)",
-              borderRadius: { xs: "24px", md: "40px" },
+              inset: { xs: -4, md: -12 },
+              border: "1px solid #E2E6ED",
+              borderRadius: { xs: "16px", md: "24px" },
               zIndex: 0,
-              "&::before": {
-                content: '""',
-                position: "absolute",
-                inset: -1,
-                borderRadius: { xs: "24px", md: "40px" },
-                padding: "1px",
-                background:
-                  "linear-gradient(135deg, rgba(59, 130, 246, 0.2), transparent, rgba(59, 130, 246, 0.1))",
-                mask: "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
-              },
             }}
           />
 
@@ -163,8 +132,8 @@ const CateringSection: React.FC = () => {
             sx={{
               width: "100%",
               height: "100%",
-              borderRadius: "32px",
-              boxShadow: "0 50px 100px rgba(0,0,0,0.5)",
+              borderRadius: "20px",
+              boxShadow: "0 8px 32px rgba(0,0,0,0.1)",
               zIndex: 1,
             }}
           />
@@ -179,9 +148,9 @@ const CateringSection: React.FC = () => {
         PaperProps={{
           sx: {
             borderRadius: "16px",
-            background: "rgba(0, 0, 0, 0.95)",
-            border: "1px solid rgba(59, 130, 246, 0.15)",
-            boxShadow: "0 0 50px rgba(59, 130, 246, 0.15)",
+            background: "#FFFFFF",
+            border: "1px solid #E2E6ED",
+            boxShadow: "0 16px 48px rgba(0,0,0,0.12)",
             overflow: "hidden",
             outline: "none",
           },
@@ -189,8 +158,8 @@ const CateringSection: React.FC = () => {
         slotProps={{
           backdrop: {
             sx: {
-              backdropFilter: "blur(8px)",
-              backgroundColor: "rgba(0, 0, 0, 0.85)",
+              backdropFilter: "blur(4px)",
+              backgroundColor: "rgba(0, 0, 0, 0.3)",
             },
           },
         }}
@@ -202,11 +171,11 @@ const CateringSection: React.FC = () => {
               position: "absolute",
               right: 15,
               top: 15,
-              color: "#F5A623",
-              bgcolor: "rgba(59, 130, 246, 0.1)",
+              color: "#5A6177",
+              bgcolor: "#F5F7FA",
               zIndex: 100,
               "&:hover": {
-                bgcolor: "rgba(59, 130, 246, 0.15)",
+                bgcolor: "#E2E6ED",
                 transform: "rotate(90deg)",
               },
               transition: "all 0.3s ease",
@@ -222,7 +191,7 @@ const CateringSection: React.FC = () => {
               "&::-webkit-scrollbar": { width: "4px" },
               "&::-webkit-scrollbar-track": { background: "transparent" },
               "&::-webkit-scrollbar-thumb": {
-                background: "#F5A623",
+                background: "#A0A8B8",
                 borderRadius: "4px",
               },
             }}

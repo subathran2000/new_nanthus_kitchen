@@ -16,33 +16,17 @@ const PickupSection: React.FC = () => {
     <Box
       sx={{
         width: "100%",
-        maxWidth: "1200px",
+        maxWidth: "1000px",
         margin: "0 auto",
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
         textAlign: "center",
-        padding: { xs: "3rem 1.25rem", sm: "4rem 2rem", md: "6rem 2rem" },
-        color: "#fff",
+        padding: { xs: "2rem 1.25rem", sm: "3rem 2rem", md: "4rem 2rem" },
         position: "relative",
         zIndex: 10,
       }}
     >
-      {/* Decorative glow */}
-      <Box
-        sx={{
-          position: "absolute",
-          top: "50%",
-          left: "50%",
-          transform: "translate(-50%, -50%)",
-          width: "500px",
-          height: "500px",
-          background:
-            "radial-gradient(ellipse at center, rgba(59, 130, 246, 0.04) 0%, transparent 70%)",
-          pointerEvents: "none",
-        }}
-      />
-
       <Typography variant="overline" className="overline-text">
         QUICK & CONVENIENT
       </Typography>
@@ -51,26 +35,26 @@ const PickupSection: React.FC = () => {
         variant="h2"
         className="section-title"
         sx={{
-          fontSize: { xs: "3rem", md: "5rem" },
-          lineHeight: 1,
-          mb: 4,
-          color: "#fff",
-          fontFamily: "'Libre Caslon Display', serif",
+          fontSize: { xs: "2.5rem", md: "3.5rem" },
+          lineHeight: 1.1,
+          mb: 3,
+          color: "#1A1D23",
+          fontFamily: "'Playfair Display', Georgia, serif",
         }}
       >
-        ORDER PICKUP
+        Order Pickup
       </Typography>
 
       <Typography
         variant="body1"
         sx={{
-          color: "rgba(255, 255, 255, 0.6)",
-          fontSize: "1.1rem",
+          color: "#5A6177",
+          fontSize: "1rem",
           lineHeight: 1.8,
           maxWidth: "500px",
-          mb: 6,
+          mb: 5,
           fontFamily: "'Inter', sans-serif",
-          fontWeight: 300,
+          fontWeight: 400,
           mx: "auto",
         }}
       >
@@ -84,7 +68,7 @@ const PickupSection: React.FC = () => {
           display: "flex",
           flexDirection: { xs: "column", md: "row" },
           gap: 3,
-          justifyContent: { xs: "center", md: "center" },
+          justifyContent: "center",
           alignItems: "center",
           width: "100%",
         }}

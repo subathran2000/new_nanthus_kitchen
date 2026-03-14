@@ -57,8 +57,8 @@ const LocationSelector: React.FC<LocationSelectorProps> = ({
         backdrop: {
           timeout: 500,
           sx: {
-            backdropFilter: "blur(8px)",
-            backgroundColor: "rgba(0, 0, 0, 0.8)",
+            backdropFilter: "blur(4px)",
+            backgroundColor: "rgba(0, 0, 0, 0.3)",
           },
         },
       }}
@@ -72,12 +72,12 @@ const LocationSelector: React.FC<LocationSelectorProps> = ({
             transform: "translate(-50%, -50%)",
             width: { xs: "95%", sm: "800px", md: "1000px" },
             maxWidth: "1000px",
-            height: { xs: "auto", md: "600px" },
-            maxHeight: { xs: "90vh", md: "600px" },
-            bgcolor: "rgba(10, 22, 40, 0.98)",
-            border: "1px solid rgba(59, 130, 246, 0.2)",
+            height: { xs: "auto", md: "550px" },
+            maxHeight: { xs: "90vh", md: "550px" },
+            bgcolor: "#FFFFFF",
+            border: "1px solid #E2E6ED",
             borderRadius: "16px",
-            boxShadow: "0 0 50px rgba(59, 130, 246, 0.15)",
+            boxShadow: "0 16px 48px rgba(0,0,0,0.12)",
             p: 0,
             outline: "none",
             overflow: "hidden",
@@ -93,10 +93,10 @@ const LocationSelector: React.FC<LocationSelectorProps> = ({
               top: 15,
               right: 15,
               zIndex: 100,
-              color: "#F5A623",
-              bgcolor: "rgba(59, 130, 246, 0.1)",
+              color: "#5A6177",
+              bgcolor: "#F5F7FA",
               "&:hover": {
-                bgcolor: "rgba(59, 130, 246, 0.15)",
+                bgcolor: "#E2E6ED",
                 transform: "rotate(90deg)",
               },
               transition: "all 0.3s ease",
@@ -132,7 +132,7 @@ const LocationSelector: React.FC<LocationSelectorProps> = ({
                   position: "absolute",
                   inset: 0,
                   background:
-                    "linear-gradient(135deg, rgba(0, 0, 0, 0.95), rgba(0, 0, 0, 0.8))",
+                    "linear-gradient(135deg, rgba(26, 29, 35, 0.88), rgba(26, 29, 35, 0.75))",
                 },
               }}
             />
@@ -152,8 +152,8 @@ const LocationSelector: React.FC<LocationSelectorProps> = ({
                   sx={{
                     color: "#F5A623",
                     letterSpacing: "4px",
-                    fontSize: "0.9rem",
-                    fontWeight: "bold",
+                    fontSize: "0.85rem",
+                    fontWeight: 700,
                   }}
                 >
                   ORDER ONLINE
@@ -164,12 +164,11 @@ const LocationSelector: React.FC<LocationSelectorProps> = ({
                 variant="h3"
                 sx={{
                   color: "#fff",
-                  fontFamily: "'Playfair Display', serif",
+                  fontFamily: "'Playfair Display', Georgia, serif",
                   mb: 3,
-                  textShadow: "0 0 20px rgba(59, 130, 246, 0.2)",
-                  fontSize: { xs: "2rem", md: "3rem" },
+                  fontSize: { xs: "2rem", md: "2.5rem" },
                   fontWeight: 700,
-                  lineHeight: 1.1,
+                  lineHeight: 1.2,
                 }}
               >
                 Freshly <br />
@@ -180,12 +179,11 @@ const LocationSelector: React.FC<LocationSelectorProps> = ({
               <Typography
                 variant="body1"
                 sx={{
-                  color: "rgba(255, 255, 255, 0.7)",
+                  color: "rgba(255, 255, 255, 0.8)",
                   lineHeight: 1.6,
                   fontSize: "1rem",
                   maxWidth: "300px",
-                  fontWeight: 300,
-                  opacity: 0.9,
+                  fontWeight: 400,
                 }}
               >
                 Choose your nearest branch and explore our authentic flavors
@@ -202,19 +200,18 @@ const LocationSelector: React.FC<LocationSelectorProps> = ({
               display: "flex",
               flexDirection: "column",
               justifyContent: "center",
-              bgcolor: "#111",
-              backdropFilter: "blur(20px)",
-              borderLeft: { md: "1px solid rgba(59, 130, 246, 0.1)" },
+              bgcolor: "#FFFFFF",
+              borderLeft: { md: "1px solid #E2E6ED" },
             }}
           >
             <Typography
               variant="h5"
               sx={{
-                color: "#fff",
-                fontFamily: "'Playfair Display', serif",
+                color: "#1A1D23",
+                fontFamily: "'Playfair Display', Georgia, serif",
                 mb: 4,
                 textAlign: "center",
-                letterSpacing: "1px",
+                fontWeight: 700,
               }}
             >
               Select Your Location
@@ -234,22 +231,21 @@ const LocationSelector: React.FC<LocationSelectorProps> = ({
                     aria-label={`Select ${location.name} location`}
                     sx={{
                       p: 3,
-                      borderRadius: "16px",
-                      background: "#111",
-                      backdropFilter: "blur(12px)",
-                      border: "1px solid rgba(255, 255, 255, 0.1)",
-                      transition: "all 0.5s cubic-bezier(0.19, 1, 0.22, 1)",
+                      borderRadius: "12px",
+                      background: "#F5F7FA",
+                      border: "1px solid #E2E6ED",
+                      transition: "all 0.3s ease",
                       cursor: "pointer",
                       position: "relative",
                       overflow: "hidden",
                       "&:hover": {
-                        background: "rgba(17, 17, 17, 0.8)",
-                        borderColor: "#F5A623",
-                        transform: "translateY(-8px)",
-                        boxShadow: "0 30px 60px rgba(0,0,0,0.5)",
+                        background: "#FFFFFF",
+                        borderColor: "#2B7DE9",
+                        transform: "translateY(-4px)",
+                        boxShadow: "0 8px 24px rgba(0,0,0,0.08)",
                       },
                       "&:focus-visible": {
-                        outline: "2px solid #F5A623",
+                        outline: "2px solid #2B7DE9",
                         outlineOffset: "2px",
                       },
                     }}
@@ -272,20 +268,20 @@ const LocationSelector: React.FC<LocationSelectorProps> = ({
                       <Box
                         sx={{
                           p: 1.5,
-                          borderRadius: "12px",
-                          bgcolor: "rgba(255, 255, 255, 0.05)",
+                          borderRadius: "10px",
+                          bgcolor: "rgba(43, 125, 233, 0.08)",
                           display: "flex",
                           alignItems: "center",
                           justifyContent: "center",
                         }}
                       >
-                        <LocationOnIcon sx={{ color: "#F5A623" }} />
+                        <LocationOnIcon sx={{ color: "#2B7DE9" }} />
                       </Box>
                       <Box>
                         <Typography
                           sx={{
-                            color: "#fff",
-                            fontWeight: "bold",
+                            color: "#1A1D23",
+                            fontWeight: 700,
                             letterSpacing: "1px",
                           }}
                         >
@@ -293,7 +289,7 @@ const LocationSelector: React.FC<LocationSelectorProps> = ({
                         </Typography>
                         <Typography
                           variant="body2"
-                          sx={{ color: "rgba(255,255,255,0.7)" }}
+                          sx={{ color: "#5A6177" }}
                         >
                           {location.address}
                         </Typography>
@@ -311,13 +307,13 @@ const LocationSelector: React.FC<LocationSelectorProps> = ({
                     >
                       <PhoneIcon
                         sx={{
-                          color: "rgba(59, 130, 246, 0.5)",
+                          color: "#A0A8B8",
                           fontSize: "0.9rem",
                         }}
                       />
                       <Typography
                         variant="body2"
-                        sx={{ color: "rgba(255, 255, 255, 0.6)" }}
+                        sx={{ color: "#5A6177" }}
                       >
                         {location.phone}
                       </Typography>
@@ -327,32 +323,33 @@ const LocationSelector: React.FC<LocationSelectorProps> = ({
                       variant="contained"
                       fullWidth
                       aria-label={`Order from ${location.name}`}
-                      onClick={() => onSelectLocation(location.name)}
+                      onClick={(e: React.MouseEvent) => {
+                        e.stopPropagation();
+                        onSelectLocation(location.name);
+                      }}
                       sx={{
                         py: 1.5,
-                        background: "linear-gradient(90deg, #F5A623, #3B82F6)",
+                        background: "#2B7DE9",
                         border: "none",
                         borderRadius: "8px",
                         color: "#fff",
-                        fontWeight: "bold",
+                        fontWeight: 600,
                         fontSize: "0.85rem",
-                        letterSpacing: "0.2em",
+                        letterSpacing: "0.1em",
                         textTransform: "uppercase",
-                        boxShadow: "0 5px 15px rgba(59, 130, 246, 0.15)",
+                        boxShadow: "0 2px 8px rgba(43, 125, 233, 0.25)",
                         transition: "all 0.3s ease",
                         "&:hover": {
-                          filter: "brightness(1.1)",
-                          boxShadow: "0 8px 20px rgba(59, 130, 246, 0.2)",
-                          background:
-                            "linear-gradient(90deg, #F5A623, #3B82F6)",
+                          background: "#1B5FB5",
+                          boxShadow: "0 4px 16px rgba(43, 125, 233, 0.35)",
                         },
                         "&:focus-visible": {
-                          outline: "2px solid #F5A623",
+                          outline: "2px solid #2B7DE9",
                           outlineOffset: "2px",
                         },
                       }}
                     >
-                      Order Now →
+                      Order Now
                     </Button>
                   </Box>
                 </motion.div>

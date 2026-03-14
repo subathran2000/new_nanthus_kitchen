@@ -8,7 +8,8 @@ import {
   Backdrop,
   Button,
 } from "@mui/material";
-import { X, UtensilsCrossed, ArrowRight } from "lucide-react";
+import { UtensilsCrossed, ArrowRight } from "lucide-react";
+import CloseIcon from "@mui/icons-material/Close";
 import { useNavigate } from "react-router-dom";
 import { ROUTES } from "../../constants/routes";
 import { specialItems } from "../../data/specialItems";
@@ -34,8 +35,8 @@ const SpecialsPopup: React.FC<SpecialsPopupProps> = ({ open, onClose }) => {
         backdrop: {
           timeout: 500,
           sx: {
-            backdropFilter: "blur(12px)",
-            backgroundColor: "rgba(0, 0, 0, 0.9)",
+            backdropFilter: "blur(6px)",
+            backgroundColor: "rgba(0, 0, 0, 0.35)",
           },
         },
       }}
@@ -48,12 +49,12 @@ const SpecialsPopup: React.FC<SpecialsPopupProps> = ({ open, onClose }) => {
             left: "50%",
             transform: "translate(-50%, -50%)",
             width: { xs: "95%", sm: "90%", md: "1100px" },
-            height: { xs: "auto", md: "650px" },
+            height: { xs: "auto", md: "600px" },
             maxHeight: "95vh",
-            bgcolor: "#050505",
-            border: "1px solid rgba(255, 255, 255, 0.1)",
-            borderRadius: "32px",
-            boxShadow: "0 0 100px rgba(0, 0, 0, 0.5)",
+            bgcolor: "#FFFFFF",
+            border: "1px solid #E2E6ED",
+            borderRadius: "20px",
+            boxShadow: "0 16px 48px rgba(0,0,0,0.15)",
             p: 0,
             outline: "none",
             overflow: "hidden",
@@ -64,21 +65,22 @@ const SpecialsPopup: React.FC<SpecialsPopupProps> = ({ open, onClose }) => {
           {/* Close Button */}
           <IconButton
             onClick={onClose}
+            aria-label="Close specials popup"
             sx={{
               position: "absolute",
-              top: 24,
-              right: 24,
+              top: 20,
+              right: 20,
               zIndex: 100,
-              color: "rgba(255,255,255,0.5)",
-              bgcolor: "rgba(255,255,255,0.05)",
+              color: "#5A6177",
+              bgcolor: "#F5F7FA",
               "&:hover": {
-                bgcolor: "rgba(255,255,255,0.1)",
-                color: "white",
+                bgcolor: "#E2E6ED",
+                color: "#1A1D23",
               },
               transition: "all 0.2s",
             }}
           >
-            <X size={20} />
+            <CloseIcon sx={{ fontSize: 20 }} />
           </IconButton>
 
           {/* Visual Section */}
@@ -90,22 +92,10 @@ const SpecialsPopup: React.FC<SpecialsPopupProps> = ({ open, onClose }) => {
               alignItems: "center",
               justifyContent: "center",
               p: { xs: 4, md: 8 },
-              bgcolor: "#0a0a0a",
+              bgcolor: "#F5F7FA",
               overflow: "hidden",
             }}
           >
-            {/* Background Glow */}
-            <Box
-              sx={{
-                position: "absolute",
-                width: "100%",
-                height: "100%",
-                background:
-                  "radial-gradient(circle at 50% 50%, rgba(245, 166, 35, 0.05) 0%, transparent 70%)",
-                pointerEvents: "none",
-              }}
-            />
-
             <Box
               sx={{
                 width: "100%",
@@ -131,8 +121,8 @@ const SpecialsPopup: React.FC<SpecialsPopupProps> = ({ open, onClose }) => {
               flexDirection: "column",
               justifyContent: "center",
               alignItems: "flex-start",
-              bgcolor: "#050505",
-              borderLeft: { md: "1px solid rgba(255, 255, 255, 0.05)" },
+              bgcolor: "#FFFFFF",
+              borderLeft: { md: "1px solid #E2E6ED" },
             }}
           >
             <motion.div
@@ -163,11 +153,11 @@ const SpecialsPopup: React.FC<SpecialsPopupProps> = ({ open, onClose }) => {
               <Typography
                 variant="h2"
                 sx={{
-                  color: "#fff",
-                  fontFamily: "'Playfair Display', serif",
+                  color: "#1A1D23",
+                  fontFamily: "'Playfair Display', Georgia, serif",
                   mb: 3,
-                  fontWeight: 400,
-                  fontSize: { xs: "2.5rem", md: "3.5rem" },
+                  fontWeight: 600,
+                  fontSize: { xs: "2rem", md: "2.8rem" },
                   lineHeight: 1.1,
                   letterSpacing: "-0.02em",
                 }}
@@ -178,10 +168,10 @@ const SpecialsPopup: React.FC<SpecialsPopupProps> = ({ open, onClose }) => {
               <Typography
                 variant="body1"
                 sx={{
-                  color: "rgba(255, 255, 255, 0.7)",
-                  mb: 6,
+                  color: "#5A6177",
+                  mb: 5,
                   lineHeight: 1.8,
-                  fontSize: "1.1rem",
+                  fontSize: "1rem",
                   maxWidth: "400px",
                 }}
               >
@@ -204,22 +194,22 @@ const SpecialsPopup: React.FC<SpecialsPopupProps> = ({ open, onClose }) => {
                   variant="outlined"
                   endIcon={<ArrowRight size={18} />}
                   sx={{
-                    py: 1.8,
-                    px: 4.5,
-                    borderColor: "rgba(245, 166, 35, 0.5)",
-                    color: "#F5A623",
-                    borderRadius: "100px",
-                    textTransform: "none",
-                    fontWeight: 500,
+                    py: 1.5,
+                    px: 4,
+                    borderColor: "#2B7DE9",
+                    color: "#2B7DE9",
+                    borderRadius: "8px",
+                    textTransform: "uppercase",
+                    fontWeight: 600,
                     fontSize: "0.95rem",
                     letterSpacing: "0.5px",
                     "&:hover": {
-                      borderColor: "#F5A623",
-                      bgcolor: "rgba(245, 166, 35, 0.08)",
+                      borderColor: "#1B5FB5",
+                      bgcolor: "rgba(43, 125, 233, 0.04)",
                       transform: "translateY(-2px)",
-                      boxShadow: "0 10px 20px rgba(0,0,0,0.2)",
+                      boxShadow: "0 4px 16px rgba(43, 125, 233, 0.15)",
                     },
-                    transition: "all 0.4s cubic-bezier(0.4, 0, 0.2, 1)",
+                    transition: "all 0.3s ease",
                   }}
                 >
                   View All Specials
@@ -227,11 +217,11 @@ const SpecialsPopup: React.FC<SpecialsPopupProps> = ({ open, onClose }) => {
               </Box>
             </motion.div>
 
-            <Box sx={{ mt: "auto", pt: 6 }}>
+            <Box sx={{ mt: "auto", pt: 5 }}>
               <Typography
                 variant="caption"
                 sx={{
-                  color: "rgba(255,255,255,0.4)",
+                  color: "#A0A8B8",
                   letterSpacing: "1px",
                   fontSize: "0.7rem",
                   textTransform: "uppercase",

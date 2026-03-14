@@ -1,4 +1,4 @@
-/* Global Styles */
+/* Global Styles - Clean Light Theme */
 * {
     margin: 0;
     padding: 0;
@@ -6,98 +6,67 @@
 }
 
 :root {
-    --gold: #F5A623;
-    --gold-glow: rgba(245, 166, 35, 0.4);
-    --navy: #0A1628;
-    --navy-light: #0F1D32;
-    --blue: #3B82F6;
-    --blue-glow: rgba(59, 130, 246, 0.4);
-    --glass: rgba(15, 29, 50, 0.6);
-    --glass-border: rgba(59, 130, 246, 0.12);
-    --masterpiece-shadow: 0 30px 60px rgba(0, 0, 0, 0.5);
-    --accent-cyan: #3B82F6;
-}
-
-.masterpiece-glass {
-    background: rgba(15, 29, 50, 0.6);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border: 1px solid rgba(59, 130, 246, 0.12);
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+    --primary: #2B7DE9;
+    --primary-light: #5B9DF0;
+    --primary-dark: #1B5FB5;
+    --accent: #F5A623;
+    --accent-light: #FFB84D;
+    --accent-dark: #D48A0F;
+    --bg-white: #FFFFFF;
+    --bg-light: #F5F7FA;
+    --bg-subtle: #EEF1F6;
+    --text-primary: #1A1D23;
+    --text-secondary: #5A6177;
+    --text-muted: #A0A8B8;
+    --border: #E2E6ED;
+    --border-light: #F0F2F5;
+    --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.06);
+    --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.08);
+    --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.1);
 }
 
 .section-title {
-    font-family: 'Raleway', sans-serif;
+    font-family: 'Playfair Display', Georgia, serif;
     font-weight: 700;
     letter-spacing: -0.02em;
 }
 
 .overline-text {
-    color: var(--gold);
-    letter-spacing: 0.8em;
+    color: var(--accent);
+    letter-spacing: 0.4em;
     text-transform: uppercase;
-    font-size: 0.75rem;
-    font-weight: 500;
+    font-size: 0.8rem;
+    font-weight: 600;
     display: block;
-    margin-bottom: 1rem;
+    margin-bottom: 0.75rem;
 }
 
 body {
-    font-family: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-        'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-        sans-serif;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto',
+        'Helvetica Neue', sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    background-color: var(--navy);
-    color: white;
+    background-color: var(--bg-white);
+    color: var(--text-primary);
     overflow-x: hidden;
-    /* Hide scrollbar for all browsers */
-    scrollbar-width: none;
-    /* Firefox */
-    -ms-overflow-style: none;
-    /* IE and Edge */
 }
 
-/* Cinematic Noise Overlay */
-body::after {
-    content: "";
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-    z-index: 9999;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-    opacity: 0.015;
-    mix-blend-mode: overlay;
-    will-change: transform;
-}
-
-/* Disable expensive noise overlay on mobile for better FPS */
-@media (max-width: 768px) {
-    body::after {
-        display: none;
-    }
-}
-
-/* Custom Scrollbar - Made hidden as requested */
+/* Custom Scrollbar - Subtle and clean */
 ::-webkit-scrollbar {
-    width: 0px;
-    background: transparent;
-    display: none;
+    width: 6px;
 }
 
-.luxury-glass {
-    background: var(--glass);
-    -webkit-backdrop-filter: blur(20px);
-    backdrop-filter: blur(20px);
-    border: 1px solid var(--glass-border);
-    box-shadow: var(--masterpiece-shadow);
+::-webkit-scrollbar-track {
+    background: var(--bg-light);
 }
 
-.text-glow {
-    text-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+::-webkit-scrollbar-thumb {
+    background: var(--text-muted);
+    border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--text-secondary);
 }
 
 /* ── Responsive helpers ─────────────────────────────────── */
@@ -115,8 +84,8 @@ body::after {
     }
 
     .overline-text {
-        letter-spacing: 0.5em;
-        font-size: 0.65rem;
+        letter-spacing: 0.3em;
+        font-size: 0.7rem;
     }
 }
 
@@ -132,4 +101,21 @@ body {
     html {
         scroll-behavior: smooth;
     }
+}
+
+/* Global focus-visible styling for keyboard accessibility */
+*:focus-visible {
+    outline: 2px solid var(--primary);
+    outline-offset: 2px;
+}
+
+/* Remove default focus ring for mouse users */
+*:focus:not(:focus-visible) {
+    outline: none;
+}
+
+/* Selection color */
+::selection {
+    background: rgba(43, 125, 233, 0.15);
+    color: var(--text-primary);
 }

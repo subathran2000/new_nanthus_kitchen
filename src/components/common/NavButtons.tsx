@@ -5,24 +5,22 @@ import HomeIcon from "@mui/icons-material/Home";
 const navButtonSx = {
   position: "fixed" as const,
   top: { xs: "20px", md: "30px" },
-  bgcolor: "rgba(0, 0, 0, 0.7)", // Darker for premium feel
-  border: "1px solid rgba(197, 160, 89, 0.4)", // Muted gold border
-  color: "#C5A059", // Gold icons
+  bgcolor: "#FFFFFF",
+  border: "1px solid #E2E6ED",
+  color: "#1A1D23",
   width: { xs: "48px", md: "56px" },
   height: { xs: "48px", md: "56px" },
-  backdropFilter: "blur(12px)",
-  WebkitBackdropFilter: "blur(12px)",
   borderRadius: "50%",
-  boxShadow: "0 8px 32px rgba(0, 0, 0, 0.4)",
+  boxShadow: "0 2px 8px rgba(0,0,0,0.08), 0 4px 16px rgba(0,0,0,0.04)",
   zIndex: 2000,
-  transition: "all 0.4s ease",
-  
+  transition: "all 0.3s ease",
+
   "&:hover": {
-    bgcolor: "#C5A059",
-    color: "#000",
-    transform: "scale(1.1) rotate(5deg)", // Added a slight elegant rotation
-    boxShadow: "0 0 25px rgba(197, 160, 89, 0.4)",
-    borderColor: "#D4AF37",
+    bgcolor: "#2B7DE9",
+    color: "#fff",
+    borderColor: "#2B7DE9",
+    transform: "scale(1.05)",
+    boxShadow: "0 4px 16px rgba(43, 125, 233, 0.25)",
   },
   "&:active": {
     transform: "scale(0.95)",

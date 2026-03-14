@@ -36,66 +36,49 @@ const Footer = () => {
         mt: 0,
         pb: 0,
         overflow: "visible",
-        color: "#fff",
+        color: "#1A1D23",
         fontFamily: '"Inter", sans-serif',
       }}
     >
-      {/* Decor Glows */}
       <Box
         sx={{
-          position: "absolute",
-          bottom: "0%",
-          left: "50%",
-          transform: "translateX(-50%)",
-          width: "80%",
-          height: "300px",
-          background:
-            "radial-gradient(ellipse at center, rgba(59, 130, 246, 0.05) 0%, transparent 70%)",
-          pointerEvents: "none",
-          zIndex: 0,
-        }}
-      />
-
-      <Box
-        sx={{
-          maxWidth: "1200px",
+          maxWidth: "1100px",
           mx: "auto",
           px: { xs: 2, sm: 3, md: 4 },
           position: "relative",
           zIndex: 1,
         }}
       >
-        {/* Newsletter Section - Floating Glass Card */}
+        {/* Newsletter Section */}
         <motion.div
-          initial={{ opacity: 0, y: 50 }}
+          initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1 }}
+          transition={{ duration: 0.7 }}
           viewport={{ once: true }}
         >
           <Box
             sx={{
-              background: "rgba(255, 255, 255, 0.03)",
-              backdropFilter: "blur(20px)",
-              borderRadius: { xs: "16px", md: "24px" },
-              border: "1px solid rgba(59, 130, 246, 0.12)",
-              p: { xs: 3, sm: 4, md: 8 },
+              background: "#FFFFFF",
+              borderRadius: { xs: "12px", md: "16px" },
+              border: "1px solid #E2E6ED",
+              p: { xs: 3, sm: 4, md: 6 },
               display: "flex",
               flexDirection: { xs: "column", md: "row" },
               alignItems: "center",
-              gap: { xs: 3, md: 6 },
-              boxShadow: "0 40px 100px rgba(0,0,0,0.5)",
+              gap: { xs: 3, md: 5 },
+              boxShadow: "0 2px 8px rgba(0,0,0,0.04), 0 8px 24px rgba(0,0,0,0.06)",
               position: "relative",
               overflow: "hidden",
             }}
           >
-            {/* Animated Border Reveal */}
+            {/* Accent top line */}
             <Box
               sx={{
                 position: "absolute",
                 top: 0,
                 left: 0,
                 width: "200px",
-                height: "2px",
+                height: "3px",
                 background:
                   "linear-gradient(90deg, transparent, #F5A623, transparent)",
                 animation: "moveLine 4s infinite linear",
@@ -106,19 +89,19 @@ const Footer = () => {
               <Typography
                 variant="h3"
                 sx={{
-                  fontFamily: "'Inter', sans-serif",
+                  fontFamily: "'Playfair Display', Georgia, serif",
                   fontWeight: 700,
-                  mb: 2,
-                  fontSize: { xs: "1.5rem", sm: "2rem", md: "3.5rem" },
-                  lineHeight: 1.1,
-                  textShadow: '0 0 20px rgba(59, 130, 246, 0.15)',
+                  mb: 1.5,
+                  fontSize: { xs: "1.5rem", sm: "2rem", md: "2.5rem" },
+                  lineHeight: 1.2,
+                  color: "#1A1D23",
                 }}
               >
                 Join Our <span className="footer-secret-text">Secret</span>{" "}
                 Kitchen.
               </Typography>
               <Typography
-                sx={{ color: "rgba(255, 255, 255, 0.7)", maxWidth: "500px", fontFamily: '"Inter", sans-serif' }}
+                sx={{ color: "#5A6177", maxWidth: "500px", fontFamily: '"Inter", sans-serif' }}
               >
                 Receive exclusive invitations to tasting events, secret
                 traditional recipes, and culinary stories that you won't find
@@ -139,6 +122,8 @@ const Footer = () => {
                   <TextField
                     fullWidth
                     placeholder="Enter your email"
+                    type="email"
+                    required
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     variant="standard"
@@ -146,21 +131,21 @@ const Footer = () => {
                       input: {
                         disableUnderline: true,
                         sx: {
-                          color: "#fff",
-                          bgcolor: "rgba(255, 255, 255, 0.03)",
-                          borderRadius: "12px",
+                          color: "#1A1D23",
+                          bgcolor: "#F5F7FA",
+                          borderRadius: "10px",
                           px: 2,
                           py: 1.5,
-                          border: "1px solid rgba(59, 130, 246, 0.12)",
+                          border: "1px solid #E2E6ED",
                           fontSize: "0.95rem",
                           transition: "all 0.3s ease",
                           "&:hover": {
-                            border: "1px solid rgba(59, 130, 246, 0.3)",
+                            border: "1px solid #2B7DE9",
                           },
                           "&:focus-within": {
-                            border: "1px solid #F5A623",
-                            boxShadow: "0 0 20px rgba(59, 130, 246, 0.1)",
-                            bgcolor: "rgba(255, 255, 255, 0.05)",
+                            border: "1px solid #2B7DE9",
+                            boxShadow: "0 0 0 3px rgba(43, 125, 233, 0.1)",
+                            bgcolor: "#fff",
                           },
                         },
                       },
@@ -189,7 +174,7 @@ const Footer = () => {
                         animate={{ opacity: 1, y: 0 }}
                         sx={{ textAlign: "center" }}
                       >
-                        <Typography sx={{ color: "#F5A623", fontWeight: 600 }}>
+                        <Typography sx={{ color: "#38A169", fontWeight: 600 }}>
                           Welcome to the Circle! Check your inbox soon.
                         </Typography>
                       </Box>
@@ -204,13 +189,13 @@ const Footer = () => {
         {/* Footer Bottom */}
         <Box
           sx={{
-            mt: 8,
-            pb: 0,
+            mt: 6,
+            pb: 4,
             display: "flex",
             flexDirection: { xs: "column", md: "row" },
             justifyContent: "space-between",
             alignItems: "center",
-            gap: 4,
+            gap: 3,
           }}
         >
           <Box sx={{ textAlign: { xs: "center", md: "left" } }}>
@@ -218,21 +203,21 @@ const Footer = () => {
               variant="h5"
               sx={{
                 fontWeight: 800,
-                color: "#fff",
-                mb: 1,
-                letterSpacing: "2px",
+                color: "#1A1D23",
+                mb: 0.5,
+                letterSpacing: "1px",
               }}
             >
               NEW NANTHU'S <span className="footer-kitchen-text">KITCHEN</span>
             </Typography>
-            <Typography variant="body2" sx={{ color: "rgba(255, 255, 255, 0.5)" }}>
+            <Typography variant="body2" sx={{ color: "#5A6177" }}>
               {BRAND.copyright}
             </Typography>
             <Typography
               variant="caption"
               sx={{
-                color: "rgba(255, 255, 255, 0.4)",
-                mt: 1,
+                color: "#A0A8B8",
+                mt: 0.5,
                 display: "block",
                 letterSpacing: "0.05em",
               }}
@@ -249,7 +234,7 @@ const Footer = () => {
             </Typography>
           </Box>
 
-          <Box sx={{ display: "flex", gap: 2 }}>
+          <Box sx={{ display: "flex", gap: 1.5 }}>
             {[
               { Icon: InstagramIcon, href: SOCIAL_LINKS.instagram, label: "Instagram" },
               { Icon: FacebookIcon, href: SOCIAL_LINKS.facebook, label: "Facebook" },
@@ -263,10 +248,15 @@ const Footer = () => {
                 rel="noopener noreferrer"
                 aria-label={label}
                 sx={{
-                  color: "#F5A623",
-                  bgcolor: "rgba(59, 130, 246, 0.05)",
-                  border: "1px solid rgba(59, 130, 246, 0.1)",
-                  "&:hover": { bgcolor: "rgba(59, 130, 246, 0.15)", color: "#fff", transform: "translateY(-5px)" },
+                  color: "#2B7DE9",
+                  bgcolor: "#F5F7FA",
+                  border: "1px solid #E2E6ED",
+                  "&:hover": {
+                    bgcolor: "#2B7DE9",
+                    color: "#fff",
+                    borderColor: "#2B7DE9",
+                    transform: "translateY(-3px)",
+                  },
                   transition: "all 0.3s ease",
                 }}
               >

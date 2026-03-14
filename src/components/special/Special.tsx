@@ -2,15 +2,10 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Box, IconButton, Typography, useTheme, useMediaQuery } from '@mui/material';
 import { ChevronLeft, ChevronRight } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
-import Reusable3DBackground from '../common/Reusable3DBackground';
 import NavButtons from '../common/NavButtons';
 import { ROUTES } from '../../constants/routes';
 
-
 import { specialItems } from '../../data/specialItems';
-
-
-
 
 const SpecialsPage: React.FC = () => {
     const theme = useTheme();
@@ -22,7 +17,6 @@ const SpecialsPage: React.FC = () => {
     const [isAnimating, setIsAnimating] = useState(false);
     const containerRef = useRef<HTMLDivElement>(null);
     const autoplayIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
-
 
     const navigate = (direction: number) => {
         if (isAnimating) return;
@@ -196,11 +190,9 @@ const SpecialsPage: React.FC = () => {
                 minHeight: '100vh',
                 position: 'relative',
                 overflow: 'hidden',
-                bgcolor: 'transparent',
+                bgcolor: '#F5F7FA',
             }}
         >
-            <Reusable3DBackground />
-
             <Box
                 sx={{
                     width: '100%',
@@ -215,7 +207,7 @@ const SpecialsPage: React.FC = () => {
             >
                 <NavButtons onHome={() => routerNavigate(ROUTES.HOME)} />
 
-                {/* Heading: own band so it never touches the cards */}
+                {/* Heading */}
                 <Box
                     sx={{
                         flexShrink: 0,
@@ -236,9 +228,9 @@ const SpecialsPage: React.FC = () => {
                         sx={{
                             fontSize: { xs: 'clamp(18px, 5vw, 24px)', sm: 'clamp(24px, 4vw, 32px)', md: 'clamp(28px, 3.5vw, 48px)' },
                             fontWeight: 700,
-                            color: '#fff',
+                            color: '#1A1D23',
                             textAlign: 'center',
-                            textShadow: '0 0 20px rgba(59, 130, 246, 0.4)',
+                            fontFamily: "'Playfair Display', Georgia, serif",
                             animation: 'fadeIn 0.6s forwards',
                             maxWidth: '90%',
                             overflow: 'hidden',
@@ -263,7 +255,7 @@ const SpecialsPage: React.FC = () => {
                     </Typography>
                 </Box>
 
-                {/* Coverflow Container - takes remaining space, cards stay below heading */}
+                {/* Coverflow Container */}
                 <Box
                     ref={containerRef}
                     tabIndex={0}
@@ -280,7 +272,6 @@ const SpecialsPage: React.FC = () => {
                         py: { xs: 1, sm: 2 },
                     }}
                 >
-                    {/* Coverflow Items */}
                     <Box
                         sx={{
                             display: 'flex',
@@ -310,20 +301,19 @@ const SpecialsPage: React.FC = () => {
                                     ...getItemStyle(index),
                                 }}
                             >
-                                {/* Card Cover */}
                                 <Box
                                     sx={{
                                         width: '100%',
                                         height: '100%',
-                                        borderRadius: '10px',
+                                        borderRadius: '12px',
                                         boxShadow: index === currentIndex
-                                            ? '0 40px 80px rgba(59, 130, 246, 0.4), 0 0 60px rgba(59, 130, 246, 0.3), 0 0 100px rgba(59, 130, 246, 0.15)'
-                                            : '0 30px 60px rgba(0, 0, 0, 0.9), 0 10px 30px rgba(0, 0, 0, 0.7)',
+                                            ? '0 8px 32px rgba(43, 125, 233, 0.2), 0 16px 48px rgba(0,0,0,0.12)'
+                                            : '0 4px 16px rgba(0,0,0,0.1), 0 8px 32px rgba(0,0,0,0.06)',
                                         position: 'relative',
                                         overflow: 'hidden',
                                         transformStyle: 'preserve-3d',
-                                        bgcolor: '#0A1628',
-                                        border: index === currentIndex ? '2px solid rgba(59, 130, 246, 0.4)' : '2px solid rgba(255, 255, 255, 0.1)',
+                                        bgcolor: '#FFFFFF',
+                                        border: index === currentIndex ? '2px solid #2B7DE9' : '1px solid #E2E6ED',
                                     }}
                                 >
                                     <Box
@@ -335,7 +325,7 @@ const SpecialsPage: React.FC = () => {
                                             width: '100%',
                                             height: '100%',
                                             objectFit: 'contain',
-                                            borderRadius: '10px',
+                                            borderRadius: '12px',
                                             display: 'block',
                                         }}
                                     />
@@ -349,12 +339,12 @@ const SpecialsPage: React.FC = () => {
                                         left: 0,
                                         width: '100%',
                                         height: '100%',
-                                        borderRadius: '10px',
+                                        borderRadius: '12px',
                                         transform: 'scaleY(-1)',
-                                        opacity: 0.4,
+                                        opacity: 0.15,
                                         filter: 'blur(2px)',
                                         backgroundImage: `url(${item.src})`,
-                                        backgroundSize: 'contain', // Match the main card fit
+                                        backgroundSize: 'contain',
                                         backgroundRepeat: 'no-repeat',
                                         backgroundPosition: 'center',
                                         overflow: 'hidden',
@@ -366,7 +356,7 @@ const SpecialsPage: React.FC = () => {
                                             left: 0,
                                             width: '100%',
                                             height: '100%',
-                                            background: 'linear-gradient(to bottom, rgba(10, 22, 40, 0) 0%, rgba(10, 22, 40, 0.6) 50%, rgba(10, 22, 40, 1) 100%)',
+                                            background: 'linear-gradient(to bottom, rgba(245, 247, 250, 0) 0%, rgba(245, 247, 250, 0.6) 50%, rgba(245, 247, 250, 1) 100%)',
                                         },
                                     }}
                                 />
@@ -376,6 +366,7 @@ const SpecialsPage: React.FC = () => {
 
                     {/* Navigation Buttons */}
                     <IconButton
+                        aria-label="Previous special"
                         onClick={() => {
                             handleUserInteraction();
                             navigate(-1);
@@ -385,18 +376,19 @@ const SpecialsPage: React.FC = () => {
                             top: '50%',
                             left: { xs: '20px', md: '120px' },
                             transform: 'translateY(-50%)',
-                            bgcolor: 'rgba(59, 130, 246, 0.1)',
-                            border: '2px solid rgba(59, 130, 246, 0.2)',
-                            color: '#F5A623',
-                            width: { xs: '45px', md: '40px' },
-                            height: { xs: '45px', md: '40px' },
-                            backdropFilter: 'blur(10px)',
-                            boxShadow: '0 8px 32px rgba(59, 130, 246, 0.2), 0 0 20px rgba(59, 130, 246, 0.15)',
+                            bgcolor: '#FFFFFF',
+                            border: '1px solid #E2E6ED',
+                            color: '#1A1D23',
+                            width: { xs: '45px', md: '48px' },
+                            height: { xs: '45px', md: '48px' },
+                            boxShadow: '0 2px 8px rgba(0,0,0,0.08)',
                             zIndex: 1001,
                             '&:hover': {
-                                bgcolor: 'rgba(59, 130, 246, 0.15)',
-                                transform: 'translateY(-50%) scale(1.1)',
-                                boxShadow: '0 0 30px rgba(59, 130, 246, 0.5), 0 0 60px rgba(59, 130, 246, 0.3)',
+                                bgcolor: '#2B7DE9',
+                                color: '#fff',
+                                borderColor: '#2B7DE9',
+                                transform: 'translateY(-50%) scale(1.05)',
+                                boxShadow: '0 4px 16px rgba(43, 125, 233, 0.25)',
                             },
                         }}
                     >
@@ -404,6 +396,7 @@ const SpecialsPage: React.FC = () => {
                     </IconButton>
 
                     <IconButton
+                        aria-label="Next special"
                         onClick={() => {
                             handleUserInteraction();
                             navigate(1);
@@ -413,18 +406,19 @@ const SpecialsPage: React.FC = () => {
                             top: '50%',
                             right: { xs: '20px', md: '120px' },
                             transform: 'translateY(-50%)',
-                            bgcolor: 'rgba(59, 130, 246, 0.1)',
-                            border: '2px solid rgba(59, 130, 246, 0.2)',
-                            color: '#F5A623',
-                            width: { xs: '45px', md: '40px' },
-                            height: { xs: '45px', md: '40px' },
-                            backdropFilter: 'blur(10px)',
-                            boxShadow: '0 8px 32px rgba(59, 130, 246, 0.2), 0 0 20px rgba(59, 130, 246, 0.15)',
+                            bgcolor: '#FFFFFF',
+                            border: '1px solid #E2E6ED',
+                            color: '#1A1D23',
+                            width: { xs: '45px', md: '48px' },
+                            height: { xs: '45px', md: '48px' },
+                            boxShadow: '0 2px 8px rgba(0,0,0,0.08)',
                             zIndex: 1001,
                             '&:hover': {
-                                bgcolor: 'rgba(59, 130, 246, 0.15)',
-                                transform: 'translateY(-50%) scale(1.1)',
-                                boxShadow: '0 0 30px rgba(59, 130, 246, 0.5), 0 0 60px rgba(59, 130, 246, 0.3)',
+                                bgcolor: '#2B7DE9',
+                                color: '#fff',
+                                borderColor: '#2B7DE9',
+                                transform: 'translateY(-50%) scale(1.05)',
+                                boxShadow: '0 4px 16px rgba(43, 125, 233, 0.25)',
                             },
                         }}
                     >
@@ -432,7 +426,7 @@ const SpecialsPage: React.FC = () => {
                     </IconButton>
                 </Box>
 
-                {/* Bottom band: dots + description — never touches cards */}
+                {/* Bottom: dots + description */}
                 <Box
                     sx={{
                         flexShrink: 0,
@@ -476,12 +470,12 @@ const SpecialsPage: React.FC = () => {
                                         width: '10px',
                                         height: '10px',
                                         borderRadius: '50%',
-                                        bgcolor: offset === 0 ? '#F5A623' : 'rgba(245, 166, 35, 0.8)',
+                                        bgcolor: offset === 0 ? '#2B7DE9' : '#A0A8B8',
                                         cursor: 'pointer',
                                         transition: 'all 0.3s ease',
                                         transform: `scale(${scale})`,
                                         opacity,
-                                        boxShadow: offset === 0 ? '0 0 10px rgba(245, 166, 35, 0.8)' : 'none',
+                                        boxShadow: offset === 0 ? '0 0 8px rgba(43, 125, 233, 0.4)' : 'none',
                                         '&:hover': {
                                             opacity: 1,
                                             transform: `scale(${scale * 1.2})`,
@@ -496,11 +490,9 @@ const SpecialsPage: React.FC = () => {
                             variant="body1"
                             sx={{
                                 fontSize: { xs: '14px', sm: '16px', md: '18px' },
-                                color: 'rgba(255, 255, 255, 0.7)',
-                                opacity: 0.9,
+                                color: '#5A6177',
                                 textAlign: 'center',
                                 lineHeight: 1.6,
-                                textShadow: '0 2px 4px rgba(0,0,0,0.5)',
                                 maxWidth: '600px',
                                 width: '100%',
                             }}

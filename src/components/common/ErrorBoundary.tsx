@@ -55,7 +55,7 @@ class ErrorBoundary extends Component<Props, State> {
           </Typography>
           <Typography
             variant="body2"
-            sx={{ color: "rgba(255,255,255,0.6)", mb: 3, maxWidth: 400 }}
+            sx={{ color: "#5A6177", mb: 3, maxWidth: 400 }}
           >
             An unexpected error occurred. Please try refreshing the page.
           </Typography>
@@ -66,8 +66,8 @@ class ErrorBoundary extends Component<Props, State> {
               color: "#F5A623",
               borderColor: "#F5A623",
               "&:hover": {
-                borderColor: "#FFB84D",
-                bgcolor: "rgba(59, 130, 246, 0.1)",
+                borderColor: "#D48A0F",
+                bgcolor: "rgba(245, 166, 35, 0.08)",
               },
             }}
           >

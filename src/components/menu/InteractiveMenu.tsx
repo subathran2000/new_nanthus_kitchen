@@ -79,7 +79,7 @@ export default function InteractiveMenu({
         position: "relative",
         width: "100%",
         minHeight: "100vh",
-        bgcolor: "transparent",
+        bgcolor: "#F5F7FA",
         overflow: "hidden",
         display: "flex",
         alignItems: "center",
@@ -112,7 +112,7 @@ export default function InteractiveMenu({
             sx={{
               color: "#F5A623",
               fontFamily: "'Inter', sans-serif",
-              fontWeight: 500,
+              fontWeight: 600,
               letterSpacing: "0.3em",
               textTransform: "uppercase",
               fontSize: { xs: "0.7rem", md: "0.8rem" },
@@ -127,12 +127,12 @@ export default function InteractiveMenu({
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.1 }}
             sx={{
-              color: "#fff",
-              fontFamily: "'Playfair Display', serif",
+              color: "#1A1D23",
+              fontFamily: "'Playfair Display', Georgia, serif",
               fontWeight: 700,
               fontSize: { xs: "2.5rem", md: "3.5rem" },
               textAlign: "center",
-              letterSpacing: "0.02em",
+              letterSpacing: "-0.01em",
               lineHeight: 1.2,
             }}
           >
@@ -145,7 +145,7 @@ export default function InteractiveMenu({
             sx={{
               width: 60,
               height: 3,
-              background: "linear-gradient(90deg, #3B82F6, #F5A623)",
+              background: "linear-gradient(90deg, #2B7DE9, #F5A623)",
               mx: "auto",
               mt: 2,
               borderRadius: 2,
@@ -174,27 +174,27 @@ export default function InteractiveMenu({
             <MotionBox
               key={type}
               variants={cardVariants}
-              whileHover={{ y: -12, scale: 1.02 }}
+              whileHover={{ y: -8, scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
               onClick={() => onSelectCategory(type)}
               sx={{
                 position: "relative",
-                borderRadius: "20px",
+                borderRadius: "16px",
                 overflow: "hidden",
                 cursor: "pointer",
                 aspectRatio: { xs: "16/10", sm: "4/5" },
                 minHeight: { xs: 220, sm: 360 },
-                background: `linear-gradient(rgba(17, 17, 17, 0.5), rgba(17, 17, 17, 0.5)), url(${getCategoryImage(type)}) center/cover no-repeat`,
-                border: "1px solid rgba(255, 255, 255, 0.1)",
-                boxShadow: "0 20px 60px rgba(0,0,0,0.5)",
-                transition: "all 0.4s cubic-bezier(0.4, 0, 0.2, 1)",
+                background: `linear-gradient(rgba(26, 29, 35, 0.35), rgba(26, 29, 35, 0.5)), url(${getCategoryImage(type)}) center/cover no-repeat`,
+                border: "1px solid #E2E6ED",
+                boxShadow: "0 2px 8px rgba(0,0,0,0.06), 0 8px 24px rgba(0,0,0,0.08)",
+                transition: "all 0.3s ease",
                 "&:hover": {
-                  borderColor: "#F5A623",
+                  borderColor: "#2B7DE9",
                   boxShadow:
-                    "0 0 30px rgba(245, 166, 35, 0.2), 0 30px 80px rgba(0,0,0,0.7)",
+                    "0 4px 12px rgba(43, 125, 233, 0.12), 0 16px 40px rgba(0,0,0,0.12)",
                   "& .card-overlay": {
-                    background: 
-                      "linear-gradient(to top, #111 0%, rgba(17, 17, 17, 0.4) 50%, transparent 100%)",
+                    background:
+                      "linear-gradient(to top, rgba(26,29,35,0.9) 0%, rgba(26,29,35,0.4) 50%, transparent 100%)",
                   },
                   "& .card-accent-line": {
                     width: "80%",
@@ -202,30 +202,13 @@ export default function InteractiveMenu({
                   },
                   "& .card-arrow": {
                     transform: "translateX(4px)",
-                    bgcolor: "#F5A623",
-                    color: "#0A1628",
-                    borderColor: "#F5A623",
-                  },
-                  "& .card-image-glow": {
-                    opacity: 0.3,
+                    bgcolor: "#2B7DE9",
+                    color: "#fff",
+                    borderColor: "#2B7DE9",
                   },
                 },
               }}
             >
-              {/* Blue glow on hover */}
-              <Box
-                className="card-image-glow"
-                sx={{
-                  position: "absolute",
-                  inset: 0,
-                  background:
-                    "radial-gradient(circle at center, rgba(59,130,246,0.3) 0%, transparent 70%)",
-                  opacity: 0,
-                  transition: "opacity 0.5s ease",
-                  zIndex: 1,
-                }}
-              />
-
               {/* Gradient Overlay */}
               <Box
                 className="card-overlay"
@@ -233,8 +216,8 @@ export default function InteractiveMenu({
                   position: "absolute",
                   inset: 0,
                   background:
-                     "linear-gradient(to top, #111 10%, rgba(17, 17, 17, 0.2) 50%, transparent 100%)",
-                  transition: "background 0.5s ease",
+                    "linear-gradient(to top, rgba(26,29,35,0.85) 10%, rgba(26,29,35,0.2) 50%, transparent 100%)",
+                  transition: "background 0.4s ease",
                   zIndex: 2,
                 }}
               />
@@ -256,7 +239,7 @@ export default function InteractiveMenu({
                   sx={{
                     width: "40px",
                     height: 3,
-                    background: "linear-gradient(90deg, #F5A623, #3B82F6)",
+                    background: "linear-gradient(90deg, #F5A623, #2B7DE9)",
                     borderRadius: 2,
                     mb: 2,
                     opacity: 0.8,
@@ -269,7 +252,7 @@ export default function InteractiveMenu({
                   sx={{
                     color: "rgba(245,166,35,0.9)",
                     fontFamily: "'Inter', sans-serif",
-                    fontWeight: 500,
+                    fontWeight: 600,
                     letterSpacing: "0.2em",
                     textTransform: "uppercase",
                     fontSize: "0.7rem",
@@ -284,10 +267,10 @@ export default function InteractiveMenu({
                   variant="h4"
                   sx={{
                     color: "#fff",
-                    fontFamily: "'Playfair Display', serif",
+                    fontFamily: "'Playfair Display', Georgia, serif",
                     fontWeight: 700,
                     fontSize: { xs: "1.8rem", md: "2rem" },
-                    letterSpacing: "0.03em",
+                    letterSpacing: "0.02em",
                     mb: 1,
                     lineHeight: 1.2,
                   }}
@@ -298,7 +281,7 @@ export default function InteractiveMenu({
                 {/* Description */}
                 <Typography
                   sx={{
-                    color: "rgba(180, 210, 255, 0.7)",
+                    color: "rgba(255, 255, 255, 0.75)",
                     fontSize: "0.85rem",
                     lineHeight: 1.5,
                     mb: 2,
@@ -322,7 +305,7 @@ export default function InteractiveMenu({
                       color: "#F5A623",
                       fontSize: "0.8rem",
                       fontWeight: 600,
-                      letterSpacing: "0.15em",
+                      letterSpacing: "0.12em",
                       textTransform: "uppercase",
                       fontFamily: "'Inter', sans-serif",
                     }}
@@ -335,11 +318,11 @@ export default function InteractiveMenu({
                       width: 40,
                       height: 40,
                       borderRadius: "50%",
-                      border: "1px solid rgba(245,166,35,0.4)",
+                      border: "1px solid rgba(255,255,255,0.3)",
                       display: "flex",
                       alignItems: "center",
                       justifyContent: "center",
-                      color: "#F5A623",
+                      color: "#fff",
                       transition: "all 0.3s ease",
                     }}
                   >

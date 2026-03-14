@@ -1,24 +1,19 @@
 /* Landing Page Styles */
-/* Fonts are now preloaded in index.html for faster loading (eliminates CSS @import waterfall) */
-/* Rarely-used fonts (Pinyon Script, Rock Salt, Libre Caslon Display) load on demand via fontFamily */
+/* Fonts are now preloaded in index.html for faster loading */
 
 .accent-label {
-  font-family: "Playfair Display", serif;
+  font-family: "Playfair Display", Georgia, serif;
   font-weight: 700;
   font-style: italic;
-  color: #D4AF37; /*  Royal Gold */
+  color: #F5A623;
   font-size: clamp(1.8rem, 5vw, 4.5rem);
   z-index: 11;
   pointer-events: none;
-  text-shadow:
-    0 0 15px rgba(212, 175, 55, 0.3),
-    0 0 30px rgba(212, 175, 55, 0.1);
   white-space: nowrap;
-  
 }
 
 .main-title {
-  font-family: "Playfair Display", serif !important;
+  font-family: "Playfair Display", Georgia, serif !important;
   font-weight: 600 !important;
   font-size: clamp(2.5rem, 8vw, 9.5rem) !important;
   letter-spacing: -0.02em !important;
@@ -30,7 +25,7 @@
   line-height: 0.85;
   text-transform: uppercase;
   white-space: nowrap !important;
-  background: linear-gradient(to bottom, #FFFFFF 10%, #363434 100%) !important;
+  background: linear-gradient(to bottom, #FFFFFF 10%, #C0C0C0 100%) !important;
   -webkit-background-clip: text !important;
   background-clip: text;
   -webkit-text-fill-color: transparent !important;
@@ -46,13 +41,12 @@
 
 .subtitle-tagline {
   font-family: "Inter", sans-serif;
-  color: #bb950b;
-  font-size: clamp(0.7rem, 2vw, 1.5rem);
-  letter-spacing: 0.8em;
-  margin-right: -0.8em;
+  color: rgba(255, 255, 255, 0.85);
+  font-size: clamp(0.7rem, 2vw, 1.2rem);
+  letter-spacing: 0.5em;
+  margin-right: -0.5em;
   font-weight: 400;
   text-transform: uppercase;
-  opacity: 0.9;
   text-align: left !important;
   padding-left: 5px;
 }
@@ -80,16 +74,16 @@
     line-height: 0.9;
     text-align: center !important;
     margin: 0 !important;
-    }
+  }
 
   .subtitle-tagline {
-    letter-spacing: 0.5em;
+    letter-spacing: 0.3em;
     font-size: clamp(0.6rem, 2.5vw, 0.85rem);
-    text-align: center !important; /* Force center since we removed the grid */
+    text-align: center !important;
     padding-left: 0;
     margin-top: 10px;
-    }
   }
+}
 
 /* Extra-small devices (< 400px) */
 @media (max-width: 400px) {

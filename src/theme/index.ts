@@ -1,43 +1,43 @@
 import { createTheme } from "@mui/material/styles";
 
 // Design tokens - Single source of truth for colors
-// Based on the New Nanthu's Kitchen logo: blue, golden yellow, white
+// Based on the New Nanthu's Kitchen logo: Blue, Orange, White, Black
 export const colors = {
   primary: {
-    main: "#C5A059",      // Metallic Champagne Gold
-    light: "#E2C68E",     // Light Gold highlight
-    dark: "#8E6F3E",      // Deep Bronze
-    contrastText: "#05070A",
+    main: "#2B7DE9",       // Logo Blue
+    light: "#5B9DF0",      // Lighter Blue
+    dark: "#1B5FB5",       // Deeper Blue
+    contrastText: "#FFFFFF",
   },
   secondary: {
-    main: "#1A1D23",      // Deep Graphite (Replaces the bright blue)
-    light: "#2C313A",
-    dark: "#05070A",
+    main: "#F5A623",       // Logo Orange
+    light: "#FFB84D",      // Lighter Orange
+    dark: "#D48A0F",       // Deeper Orange
     contrastText: "#FFFFFF",
   },
   background: {
-    default: "#05070A",   // Obsidian Black (The main background)
-    paper: "#0F1218",     // Charcoal Gray (For cards and sections)
-    light: "#161A21",
+    default: "#FFFFFF",    // Clean White
+    paper: "#F5F7FA",      // Soft Gray
+    light: "#EEF1F6",      // Subtle Gray (for alternating sections)
   },
   text: {
-    primary: "#FFFFFF",
-    secondary: "rgba(197, 160, 89, 0.7)",
-    disabled: "rgba(180, 210, 255, 0.35)",
+    primary: "#1A1D23",    // Near-black for body text
+    secondary: "#5A6177",  // Medium gray for secondary text
+    disabled: "#A0A8B8",   // Muted gray
   },
   error: {
-    main: "#FF6B6B",
+    main: "#E53E3E",
   },
   success: {
-    main: "#4CAF50",
+    main: "#38A169",
   },
-  divider: "rgba(59, 130, 246, 0.12)",
+  divider: "#E2E6ED",
 };
 
 // Create and export the theme
 export const theme = createTheme({
   palette: {
-    mode: "dark",
+    mode: "light",
     primary: colors.primary,
     secondary: colors.secondary,
     background: {
@@ -51,22 +51,23 @@ export const theme = createTheme({
   },
   typography: {
     fontFamily:
-      "'Inter', 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
+      "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
     h1: {
-      fontFamily: "'Inter', sans-serif",
-      fontWeight: 900,
-      letterSpacing: "0.1em",
+      fontFamily: "'Playfair Display', Georgia, serif",
+      fontWeight: 700,
+      letterSpacing: "-0.02em",
     },
     h2: {
-      fontFamily: "'Playfair Display', serif",
+      fontFamily: "'Playfair Display', Georgia, serif",
       fontWeight: 700,
+      letterSpacing: "-0.01em",
     },
     h3: {
-      fontFamily: "'Inter', sans-serif",
-      fontWeight: 700,
+      fontFamily: "'Playfair Display', Georgia, serif",
+      fontWeight: 600,
     },
     h4: {
-      fontFamily: "'Playfair Display', serif",
+      fontFamily: "'Playfair Display', Georgia, serif",
       fontWeight: 600,
     },
     h5: {
@@ -88,9 +89,9 @@ export const theme = createTheme({
       lineHeight: 1.6,
     },
     button: {
-      fontFamily: "'Outfit', sans-serif",
-      fontWeight: 500,
-      letterSpacing: "0.1em",
+      fontFamily: "'Inter', sans-serif",
+      fontWeight: 600,
+      letterSpacing: "0.05em",
       textTransform: "uppercase",
     },
   },
@@ -101,26 +102,35 @@ export const theme = createTheme({
     MuiButton: {
       styleOverrides: {
         root: {
-          borderRadius: 0,
+          borderRadius: 8,
           padding: "12px 32px",
-          transition: "all 0.4s cubic-bezier(0.4, 0, 0.2, 1)",
+          transition: "all 0.3s ease",
+          fontWeight: 600,
         },
         contained: {
-          background: `linear-gradient(90deg, ${colors.primary.main}, ${colors.primary.light})`,
-          boxShadow: `0 5px 15px rgba(59, 130, 246, 0.3)`,
+          backgroundColor: colors.primary.main,
+          color: "#fff",
+          boxShadow: "0 2px 8px rgba(43, 125, 233, 0.25)",
           "&:hover": {
-            boxShadow: `0 8px 25px rgba(59, 130, 246, 0.4)`,
-            transform: "translateY(-2px)",
+            backgroundColor: colors.primary.dark,
+            boxShadow: "0 4px 16px rgba(43, 125, 233, 0.35)",
+            transform: "translateY(-1px)",
+          },
+          "&:focus-visible": {
+            outline: `2px solid ${colors.primary.main}`,
+            outlineOffset: "2px",
           },
         },
         outlined: {
-          borderColor: "rgba(59, 130, 246, 0.3)",
+          borderColor: colors.primary.main,
           color: colors.primary.main,
-          backdropFilter: "blur(10px)",
           "&:hover": {
-            borderColor: colors.primary.main,
-            backgroundColor: colors.primary.main,
-            color: colors.primary.contrastText,
+            borderColor: colors.primary.dark,
+            backgroundColor: "rgba(43, 125, 233, 0.04)",
+          },
+          "&:focus-visible": {
+            outline: `2px solid ${colors.primary.main}`,
+            outlineOffset: "2px",
           },
         },
       },
@@ -129,20 +139,20 @@ export const theme = createTheme({
       styleOverrides: {
         root: {
           "& .MuiOutlinedInput-root": {
-            borderRadius: "12px",
-            background: "rgba(255, 255, 255, 0.03)",
+            borderRadius: "10px",
+            background: colors.background.paper,
             "& fieldset": {
-              borderColor: "rgba(59, 130, 246, 0.2)",
+              borderColor: colors.divider,
             },
             "&:hover fieldset": {
-              borderColor: "rgba(59, 130, 246, 0.4)",
+              borderColor: colors.primary.light,
             },
             "&.Mui-focused fieldset": {
               borderColor: colors.primary.main,
             },
           },
           "& .MuiInputLabel-root": {
-            color: "rgba(255, 255, 255, 0.4)",
+            color: colors.text.secondary,
             "&.Mui-focused": {
               color: colors.primary.main,
             },
@@ -155,7 +165,11 @@ export const theme = createTheme({
         root: {
           transition: "all 0.3s ease",
           "&:hover": {
-            transform: "scale(1.1)",
+            transform: "scale(1.05)",
+          },
+          "&:focus-visible": {
+            outline: `2px solid ${colors.primary.main}`,
+            outlineOffset: "2px",
           },
         },
       },
@@ -163,10 +177,9 @@ export const theme = createTheme({
     MuiCard: {
       styleOverrides: {
         root: {
-          background: "rgba(15, 29, 50, 0.6)",
-          backdropFilter: "blur(20px)",
-          border: "1px solid rgba(59, 130, 246, 0.12)",
-          boxShadow: "0 30px 60px rgba(0, 0, 0, 0.5)",
+          background: "#FFFFFF",
+          border: `1px solid ${colors.divider}`,
+          boxShadow: "0 1px 3px rgba(0,0,0,0.08), 0 4px 12px rgba(0,0,0,0.04)",
         },
       },
     },

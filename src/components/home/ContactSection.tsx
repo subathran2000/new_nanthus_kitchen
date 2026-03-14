@@ -14,16 +14,15 @@ const ContactSection = () => {
     <Box
       sx={{
         width: "100%",
-        maxWidth: "1400px",
+        maxWidth: "1200px",
         mx: "auto",
-        padding: { xs: "1rem 2rem", md: "2rem 80px" },
+        padding: { xs: "1.5rem 1.25rem", sm: "2rem", md: "2rem" },
         position: "relative",
       }}
     >
       <Box
         sx={{
-          mb: { xs: 5, md: 8 },
-          position: "relative",
+          mb: { xs: 4, md: 6 },
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
@@ -37,13 +36,13 @@ const ContactSection = () => {
           variant="h2"
           className="section-title"
           sx={{
-            color: "#fff",
-            fontSize: { xs: "3rem", md: "5rem" },
-            lineHeight: 1,
-            fontFamily: "'Libre Caslon Display', serif",
+            color: "#1A1D23",
+            fontSize: { xs: "2.5rem", md: "3.5rem" },
+            lineHeight: 1.1,
+            fontFamily: "'Playfair Display', Georgia, serif",
           }}
         >
-          REACH US
+          Reach Us
         </Typography>
       </Box>
 
@@ -51,7 +50,7 @@ const ContactSection = () => {
         sx={{
           display: "flex",
           flexDirection: { xs: "column", md: "row" },
-          gap: { xs: 5, md: 12 },
+          gap: { xs: 4, md: 8 },
           alignItems: { xs: "center", md: "flex-start" },
           width: "100%",
         }}
@@ -62,7 +61,7 @@ const ContactSection = () => {
             flex: 1.5,
             display: "grid",
             gridTemplateColumns: { xs: "1fr", sm: "1fr 1fr" },
-            gap: { xs: 3, sm: 5, md: 8 },
+            gap: { xs: 3, sm: 4, md: 6 },
             textAlign: { xs: "center", md: "left" },
             width: "100%",
           }}
@@ -79,25 +78,27 @@ const ContactSection = () => {
               <Typography
                 variant="overline"
                 sx={{
-                  color: "rgba(255,255,255,0.4)",
-                  letterSpacing: "0.4em",
+                  color: "#A0A8B8",
+                  letterSpacing: "0.3em",
                   display: "block",
-                  mb: 4,
+                  mb: 3,
+                  fontWeight: 600,
                 }}
               >
                 {location.label}
               </Typography>
               <Typography
                 sx={{
-                  color: "#fff",
-                  fontSize: "1.2rem",
-                  mb: 1,
-                  fontFamily: "'Outfit', sans-serif",
+                  color: "#1A1D23",
+                  fontSize: "1.1rem",
+                  mb: 0.5,
+                  fontFamily: "'Inter', sans-serif",
+                  fontWeight: 500,
                 }}
               >
                 {location.address.street}
               </Typography>
-              <Typography sx={{ color: "rgba(255,255,255,0.6)", mb: 3 }}>
+              <Typography sx={{ color: "#5A6177", mb: 2.5 }}>
                 {location.address.city} {location.address.province}{" "}
                 {location.address.postalCode}
               </Typography>
@@ -105,7 +106,7 @@ const ContactSection = () => {
                 sx={{
                   display: "flex",
                   flexDirection: "column",
-                  gap: 1,
+                  gap: 0.75,
                   alignItems: { xs: "center", md: "flex-start" },
                   width: "100%",
                 }}
@@ -116,19 +117,19 @@ const ContactSection = () => {
                     sx={{
                       display: "flex",
                       alignItems: "center",
-                      gap: 2,
+                      gap: 1.5,
                       justifyContent: { xs: "center", md: "flex-start" },
                       width: "100%",
                     }}
                   >
-                    <PhoneIcon sx={{ color: "#F5A623", fontSize: 18 }} />
+                    <PhoneIcon sx={{ color: "#2B7DE9", fontSize: 18 }} />
                     <Typography
                       component="a"
                       href={`tel:${phone.replace(/\./g, "")}`}
                       sx={{
-                        color: "#fff",
+                        color: "#1A1D23",
                         textDecoration: "none",
-                        "&:hover": { color: "#F5A623" },
+                        "&:hover": { color: "#2B7DE9" },
                       }}
                     >
                       {phone}
@@ -142,8 +143,8 @@ const ContactSection = () => {
           <Box
             sx={{
               gridColumn: { xs: "span 1", sm: "span 2" },
-              pt: 4,
-              borderTop: "1px solid rgba(255,255,255,0.05)",
+              pt: 3,
+              borderTop: "1px solid #E2E6ED",
               display: "flex",
               flexDirection: "column",
               alignItems: { xs: "center", md: "flex-start" },
@@ -153,10 +154,11 @@ const ContactSection = () => {
             <Typography
               variant="overline"
               sx={{
-                color: "rgba(255,255,255,0.4)",
-                letterSpacing: "0.4em",
+                color: "#A0A8B8",
+                letterSpacing: "0.3em",
                 display: "block",
-                mb: 2,
+                mb: 1.5,
+                fontWeight: 600,
               }}
             >
               EMAIL
@@ -165,20 +167,20 @@ const ContactSection = () => {
               sx={{
                 display: "flex",
                 alignItems: "center",
-                gap: 2,
+                gap: 1.5,
                 justifyContent: { xs: "center", md: "flex-start" },
                 width: "100%",
               }}
             >
-              <EmailIcon sx={{ color: "#F5A623", fontSize: 18 }} />
+              <EmailIcon sx={{ color: "#2B7DE9", fontSize: 18 }} />
               <Typography
                 component="a"
                 href={`mailto:${CONTACT.email}`}
                 sx={{
-                  color: "#fff",
-                  fontSize: "1.1rem",
+                  color: "#1A1D23",
+                  fontSize: "1.05rem",
                   textDecoration: "none",
-                  "&:hover": { color: "#F5A623" },
+                  "&:hover": { color: "#2B7DE9" },
                 }}
               >
                 {CONTACT.email}
@@ -193,14 +195,15 @@ const ContactSection = () => {
             flex: 1,
             display: "flex",
             flexDirection: "column",
-            gap: 5,
-            p: { xs: 3, md: 6 },
-            bgcolor: "rgba(255, 255, 255, 0.02)",
-            border: "1px solid rgba(59, 130, 246, 0.12)",
+            gap: 4,
+            p: { xs: 3, md: 5 },
+            bgcolor: "#FFFFFF",
+            border: "1px solid #E2E6ED",
             borderRadius: "16px",
             textAlign: { xs: "center", md: "left" },
             alignItems: { xs: "center", md: "flex-start" },
             width: "100%",
+            boxShadow: "0 2px 8px rgba(0,0,0,0.04)",
             position: "relative",
             overflow: "hidden",
             "&::before": {
@@ -209,23 +212,23 @@ const ContactSection = () => {
               top: 0,
               left: 0,
               right: 0,
-              height: "2px",
+              height: "3px",
               background:
-                "linear-gradient(90deg, transparent, rgba(59, 130, 246, 0.5), transparent)",
+                "linear-gradient(90deg, #2B7DE9, #F5A623)",
             },
           }}
         >
           <Typography
             variant="h5"
             sx={{
-              color: "#fff",
-              fontFamily: "'Raleway', sans-serif",
+              color: "#1A1D23",
+              fontFamily: "'Playfair Display', Georgia, serif",
               fontWeight: 700,
             }}
           >
             Have a Question?
           </Typography>
-          <Typography sx={{ color: "rgba(255,255,255,0.5)", lineHeight: 1.8 }}>
+          <Typography sx={{ color: "#5A6177", lineHeight: 1.7 }}>
             Whether you have a question about our menu, hours, or want to plan a
             special event, we'd love to hear from you.
           </Typography>
@@ -235,7 +238,7 @@ const ContactSection = () => {
             sx={{
               ...commonButtonStyle,
               width: "100%",
-              py: 2,
+              py: 1.75,
             }}
           >
             OPEN CONTACT FORM
@@ -251,17 +254,16 @@ const ContactSection = () => {
         PaperProps={{
           sx: {
             borderRadius: "16px",
-            background: "rgba(0, 0, 0, 0.95)",
-            backdropFilter: "blur(30px)",
-            border: "1px solid rgba(59, 130, 246, 0.15)",
-            boxShadow: "0 0 50px rgba(59, 130, 246, 0.15)",
+            background: "#FFFFFF",
+            border: "1px solid #E2E6ED",
+            boxShadow: "0 16px 48px rgba(0,0,0,0.12)",
           },
         }}
         slotProps={{
           backdrop: {
             sx: {
-              backdropFilter: "blur(8px)",
-              backgroundColor: "rgba(0, 0, 0, 0.85)",
+              backdropFilter: "blur(4px)",
+              backgroundColor: "rgba(0, 0, 0, 0.3)",
             },
           },
         }}
@@ -274,10 +276,10 @@ const ContactSection = () => {
               right: 20,
               top: 20,
               zIndex: 100,
-              color: "#F5A623",
-              bgcolor: "rgba(59, 130, 246, 0.1)",
+              color: "#5A6177",
+              bgcolor: "#F5F7FA",
               "&:hover": {
-                bgcolor: "rgba(59, 130, 246, 0.15)",
+                bgcolor: "#E2E6ED",
                 transform: "rotate(90deg)",
               },
               transition: "all 0.3s ease",
@@ -292,5 +294,4 @@ const ContactSection = () => {
   );
 };
 
-
-export default ContactSection
+export default ContactSection;

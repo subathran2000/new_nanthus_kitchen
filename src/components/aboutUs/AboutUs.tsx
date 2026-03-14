@@ -1,8 +1,8 @@
+import { Box } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { ROUTES } from "../../constants/routes";
 import ImageGallery from "./ImageGallery";
-import Reusable3DBackground from "../common/Reusable3DBackground";
 import NavButtons from "../common/NavButtons";
 
 const fadeUp = {
@@ -21,25 +21,23 @@ const AboutUs = () => {
   const navigate = useNavigate();
 
   return (
-    <div
-      style={{
+    <Box
+      sx={{
         width: "100%",
         minHeight: "100vh",
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
         justifyContent: "flex-start",
-        background: "transparent",
+        background: "#F5F7FA",
         padding: "4rem 1rem 6rem",
         position: "relative",
         overflow: "hidden",
       }}
     >
-      <Reusable3DBackground />
-
       <NavButtons onHome={() => navigate(ROUTES.HOME)} />
 
-      {/* Hero / Header — editorial, warm */}
+      {/* Hero / Header */}
       <motion.div
         variants={stagger}
         initial="initial"
@@ -56,11 +54,11 @@ const AboutUs = () => {
           variants={fadeUp}
           style={{
             display: "inline-block",
-            fontSize: "clamp(0.75rem, 1.8vw, 0.9rem)",
+            fontSize: "clamp(0.75rem, 1.8vw, 0.85rem)",
             fontWeight: 600,
             letterSpacing: "0.35em",
             textTransform: "uppercase",
-            color: "rgba(180, 210, 255, 0.95)",
+            color: "#F5A623",
             marginBottom: "1rem",
             fontFamily: "'Inter', sans-serif",
           }}
@@ -73,9 +71,9 @@ const AboutUs = () => {
           style={{
             fontFamily: "'Playfair Display', Georgia, serif",
             fontSize: "clamp(2.6rem, 7vw, 4.2rem)",
-            fontWeight: 500,
+            fontWeight: 600,
             lineHeight: 1.15,
-            color: "rgba(255, 252, 245, 0.98)",
+            color: "#1A1D23",
             marginBottom: "1.25rem",
             letterSpacing: "-0.02em",
           }}
@@ -85,7 +83,7 @@ const AboutUs = () => {
             style={{
               fontStyle: "italic",
               fontWeight: 400,
-              color: "rgba(255, 180, 100, 0.98)",
+              color: "#F5A623",
             }}
           >
             to share
@@ -107,7 +105,7 @@ const AboutUs = () => {
               width: "40px",
               height: "1px",
               background:
-                "linear-gradient(90deg, transparent, rgba(255, 180, 100, 0.6))",
+                "linear-gradient(90deg, transparent, #2B7DE9)",
             }}
           />
           <span
@@ -115,14 +113,14 @@ const AboutUs = () => {
               width: "6px",
               height: "6px",
               borderRadius: "50%",
-              background: "rgba(255, 180, 100, 0.7)",
+              background: "#F5A623",
             }}
           />
           <span
             style={{
               width: "60px",
               height: "1px",
-              background: "rgba(255, 180, 100, 0.4)",
+              background: "#E2E6ED",
             }}
           />
           <span
@@ -130,7 +128,7 @@ const AboutUs = () => {
               width: "6px",
               height: "6px",
               borderRadius: "50%",
-              background: "rgba(255, 180, 100, 0.5)",
+              background: "#2B7DE9",
             }}
           />
           <span
@@ -138,7 +136,7 @@ const AboutUs = () => {
               width: "40px",
               height: "1px",
               background:
-                "linear-gradient(90deg, rgba(255, 180, 100, 0.6), transparent)",
+                "linear-gradient(90deg, #2B7DE9, transparent)",
             }}
           />
         </motion.div>
@@ -146,8 +144,8 @@ const AboutUs = () => {
         <motion.p
           variants={fadeUp}
           style={{
-            fontSize: "clamp(1rem, 2vw, 1.15rem)",
-            color: "rgba(255, 255, 255, 0.72)",
+            fontSize: "clamp(1rem, 2vw, 1.1rem)",
+            color: "#5A6177",
             lineHeight: 1.7,
             maxWidth: "480px",
             margin: "0 auto",
@@ -175,7 +173,7 @@ const AboutUs = () => {
       >
         <ImageGallery />
       </motion.div>
-    </div>
+    </Box>
   );
 };
 
