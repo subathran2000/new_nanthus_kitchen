@@ -124,17 +124,13 @@ const LandingStatic: FC = () => {
         </Box>
       )}
 
-      {/* Top bar */}
+      {/* Logo Layer - Stays above Modals (1300) */}
       <Box
         sx={{
           position: "fixed",
           top: 20,
           left: 0,
-          right: 0,
-          px: { xs: 2, md: 5 },
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
+          pl: { xs: 2, md: 5 },
           zIndex: 2000,
         }}
       >
@@ -159,6 +155,18 @@ const LandingStatic: FC = () => {
             }
           }}
         />
+      </Box>
+
+      {/* Order Button Layer - Stays below Modals (1300) */}
+      <Box
+        sx={{
+          position: "fixed",
+          top: 20,
+          right: 0,
+          pr: { xs: 2, md: 5 },
+          zIndex: 1000,
+        }}
+      >
         <OrderButton onClick={() => setLocationSelectorOpen(true)} />
       </Box>
 
@@ -190,9 +198,9 @@ const LandingStatic: FC = () => {
                 animate="animate"
                 variants={{
                   initial: { opacity: 0 },
-                  animate: { 
+                  animate: {
                     opacity: 1,
-                    transition: { staggerChildren: 0.3 } 
+                    transition: { staggerChildren: 0.3 }
                   }
                 }}
                 sx={{
@@ -204,17 +212,17 @@ const LandingStatic: FC = () => {
                   zIndex: 20,
                 }}
               >
-                <motion.div 
-                variants={{ 
-                  initial: { y: 20, opacity: 0 }, 
-                  animate: { y: 0, opacity: 1 } 
+                <motion.div
+                  variants={{
+                    initial: { y: 20, opacity: 0 },
+                    animate: { y: 0, opacity: 1 }
                   }}>
                   <TypewriterText text="New" className="accent-label" delay={0.5} />
                 </motion.div>
 
                 {/* This container handles the interaction between the two main words */}
                 <Box sx={{ position: 'relative', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                  
+
                   <motion.div
                     variants={{
                       initial: { x: -50, opacity: 0 },
@@ -233,15 +241,15 @@ const LandingStatic: FC = () => {
                     transition={{ duration: 0.8, ease: "easeOut" }}
                     style={{ marginTop: '20px' }} // Pulls them closer together
                   >
-                    <TypewriterText 
-                      text="KITCHEN" 
-                      as="h2" 
-                      className="main-title" 
-                      style={{ color: "#D4AF37", background: "none", WebkitTextFillColor: "#D4AF37" }} 
-                      delay={1.8} 
+                    <TypewriterText
+                      text="KITCHEN"
+                      as="h2"
+                      className="main-title"
+                      style={{ color: "#D4AF37", background: "none", WebkitTextFillColor: "#D4AF37" }}
+                      delay={1.8}
                     />
                   </motion.div>
-                  
+
                 </Box>
 
                 <motion.div variants={{ initial: { opacity: 0 }, animate: { opacity: 1 } }} transition={{ delay: 2.5 }}>

@@ -19,8 +19,8 @@ import StarIcon from "@mui/icons-material/Star";
 import { menuData } from "../../data/menuData";
 import type { MainCategory } from "../../types";
 
-const GOLD = "#C5A059";
-const GOLD_LIGHT = "#E2C284";
+const GOLD = "#F5A623"; // Replaced pale gold with vibrant special popup yellow
+const GOLD_LIGHT = "#FFC86B";
 const OBSIDIAN = "#050A14";
 
 interface SpiralBackgroundProps {
@@ -348,6 +348,37 @@ const SpiralCard: FC<{
   );
 };
 
+const getGridLayout = (width: number, totalItems: number) => {
+  let columns = 3;
+  let cardSize = 300;
+  let gap = 80;
+
+  if (width < 600) {
+    columns = 1;
+    cardSize = Math.min(280, width * 0.85);
+    gap = 40;
+  } else if (width < 960) {
+    columns = 2;
+    cardSize = Math.min(280, (width - 120) / 2);
+    gap = 40;
+  } else if (width < 1280) {
+    columns = 3;
+    cardSize = Math.min(280, (width - 200) / 3);
+    gap = 50;
+  } else {
+    columns = 3;
+    cardSize = 300;
+    gap = 80;
+  }
+
+  const spacing = cardSize + gap;
+  const totalRows = Math.ceil(totalItems / columns);
+  const maxScroll = totalRows > 0 ? ((totalRows - 1) / 2) * spacing : 0;
+  const minScroll = -maxScroll;
+
+  return { columns, cardSize, gap, spacing, totalRows, maxScroll, minScroll };
+};
+
 const MenuSpiral: FC<SpiralBackgroundProps> = ({
   activeCategory = "Lunch",
   onPanelOpenChange,
@@ -379,23 +410,29 @@ const MenuSpiral: FC<SpiralBackgroundProps> = ({
     onPanelOpenChange?.(open);
   }, [open, onPanelOpenChange]);
 
-  const scrollYRef = useRef(0);
-  const targetScrollYRef = useRef(0);
+  const initLayout = getGridLayout(typeof window !== "undefined" ? window.innerWidth : 1024, displayedItems.length);
+
+  const scrollYRef = useRef(initLayout.maxScroll);
+  const targetScrollYRef = useRef(initLayout.maxScroll);
   const transitionRef = useRef(0);
 
   // Ref-based entrance progress for high-performance staggered animation
   const entranceRef = useRef({ val: 0 });
+
   useEffect(() => {
     entranceRef.current.val = 0;
-    scrollYRef.current = 0;
-    targetScrollYRef.current = 0;
+
+    const currentLayout = getGridLayout(window.innerWidth, displayedItems.length);
+    scrollYRef.current = currentLayout.maxScroll;
+    targetScrollYRef.current = currentLayout.maxScroll;
+
     gsap.to(entranceRef.current, {
       val: 1,
       duration: 1.4,
       ease: "power2.out",
       overwrite: "auto",
     });
-  }, [activeCategory]);
+  }, [activeCategory, displayedItems.length, isMobile]);
 
   const handleMouseMove = useCallback((e: React.MouseEvent) => {
     const { clientX, clientY } = e;
@@ -417,88 +454,100 @@ const MenuSpiral: FC<SpiralBackgroundProps> = ({
 
 
     const updateCards = () => {
-          const targetTransition = openRef.current ? 1 : 0;
-          const lerpFactor = 0.08;
-          transitionRef.current += (targetTransition - transitionRef.current) * lerpFactor;
+      const targetTransition = openRef.current ? 1 : 0;
+      const lerpFactor = 0.08;
+      transitionRef.current += (targetTransition - transitionRef.current) * lerpFactor;
 
-          if (Math.abs(targetTransition - transitionRef.current) < 0.0005) {
-            transitionRef.current = targetTransition;
-          }
+      if (Math.abs(targetTransition - transitionRef.current) < 0.0005) {
+        transitionRef.current = targetTransition;
+      }
 
-          const t = transitionRef.current;
-          const scrollVal = scrollYRef.current;
-          const entranceVal = entranceRef.current.val;
+      const t = transitionRef.current;
+      const scrollVal = scrollYRef.current;
+      const entranceVal = entranceRef.current.val;
 
-          // Grid Constants
-          const columns = isMobile ? 1 : 3;
-          const totalRows = Math.ceil(total / columns);
-          const cardSize = isMobile ? 280 : 300; 
-          const gap = isMobile ? 40 : 120;
+      const layout = getGridLayout(window.innerWidth, total);
 
-          cards.forEach((card, i) => {
-            if (!card) return;
+      cards.forEach((card, i) => {
+        if (!card) return;
 
-            const row = Math.floor(i / columns);
-            const col = i % columns;
-            
-            // 1. Position within the grid
-            const gridX = (col - (columns - 1) / 2) * (cardSize + gap);
-            const gridY = (row - (totalRows - 1) / 2) * (cardSize + gap) + scrollVal;
+        const row = Math.floor(i / layout.columns);
+        const col = i % layout.columns;
 
-            // 2. Movement logic (Desktop shifts, Mobile stays 0)
-            const dockX = isMobile ? 0 : window.innerWidth * 0.4; 
-            const dockY = isMobile ? 0 : window.innerHeight * 0.2;
+        // 1. Position within the grid
+        const gridX = (col - (layout.columns - 1) / 2) * layout.spacing;
+        const gridY = (row - (layout.totalRows - 1) / 2) * layout.spacing + scrollVal;
 
-            const finalX = gridX + (dockX * t);
-            const finalY = gridY + (dockY * t);
+        // 2. Movement logic (Desktop shifts, Mobile stays 0)
+        const dockX = isMobile ? 0 : window.innerWidth * 0.4;
+        const dockY = isMobile ? 0 : window.innerHeight * 0.2;
 
-            const staggerDelay = i * 0.05;
-            const entranceProgress = Math.max(0, Math.min(1, (entranceVal * 2) - staggerDelay));
+        const finalX = gridX + (dockX * t);
+        const finalY = gridY + (dockY * t);
 
-            gsap.set(card, {
-              // COORDINATES
-              x: finalX, 
-              y: finalY,
-              // TRANSFORM PERCENT (This is what actually centers the cards)
-              xPercent: -50, 
-              yPercent: -50,
-              
-              // ANCHORING
-              left: "50%", 
-              top: "50%",
-              position: "absolute",
+        const staggerDelay = i * 0.05;
+        const entranceProgress = Math.max(0, Math.min(1, (entranceVal * 2) - staggerDelay));
 
-              // VISUALS
-              scale: isMobile ? 0.85 : 0.95,
-              opacity: (1 - (t * (isMobile ? 0.85 : 0.6))) * entranceProgress, 
-              filter: t > 0 ? `blur(${t * 12}px) brightness(${1 - t * 0.3})` : "none",
-              zIndex: 2000,
-            });
-          });
-      };
+        gsap.set(card, {
+          // COORDINATES
+          x: finalX,
+          y: finalY,
+          // TRANSFORM PERCENT (This is what actually centers the cards)
+          xPercent: -50,
+          yPercent: -50,
 
-   const container = containerRef.current;
+          // ANCHORING
+          left: "50%",
+          top: "50%",
+          position: "absolute",
+
+          // VISUALS
+          width: layout.cardSize,   // Dynamic sizing
+          height: layout.cardSize,  // Ensuring square aspect ratio via absolute sizing
+          scale: isMobile ? 0.85 : 0.95,
+          opacity: (1 - (t * (isMobile ? 0.85 : 0.6))) * entranceProgress,
+          filter: t > 0 ? `blur(${t * 12}px) brightness(${1 - t * 0.3})` : "none",
+          zIndex: 2000,
+        });
+      });
+    };
+
+    const container = containerRef.current;
+
+    const clampScroll = (val: number, min: number, max: number) => Math.max(min, Math.min(max, val));
+
+    let snapTimeout: ReturnType<typeof setTimeout>;
+    const snapToNearestRow = (immediateTarget?: number) => {
+      const layout = getGridLayout(window.innerWidth, total);
+      const currentScroll = immediateTarget !== undefined ? immediateTarget : targetScrollYRef.current;
+      const offsetFromMax = layout.maxScroll - currentScroll;
+      const nearestRow = Math.round(offsetFromMax / layout.spacing);
+      const snappedScroll = layout.maxScroll - (nearestRow * layout.spacing);
+      targetScrollYRef.current = clampScroll(snappedScroll, layout.minScroll, layout.maxScroll);
+    };
 
     const handleWheel = (e: WheelEvent) => {
       const isInsidePanel = openRef.current && sidePanelRef.current?.contains(e.target as Node);
       if (isInsidePanel) return;
 
       e.preventDefault();
-      const newTargetScroll = targetScrollYRef.current - e.deltaY * 0.8;
+      const layout = getGridLayout(window.innerWidth, total);
+      const delta = Math.abs(e.deltaY) > Math.abs(e.deltaX) ? e.deltaY : e.deltaX;
+      targetScrollYRef.current = clampScroll(targetScrollYRef.current - delta * 1.2, layout.minScroll, layout.maxScroll);
 
-      // Vertical range calculation based on rows
-      const rows = Math.ceil(total / (isMobile ? 1 : 3));
-      const rowHeight = isMobile ? 320 : 320;
-      const range = (rows - 1) * (rowHeight + (isMobile ? 15 : 30));
-      targetScrollYRef.current = Math.max(-range, Math.min(range, newTargetScroll));
+      clearTimeout(snapTimeout);
+      snapTimeout = setTimeout(() => snapToNearestRow(), 400);
     };
 
-    let touchStartX = 0;
-    let touchLastX = 0;
+    let touchLastY = 0;
+    let touchVelocity = 0;
+    let lastTouchTime = 0;
 
     const handleTouchStart = (e: TouchEvent) => {
-      touchStartX = e.touches[0].clientX;
-      touchLastX = touchStartX;
+      touchLastY = e.touches[0].clientY;
+      lastTouchTime = Date.now();
+      touchVelocity = 0;
+      clearTimeout(snapTimeout);
     };
 
     const handleTouchMove = (e: TouchEvent) => {
@@ -506,34 +555,28 @@ const MenuSpiral: FC<SpiralBackgroundProps> = ({
       if (isInsidePanel) return;
 
       e.preventDefault();
-      const touchX = e.touches[0].clientX;
-      const deltaX = touchLastX - touchX;
-      touchLastX = touchX;
+      const touchY = e.touches[0].clientY;
+      const now = Date.now();
+      const dt = now - lastTouchTime;
+      const deltaY = touchLastY - touchY;
 
-      const friction = isMobile ? 1.2 : 1.5;
-      const newTargetScroll = targetScrollYRef.current - deltaX * friction;
-
-      if (openRef.current) {
-        // Use vertical list bounds when panel is open
-        const vertSpacing = isMobile ? 80 : 120;
-        const verticalRange = (total - 1) * vertSpacing;
-        const vMin = -verticalRange / 2;
-        const vMax = verticalRange / 2;
-        targetScrollYRef.current = Math.max(vMin, Math.min(vMax, newTargetScroll));
-      } else {
-        // Horizontal rotary bounds - hard boundaries for first and last item centered
-        const isLandscape = window.innerWidth > window.innerHeight;
-        const itemSpacing = isMobile ? (isLandscape ? 0.45 : 0.38) : 0.35;
-        const rotaryRange = (total - 1) * (itemSpacing / 0.0035);
-        const hMax = 0; // lock first item at center
-        const hMin = -rotaryRange; // lock last item at center
-        targetScrollYRef.current = Math.max(hMin, Math.min(hMax, newTargetScroll));
+      if (dt > 0) {
+        touchVelocity = deltaY / dt;
       }
+
+      touchLastY = touchY;
+      lastTouchTime = now;
+
+      const friction = isMobile ? 1.5 : 1.2;
+      const layout = getGridLayout(window.innerWidth, total);
+      targetScrollYRef.current = clampScroll(targetScrollYRef.current - deltaY * friction, layout.minScroll, layout.maxScroll);
     };
 
     const handleTouchEnd = () => {
-      touchStartX = 0;
-      touchLastX = 0;
+      const momentumMultiplier = isMobile ? 300 : 200;
+      const projectedScroll = targetScrollYRef.current - (touchVelocity * momentumMultiplier);
+      snapToNearestRow(projectedScroll);
+      touchVelocity = 0;
     };
 
     // Scope listeners to the container element instead of window
@@ -678,14 +721,14 @@ const MenuSpiral: FC<SpiralBackgroundProps> = ({
           </Box>
         ) : (
           <Box
-              key="horizontal-container"
-              component={motion.div}
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{
-                opacity: 1,
-                scale: 1, // Removed the scale down
-                x: "0%",   // Forces it to stay centered instead of "-30%"
-              }}
+            key="horizontal-container"
+            component={motion.div}
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{
+              opacity: 1,
+              scale: 1, // Removed the scale down
+              x: "0%",   // Forces it to stay centered instead of "-30%"
+            }}
             exit={{ opacity: 0, scale: 1.05 }}
             transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
             sx={{
@@ -771,31 +814,31 @@ const MenuSpiral: FC<SpiralBackgroundProps> = ({
       {/* ──── Side Panel Detail View ──── */}
       <AnimatePresence mode="wait">
         {open && (
-            <Box
-              ref={sidePanelRef}
-              component={motion.div}
-              // Curtain entry: Stays centered but slides in/out from the left
-              initial={{ x: "-100%" }} 
-              animate={{ x: 0 }}
-              exit={{ x: "-100%" }}
-              transition={{ 
-                type: "spring", 
-                stiffness: 60, 
-                damping: 20,
-                mass: 1.2
-              }}
+          <Box
+            ref={sidePanelRef}
+            component={motion.div}
+            // Curtain entry: Stays centered but slides in/out from the left
+            initial={{ x: "-100%" }}
+            animate={{ x: 0 }}
+            exit={{ x: "-100%" }}
+            transition={{
+              type: "spring",
+              stiffness: 60,
+              damping: 20,
+              mass: 1.2
+            }}
             sx={{
               position: "fixed",
               top: 0,
               left: 0, // Changed from right: 0 to left: 0
-              width: { xs: "100%", md: "65%" }, 
+              width: { xs: "100%", md: "65%", lg: "70%" },
               height: "100vh",
-              bgcolor: "rgba(5, 10, 20, 0.98)",
-              backdropFilter: "blur(20px)",
+              bgcolor: "rgba(2, 4, 10, 0.92)",
+              backdropFilter: "blur(25px)",
               zIndex: 2000,
               // Border is now on the right side to separate it from the grid
-              borderRight: `1px solid ${GOLD}33`, 
-              boxShadow: "20px 0 50px rgba(0,0,0,0.5)",
+              borderRight: `1px solid ${GOLD}44`,
+              boxShadow: "-10px 0 60px rgba(0,0,0,0.8)",
               overflowY: "auto",
               display: "flex",
               flexDirection: "column"
@@ -841,24 +884,26 @@ const MenuSpiral: FC<SpiralBackgroundProps> = ({
                 onClick={() => setOpen(false)}
                 aria-label="Back"
                 component={motion.button as React.ElementType}
-                whileHover={{ scale: 1.1, x: -3 }}
                 whileTap={{ scale: 0.9 }}
                 sx={{
-                  color: "rgba(255,255,255,0.7)",
-                  bgcolor: "rgba(255,255,255,0.04)",
-                  border: `1px solid ${GOLD}22`,
-                  width: 42,
-                  height: 42,
-                  borderRadius: "12px",
+                  width: 40,
+                  height: 40,
+                  flexShrink: 0,
+                  color: "#F5A623",
+                  bgcolor: "rgba(0,0,0,0.4)",
+                  border: "1px solid rgba(255,255,255,0.1)",
+                  backdropFilter: "blur(8px)",
+                  transition: "all 0.4s cubic-bezier(0.4, 0, 0.2, 1)",
                   "&:hover": {
-                    bgcolor: `${GOLD}15`,
-                    borderColor: `${GOLD}66`,
-                    color: GOLD_LIGHT,
-                  },
-                  transition: "all 0.4s cubic-bezier(0.16, 1, 0.3, 1)",
+                    bgcolor: "#F5A623",
+                    borderColor: "#F5A623",
+                    color: "#000",
+                    transform: "scale(1.1)",
+                    boxShadow: "0 10px 30px rgba(245, 166, 35, 0.3)",
+                  }
                 }}
               >
-                <ArrowBackIcon sx={{ fontSize: 19 }} />
+                <ArrowBackIcon sx={{ fontSize: 20 }} />
               </IconButton>
 
               <Typography
@@ -867,7 +912,7 @@ const MenuSpiral: FC<SpiralBackgroundProps> = ({
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ delay: 0.35, duration: 0.4 }}
                 sx={{
-                  color: GOLD,
+                  color: "#F5A623",
                   fontFamily: "'Inter', sans-serif",
                   fontWeight: 600,
                   letterSpacing: "0.25em",
@@ -882,21 +927,26 @@ const MenuSpiral: FC<SpiralBackgroundProps> = ({
                 onClick={() => setOpen(false)}
                 aria-label="Close"
                 component={motion.button as React.ElementType}
-                whileHover={{ scale: 1.1, rotate: 90 }}
                 whileTap={{ scale: 0.9 }}
                 sx={{
-                  color: "rgba(255,255,255,0.45)",
-                  width: 42,
-                  height: 42,
-                  borderRadius: "12px",
+                  width: 40,
+                  height: 40,
+                  flexShrink: 0,
+                  color: "#F5A623",
+                  bgcolor: "rgba(0,0,0,0.4)",
+                  border: "1px solid rgba(255,255,255,0.1)",
+                  backdropFilter: "blur(8px)",
+                  transition: "all 0.4s cubic-bezier(0.4, 0, 0.2, 1)",
                   "&:hover": {
-                    color: GOLD_LIGHT,
-                    bgcolor: `${GOLD}10`,
-                  },
-                  transition: "all 0.4s cubic-bezier(0.16, 1, 0.3, 1)",
+                    bgcolor: "#F5A623",
+                    borderColor: "#F5A623",
+                    color: "#000",
+                    transform: "scale(1.1) rotate(90deg)",
+                    boxShadow: "0 10px 30px rgba(245, 166, 35, 0.3)",
+                  }
                 }}
               >
-                <CloseIcon sx={{ fontSize: 17 }} />
+                <CloseIcon sx={{ fontSize: 20 }} />
               </IconButton>
             </Box>
 
@@ -1093,164 +1143,155 @@ const MenuSpiral: FC<SpiralBackgroundProps> = ({
                     sx={{
                       p: 0,
                       display: "flex",
-                      flexDirection: { xs: "column", md: "row" }, // Column on mobile, Row on desktop
-                      flexWrap: "wrap", // Allows items to wrap to the next line
-                      gap: { xs: 1, md: 2 }, // Spacing between cards
-                      justifyContent: "flex-start",
+                      flexDirection: "column",
+                      gap: { xs: 1.5, md: 1 },
                     }}
                   >
                     {sub.items.map((menuItem, itemIdx) => (
                       <ListItem
                         key={menuItem.id}
                         component={motion.li}
-                        initial={{ opacity: 0, x: 30, scale: 0.95 }}
-                        animate={{ opacity: 1, x: 0, scale: 1 }}
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
                         transition={{
                           delay: 0.4 + idx * 0.12 + itemIdx * 0.05,
-                          duration: 0.55,
+                          duration: 0.6,
                           type: "spring",
-                          stiffness: 100,
-                          damping: 18,
+                          stiffness: 80,
+                          damping: 16,
                         }}
                         disablePadding
                         sx={{
-                          // Desktop: ~3 items per row | Mobile: 100% width
-                          width: { xs: "100%", md: "calc(33.33% - 14px)" }, 
-                          borderRadius: "20px",
-                          overflow: "hidden",
+                          width: "100%",
+                          borderRadius: "16px",
+                          display: "flex",
+                          flexDirection: { xs: "column", sm: "row" },
+                          alignItems: { xs: "stretch", sm: "center" },
+                          gap: { xs: 2.5, sm: 4 },
+                          padding: { xs: 2, sm: 2 },
                           transition: "all 0.4s cubic-bezier(0.16, 1, 0.3, 1)",
-                          border: "1px solid rgba(255,255,255,0.05)",
-                          background: "rgba(255,255,255,0.02)",
+                          background: "transparent",
+                          position: "relative",
+                          "&::after": {
+                            content: '""',
+                            position: "absolute",
+                            bottom: 0,
+                            left: "5%",
+                            width: "90%",
+                            height: "1px",
+                            background: "rgba(255,255,255,0.03)",
+                            transition: "opacity 0.3s ease",
+                          },
                           "&:hover": {
-                            bgcolor: "rgba(255,255,255,0.05)",
-                            transform: "translateY(-5px)", // Lift up on hover for premium feel
-                            borderColor: `${GOLD}44`,
+                            bgcolor: "rgba(255,255,255,0.02)",
+                            transform: "scale(1.01)",
+                            "&::after": { opacity: 0 },
+                            "& .item-image": {
+                              transform: "scale(1.05) rotate(2deg)",
+                              boxShadow: "0 15px 35px rgba(0,0,0,0.6)",
+                            },
+                            "& .item-title": {
+                              color: GOLD_LIGHT,
+                            }
                           },
                         }}
                       >
                         <Box
+                          className="item-image"
                           sx={{
-                            display: "flex",
-                            flexDirection: "column", // Vertical stack for the "Gallery" look
-                            width: "100%",
+                            width: { xs: "100%", sm: "110px" },
+                            height: { xs: "220px", sm: "110px" },
+                            flexShrink: 0,
+                            borderRadius: "12px",
+                            background: `url(${menuItem.imageUrl}) center/cover no-repeat`,
+                            transition: "all 0.6s cubic-bezier(0.16, 1, 0.3, 1)",
+                            boxShadow: "0 5px 20px rgba(0,0,0,0.5)",
                           }}
-                        >
-                          <Box
-                            className="item-image"
-                            sx={{
-                              width: "100%",
-                              aspectRatio: "16/10", // Consistent image ratio
-                              background: `url(${menuItem.imageUrl}) center/cover no-repeat`,
-                              borderRadius: "16px 16px 0 0",
-                              transition: "transform 0.6s ease",
-                            }}
-                          />
+                        />
 
-                          <Box
-                            sx={{
-                              flex: 1,
-                              px: { xs: 2, sm: 0.5 },
-                              py: { xs: 1.5, sm: 1.2 },
-                              minWidth: 0,
-                            }}
-                          >
-                            <Box
+                        <Box sx={{ flex: 1, minWidth: 0, display: "flex", flexDirection: "column", justifyContent: "center" }}>
+                          <Box sx={{ display: "flex", alignItems: "baseline", gap: 2, mb: 1 }}>
+                            <Typography
+                              className="item-title"
                               sx={{
-                                display: "flex",
-                                justifyContent: "space-between",
-                                alignItems: "center",
-                                mb: 0.3,
-                                gap: 1,
+                                color: "#fff",
+                                fontWeight: 600,
+                                fontSize: { xs: "1.2rem", md: "1.35rem" },
+                                fontFamily: "'Playfair Display', serif",
+                                letterSpacing: "0.02em",
+                                transition: "color 0.4s ease",
                               }}
                             >
-                              <Typography
-                                sx={{
-                                  color: "#fff",
-                                  fontWeight: 600,
-                                  fontSize: { xs: "0.92rem", md: "0.97rem" },
-                                  fontFamily: "'Inter', sans-serif",
-                                  letterSpacing: "0.01em",
-                                  whiteSpace: "nowrap",
-                                  overflow: "hidden",
-                                  textOverflow: "ellipsis",
-                                }}
-                              >
-                                {menuItem.name}
-                              </Typography>
-                              {menuItem.popular && (
-                                <Chip
-                                  icon={
-                                    <StarIcon
-                                      sx={{
-                                        fontSize: 11,
-                                        color: `${GOLD} !important`,
-                                      }}
-                                    />
-                                  }
-                                  label="CHEF'S CHOICE"
-                                  size="small"
-                                  sx={{
-                                    height: 20,
-                                    bgcolor: "rgba(197,160,89,0.1)",
-                                    color: GOLD_LIGHT,
-                                    fontSize: "0.58rem",
-                                    fontWeight: 800,
-                                    letterSpacing: "0.12em",
-                                    border: `1px solid ${GOLD}33`,
-                                    "& .MuiChip-label": { px: 0.5, pr: 1 },
-                                    "& .MuiChip-icon": { ml: 0.5 },
-                                  }}
-                                />
-                              )}
-                            </Box>
+                              {menuItem.name}
+                            </Typography>
+
+                            {/* Classic Menu Dot Leader */}
+                            <Box sx={{
+                              flex: 1,
+                              borderBottom: "2px dotted rgba(255,255,255,0.15)",
+                              position: "relative",
+                              top: "-6px",
+                              display: { xs: "none", sm: "block" }
+                            }} />
 
                             <Typography
                               sx={{
-                                color: "rgba(255, 255, 255, 0.35)",
-                                fontSize: "0.78rem",
-                                lineHeight: 1.45,
-                                fontFamily: "'Inter', sans-serif",
-                                overflow: "hidden",
-                                textOverflow: "ellipsis",
-                                display: "-webkit-box",
-                                WebkitLineClamp: 2,
-                                WebkitBoxOrient: "vertical",
-                              }}
-                            >
-                              {menuItem.description}
-                            </Typography>
-                          </Box>
-
-                          <Box
-                            sx={{
-                              pr: { xs: 2, sm: 2.5 },
-                              pb: { xs: 1.5, sm: 0 },
-                              display: "flex",
-                              alignItems: "center",
-                              flexShrink: 0,
-                            }}
-                          >
-                            <Box
-                              className="price-pill"
-                              sx={{
-                                bgcolor: "transparent",
                                 color: GOLD,
-                                border: `1px solid ${GOLD}33`,
-                                px: 1.8,
-                                py: 0.5,
-                                borderRadius: "8px",
-                                fontWeight: 800,
-                                fontSize: "0.85rem",
-                                fontFamily: "'Playfair Display', serif",
-                                transition:
-                                  "all 0.4s cubic-bezier(0.16, 1, 0.3, 1)",
+                                fontWeight: 700,
+                                fontSize: { xs: "1.1rem", md: "1.2rem" },
+                                fontFamily: "'Inter', sans-serif",
                                 letterSpacing: "0.05em",
-                                whiteSpace: "nowrap",
+                                display: { xs: "none", sm: "block" }
                               }}
                             >
                               {menuItem.price}
-                            </Box>
+                            </Typography>
                           </Box>
+
+                          {menuItem.popular && (
+                            <Typography
+                              sx={{
+                                color: GOLD_LIGHT,
+                                fontSize: "0.6rem",
+                                fontWeight: 800,
+                                letterSpacing: "0.2em",
+                                textTransform: "uppercase",
+                                display: "flex",
+                                alignItems: "center",
+                                gap: 0.5,
+                                mb: 1.5,
+                              }}
+                            >
+                              <StarIcon sx={{ fontSize: 10 }} /> Signature Dish
+                            </Typography>
+                          )}
+
+                          <Typography
+                            sx={{
+                              color: "rgba(255, 255, 255, 0.4)",
+                              fontSize: "0.85rem",
+                              lineHeight: 1.6,
+                              fontFamily: "'Inter', sans-serif",
+                              maxWidth: "95%",
+                              mt: menuItem.popular ? 0 : 0.5,
+                            }}
+                          >
+                            {menuItem.description}
+                          </Typography>
+
+                          {/* Mobile Price */}
+                          <Typography
+                            sx={{
+                              color: GOLD,
+                              fontWeight: 700,
+                              fontSize: "1.2rem",
+                              fontFamily: "'Inter', sans-serif",
+                              mt: 2,
+                              display: { xs: "block", sm: "none" }
+                            }}
+                          >
+                            {menuItem.price}
+                          </Typography>
                         </Box>
                       </ListItem>
                     ))}
