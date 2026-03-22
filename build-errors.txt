@@ -1,0 +1,5 @@
+﻿src/components/home/CardStack.tsx(72,18): error TS2304: Cannot find name 'ChevronLeft'.
+src/components/home/CardStack.tsx(83,18): error TS2304: Cannot find name 'ChevronRight'.
+src/components/home/SpecialsPopup.tsx(80,14): error TS2304: Cannot find name 'X'.
+src/components/home/SpecialsPopup.tsx(144,22): error TS2304: Cannot find name 'UtensilsCrossed'.
+src/components/home/SpecialsPopup.tsx(194,35): error TS2304: Cannot find name 'ArrowRight'.

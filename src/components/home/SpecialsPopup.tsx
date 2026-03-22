@@ -69,13 +69,21 @@ const SpecialsPopup: React.FC<SpecialsPopupProps> = ({ open, onClose }) => {
               top: 24,
               right: 24,
               zIndex: 100,
-              color: "rgba(255,255,255,0.5)",
-              bgcolor: "rgba(255,255,255,0.05)",
+              width: 40,
+              height: 40,
+              flexShrink: 0,
+              color: "#F5A623",
+              border: "1px solid rgba(255,255,255,0.1)",
+              bgcolor: "rgba(0,0,0,0.4)",
+              backdropFilter: "blur(8px)",
+              transition: "all 0.4s cubic-bezier(0.4, 0, 0.2, 1)",
               "&:hover": {
-                bgcolor: "rgba(255,255,255,0.1)",
-                color: "white",
+                bgcolor: "#F5A623",
+                borderColor: "#F5A623",
+                color: "#000",
+                transform: "scale(1.1)",
+                boxShadow: "0 10px 30px rgba(245, 166, 35, 0.3)",
               },
-              transition: "all 0.2s",
             }}
           >
             <X size={20} />
@@ -210,16 +218,23 @@ const SpecialsPopup: React.FC<SpecialsPopupProps> = ({ open, onClose }) => {
                     color: "#F5A623",
                     borderRadius: "100px",
                     textTransform: "none",
-                    fontWeight: 500,
+                    fontWeight: 600,
                     fontSize: "0.95rem",
                     letterSpacing: "0.5px",
+                    transition: "all 0.4s cubic-bezier(0.4, 0, 0.2, 1)",
+                    "& .MuiButton-endIcon": {
+                      transition: "transform 0.4s cubic-bezier(0.4, 0, 0.2, 1)",
+                    },
                     "&:hover": {
                       borderColor: "#F5A623",
-                      bgcolor: "rgba(245, 166, 35, 0.08)",
-                      transform: "translateY(-2px)",
-                      boxShadow: "0 10px 20px rgba(0,0,0,0.2)",
+                      bgcolor: "#F5A623",
+                      color: "#000",
+                      transform: "scale(1.02)",
+                      boxShadow: "0 10px 30px rgba(245, 166, 35, 0.3)",
+                      "& .MuiButton-endIcon": {
+                        transform: "translateX(6px)",
+                      },
                     },
-                    transition: "all 0.4s cubic-bezier(0.4, 0, 0.2, 1)",
                   }}
                 >
                   View All Specials

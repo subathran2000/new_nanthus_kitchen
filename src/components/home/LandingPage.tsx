@@ -141,17 +141,13 @@ const LandingStatic: FC = () => {
         </Box>
       )}
 
-      {/* Top bar */}
+      {/* Logo Layer - Stays above Modals (1300) */}
       <Box
         sx={{
           position: "fixed",
           top: 20,
           left: 0,
-          right: 0,
-          px: { xs: 2, md: 5 },
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
+          pl: { xs: 2, md: 5 },
           zIndex: 2000,
         }}
       >
@@ -176,6 +172,18 @@ const LandingStatic: FC = () => {
             });
           }}
         />
+      </Box>
+
+      {/* Order Button Layer - Stays below Modals (1300) */}
+      <Box
+        sx={{
+          position: "fixed",
+          top: 20,
+          right: 0,
+          pr: { xs: 2, md: 5 },
+          zIndex: 1000,
+        }}
+      >
         <OrderButton onClick={() => setLocationSelectorOpen(true)} />
       </Box>
 
